@@ -1,0 +1,13 @@
+{
+  "type": "better-sqlite3",
+  "name": "testdb",
+  "database": "./sqlite3.db",
+  "synchronize": true,
+  "dropSchema": true,
+  "entities": [
+    "./entities/User.ts",
+    "./entities/Photo.ts",
+    "./entities/License.ts",
+    "./entities/Organization.ts"    
+  ]  
+}
