@@ -3,7 +3,7 @@ const path = require('path');
 const tsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin');
 const webpackNodeExternals = require('webpack-node-externals');
 const webpackBar = require('webpackbar');
-
+const DeclarationBundlerPlugin = require('types-webpack-bundler');
 const distPath = path.resolve(path.join(__dirname, 'dist'));
 
 const config = {
@@ -35,6 +35,10 @@ const config = {
   plugins: [
     new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
     new webpackBar({ name: '-erdia-x' }),
+    new DeclarationBundlerPlugin({
+      moduleName: 'erdia',
+      out: 'erdia.d.ts',
+    }),
   ],
 
   entry: {
@@ -66,11 +70,6 @@ const config = {
           configFile: 'tsconfig.prod.json',
         },
       },
-      // {
-      //   exclude: /node_modules/,
-      //   loader: 'shebang-loader',
-      //   test: /\.tsx?$/,
-      // },
     ],
   },
 };
