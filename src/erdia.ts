@@ -1,6 +1,7 @@
 import connect from '@misc/connect';
 import eol from '@misc/eol';
 import { IErdiaCliOptions } from '@misc/options';
+import chalk from 'chalk';
 import sourceMapSupport from 'source-map-support';
 import yargs from 'yargs/yargs';
 import erdiagram from './handler/erdiagram';
@@ -44,39 +45,75 @@ yargs(process.argv.slice(2))
     aliases: 'er',
     builder: setOptions,
     handler: async (argv) => {
-      const conn = await connect(argv);
-      const diagram = await erdiagram(conn);
+      try {
+        const conn = await connect(argv);
+        const diagram = await erdiagram(conn);
 
-      console.log(diagram);
+        await conn.close();
+
+        console.log(diagram);
+      } catch (catched) {
+        const err =
+          catched instanceof Error
+            ? catched
+            : new Error('unknown error raised from ER diagram creation');
+
+        console.log(chalk.redBright('error occured, '));
+        console.log(err.message);
+      }
     },
   })
   .command<IErdiaCliOptions>({
     command: 'mdtable',
     builder: setOptions,
     handler: async (argv) => {
-      const conn = await connect(argv);
-      const table = await mdtable(conn, 1);
+      try {
+        const conn = await connect(argv);
+        const table = await mdtable(conn, 1);
 
-      console.log(table);
+        await conn.close();
+
+        console.log(table);
+      } catch (catched) {
+        const err =
+          catched instanceof Error
+            ? catched
+            : new Error('unknown error raised from ER diagram creation');
+
+        console.log(chalk.redBright('error occured, '));
+        console.log(err.message);
+      }
     },
   })
   .command<IErdiaCliOptions>({
     command: 'mdfull',
     builder: setOptions,
     handler: async (argv) => {
-      const conn = await connect(argv);
-      const diagram = await erdiagram(conn);
-      const table = await mdtable(conn, 2);
+      try {
+        const conn = await connect(argv);
+        const diagram = await erdiagram(conn);
+        const table = await mdtable(conn, 2);
 
-      const full = [
-        '# Tables',
-        table,
-        eol(),
-        '# ER diagram',
-        `\`\`\`mermaid${eol()}${diagram}${eol()}\`\`\``,
-      ].join(eol());
+        const full = [
+          '# Tables',
+          table,
+          eol(),
+          '# ER diagram',
+          `\`\`\`mermaid${eol()}${diagram}${eol()}\`\`\``,
+        ].join(eol());
 
-      console.log(full);
+        await conn.close();
+
+        console.log(full);
+      } catch (catched) {
+        const err =
+          catched instanceof Error
+            ? catched
+            : new Error('unknown error raised from ER diagram creation');
+
+        console.log(chalk.redBright('error occured, '));
+        console.log(err.message);
+      }
     },
   })
   .help().argv;
