@@ -19,6 +19,14 @@ function setOptions(args: ReturnType<typeof yargs>) {
     default: true,
   });
 
+  args.option('database', {
+    alias: 'd',
+    describe: 'set database name, see https://typeorm.io/#/using-ormconfig',
+    type: 'string',
+  });
+
+  args.require('database', 'must set database name for database connection');
+
   args.option('use-loader-path', {
     alias: 'l',
     describe:
