@@ -1,11 +1,12 @@
+import erdiagram from '@handler/erdiagram';
+import mdtable from '@handler/mdtable';
+import write from '@handler/write';
 import connect from '@misc/connect';
 import eol from '@misc/eol';
 import { IErdiaCliOptions } from '@misc/options';
 import chalk from 'chalk';
 import sourceMapSupport from 'source-map-support';
 import yargs from 'yargs/yargs';
-import erdiagram from './handler/erdiagram';
-import mdtable from './handler/mdtable';
 
 sourceMapSupport.install();
 
@@ -13,6 +14,7 @@ sourceMapSupport.install();
 const casting = <T>(args: T): any => args;
 
 function setOptions(args: ReturnType<typeof yargs>) {
+  // option
   args.option('use-ormconfig', {
     alias: 'c',
     describe: 'use ormconfig file, see https://typeorm.io/#/using-ormconfig',
@@ -20,6 +22,13 @@ function setOptions(args: ReturnType<typeof yargs>) {
     default: true,
   });
 
+  args.option('output', {
+    alias: 'o',
+    describe: 'output file name',
+    type: 'string',
+  });
+
+  // require option
   args.option('database', {
     alias: 'd',
     describe: 'set database name, see https://typeorm.io/#/using-ormconfig',
@@ -27,13 +36,6 @@ function setOptions(args: ReturnType<typeof yargs>) {
   });
 
   args.require('database', 'must set database name for database connection');
-
-  args.option('use-loader-path', {
-    alias: 'l',
-    describe:
-      'use database connection script, script have default function that return typeorm Connection',
-    type: 'string',
-  });
 
   return casting(args);
 }
@@ -51,7 +53,16 @@ yargs(process.argv.slice(2))
 
         await conn.close();
 
-        console.log(diagram);
+        if (argv.output !== undefined && argv.output !== null) {
+          await write({
+            database: argv.database,
+            filename: argv.output,
+            type: 'er',
+            content: diagram,
+          });
+        } else {
+          console.log(diagram);
+        }
       } catch (catched) {
         const err =
           catched instanceof Error
@@ -73,7 +84,16 @@ yargs(process.argv.slice(2))
 
         await conn.close();
 
-        console.log(table);
+        if (argv.output !== undefined && argv.output !== null) {
+          await write({
+            database: argv.database,
+            filename: argv.output,
+            type: 'er',
+            content: table,
+          });
+        } else {
+          console.log(table);
+        }
       } catch (catched) {
         const err =
           catched instanceof Error
@@ -104,7 +124,16 @@ yargs(process.argv.slice(2))
 
         await conn.close();
 
-        console.log(full);
+        if (argv.output !== undefined && argv.output !== null) {
+          await write({
+            database: argv.database,
+            filename: argv.output,
+            type: 'er',
+            content: full,
+          });
+        } else {
+          console.log(full);
+        }
       } catch (catched) {
         const err =
           catched instanceof Error

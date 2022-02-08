@@ -1,5 +1,5 @@
-import { EntityMetadata } from "typeorm";
-import { RelationMetadata } from "typeorm/metadata/RelationMetadata";
+import { EntityMetadata } from 'typeorm';
+import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 const getInverseEntityIsNullable = ({
   entityMeta,
@@ -10,7 +10,7 @@ const getInverseEntityIsNullable = ({
 }): boolean => {
   const inverseEntityMeta = relationMeta.inverseEntityMetadata;
   const inverseRelationMeta = inverseEntityMeta.relations.find(
-    (relation) => relation.inverseEntityMetadata.name === entityMeta.name
+    (relation) => relation.inverseEntityMetadata.name === entityMeta.name,
   );
 
   // mermaid.js는 단일 릴레이션을 표현할 수 없다. ----o| 와 같은 차트를 그릴 수 없다

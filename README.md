@@ -8,11 +8,24 @@ npm install --save-dev erdia
 ```
 
 # Option
-| Command | Option | Description |
+
+## ER Diagram
+| Option | Required | Description |
 | :-: | :-: | :- |
-| er | N/A | ER diagram create. Using mermaid.js format. |
-| mdtable | N/A | Entity table create. Using markdown format. |
-| mdfull | N/A | Entity table, ER diagram create. Using markdown format. |
+| database | required | database configuration name in ormconfig |
+| output | - | output filename, not markdown format |
+
+## Entity markdown table
+| Option | Required | Description |
+| :-: | :-: | :- |
+| database | required | database configuration name in ormconfig |
+| output | - | output filename, markdown format |
+
+## Entity markdown table with ER Diagram
+| Option | Required | Description |
+| :-: | :-: | :- |
+| database | required | database configuration name in ormconfig |
+| output | - | output filename, markdown format |
 
 # Usage
 ```
@@ -21,4 +34,10 @@ npx erdia er
 
 # or 
 erdia er
+```
+
+# erdia with tsconfig-paths
+```
+npm install erdia --save-dev
+node -r ts-node/register -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -d [database configuration name] -o output.md
 ```

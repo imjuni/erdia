@@ -5,6 +5,9 @@ export interface IErdiaCliOptions {
   /** database name */
   database: string;
 
+  /** output filename */
+  output?: string;
+
   /**
    * use loader script,
    * loader script default function return typeorm Connection object

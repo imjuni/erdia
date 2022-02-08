@@ -1,6 +1,7 @@
 import getColumnTypeWithLength from '@common/getColumnTypeWithLength';
 import getEntityName from '@common/getEntityName';
 import eol from '@misc/eol';
+import escape from '@misc/escape';
 import { populate } from 'my-easy-fp';
 import { Connection } from 'typeorm';
 
@@ -18,7 +19,7 @@ async function mdtable(conn: Connection, heading?: number) {
     const columnMarkdowns = columns.map((column) => {
       return `| ${column.propertyName} | ${column.databaseName} | ${getColumnTypeWithLength(
         column,
-      )} | ${column.comment ?? 'N/A'} |`;
+      )} | ${escape(column.comment ?? 'N/A')} |`;
     });
 
     const columnHeading = `| Name | Name in DB | Type | Comment |`;
