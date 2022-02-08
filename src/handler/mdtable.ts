@@ -1,11 +1,12 @@
 import getColumnTypeWithLength from '@common/getColumnTypeWithLength';
 import getEntityName from '@common/getEntityName';
 import eol from '@misc/eol';
-import escape from '@misc/escape';
+import escape, { reaplceNewline } from '@misc/escape';
+import { IErdiaCliOptions } from '@misc/options';
 import { populate } from 'my-easy-fp';
 import { Connection } from 'typeorm';
 
-async function mdtable(conn: Connection, heading?: number) {
+async function mdtable(conn: Connection, option: IErdiaCliOptions, heading?: number) {
   const headingChar = populate(heading ?? 2)
     .map(() => '#')
     .join('');
@@ -19,14 +20,17 @@ async function mdtable(conn: Connection, heading?: number) {
     const columnMarkdowns = columns.map((column) => {
       return `| ${column.propertyName} | ${column.databaseName} | ${getColumnTypeWithLength(
         column,
-      )} | ${escape(column.comment ?? 'N/A')} |`;
+      )} | ${escape(
+        reaplceNewline(column.comment ?? 'N/A', option.html ? '<br />' : '. '),
+        '. ',
+      )} |`;
     });
 
     const columnHeading = `| Name | Name in DB | Type | Comment |`;
     const columnSplitter = `| :-: | :-: | :-: | :- |`;
     const columnTable = [columnHeading, columnSplitter, columnMarkdowns.join(eol())].join(eol());
 
-    return `${headingChar} ${entity.name}(${entity.tableName})${eol(2)}${columnTable}`;
+    return `${headingChar} ${entity.tableName}(${entity.name})${eol(2)}${columnTable}`;
   });
 
   return entityTable.join(eol(3));

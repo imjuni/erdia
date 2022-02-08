@@ -29,7 +29,7 @@ export class User extends BaseEntity implements IUser {
   @Column({ type: 'varchar', length: 64 })
   lastName: string;
 
-  @Column()
+  @Column({ comment: 'line1\nline2\nline3' })
   isActive: boolean;
 
   @OneToOne('Photo', {

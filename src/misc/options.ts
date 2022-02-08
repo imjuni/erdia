@@ -8,6 +8,9 @@ export interface IErdiaCliOptions {
   /** output filename */
   output?: string;
 
+  /** use html extension */
+  html: boolean;
+
   /**
    * use loader script,
    * loader script default function return typeorm Connection object

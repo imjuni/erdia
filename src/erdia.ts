@@ -10,6 +10,8 @@ import yargs from 'yargs/yargs';
 
 sourceMapSupport.install();
 
+type TErdiaCliOptions = Omit<IErdiaCliOptions, 'html'> & { html?: boolean };
+
 // only use builder function
 const casting = <T>(args: T): any => args;
 
@@ -28,6 +30,13 @@ function setOptions(args: ReturnType<typeof yargs>) {
     type: 'string',
   });
 
+  args.option('html', {
+    alias: 'h',
+    describe: 'use html format. For example, newline character replace <br />',
+    type: 'boolean',
+    default: true,
+  });
+
   // require option
   args.option('database', {
     alias: 'd',
@@ -42,13 +51,14 @@ function setOptions(args: ReturnType<typeof yargs>) {
 
 // eslint-disable-next-line
 yargs(process.argv.slice(2))
-  .command<IErdiaCliOptions>({
+  .command<TErdiaCliOptions>({
     command: '$0',
     aliases: 'er',
     builder: setOptions,
     handler: async (argv) => {
       try {
-        const conn = await connect(argv);
+        const option = { ...argv, html: argv.html ?? true };
+        const conn = await connect(option);
         const diagram = await erdiagram(conn);
 
         await conn.close();
@@ -74,13 +84,14 @@ yargs(process.argv.slice(2))
       }
     },
   })
-  .command<IErdiaCliOptions>({
+  .command<TErdiaCliOptions>({
     command: 'mdtable',
     builder: setOptions,
     handler: async (argv) => {
       try {
-        const conn = await connect(argv);
-        const table = await mdtable(conn, 1);
+        const option = { ...argv, html: argv.html ?? true };
+        const conn = await connect(option);
+        const table = await mdtable(conn, option, 1);
 
         await conn.close();
 
@@ -105,14 +116,15 @@ yargs(process.argv.slice(2))
       }
     },
   })
-  .command<IErdiaCliOptions>({
+  .command<TErdiaCliOptions>({
     command: 'mdfull',
     builder: setOptions,
     handler: async (argv) => {
       try {
-        const conn = await connect(argv);
+        const option = { ...argv, html: argv.html ?? true };
+        const conn = await connect(option);
         const diagram = await erdiagram(conn);
-        const table = await mdtable(conn, 2);
+        const table = await mdtable(conn, option, 2);
 
         const full = [
           '# Tables',
