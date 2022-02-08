@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "create mermaid.js er diagram using typeorm",
   "main": "dist/erdia.js",
   "types": "dist/erdia.d.ts",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/imjuni/er-doc-writer.git"
+    "url": "git+https://github.com/imjuni/erdia.git"
   },
   "files": [
     "dist"
@@ -31,9 +31,9 @@
   "author": "ByungJoon Lee",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/imjuni/er-doc-writer/issues"
+    "url": "https://github.com/imjuni/erdia/issues"
   },
-  "homepage": "https://github.com/imjuni/er-doc-writer#readme",
+  "homepage": "https://github.com/imjuni/erdia#readme",
   "devDependencies": {
     "@jest/test-sequencer": "^27.4.6",
     "@tsconfig/node16": "^1.0.2",

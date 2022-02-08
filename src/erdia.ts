@@ -17,13 +17,6 @@ const casting = <T>(args: T): any => args;
 
 function setOptions(args: ReturnType<typeof yargs>) {
   // option
-  args.option('use-ormconfig', {
-    alias: 'c',
-    describe: 'use ormconfig file, see https://typeorm.io/#/using-ormconfig',
-    type: 'boolean',
-    default: true,
-  });
-
   args.option('output', {
     alias: 'o',
     describe: 'output file name',
