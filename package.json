@@ -1,12 +1,12 @@
 {
   "name": "erdia",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "create mermaid.js er diagram using typeorm",
   "main": "dist/erdia.js",
   "types": "dist/erdia.d.ts",
   "scripts": {
     "dev": "ts-node -r tsconfig-paths/register src/erdia.ts",
-    "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk app.ts",
+    "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk src/erdia.ts",
     "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf ./dist",
@@ -72,9 +72,9 @@
   },
   "dependencies": {
     "chalk": "^4.1.2",
-    "my-easy-fp": "^0.10.0",
+    "my-easy-fp": "^0.11.0",
     "source-map-support": "^0.5.21",
-    "typeorm": "^0.2.41",
-    "yargs": "^17.3.1"
+    "typeorm": "^0.2.45",
+    "yargs": "^17.4.0"
   }
 }

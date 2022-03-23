@@ -23,6 +23,12 @@ function setOptions(args: ReturnType<typeof yargs>) {
     type: 'string',
   });
 
+  args.option('ormconfigPath', {
+    alias: 'p',
+    describe: 'ormconfig file path',
+    type: 'string',
+  });
+
   args.option('html', {
     alias: 'h',
     describe: 'use html format. For example, newline character replace <br />',
@@ -31,13 +37,13 @@ function setOptions(args: ReturnType<typeof yargs>) {
   });
 
   // require option
-  args.option('database', {
-    alias: 'd',
-    describe: 'set database name, see https://typeorm.io/#/using-ormconfig',
+  args.option('name', {
+    alias: 'n',
+    describe: 'configuration name, see https://typeorm.io/#/using-ormconfig',
     type: 'string',
   });
 
-  args.require('database', 'must set database name for database connection');
+  args.require('name', 'Please pass configuration name for database connection');
 
   return casting(args);
 }
@@ -58,7 +64,7 @@ yargs(process.argv.slice(2))
 
         if (argv.output !== undefined && argv.output !== null) {
           await write({
-            database: argv.database,
+            database: argv.name,
             filename: argv.output,
             type: 'er',
             content: diagram,
@@ -90,7 +96,7 @@ yargs(process.argv.slice(2))
 
         if (argv.output !== undefined && argv.output !== null) {
           await write({
-            database: argv.database,
+            database: argv.name,
             filename: argv.output,
             type: 'er',
             content: table,
@@ -131,7 +137,7 @@ yargs(process.argv.slice(2))
 
         if (argv.output !== undefined && argv.output !== null) {
           await write({
-            database: argv.database,
+            database: argv.name,
             filename: argv.output,
             type: 'er',
             content: full,

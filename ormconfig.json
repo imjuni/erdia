@@ -8,6 +8,6 @@
     "./entities/User.ts",
     "./entities/Photo.ts",
     "./entities/License.ts",
-    "./entities/Organization.ts"    
-  ]  
+    "./entities/Organization.ts"
+  ]
 }

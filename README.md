@@ -1,6 +1,9 @@
 # ERdia
 ERdia is create ER Diagram using by TypeORM and mermiad.js
 
+[![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true) [![Github Star](https://img.shields.io/github/stars/imjuni/erdia.svg?style=popout)](https://github.com/imjuni/erdia) [![Github Issues](https://img.shields.io/github/issues-raw/imjuni/erdia.svg)](https://github.com/imjuni/erdia/issues) [![NPM version](https://img.shields.io/npm/v/erdia.svg)](https://www.npmjs.com/package/erdia) [![License](https://img.shields.io/npm/l/erdia.svg)](https://github.com/imjuni/erdia/blob/master/LICENSE)
+
+
 # Install
 
 ```sh
@@ -10,14 +13,14 @@ npm install --save-dev erdia
 # Usage
 ```
 # using npx
-npx erdia er -d [your database configuration name]
-npx erdia mdtable -d [your database configuration name]
-npx erdia mdfull -d [your database configuration name]
+npx erdia er -n [your database configuration name] -c [your ormconfig filename]
+npx erdia mdtable -n [your database configuration name] -c [your ormconfig filename]
+npx erdia mdfull -n [your database configuration name] -c [your ormconfig filename]
 
 # or 
-erdia er -d [your database configuration name]
-erdia mdtable -d [your database configuration name]
-erdia mdfull -d [your database configuration name]
+erdia er -n [your database configuration name] -c [your ormconfig filename]
+erdia mdtable -n [your database configuration name] -c [your ormconfig filename]
+erdia mdfull -n [your database configuration name] -c [your ormconfig filename]
 ```
 
 erdia need [ormconfig.json](https://typeorm.io/#/using-ormconfig) file. Because typeorm entity initialize after database connection. See [ormconfig.json](https://typeorm.io/#/using-ormconfig) section in [typeorm.io](https://typeorm.io/)
@@ -27,28 +30,31 @@ erdia need [ormconfig.json](https://typeorm.io/#/using-ormconfig) file. Because 
 ## er
 ER diagram creation command
 
-| Option | Required | Default | Description |
-| :-: | :-: | :-: | :- |
-| database | required | N/A | database configuration name in ormconfig |
-| output | - | N/A | output filename, markdown format |
+| Option | Alias | Required | Default | Description |
+| :- | :-: | :-: | :-: | :- |
+| ormconfigPath | c | N/A | N/A | ormconfig file path |
+| connection | n | required | N/A | database configuration name in ormconfig |
+| output | o | - | N/A | output filename, markdown format |
 
 ## mdtable
 Entity markdown table creation command
 
-| Option | Required | Default | Description |
-| :-: | :-: | :-: | :- |
-| database | required | N/A | database configuration name in ormconfig |
-| output | - | N/A | output filename, markdown format |
-| html | - | true | html formatting in markdown. newline character replace to <br /> | 
+| Option | Alias | Required | Default | Description |
+| :- | :-: | :-: | :-: | :- |
+| ormconfigPath | c | N/A | N/A | ormconfig file path |
+| connection | n | required | N/A | database configuration name in ormconfig |
+| output | o | - | N/A | output filename, markdown format |
+| html | h | - | true | html formatting in markdown. newline character replace to <br /> | 
 
 ## mdfull
 Entity markdown table with ER Diagram creation command
 
-| Option | Required | Default | Description |
-| :-: | :-: | :-: | :- |
-| database | required | N/A | database configuration name in ormconfig |
-| output | - | N/A | output filename, markdown format |
-| html | - | true | html formatting in markdown. newline character replace to <br /> | 
+| Option | Alias | Required | Default | Description |
+| :- | :-: | :-: | :-: | :- |
+| ormconfigPath | c | N/A | N/A | ormconfig file path |
+| connection | n | required | N/A | database configuration name in ormconfig |
+| output | o | - | N/A | output filename, markdown format |
+| html | h | - | true | html formatting in markdown. newline character replace to <br /> | 
 
 # erdia with tsconfig-paths
 ```

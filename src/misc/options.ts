@@ -1,6 +1,9 @@
 export interface IErdiaCliOptions {
-  /** database name */
-  database: string;
+  /** configuration name */
+  name: string;
+
+  /** ormconfig file path */
+  ormconfigPath: string;
 
   /** output filename */
   output?: string;
