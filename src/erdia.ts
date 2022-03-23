@@ -4,16 +4,20 @@ import write from '@handler/write';
 import connect from '@misc/connect';
 import eol from '@misc/eol';
 import { IErdiaCliOptions } from '@misc/options';
-import chalk from 'chalk';
+import { CliUx } from '@oclif/core';
+import consola, { LogLevel } from 'consola';
+import { isNotEmpty, TNullablePick } from 'my-easy-fp';
 import sourceMapSupport from 'source-map-support';
 import yargs from 'yargs/yargs';
 
 sourceMapSupport.install();
 
-type TErdiaCliOptions = Omit<IErdiaCliOptions, 'html'> & { html?: boolean };
+type TErdiaCliOptions = TNullablePick<IErdiaCliOptions, 'html'>;
 
 // only use builder function
 const casting = <T>(args: T): any => args;
+
+consola.level = LogLevel.Error;
 
 function setOptions(args: ReturnType<typeof yargs>) {
   // option
@@ -55,12 +59,20 @@ yargs(process.argv.slice(2))
     aliases: 'er',
     builder: setOptions,
     handler: async (argv) => {
+      const option = { ...argv, html: argv.html ?? true };
+
+      if (option.verbose) {
+        consola.level = LogLevel.Verbose;
+      }
+
+      option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.start('starting a process') : '';
+
       try {
-        const option = { ...argv, html: argv.html ?? true };
         const conn = await connect(option);
         const diagram = await erdiagram(conn);
-
         await conn.close();
+
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('done\n') : '';
 
         if (argv.output !== undefined && argv.output !== null) {
           await write({
@@ -73,13 +85,14 @@ yargs(process.argv.slice(2))
           console.log(diagram);
         }
       } catch (catched) {
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('error\n') : '';
+
         const err =
           catched instanceof Error
             ? catched
             : new Error('unknown error raised from ER diagram creation');
 
-        console.log(chalk.redBright('error occured, '));
-        console.log(err.message);
+        consola.error(err);
       }
     },
   })
@@ -87,12 +100,21 @@ yargs(process.argv.slice(2))
     command: 'mdtable',
     builder: setOptions,
     handler: async (argv) => {
+      const option = { ...argv, html: argv.html ?? true };
+
+      if (option.verbose) {
+        consola.level = LogLevel.Verbose;
+      }
+
+      option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.start('starting a process') : '';
+
       try {
-        const option = { ...argv, html: argv.html ?? true };
         const conn = await connect(option);
         const table = await mdtable(conn, option, 1);
 
         await conn.close();
+
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('done\n') : '';
 
         if (argv.output !== undefined && argv.output !== null) {
           await write({
@@ -105,13 +127,14 @@ yargs(process.argv.slice(2))
           console.log(table);
         }
       } catch (catched) {
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('error\n') : '';
+
         const err =
           catched instanceof Error
             ? catched
             : new Error('unknown error raised from ER diagram creation');
 
-        console.log(chalk.redBright('error occured, '));
-        console.log(err.message);
+        consola.error(err);
       }
     },
   })
@@ -119,8 +142,15 @@ yargs(process.argv.slice(2))
     command: 'mdfull',
     builder: setOptions,
     handler: async (argv) => {
+      const option = { ...argv, html: argv.html ?? true };
+
+      if (option.verbose) {
+        consola.level = LogLevel.Verbose;
+      }
+
+      option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.start('starting a process') : '';
+
       try {
-        const option = { ...argv, html: argv.html ?? true };
         const conn = await connect(option);
         const diagram = await erdiagram(conn);
         const table = await mdtable(conn, option, 2);
@@ -135,6 +165,8 @@ yargs(process.argv.slice(2))
 
         await conn.close();
 
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('done\n') : '';
+
         if (argv.output !== undefined && argv.output !== null) {
           await write({
             database: argv.name,
@@ -146,14 +178,21 @@ yargs(process.argv.slice(2))
           console.log(full);
         }
       } catch (catched) {
+        option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('error\n') : '';
+
         const err =
           catched instanceof Error
             ? catched
             : new Error('unknown error raised from ER diagram creation');
 
-        console.log(chalk.redBright('error occured, '));
-        console.log(err.message);
+        consola.error(err);
       }
     },
+  })
+  .option('verbose', {
+    alias: 'v',
+    describe: 'will print more logging message',
+    type: 'boolean',
+    default: false,
   })
   .help().argv;

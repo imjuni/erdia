@@ -10,4 +10,7 @@ export interface IErdiaCliOptions {
 
   /** use html extension */
   html: boolean;
+
+  /** verbose log message */
+  verbose: boolean;
 }

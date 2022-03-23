@@ -20,7 +20,7 @@ const configWeightMap: Record<string, number> = {
 
 export default async function ormconfigFinder(
   options: TNullablePick<IErdiaCliOptions, 'ormconfigPath'>,
-): Promise<string> {
+): Promise<{ path: string; name: string }> {
   const cwd = process.cwd();
   const ormconfigPath = await getDirname(options.ormconfigPath ?? path.join(cwd));
 
@@ -51,5 +51,5 @@ export default async function ormconfigFinder(
     );
   const [ormconfigFile] = ormconfigFiles;
 
-  return path.resolve(path.join(ormconfigPath, ormconfigFile));
+  return { path: path.resolve(path.join(ormconfigPath, ormconfigFile)), name: configFilename };
 }

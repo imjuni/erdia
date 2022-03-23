@@ -1,5 +1,7 @@
 import getColumnType from '@common/getColumnType';
 import getEntityName from '@common/getEntityName';
+import chalk from 'chalk';
+import consola from 'consola';
 import { populate } from 'my-easy-fp';
 import os from 'os';
 import { EntityMetadata } from 'typeorm';
@@ -14,6 +16,8 @@ const createEntityDiagram = ({
   size?: number;
 }): string => {
   try {
+    consola.success('Generate diagram: ', chalk.greenBright(getEntityName(entity)));
+
     const hasMermaidBug = true;
     const columns = entity.columns;
 

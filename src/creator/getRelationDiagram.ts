@@ -1,9 +1,9 @@
-import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+import getEntityName from '@common/getEntityName';
 import getInverseEntityIsNullable from '@creator/getInverseEntityIsNullable';
 import getRelationConnectionSign from '@creator/getRelationConnectionSign';
 import getRelationPostfixDesc from '@creator/getRelationPostfixDesc';
-import getEntityName from '@common/getEntityName';
 import os from 'os';
+import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 const getRelationDiagram = (relationMeta: RelationMetadata): string => {
   const entityMeta = relationMeta.entityMetadata;

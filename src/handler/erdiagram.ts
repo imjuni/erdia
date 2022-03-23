@@ -1,16 +1,21 @@
+import getEntityName from '@common/getEntityName';
 import createEntityDiagram from '@creator/createEntityDiagram';
 import dedupeRelations from '@creator/dedupeRelations';
 import getRelationDiagram from '@creator/getRelationDiagram';
-import { Connection } from 'typeorm';
-import os from 'os';
 import eol from '@misc/eol';
-import getEntityName from '@common/getEntityName';
+import consola from 'consola';
+import os from 'os';
+import { Connection } from 'typeorm';
 
 async function erdiagram(conn: Connection) {
+  consola.start('generate erdiagram, ...\n');
+
   const entities = conn.entityMetadatas.sort((a, b) =>
     getEntityName(a).localeCompare(getEntityName(b)),
   );
   const entityDiagrams = entities.map((entity) => createEntityDiagram({ entity }));
+
+  consola.log('');
 
   const relations = entities
     .map((entity) => entity.relations)

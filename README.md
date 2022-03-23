@@ -11,16 +11,12 @@ npm install --save-dev erdia
 ```
 
 # Usage
-```
-# using npx
-npx erdia er -n [your database configuration name] -c [your ormconfig filename]
-npx erdia mdtable -n [your database configuration name] -c [your ormconfig filename]
-npx erdia mdfull -n [your database configuration name] -c [your ormconfig filename]
+Normaly you meet error "Cannot use import statement outside a module". Because TypeORM entity writen by Typescript, So Typescript syntax raise error by Node.js interpreter. So you have to execute using by "ts-node" also pass tsconfig-paths module(If you using module resolution)
 
-# or 
-erdia er -n [your database configuration name] -c [your ormconfig filename]
-erdia mdtable -n [your database configuration name] -c [your ormconfig filename]
-erdia mdfull -n [your database configuration name] -c [your ormconfig filename]
+```
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -n [your database configuration name]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -n [your database configuration name]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -n [your database configuration name]
 ```
 
 erdia need [ormconfig.json](https://typeorm.io/#/using-ormconfig) file. Because typeorm entity initialize after database connection. See [ormconfig.json](https://typeorm.io/#/using-ormconfig) section in [typeorm.io](https://typeorm.io/)
