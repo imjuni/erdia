@@ -1,6 +1,5 @@
 {
   "type": "better-sqlite3",
-  "name": "testdb",
   "database": "./sqlite3.db",
   "synchronize": true,
   "dropSchema": true,

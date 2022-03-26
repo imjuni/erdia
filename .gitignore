@@ -105,3 +105,5 @@ dist
 
 # Sqlite3 file
 sqlite3.db
+test.html
+test.md

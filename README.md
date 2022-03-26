@@ -17,43 +17,37 @@ Normaly you meet error "Cannot use import statement outside a module". Because T
 ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -n [your database configuration name]
 ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -n [your database configuration name]
 ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -n [your database configuration name]
+
+# recommend, create entity list table and er diagram html document
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -n [your database configuration name] -v -o entity.html
 ```
 
-erdia need [ormconfig.json](https://typeorm.io/#/using-ormconfig) file. Because typeorm entity initialize after database connection. See [ormconfig.json](https://typeorm.io/#/using-ormconfig) section in [typeorm.io](https://typeorm.io/)
+erdia need [ormconfig](https://typeorm.io/#/using-ormconfig) file. Because typeorm entity initialize after database connection. See [ormconfig](https://typeorm.io/#/using-ormconfig) section in [typeorm.io](https://typeorm.io/)
 
 # Option
+erdia have 6 command, er and mdtable, mdfull, htmler, htmltable, htmlfull. Every command basically print result but you pass output option, create file and not display console result. htmler, htmltable, htmlfull using by [bulma](https://bulma.io/) and [mermaid.js](https://mermaid-js.github.io) from cdnjs.
 
-## er
+## Markdown
+### er
 ER diagram creation command
-
-| Option | Alias | Required | Default | Description |
-| :- | :-: | :-: | :-: | :- |
-| ormconfigPath | c | N/A | N/A | ormconfig file path |
-| connection | n | required | N/A | database configuration name in ormconfig |
-| output | o | - | N/A | output filename, markdown format |
-
-## mdtable
+### mdtable
 Entity markdown table creation command
-
-| Option | Alias | Required | Default | Description |
-| :- | :-: | :-: | :-: | :- |
-| ormconfigPath | c | N/A | N/A | ormconfig file path |
-| connection | n | required | N/A | database configuration name in ormconfig |
-| output | o | - | N/A | output filename, markdown format |
-| html | h | - | true | html formatting in markdown. newline character replace to <br /> | 
-
-## mdfull
+### mdfull
 Entity markdown table with ER Diagram creation command
 
-| Option | Alias | Required | Default | Description |
-| :- | :-: | :-: | :-: | :- |
-| ormconfigPath | c | N/A | N/A | ormconfig file path |
-| connection | n | required | N/A | database configuration name in ormconfig |
-| output | o | - | N/A | output filename, markdown format |
-| html | h | - | true | html formatting in markdown. newline character replace to <br /> | 
+## Html
+### htmler
+ER diagram creation command
+### htmltable
+Entity html table creation command
+### htmlfull
+Entity html table with ER Diagram creation command
 
-# erdia with tsconfig-paths
-```
-npm install erdia --save-dev
-node -r ts-node/register -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -d [database configuration name] -o output.md
-```
+## Detail Option
+| Option | Alias | Command | Required | Default | Description |
+| :- | :-: | :-: | :-: | :-: | :- |
+| ormconfigPath | c | all | | N/A | ormconfig file path |
+| connection | n | all | | N/A | database configuration name in ormconfig |
+| output | o | all | | N/A | output filename, markdown format |
+| verbose | v | all | | N/A | log message display |
+| html | h | er, mdtable, mdfull | | true | html formatting in markdown. newline character replace to <br /> | 
