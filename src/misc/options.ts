@@ -1,9 +1,9 @@
 export interface IErdiaCliOptions {
-  /** configuration name */
-  name: string;
+  /** dataSource path */
+  dataSourcePath: string;
 
-  /** ormconfig file path */
-  ormconfigPath: string;
+  /** connection configuration file path (contain dataSourceOption in ts, js, import file) */
+  // connectionConfigPath: string;
 
   /** output filename */
   output?: string;

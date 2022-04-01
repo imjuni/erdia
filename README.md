@@ -3,6 +3,8 @@ ERdia is create ER Diagram using by TypeORM and mermiad.js
 
 [![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true) [![Github Star](https://img.shields.io/github/stars/imjuni/erdia.svg?style=popout)](https://github.com/imjuni/erdia) [![Github Issues](https://img.shields.io/github/issues-raw/imjuni/erdia.svg)](https://github.com/imjuni/erdia/issues) [![NPM version](https://img.shields.io/npm/v/erdia.svg)](https://www.npmjs.com/package/erdia) [![License](https://img.shields.io/npm/l/erdia.svg)](https://github.com/imjuni/erdia/blob/master/LICENSE)
 
+# Warning
+typeorm change interface 0.3.x. Erdia 0.5.0 support typeorm 0.2.x and Erdia 0.6.0 support typeorm 0.3.x. And Erdia 0.6.0 add required option `dataSourcePath`. See typeorm 0.3.x have [breaking change](https://github.com/typeorm/typeorm/blob/master/CHANGELOG.md#breaking-changes-1).
 
 # Install
 
@@ -46,8 +48,7 @@ Entity html table with ER Diagram creation command
 ## Detail Option
 | Option | Alias | Command | Required | Default | Description |
 | :- | :-: | :-: | :-: | :-: | :- |
-| ormconfigPath | c | all | | N/A | ormconfig file path |
-| connection | n | all | | N/A | database configuration name in ormconfig |
+| dataSourcePath | p | all | | N/A | dataSource file path. dataSource file dynamic import using import funciton |
 | output | o | all | | N/A | output filename, markdown format |
 | verbose | v | all | | N/A | log message display |
 | html | h | er, mdtable, mdfull | | true | html formatting in markdown. newline character replace to <br /> | 

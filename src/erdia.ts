@@ -1,22 +1,23 @@
+import getDatabaseName from '@common/getDatabaseName';
 import erdiagram from '@handler/erdiagram';
 import htmlErdiagram from '@handler/htmlErdiagram';
 import htmlTable from '@handler/htmlTable';
 import mdtable from '@handler/mdtable';
 import getContent from '@handler/write';
-import connect from '@misc/connect';
+import getConnectedDataSource from '@misc/getConnectedDataSource';
 import { IErdiaCliOptions } from '@misc/options';
 import { CliUx } from '@oclif/core';
 import consola, { LogLevel } from 'consola';
 import * as TTE from 'fp-ts/TaskEither';
 import fs from 'fs';
 import { isNotEmpty, TNullablePick, TResolvePromise } from 'my-easy-fp';
+import prettier from 'prettier';
 import sourceMapSupport from 'source-map-support';
 import yargs, { ArgumentsCamelCase } from 'yargs';
-import prettier from 'prettier';
 
 sourceMapSupport.install();
 
-export type TErdiaCliOptions = TNullablePick<IErdiaCliOptions, 'html' | 'name'>;
+export type TErdiaCliOptions = TNullablePick<IErdiaCliOptions, 'html'>;
 export type TCommand = 'mdtable' | 'er' | 'mdfull' | 'htmler' | 'htmltable' | 'htmlfull';
 
 // only use builder function
@@ -32,28 +33,24 @@ function setOptions(args: ReturnType<typeof yargs>) {
       describe: 'output file name',
       type: 'string',
     })
-    .option('ormconfigPath', {
+    .option('dataSourcePath', {
       alias: 'p',
-      describe: 'ormconfig file path',
+      describe: 'dataSource file path',
       type: 'string',
+      demandOption: true,
     })
     .option('html', {
       alias: 'h',
       describe: 'use html format. For example, newline character replace <br />',
       type: 'boolean',
       default: true,
-    })
-    .option('name', {
-      alias: 'n',
-      describe: 'configuration name, see https://typeorm.io/#/using-ormconfig',
-      type: 'string',
     });
 
   return casting(args);
 }
 
 type TGeneratorParameters = {
-  conn: TResolvePromise<ReturnType<typeof connect>>;
+  conn: TResolvePromise<ReturnType<typeof getConnectedDataSource>>;
   command: TCommand;
 };
 
@@ -68,21 +65,26 @@ export const handler = ({
 }) =>
   TTE.tryCatch(
     async (): Promise<boolean> => {
-      const option: IErdiaCliOptions = { ...argv, html: argv.html ?? true, name: 'default' };
+      const option: IErdiaCliOptions = { ...argv, html: argv.html ?? true };
 
       option.verbose ? (consola.level = LogLevel.Verbose) : undefined;
       option.verbose || isNotEmpty(argv.output)
         ? CliUx.ux.action.start('starting a process')
         : undefined;
 
-      const conn = await connect(option);
-      const { diagram, table } = await generator({ conn, command });
+      const dataSource = await getConnectedDataSource(option);
+      const { diagram, table } = await generator({ conn: dataSource, command });
 
-      await conn.close();
+      await dataSource.destroy();
 
       option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('done\n') : undefined;
 
-      const content = getContent({ database: option.name, type: command, diagram, table });
+      const content = getContent({
+        database: getDatabaseName(dataSource),
+        type: command,
+        diagram,
+        table,
+      });
       const prettierConfig = await prettier.resolveConfig('.');
 
       const formattedContent = prettier.format(content, {
@@ -101,7 +103,10 @@ export const handler = ({
 
       return false;
     },
-    (catched) => (catched instanceof Error ? catched : new Error('unknown error raised')),
+    (catched) => {
+      const err = catched instanceof Error ? catched : new Error('unknown error raised');
+      consola.error(err);
+    },
   );
 
 // eslint-disable-next-line
@@ -144,7 +149,7 @@ yargs(process.argv.slice(2))
         command: 'mdtable',
         generator: async (args: TGeneratorParameters) => ({
           diagram: '',
-          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true, name: 'default' }),
+          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true }),
         }),
       })();
     },
@@ -172,7 +177,7 @@ yargs(process.argv.slice(2))
         command: 'mdfull',
         generator: async (args: TGeneratorParameters) => ({
           diagram: await erdiagram(args.conn),
-          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true, name: 'default' }, 3),
+          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true }, 3),
         }),
       })();
     },
