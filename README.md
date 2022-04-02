@@ -16,15 +16,15 @@ npm install --save-dev erdia
 Normaly you meet error "Cannot use import statement outside a module". Because TypeORM entity writen by Typescript, So Typescript syntax raise error by Node.js interpreter. So you have to execute using by "ts-node" also pass tsconfig-paths module(If you using module resolution)
 
 ```
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -n [your database configuration name]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -n [your database configuration name]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -n [your database configuration name]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -p [your dataSource path]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -p [your dataSource path]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -p [your dataSource path]
 
 # recommend, create entity list table and er diagram html document
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -n [your database configuration name] -v -o entity.html
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -p [your dataSource path] -v -o entity.html
 ```
 
-erdia need [ormconfig](https://typeorm.io/#/using-ormconfig) file. Because typeorm entity initialize after database connection. See [ormconfig](https://typeorm.io/#/using-ormconfig) section in [typeorm.io](https://typeorm.io/)
+erdia need dataSource file. Because typeorm entity initialize after dataSource initialize. See [dataSource](https://typeorm.io/data-source) section in [typeorm.io](https://typeorm.io/)
 
 # Option
 erdia have 6 command, er and mdtable, mdfull, htmler, htmltable, htmlfull. Every command basically print result but you pass output option, create file and not display console result. htmler, htmltable, htmlfull using by [bulma](https://bulma.io/) and [mermaid.js](https://mermaid-js.github.io) from cdnjs.

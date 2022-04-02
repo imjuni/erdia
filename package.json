@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "create mermaid.js er diagram using typeorm",
   "main": "dist/erdia.js",
   "types": "dist/erdia.d.ts",
