@@ -34,7 +34,7 @@ function setOptions(args: ReturnType<typeof yargs>) {
       type: 'string',
     })
     .option('dataSourcePath', {
-      alias: 'p',
+      alias: 'd',
       describe: 'dataSource file path',
       type: 'string',
       demandOption: true,
@@ -67,17 +67,22 @@ export const handler = ({
     async (): Promise<boolean> => {
       const option: IErdiaCliOptions = { ...argv, html: argv.html ?? true };
 
-      option.verbose ? (consola.level = LogLevel.Verbose) : undefined;
-      option.verbose || isNotEmpty(argv.output)
-        ? CliUx.ux.action.start('starting a process')
-        : undefined;
+      if (option.verbose) {
+        consola.level = LogLevel.Verbose;
+      }
+
+      if (option.verbose || isNotEmpty(argv.output)) {
+        CliUx.ux.action.start('starting a process');
+      }
 
       const dataSource = await getConnectedDataSource(option);
       const { diagram, table } = await generator({ conn: dataSource, command });
 
       await dataSource.destroy();
 
-      option.verbose || isNotEmpty(argv.output) ? CliUx.ux.action.stop('done\n') : undefined;
+      if (option.verbose || isNotEmpty(argv.output)) {
+        CliUx.ux.action.stop('done\n');
+      }
 
       const content = getContent({
         database: getDatabaseName(dataSource),
@@ -89,10 +94,7 @@ export const handler = ({
 
       const formattedContent = prettier.format(content, {
         ...(prettierConfig ?? {}),
-        parser:
-          command === 'htmler' || command === 'htmlfull' || command === 'htmltable'
-            ? 'html'
-            : 'markdown',
+        parser: command === 'htmler' || command === 'htmlfull' || command === 'htmltable' ? 'html' : 'markdown',
       });
 
       if (argv.output !== undefined && argv.output !== null) {

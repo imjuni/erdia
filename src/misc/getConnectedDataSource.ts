@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import consola from 'consola';
 import fastSafeStringify from 'fast-safe-stringify';
 import { isEmpty, isFalse } from 'my-easy-fp';
-import dataSourceFinder from './configFinder';
+import dataSourceFinder from './dataSourceFinder';
 import { IErdiaCliOptions } from './options';
 
 const getConnectedDataSource = async (options: IErdiaCliOptions) => {
