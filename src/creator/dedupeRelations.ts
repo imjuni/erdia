@@ -5,12 +5,10 @@ const dedupeRelations = (relations: RelationMetadata[]) => {
     const inverseEntityMeta = relation.inverseEntityMetadata;
     const entityMeta = relation.entityMetadata;
 
-    const key = [inverseEntityMeta.name, entityMeta.name]
-      .sort((left, right) => left.localeCompare(right))
-      .join(':');
+    const key = [inverseEntityMeta.name, entityMeta.name].sort((left, right) => left.localeCompare(right)).join(':');
 
     if (table[key] === undefined || table[key] === null) {
-      table[key] = relation;
+      return { ...table, [key]: relation };
     }
 
     return table;

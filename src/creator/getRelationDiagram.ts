@@ -27,9 +27,7 @@ const getRelationDiagram = (relationMeta: RelationMetadata): string => {
     const manyToManyRelationConnectionSign = getRelationConnectionSign('one-to-many', false, false);
 
     return [
-      `${getEntityName(
-        entityMeta,
-      )} ${manyToManyRelationConnectionSign} ${manyToManyTable} : ${'" "'}`,
+      `${getEntityName(entityMeta)} ${manyToManyRelationConnectionSign} ${manyToManyTable} : ${'" "'}`,
       `${getEntityName(
         relationMeta.inverseEntityMetadata,
       )} ${manyToManyRelationConnectionSign} ${manyToManyTable} : ${'" "'}`,

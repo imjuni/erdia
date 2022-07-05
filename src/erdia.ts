@@ -33,6 +33,11 @@ function setOptions(args: ReturnType<typeof yargs>) {
       describe: 'output file name',
       type: 'string',
     })
+    .option('verbose', {
+      alias: 'v',
+      describe: 'verbose message',
+      type: 'boolean',
+    })
     .option('dataSourcePath', {
       alias: 'd',
       describe: 'dataSource file path',

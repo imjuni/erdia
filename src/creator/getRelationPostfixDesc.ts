@@ -10,6 +10,8 @@ const getRelationPostfixDesc = (relationMeta: RelationMetadata) => {
       return '" "';
     case 'one-to-one':
       return '" "';
+    default:
+      return '" "';
   }
 };
 

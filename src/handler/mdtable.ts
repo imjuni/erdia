@@ -4,23 +4,19 @@ import eol from '@misc/eol';
 import escape, { reaplceNewline } from '@misc/escape';
 import { IErdiaCliOptions } from '@misc/options';
 import { populate } from 'my-easy-fp';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
-async function mdtable(conn: Connection, option: IErdiaCliOptions, heading?: number) {
+async function mdtable(dataSource: DataSource, option: IErdiaCliOptions, heading?: number) {
   const headingChar = populate(heading ?? 2)
     .map(() => '#')
     .join('');
-  const entities = conn.entityMetadatas.sort((a, b) =>
-    getEntityName(a).localeCompare(getEntityName(b)),
-  );
+  const entities = dataSource.entityMetadatas.sort((a, b) => getEntityName(a).localeCompare(getEntityName(b)));
 
   const entityTable = entities.map((entity) => {
-    const columns = entity.columns;
+    const { columns } = entity;
 
     const columnMarkdowns = columns.map((column) => {
-      return `| ${column.propertyName} | ${column.databaseName} | ${getColumnTypeWithLength(
-        column,
-      )} | ${escape(
+      return `| ${column.propertyName} | ${column.databaseName} | ${getColumnTypeWithLength(column)} | ${escape(
         reaplceNewline(column.comment ?? 'N/A', option.html ? '<br />' : '. '),
         '. ',
       )} |`;
