@@ -15,13 +15,24 @@ npm install --save-dev erdia
 # Usage
 Normaly you meet error "Cannot use import statement outside a module". Because TypeORM entity writen by Typescript, So Typescript syntax raise error by Node.js interpreter. So you have to execute using by "ts-node" also pass tsconfig-paths module(If you using module resolution)
 
+## JavaScript with Module Resolution
 ```
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -p [your dataSource path]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -p [your dataSource path]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -p [your dataSource path]
+erdia er -d [your dataSource path]
+erdia mdtable -d [your dataSource path]
+erdia mdfull -d [your dataSource path]
 
 # recommend, create entity list table and er diagram html document
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -p [your dataSource path] -v -o entity.html
+erdia htmlfull -d [your dataSource path] -v -o entity.html
+```
+
+## TypeScript with Module Resolution
+```
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -d [your dataSource path]
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -d [your dataSource path]
+
+# recommend, create entity list table and er diagram html document
+ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -d [your dataSource path] -v -o entity.html
 ```
 
 erdia need dataSource file. Because typeorm entity initialize after dataSource initialize. See [dataSource](https://typeorm.io/data-source) section in [typeorm.io](https://typeorm.io/)
@@ -29,26 +40,20 @@ erdia need dataSource file. Because typeorm entity initialize after dataSource i
 # Option
 erdia have 6 command, er and mdtable, mdfull, htmler, htmltable, htmlfull. Every command basically print result but you pass output option, create file and not display console result. htmler, htmltable, htmlfull using by [bulma](https://bulma.io/) and [mermaid.js](https://mermaid-js.github.io) from cdnjs.
 
-## Markdown
-### er
-ER diagram creation command
-### mdtable
-Entity markdown table creation command
-### mdfull
-Entity markdown table with ER Diagram creation command
+## Command
+| command | document type | desc. |
+| :- | :-: | :- | 
+| er | markdown | ER diagram creation command |
+| mdtable | markdown | Entity markdown table creation command |
+| mdfull | markdown | Entity markdown table with ER Diagram creation command
+| htmler | html | ER diagram creation command
+| htmltable | html | Entity html table creation command
+| htmlfull | html | Entity html table with ER Diagram creation command
 
-## Html
-### htmler
-ER diagram creation command
-### htmltable
-Entity html table creation command
-### htmlfull
-Entity html table with ER Diagram creation command
-
-## Detail Option
+## Option
 | Option | Alias | Command | Required | Default | Description |
 | :- | :-: | :-: | :-: | :-: | :- |
-| dataSourcePath | p | all | | N/A | dataSource file path. dataSource file dynamic import using import funciton |
+| dataSourcePath | d | all | | N/A | dataSource file path. dataSource file dynamic import using import funciton |
 | output | o | all | | N/A | output filename, markdown format |
 | verbose | v | all | | N/A | log message display |
 | html | h | er, mdtable, mdfull | | true | html formatting in markdown. newline character replace to <br /> | 
