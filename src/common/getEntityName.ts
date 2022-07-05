@@ -9,7 +9,7 @@ import { EntityMetadata } from 'typeorm';
  * @returns entity name in CF-ER Diagram
  */
 const getEntityName = (entityMeta: EntityMetadata) => {
-  const tableName = entityMeta.tableName;
+  const { tableName } = entityMeta;
 
   if (tableName === undefined || tableName === null) {
     return entityMeta.name;

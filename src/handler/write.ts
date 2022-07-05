@@ -35,9 +35,7 @@ export default function getContent({
       return template
         .replace(
           '$[##html-gernerated-table-replace-tag##]',
-          `<section class="section">${eol()}<h1 class="title is-2">${database}</h1>${eol(
-            2,
-          )}${table}${eol()}</section>`,
+          `<section class="section">${eol()}<h1 class="title is-2">${database}</h1>${eol(2)}${table}${eol()}</section>`,
         )
         .replace('$[##html-gernerated-marmaid-replace-tag##]', '');
     case 'htmlfull':

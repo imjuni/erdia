@@ -5,14 +5,12 @@ import getRelationDiagram from '@creator/getRelationDiagram';
 import eol from '@misc/eol';
 import consola from 'consola';
 import os from 'os';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
-async function erdiagram(conn: Connection) {
+async function erdiagram(dataSource: DataSource) {
   consola.start('generate erdiagram, ...\n');
 
-  const entities = conn.entityMetadatas.sort((a, b) =>
-    getEntityName(a).localeCompare(getEntityName(b)),
-  );
+  const entities = dataSource.entityMetadatas.sort((a, b) => getEntityName(a).localeCompare(getEntityName(b)));
   const entityDiagrams = entities.map((entity) => createEntityDiagram({ entity }));
 
   consola.log('');
@@ -21,12 +19,12 @@ async function erdiagram(conn: Connection) {
     .map((entity) => entity.relations)
     .flatMap((entity) => entity)
     .sort((a, b) => getEntityName(a.entityMetadata).localeCompare(getEntityName(b.entityMetadata)));
+
   const deduped = dedupeRelations(relations);
+
   const relationDiagrams = deduped.map((relation) => getRelationDiagram(relation));
 
-  return `erDiagram${eol(2)}${entityDiagrams.join(os.EOL)}${eol(2)}${relationDiagrams.join(
-    os.EOL,
-  )}`;
+  return `erDiagram${eol(2)}${entityDiagrams.join(os.EOL)}${eol(2)}${relationDiagrams.join(os.EOL)}`;
 }
 
 export default erdiagram;

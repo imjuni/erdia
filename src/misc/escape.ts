@@ -8,9 +8,5 @@ export default function escape(content: string, replace?: string): string {
 export function reaplceNewline(content: string, replace?: string): string {
   const newline = replace ?? '<br />';
 
-  return content
-    .replace(/\r\n/g, newline)
-    .replace(/\n\r/g, newline)
-    .replace(/\r/g, newline)
-    .replace(/\n/g, newline);
+  return content.replace(/\r\n/g, newline).replace(/\n\r/g, newline).replace(/\r/g, newline).replace(/\n/g, newline);
 }

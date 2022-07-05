@@ -1,13 +1,13 @@
 {
   "name": "erdia",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "create mermaid.js er diagram using typeorm",
   "main": "dist/erdia.js",
   "types": "dist/erdia.d.ts",
   "scripts": {
     "typeorm": "typeorm-ts-node-commonjs",
     "script": "ts-node -r tsconfig-paths/register ",
-    "dev": "ts-node -r tsconfig-paths/register src/erdia.ts",
+    "dev": "ts-node src/erdia.ts",
     "dev:build": "ts-node -r tsconfig-paths/register dist/erdia.js",
     "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk src/erdia.ts",
     "prebuild": "npm run clean",

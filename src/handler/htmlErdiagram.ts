@@ -5,14 +5,12 @@ import getRelationDiagram from '@creator/getRelationDiagram';
 import eol from '@misc/eol';
 import consola from 'consola';
 import os from 'os';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
-async function htmlErdiagram(conn: Connection) {
+async function htmlErdiagram(dataSource: DataSource) {
   consola.start('generate erdiagram, ...\n');
 
-  const entities = conn.entityMetadatas.sort((a, b) =>
-    getEntityName(a).localeCompare(getEntityName(b)),
-  );
+  const entities = dataSource.entityMetadatas.sort((a, b) => getEntityName(a).localeCompare(getEntityName(b)));
   const entityDiagrams = entities.map((entity) => createEntityDiagram({ entity }));
 
   consola.log('');
@@ -35,6 +33,8 @@ ${relationDiagrams.join(os.EOL)}
 </pre>`,
     `<form style="margin-top: 20px;">
   <textarea class="textarea" rows="7">
+erDiagram
+
 ${entityDiagrams.join(os.EOL)}
 
 ${relationDiagrams.join(os.EOL)}
