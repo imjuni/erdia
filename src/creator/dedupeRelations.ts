@@ -1,20 +1,15 @@
-import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+import logger from '@tool/logger';
+import IRelationData from '@typeorm/interface/IRelationData';
 
-const dedupeRelations = (relations: RelationMetadata[]) => {
-  const dedupeTable = relations.reduce<Record<string, RelationMetadata>>((table, relation) => {
-    const inverseEntityMeta = relation.inverseEntityMetadata;
-    const entityMeta = relation.entityMetadata;
+const log = logger();
 
-    const key = [inverseEntityMeta.name, entityMeta.name].sort((left, right) => left.localeCompare(right)).join(':');
+export default function dedupeRelationDatas(relations: IRelationData[]) {
+  const relationRecord = relations.reduce<Record<string, IRelationData>>((record, relation) => {
+    log.debug(`Relation: ${relation.relationHash} > ${relation.entityName}-${relation.inverseEntityName}`);
 
-    if (table[key] === undefined || table[key] === null) {
-      return { ...table, [key]: relation };
-    }
-
-    return table;
+    return { ...record, [relation.relationHash]: relation };
   }, {});
 
-  return Object.values(dedupeTable);
-};
-
-export default dedupeRelations;
+  const dedupedRelations = Object.values(relationRecord);
+  return dedupedRelations;
+}

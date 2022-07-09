@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     es6: true,
     node: true,
   },
@@ -10,7 +9,7 @@ module.exports = {
     'airbnb-typescript/base',
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['__test__/*', '__tests__/*'],
+  ignorePatterns: ['__test__/*', '__tests__/*', 'dist', 'entities'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.eslint.json',

@@ -33,7 +33,7 @@ export class License extends BaseEntity implements ILicense {
   @Column()
   expire: Date;
 
-  @ManyToOne('User', 'id', { createForeignKeyConstraints: false })
+  @ManyToOne('User', 'id', { createForeignKeyConstraints: false, nullable: false })
   @JoinColumn()
   user: IUser;
 
