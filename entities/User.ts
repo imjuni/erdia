@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import factory from './factory';
 import type { ILicense } from './License';
 import type { IPhoto } from './Photo';
@@ -23,7 +15,7 @@ export class User extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', comment: 'user firstname' })
   firstName: string;
 
   @Column({ type: 'varchar', length: 64 })

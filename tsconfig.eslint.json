@@ -1,16 +1,21 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "resolveJsonModule": true,
+  },
   "include": [
     "**/*.ts",
     ".eslintrc.js",
     "**/__test__",
-    "**/__tests__"
+    "**/__tests__",
+    ".config/webpac.config.dev.js",
+    ".config/webpac.config.prod.js",
+    "jest.config.js",
+    ".config/jest.setup.js"
   ],
   "exclude": [
-    "node_modules",
-    "server/**",    
-    "dist/**",
-    "webpack.config.dev.ts",
-    "webpack.config.prod.ts"
+    "node_modules",  
+    "dist/**"
   ]
 }
