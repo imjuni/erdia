@@ -1,212 +1,142 @@
-import getDatabaseName from '@common/getDatabaseName';
-import erdiagram from '@handler/erdiagram';
-import htmlErdiagram from '@handler/htmlErdiagram';
-import htmlTable from '@handler/htmlTable';
-import mdtable from '@handler/mdtable';
-import getContent from '@handler/write';
-import getConnectedDataSource from '@misc/getConnectedDataSource';
-import { IErdiaCliOptions } from '@misc/options';
-import { CliUx } from '@oclif/core';
-import consola, { LogLevel } from 'consola';
-import * as TTE from 'fp-ts/TaskEither';
-import fs from 'fs';
-import { isNotEmpty, TNullablePick, TResolvePromise } from 'my-easy-fp';
-import prettier from 'prettier';
-import sourceMapSupport from 'source-map-support';
-import yargs, { ArgumentsCamelCase } from 'yargs';
+import onHandleInitErdia from '@cli/initErdia';
+import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
+import IErdiaHtmlOption from '@config/interface/IErdiaHtmlOption';
+import IErdiaImageOption from '@config/interface/IErdiaImageOption';
+import IErdiaMarkdownOption from '@config/interface/IErdiaMarkdownOption';
+import IErdiaPDFOption from '@config/interface/IErdiaPDFOption';
+import applyPrettier from '@creator/applyPretter';
+import getERdiagram from '@creator/getERdiagram';
+import getHtmlTable from '@creator/getHtmlTable';
+import getMarkdownTable from '@creator/getMarkdownTable';
+import writeToHtml from '@creator/writeToHtml';
+import writeToImage from '@creator/writeToImage';
+import writeToMarkdown from '@creator/writeToMarkdown';
+import writeToPdf from '@creator/writeToPdf';
+import htmlMermaidTemplate from '@template/htmlMermaidTemplate';
+import htmlTemplate from '@template/htmlTemplate';
+import markdownTemplate from '@template/markdownTemplate';
+import logger from '@tool/logger';
+import getDataSource from '@typeorm/getDataSource';
+import chalk from 'chalk';
+import del from 'del';
+import fastSafeStringify from 'fast-safe-stringify';
+import { isFalse } from 'my-easy-fp';
+import { exists } from 'my-node-fp';
 
-sourceMapSupport.install();
+const log = logger();
 
-export type TErdiaCliOptions = TNullablePick<IErdiaCliOptions, 'html'>;
-export type TCommand = 'mdtable' | 'er' | 'mdfull' | 'htmler' | 'htmltable' | 'htmlfull';
+export async function createHtmlDoc(option: IErdiaHtmlOption) {
+  const dataSource = await getDataSource(option);
+  await dataSource.initialize();
 
-// only use builder function
-const casting = <T>(args: T): any => args;
+  if (isFalse(dataSource.isInitialized)) {
+    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+  }
 
-consola.level = LogLevel.Error;
+  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-function setOptions(args: ReturnType<typeof yargs>) {
-  // option
-  args
-    .option('output', {
-      alias: 'o',
-      describe: 'output file name',
-      type: 'string',
-    })
-    .option('verbose', {
-      alias: 'v',
-      describe: 'verbose message',
-      type: 'boolean',
-    })
-    .option('dataSourcePath', {
-      alias: 'd',
-      describe: 'dataSource file path',
-      type: 'string',
-      demandOption: true,
-    })
-    .option('html', {
-      alias: 'h',
-      describe: 'use html format. For example, newline character replace <br />',
-      type: 'boolean',
-      default: true,
-    });
+  const { components } = option;
+  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
+  const table = components.includes('table') ? getHtmlTable(dataSource, option) : '';
 
-  return casting(args);
+  log.verbose(`target component: ${components.join(', ')}`);
+
+  const { output } = option;
+  if (output !== undefined && output !== null && output.length > 0) {
+    await writeToHtml({ ...option, output }, diagram, table);
+  } else {
+    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)));
+    console.log(document);
+  }
 }
 
-type TGeneratorParameters = {
-  conn: TResolvePromise<ReturnType<typeof getConnectedDataSource>>;
-  command: TCommand;
-};
+export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
+  const dataSource = await getDataSource(option);
+  await dataSource.initialize();
 
-export const handler = ({
-  argv,
-  command,
-  generator,
-}: {
-  argv: ArgumentsCamelCase<TErdiaCliOptions>;
-  command: TCommand;
-  generator: (args: TGeneratorParameters) => Promise<{ diagram: string; table: string }>;
-}) =>
-  TTE.tryCatch(
-    async (): Promise<boolean> => {
-      const option: IErdiaCliOptions = { ...argv, html: argv.html ?? true };
+  if (isFalse(dataSource.isInitialized)) {
+    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+  }
 
-      if (option.verbose) {
-        consola.level = LogLevel.Verbose;
-      }
+  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-      if (option.verbose || isNotEmpty(argv.output)) {
-        CliUx.ux.action.start('starting a process');
-      }
+  const { components } = option;
+  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
+  const table = components.includes('table') ? getMarkdownTable(dataSource, option) : '';
 
-      const dataSource = await getConnectedDataSource(option);
-      const { diagram, table } = await generator({ conn: dataSource, command });
+  log.verbose(`target component: ${components.join(', ')}`);
 
-      await dataSource.destroy();
+  const { output } = option;
+  if (output !== undefined && output !== null && output.length > 0) {
+    await writeToMarkdown({ ...option, output }, diagram, table);
+  } else {
+    const document = await applyPrettier(markdownTemplate(table, true, diagram));
+    console.log(document);
+  }
+}
 
-      if (option.verbose || isNotEmpty(argv.output)) {
-        CliUx.ux.action.stop('done\n');
-      }
+export async function createPdfDoc(option: IErdiaPDFOption) {
+  const dataSource = await getDataSource(option);
+  await dataSource.initialize();
 
-      const content = getContent({
-        database: getDatabaseName(dataSource),
-        type: command,
-        diagram,
-        table,
-      });
-      const prettierConfig = await prettier.resolveConfig('.');
+  if (isFalse(dataSource.isInitialized)) {
+    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+  }
 
-      const formattedContent = prettier.format(content, {
-        ...(prettierConfig ?? {}),
-        parser: command === 'htmler' || command === 'htmlfull' || command === 'htmltable' ? 'html' : 'markdown',
-      });
+  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-      if (argv.output !== undefined && argv.output !== null) {
-        await fs.promises.writeFile(argv.output, formattedContent);
-      } else {
-        console.log(content);
-      }
+  const { components } = option;
+  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
+  const table = components.includes('table') ? getHtmlTable(dataSource, option) : '';
 
-      return false;
-    },
-    (catched) => {
-      const err = catched instanceof Error ? catched : new Error('unknown error raised');
-      consola.error(err);
-    },
-  );
+  log.verbose(`target component: ${components.join(', ')}`);
 
-// eslint-disable-next-line
-yargs(process.argv.slice(2))
-  .command<TErdiaCliOptions>({
-    command: '$0',
-    aliases: 'er',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'er',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: await erdiagram(args.conn),
-          table: '',
-        }),
-      })();
-    },
-  })
-  .command<TErdiaCliOptions>({
-    command: 'htmler',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'htmler',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: await htmlErdiagram(args.conn),
-          table: '',
-        }),
-      })();
-    },
-  })
-  .command<TErdiaCliOptions>({
-    command: 'mdtable',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'mdtable',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: '',
-          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true }),
-        }),
-      })();
-    },
-  })
-  .command<TErdiaCliOptions>({
-    command: 'htmltable',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'mdtable',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: '',
-          table: await htmlTable(args.conn),
-        }),
-      })();
-    },
-  })
-  .command<TErdiaCliOptions>({
-    command: 'mdfull',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'mdfull',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: await erdiagram(args.conn),
-          table: await mdtable(args.conn, { ...argv, html: argv.html ?? true }, 3),
-        }),
-      })();
-    },
-  })
-  .command<TErdiaCliOptions>({
-    command: 'htmlfull',
-    builder: setOptions,
-    handler: async (argv) => {
-      await handler({
-        argv,
-        command: 'htmlfull',
-        generator: async (args: TGeneratorParameters) => ({
-          diagram: await htmlErdiagram(args.conn),
-          table: await htmlTable(args.conn, 3),
-        }),
-      })();
-    },
-  })
-  .option('verbose', {
-    alias: 'v',
-    describe: 'will print more logging message',
-    type: 'boolean',
-    default: false,
-  })
-  .help().argv;
+  const { output } = option;
+  if (output !== undefined && output !== null && output.length > 0) {
+    await writeToPdf({ ...option, output }, diagram, table);
+  } else {
+    log.error('pdf command must set output');
+  }
+}
+
+export async function createImageDoc(option: IErdiaImageOption) {
+  const dataSource = await getDataSource(option);
+  await dataSource.initialize();
+
+  if (isFalse(dataSource.isInitialized)) {
+    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+  }
+
+  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+
+  const diagram = getERdiagram(dataSource, option);
+
+  const { output } = option;
+  if (output !== undefined && output !== null && output.length > 0) {
+    await writeToImage({ ...option, output }, diagram);
+  } else {
+    log.error(`pdf command must set output`);
+  }
+}
+
+export async function cleanDoc(option: IErdiaCommonOption) {
+  const files = [
+    'erdiagram.md',
+    'table.md',
+    'erdiagram.html',
+    'table.html',
+    'erdiagram.pdf',
+    'table.pdf',
+    'erdiagram.svg',
+    'erdiagram.png',
+  ].concat(option.output ?? []);
+
+  const existFiles = await Promise.all(files.map(async (filename) => ({ filename, exists: await exists(filename) })));
+  const existFilenames = existFiles.filter((existFile) => existFile.exists).map((existFile) => existFile.filename);
+
+  log.info(`clean: ${existFilenames.join(', ')}`);
+
+  await del(existFilenames);
+}
+
+export const initErdia = onHandleInitErdia;

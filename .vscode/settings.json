@@ -18,10 +18,13 @@
   },
   "git.ignoreLimitWarning": true,
   "search.exclude": {
-      "**/node_modules": true,
-      "**/bower_components": true,
-      "document": true,
-      "dist": true
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "document": true,
+    "dist": true
+  },
+  "files.associations": {
+    ".erdiarc": "jsonc"
   },
   "editor.formatOnSave": true,
   "files.eol": "\n",
