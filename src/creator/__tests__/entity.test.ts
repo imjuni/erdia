@@ -9,7 +9,7 @@ import { DataSource } from 'typeorm';
 
 const log = logger();
 
-const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
+const share: { dataSource: DataSource; expect: boolean } = { expect: true } as any;
 
 beforeAll(async () => {
   log.level = 'trace';
@@ -29,7 +29,7 @@ test('partial.column.entity.test', async () => {
   const diagramEntityData = getEntityDiagramData(entityData, testenv.htmlOption);
 
   if (share.expect) {
-    fs.writeFileSync('__expect.json', fastSafeStringify(diagramEntityData, undefined, 2));
+    fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(diagramEntityData, undefined, 2));
   }
 
   const expectation = await import(path.join(__dirname, 'expects', expectFileName));
@@ -54,7 +54,7 @@ test('full.column.entity.test', async () => {
   log.debug(expectFileName);
 
   if (share.expect) {
-    fs.writeFileSync('__expect.json', fastSafeStringify(diagramEntityData, undefined, 2));
+    fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(diagramEntityData, undefined, 2));
   }
 
   const expectation = await import(path.join(__dirname, 'expects', expectFileName));

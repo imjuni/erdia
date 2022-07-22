@@ -85,17 +85,39 @@ export default function getJoinColumn(
   relationMetadata: RelationMetadata,
 ): Pick<IRelationData, 'joinColumnName' | 'joinPropertyName' | 'inverseJoinColumnOne' | 'inverseJoinColumnNullable'> {
   if (relationMetadata.relationType === 'one-to-one') {
-    const [joinColumn] = relationMetadata.joinColumns;
+    const joinColumn = relationMetadata.joinColumns.at(0);
 
-    if (isEmpty(joinColumn)) {
+    if (isNotEmpty(joinColumn)) {
+      return {
+        inverseJoinColumnOne: true,
+        inverseJoinColumnNullable: joinColumn.isNullable,
+        joinPropertyName: joinColumn.propertyName,
+        joinColumnName: joinColumn.databaseName,
+      };
+    }
+
+    const entityName = getSelectedEntityName(relationMetadata.entityMetadata);
+    const inverseRelationMetadata = relationMetadata.inverseEntityMetadata.oneToOneRelations.find(
+      (oneToOneRelation) => {
+        return getSelectedEntityName(oneToOneRelation.inverseEntityMetadata) === entityName;
+      },
+    );
+
+    if (isEmpty(inverseRelationMetadata)) {
+      throw new Error(`Invalid joinColumn detected: ${relationMetadata.propertyName}`);
+    }
+
+    const inverseJoinColumn = inverseRelationMetadata.joinColumns.at(0);
+
+    if (isEmpty(inverseJoinColumn)) {
       throw new Error(`Invalid joinColumn detected: ${relationMetadata.propertyName}`);
     }
 
     return {
       inverseJoinColumnOne: true,
-      inverseJoinColumnNullable: joinColumn.isNullable,
-      joinPropertyName: joinColumn.propertyName,
-      joinColumnName: joinColumn.databaseName,
+      inverseJoinColumnNullable: inverseRelationMetadata.isNullable,
+      joinPropertyName: inverseJoinColumn.propertyName,
+      joinColumnName: inverseJoinColumn.databaseName,
     };
   }
 

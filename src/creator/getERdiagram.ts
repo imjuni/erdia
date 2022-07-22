@@ -43,7 +43,10 @@ export default function getERdiagram(
       .filter((relationData): relationData is IPass<IRelationData[]> => isPass(relationData))
       .map((relationData) => relationData.pass)
       .flat(),
-  );
+  ).sort((l, r) => {
+    const compared = l.relationHash.localeCompare(r.relationHash);
+    return compared !== 0 ? compared : l.entityName.localeCompare(r.entityName);
+  });
 
   const entityDiagrams = entityDatas.map((entityData) => getEntityDiagramData(entityData, option));
   const relationDiagrams = dedupedRelationDatas.map((relationData) => getRelationDiagramData(relationData));
