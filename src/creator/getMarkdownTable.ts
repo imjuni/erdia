@@ -71,7 +71,7 @@ export default function getMarkdownTable(dataSource: DataSource, option: IErdiaM
       return `| ${row.join(' | ')} |`;
     });
 
-    return [`# ${getEntityNameHeading(entityData)}`, headings, splitter, rows.join(eol())].join(eol());
+    return [`# ${getEntityNameHeading(entityData)}`, headings, splitter, rows.join('\n')].join('\n');
   });
 
   return table.join(eol(2));

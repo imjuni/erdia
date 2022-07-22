@@ -4,13 +4,13 @@ import prettier from 'prettier';
 
 const log = logger();
 
-export default async function applyPrettier(document: string): Promise<string> {
+export default async function applyPrettier(document: string, format: 'html' | 'md'): Promise<string> {
   try {
     const prettierConfig = await prettier.resolveConfig('.');
 
     const formatted = prettier.format(document, {
       ...(prettierConfig ?? {}),
-      parser: 'html',
+      parser: format === 'md' ? 'markdown' : 'html',
     });
 
     return formatted;

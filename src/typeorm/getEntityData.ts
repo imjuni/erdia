@@ -14,7 +14,7 @@ export default function getEntityData(
   const entityName = entityMetadata.name;
   const columns = entityMetadata.columns
     .map((column) => getColumnData(column, option))
-    .sort((l, r) => l.entityName.localeCompare(r.entityName));
+    .sort((l, r) => r.weight - l.weight);
 
   return {
     tableName,

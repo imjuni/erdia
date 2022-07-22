@@ -45,7 +45,7 @@ export async function createHtmlDoc(option: IErdiaHtmlOption) {
   if (output !== undefined && output !== null && output.length > 0) {
     await writeToHtml({ ...option, output }, diagram, table);
   } else {
-    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)));
+    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)), 'html');
     console.log(document);
   }
 }
@@ -59,6 +59,7 @@ export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
   }
 
   log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+  log.verbose(`html-br option: ${option.htmlBr}`);
 
   const { components } = option;
   const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
@@ -70,7 +71,7 @@ export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
   if (output !== undefined && output !== null && output.length > 0) {
     await writeToMarkdown({ ...option, output }, diagram, table);
   } else {
-    const document = await applyPrettier(markdownTemplate(table, true, diagram));
+    const document = await applyPrettier(markdownTemplate(table, true, diagram), 'md');
     console.log(document);
   }
 }
