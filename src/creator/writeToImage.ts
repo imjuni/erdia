@@ -39,7 +39,7 @@ export default async function writeToImage(
       throw new Error(`invalid output filename: ${filename}`);
     }
 
-    const document = await applyPrettier(htmlTemplate('', htmlMermaidTemplate(diagram, false, option)));
+    const document = await applyPrettier(htmlTemplate('', htmlMermaidTemplate(diagram, false, option)), 'html');
 
     const htmlFilename = getFilename(filename, undefined, 'html');
     const imageFileName = getFilename(filename, undefined, option.imageFormat);

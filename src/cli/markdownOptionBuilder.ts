@@ -8,6 +8,7 @@ export default function markdownOptionBuilder(args: Argv<IErdiaMarkdownOption>) 
     .option('html-br', {
       describe: 'replace newline character "\n" to <br /> tag',
       type: 'string',
+      default: true,
     })
     .demandOption(['data-source-path']);
 

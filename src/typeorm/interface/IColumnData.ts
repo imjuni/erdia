@@ -17,6 +17,9 @@ export default interface IColumnData {
   /** column type with column length(if column is lengthed typed) */
   columnTypeWithLength: string;
 
+  /** column sort weight */
+  weight: number;
+
   /** comment of entity, column */
   comment: string;
 }

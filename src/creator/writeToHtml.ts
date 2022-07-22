@@ -17,7 +17,7 @@ export default async function writeToHtml(
   // export every component to single file
   if (option.output.length === 1 && option.components.includes('er') && option.components.includes('table')) {
     const filename = option.output.at(0);
-    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)));
+    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)), 'html');
 
     if (isEmpty(filename)) {
       throw new Error(`invalid output filename: ${filename}`);
@@ -31,8 +31,8 @@ export default async function writeToHtml(
 
   // export every component to each file
   const [diagramDocument, tableDocument] = await Promise.all([
-    applyPrettier(htmlTemplate('', htmlMermaidTemplate(diagram, true, option))),
-    applyPrettier(htmlTemplate(table, '')),
+    applyPrettier(htmlTemplate('', htmlMermaidTemplate(diagram, true, option)), 'html'),
+    applyPrettier(htmlTemplate(table, ''), 'html'),
   ]);
 
   const nullableFileInfos = option.components.map((component, index) => ({
