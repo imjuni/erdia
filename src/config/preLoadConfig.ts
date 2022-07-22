@@ -85,7 +85,7 @@ export default function preLoadConfig() {
     return partialHtmlConfig;
   }
 
-  if (command === 'markdown' && configFileType === 'markdown') {
+  if (command === 'md' && configFileType === 'md') {
     log.info(`markdown configuration: ${configFilePath}`);
 
     const partialMarkdownOption: Partial<IErdiaMarkdownOption> = {

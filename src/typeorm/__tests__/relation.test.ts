@@ -6,7 +6,7 @@ import { IPass, isPass, TPickPass } from 'my-only-either';
 import path from 'path';
 import { DataSource } from 'typeorm';
 
-const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
+const share: { dataSource: DataSource; expect: boolean } = { expect: true } as any;
 
 const log = logger();
 
@@ -27,12 +27,15 @@ test('html.relation.test', async () => {
         .map((relation) => getRelationData(share.dataSource.entityMetadatas, relation))
         .filter((relation): relation is IPass<TPickPass<ReturnType<typeof getRelationData>>> => isPass(relation))
         .map((relation) => relation.pass)
-        .flat()
-        .sort((l, r) => l.relationHash.localeCompare(r.relationHash));
+        .flat();
 
       return partialRelations;
     })
-    .flat();
+    .flat()
+    .sort((l, r) => {
+      const compared = l.relationHash.localeCompare(r.relationHash);
+      return compared !== 0 ? compared : l.entityName.localeCompare(r.entityName);
+    });
 
   const expectation = await import(path.join(__dirname, 'expects', expectFileName));
 

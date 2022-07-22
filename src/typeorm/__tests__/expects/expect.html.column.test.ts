@@ -7,6 +7,7 @@ export default [
     columnType: 'number',
     columnTypeWithLength: 'number',
     comment: '',
+    weight: 20649017.22,
   },
   {
     entityName: 'user',
@@ -16,6 +17,7 @@ export default [
     columnType: 'string',
     columnTypeWithLength: 'string',
     comment: 'user firstname',
+    weight: 663020.17,
   },
   {
     entityName: 'user',
@@ -25,6 +27,7 @@ export default [
     columnType: 'varchar',
     columnTypeWithLength: 'varchar(64)',
     comment: '',
+    weight: 743014.25,
   },
   {
     entityName: 'user',
@@ -34,6 +37,7 @@ export default [
     columnType: 'boolean',
     columnTypeWithLength: 'boolean',
     comment: 'line1<br />line2<br />line3',
+    weight: 736017.07,
   },
   {
     entityName: 'user',
@@ -43,5 +47,6 @@ export default [
     columnType: 'number',
     columnTypeWithLength: 'number',
     comment: '',
+    weight: 10649010.18,
   },
 ];
