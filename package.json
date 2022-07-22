@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "scripts": {
     "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk src/cli.ts",
@@ -96,10 +96,10 @@
     "consola": "^2.15.3",
     "crypto-js": "^4.1.1",
     "del": "^6.1.1",
-    "fast-glob": "^3.2.11",
     "fast-safe-stringify": "^2.1.1",
     "find-up": "^5.0.0",
     "fuse.js": "^6.6.2",
+    "globby": "^11.1.0",
     "inquirer": "^8.2.4",
     "inquirer-autocomplete-prompt": "^2.0.0",
     "jsonc-parser": "^3.1.0",
