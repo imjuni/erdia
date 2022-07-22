@@ -6,9 +6,9 @@ import TOutputComponent from '@config/interface/TOutputComponent';
 import markdownDefaultConfig from '@config/markdownDefaultConfig';
 import pdfDefaultConfig from '@config/pdfDefaultConfig';
 import logger from '@tool/logger';
-import fastGlob from 'fast-glob';
 import fs from 'fs';
 import Fuse from 'fuse.js';
+import globby from 'globby';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
 import { bignumber } from 'mathjs';
@@ -17,7 +17,7 @@ const log = logger();
 
 function getOutputFilename(components: TOutputComponent[], extname: string) {
   if (components.includes('er') && components.includes('table')) {
-    return [`"entity.${extname}"`, `"erdiagram.${extname}"`];
+    return components.map((component) => (component === 'er' ? `"erdiagram.${extname}"` : `"entity.${extname}"`));
   }
 
   if (components.includes('er')) {
@@ -46,10 +46,10 @@ export default async function initErdia() {
    *          - png
    */
 
-  const sourceFiles = await fastGlob(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
-    ignore: ['node_modules'],
+  const sourceFiles = await globby(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
     cwd: process.cwd(),
     onlyFiles: true,
+    gitignore: true,
     dot: true,
   });
 
