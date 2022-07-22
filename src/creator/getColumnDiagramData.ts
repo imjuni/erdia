@@ -2,7 +2,6 @@ import IErdiaHtmlOption from '@config/interface/IErdiaHtmlOption';
 import IErdiaImageOption from '@config/interface/IErdiaImageOption';
 import IErdiaMarkdownOption from '@config/interface/IErdiaMarkdownOption';
 import IErdiaPDFOption from '@config/interface/IErdiaPDFOption';
-import getColumnWeight from '@creator/getColumnWeight';
 import IColumnData from '@typeorm/interface/IColumnData';
 import sanitizeHtml from 'sanitize-html';
 
@@ -28,6 +27,6 @@ export default function getColumnDiagramData(
   return {
     columns: columnData,
     mermaid: columnData.join(' '),
-    weight: getColumnWeight(column).toNumber(),
+    weight: column.weight,
   };
 }

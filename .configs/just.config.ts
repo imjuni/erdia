@@ -80,7 +80,7 @@ task('+do-dev-html', async () => {
 });
 
 task('+do-dev-md', async () => {
-  const cmd = 'ts-node src/cli.ts md -d ./dataSourceConfig.ts -o table.md -o erdiagram.md';
+  const cmd = 'ts-node src/cli.ts md --html-br -v -d ./dataSourceConfig.ts -o table.md -o erdiagram.md';
   await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
 });
 

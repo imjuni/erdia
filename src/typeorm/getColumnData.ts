@@ -3,6 +3,7 @@ import IErdiaImageOption from '@config/interface/IErdiaImageOption';
 import IErdiaMarkdownOption from '@config/interface/IErdiaMarkdownOption';
 import IErdiaPDFOption from '@config/interface/IErdiaPDFOption';
 import getColumnAttributeKey from '@creator/getColumnAttributeKey';
+import getColumnWeight from '@creator/getColumnWeight';
 import getColumnType from '@typeorm/getColumnType';
 import getComment from '@typeorm/getComment';
 import getSelectedEntityName from '@typeorm/getSelectedEntityName';
@@ -33,7 +34,7 @@ export default function getColumnData(
   /** comment of entity, column */
   const comment = getComment(option, columnMetadata.comment);
 
-  return {
+  const columnData: Omit<IColumnData, 'weight'> = {
     entityName,
     propertyName,
     columnName,
@@ -42,4 +43,8 @@ export default function getColumnData(
     columnTypeWithLength,
     comment,
   };
+
+  const weight = getColumnWeight(columnData);
+
+  return { ...columnData, weight: weight.toNumber() };
 }

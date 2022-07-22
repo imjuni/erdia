@@ -1,10 +1,7 @@
 # ERdia
-ERdia is create ER Diagram using by TypeORM and mermiad.js
+ERdia is create ER Diagram and Database schema table using by TypeORM and mermiad.js
 
 [![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true) [![Github Star](https://img.shields.io/github/stars/imjuni/erdia.svg?style=popout)](https://github.com/imjuni/erdia) [![Github Issues](https://img.shields.io/github/issues-raw/imjuni/erdia.svg)](https://github.com/imjuni/erdia/issues) [![NPM version](https://img.shields.io/npm/v/erdia.svg)](https://www.npmjs.com/package/erdia) [![License](https://img.shields.io/npm/l/erdia.svg)](https://github.com/imjuni/erdia/blob/master/LICENSE)
-
-# Warning
-typeorm change interface 0.3.x. Erdia 0.5.0 support typeorm 0.2.x and Erdia 0.6.0 support typeorm 0.3.x. And Erdia 0.6.0 add required option `dataSourcePath`. See typeorm 0.3.x have [breaking change](https://github.com/typeorm/typeorm/blob/master/CHANGELOG.md#breaking-changes-1).
 
 # Install
 
@@ -13,47 +10,56 @@ npm install --save-dev erdia
 ```
 
 # Usage
-Normaly you meet error "Cannot use import statement outside a module". Because TypeORM entity writen by Typescript, So Typescript syntax raise error by Node.js interpreter. So you have to execute using by "ts-node" also pass tsconfig-paths module(If you using module resolution)
-
-## JavaScript with Module Resolution
 ```
-erdia er -d [your dataSource path]
-erdia mdtable -d [your dataSource path]
-erdia mdfull -d [your dataSource path]
-
-# recommend, create entity list table and er diagram html document
-erdia htmlfull -d [your dataSource path] -v -o entity.html
+erdia html -d [your dataSource path] -o table.html -o erdiagram.html
 ```
 
-## TypeScript with Module Resolution
+# Requirement
+* TypeORM 0.3.x
+
+# Example
+
+## ER diagram
+<img src="https://github.com/imjuni/erdia/blob/master/assets/erdiagram.png" />
+
+## Database schema table
+
+```
+# user (User)
+
+| Name       | Name of Entity | Type        | Attribute Key | Comment                     |
+| :--------- | :------------- | :---------- | :-----------: | :-------------------------- |
+| id         | id             | number      |      PK       |                             |
+| photoId    | photo          | number      |      FK       |                             |
+| lastName   | lastName       | varchar(64) |               |                             |
+| isActive   | isActive       | boolean     |               | line1<br />line2<br />line3 |
+| first_name | firstName      | string      |               | user firstname              |
+```
+
+### user (User)
+
+| Name       | Name of Entity | Type        | Attribute Key | Comment                     |
+| :--------- | :------------- | :---------- | :-----------: | :-------------------------- |
+| id         | id             | number      |      PK       |                             |
+| photoId    | photo          | number      |      FK       |                             |
+| lastName   | lastName       | varchar(64) |               |                             |
+| isActive   | isActive       | boolean     |               | line1<br />line2<br />line3 |
+| first_name | firstName      | string      |               | user firstname              |
+
+
+
+# Format
+ERdia support html, markdown, pdf, svg, png. Database schema table only support html, markdown, pdf format.
+
+```
+# PDF document generate
+erdia pdf -d [your dataSourcePath] -o table.pdf -o entity.pdf
+```
+
+# TypeScript and Module Resolution
+
 ```
 ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdtable -d [your dataSource path]
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia mdfull -d [your dataSource path]
-
-# recommend, create entity list table and er diagram html document
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia htmlfull -d [your dataSource path] -v -o entity.html
 ```
 
-erdia need dataSource file. Because typeorm entity initialize after dataSource initialize. See [dataSource](https://typeorm.io/data-source) section in [typeorm.io](https://typeorm.io/)
-
-# Option
-erdia have 6 command, er and mdtable, mdfull, htmler, htmltable, htmlfull. Every command basically print result but you pass output option, create file and not display console result. htmler, htmltable, htmlfull using by [bulma](https://bulma.io/) and [mermaid.js](https://mermaid-js.github.io) from cdnjs.
-
-## Command
-| command | document type | desc. |
-| :- | :-: | :- | 
-| er | markdown | ER diagram creation command |
-| mdtable | markdown | Entity markdown table creation command |
-| mdfull | markdown | Entity markdown table with ER Diagram creation command
-| htmler | html | ER diagram creation command
-| htmltable | html | Entity html table creation command
-| htmlfull | html | Entity html table with ER Diagram creation command
-
-## Option
-| Option | Alias | Command | Required | Default | Description |
-| :- | :-: | :-: | :-: | :-: | :- |
-| dataSourcePath | d | all | | N/A | dataSource file path. dataSource file dynamic import using import funciton |
-| output | o | all | | N/A | output filename, markdown format |
-| verbose | v | all | | N/A | log message display |
-| html | h | er, mdtable, mdfull | | true | html formatting in markdown. newline character replace to <br /> | 
+ERdia load dataSource file using TypeORM module. If you use module resolution need additional parameter need for successfully execution. You have to pass tsconfig-paths/register. See ts-node [paths and baseUrl](https://github.com/TypeStrong/ts-node#paths-and-baseurl) section

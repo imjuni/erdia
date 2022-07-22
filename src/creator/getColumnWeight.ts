@@ -2,7 +2,7 @@ import IColumnData from '@typeorm/interface/IColumnData';
 import { bignumber, BigNumber } from 'mathjs';
 import { populate } from 'my-easy-fp';
 
-export default function getColumnWeight(column: IColumnData): BigNumber {
+export default function getColumnWeight(column: Omit<IColumnData, 'weight'>): BigNumber {
   const weight = bignumber(0);
 
   const type = bignumber(
