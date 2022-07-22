@@ -108,5 +108,5 @@ task('ddn', series('clean:doc', '+do-dev-png'));
 task('build', series('clean', '+build'));
 task('webpack:dev', series('clean', 'lint', '+webpack:dev', '+dts-bundle', 'clean:dts'));
 task('webpack:prod', series('clean', 'lint', '+webpack:prod', '+dts-bundle', 'clean:dts'));
-task('pub', series('clean', '+webpack:prod', '+pub'));
-task('pub:prod', series('clean', '+webpack:prod', '+pub:prod'));
+task('pub', series('clean', '+webpack:prod', '+dts-bundle', 'clean:dts', '+pub'));
+task('pub:prod', series('clean', '+webpack:prod', '+dts-bundle', 'clean:dts', '+pub:prod'));

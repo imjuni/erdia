@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "scripts": {
     "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk src/cli.ts",
@@ -39,7 +39,7 @@
     "dist"
   ],
   "bin": {
-    "erdia": "./dist/erdia.js"
+    "erdia": "./dist/cli.js"
   },
   "author": "ByungJoon Lee",
   "license": "MIT",

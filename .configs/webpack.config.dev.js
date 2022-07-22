@@ -34,10 +34,7 @@ const appConfig = {
     ],
   },
 
-  plugins: [
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-    new webpackBar({ name: '-x-erdia-application' }),
-  ],
+  plugins: [new webpackBar({ name: '-x-erdia-application' })],
 
   entry: {
     erdia: ['./src/erdia.ts'],
@@ -73,10 +70,7 @@ const appConfig = {
 };
 
 const cliConfig = merge(appConfig, {
-  plugins: [
-    new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true }),
-    new webpackBar({ name: '-x-erdia-cli' }),
-  ],
+  plugins: [new webpack.BannerPlugin({ banner: '#!/usr/bin/env node', raw: true })],
 
   entry: {
     erdia: ['./src/cli.ts'],
