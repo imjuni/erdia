@@ -1,3 +1,4 @@
+import orderedComponents from '@common/orderedComponents';
 import htmlDefaultConfig from '@config/htmlDefaultConfig';
 import imageDefaultConfig from '@config/imageDefaultConfig';
 import IErdiaImageOption from '@config/interface/IErdiaImageOption';
@@ -158,8 +159,11 @@ export default async function initErdia() {
       name: 'components',
       message: 'Check component in document: ',
       choices: [
-        { name: 'ER diagram', value: 'er', checked: true },
-        { name: 'table', value: 'table', checked: true },
+        ...orderedComponents.map((component) =>
+          component === 'er'
+            ? { name: 'ER diagram', value: 'er', checked: true }
+            : { name: 'Entity schema table', value: 'table', checked: true },
+        ),
       ],
     },
   ]);

@@ -8,6 +8,7 @@ import applyPrettier from '@creator/applyPretter';
 import getERdiagram from '@creator/getERdiagram';
 import getHtmlTable from '@creator/getHtmlTable';
 import getMarkdownTable from '@creator/getMarkdownTable';
+import IReason from '@creator/interface/IReason';
 import writeToHtml from '@creator/writeToHtml';
 import writeToImage from '@creator/writeToImage';
 import writeToMarkdown from '@creator/writeToMarkdown';
@@ -17,11 +18,14 @@ import htmlTemplate from '@template/htmlTemplate';
 import markdownTemplate from '@template/markdownTemplate';
 import logger from '@tool/logger';
 import getDataSource from '@typeorm/getDataSource';
+import getEntityDatas from '@typeorm/getEntityDatas';
+import getRelationDatas from '@typeorm/getRelationDatas';
 import chalk from 'chalk';
 import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
 import { isFalse } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
+import { IFail, isFail } from 'my-only-either';
 
 const log = logger();
 
@@ -35,9 +39,19 @@ export async function createHtmlDoc(option: IErdiaHtmlOption) {
 
   log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
+  const entityDatas = getEntityDatas(dataSource, option);
+  const relationDatas = getRelationDatas(dataSource);
+
+  const failRelations = relationDatas
+    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+    .map((relationData) => relationData.fail)
+    .flat();
+
+  failRelations.forEach((relation) => log.warn(relation.message));
+
   const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
-  const table = components.includes('table') ? getHtmlTable(dataSource, option) : '';
+  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+  const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
 
   log.verbose(`target component: ${components.join(', ')}`);
 
@@ -61,9 +75,19 @@ export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
   log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
   log.verbose(`html-br option: ${option.htmlBr}`);
 
+  const entityDatas = getEntityDatas(dataSource, option);
+  const relationDatas = getRelationDatas(dataSource);
+
+  const failRelations = relationDatas
+    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+    .map((relationData) => relationData.fail)
+    .flat();
+
+  failRelations.forEach((relation) => log.warn(relation.message));
+
   const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
-  const table = components.includes('table') ? getMarkdownTable(dataSource, option) : '';
+  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+  const table = components.includes('table') ? getMarkdownTable(entityDatas, option) : '';
 
   log.verbose(`target component: ${components.join(', ')}`);
 
@@ -86,9 +110,19 @@ export async function createPdfDoc(option: IErdiaPDFOption) {
 
   log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
+  const entityDatas = getEntityDatas(dataSource, option);
+  const relationDatas = getRelationDatas(dataSource);
+
+  const failRelations = relationDatas
+    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+    .map((relationData) => relationData.fail)
+    .flat();
+
+  failRelations.forEach((relation) => log.warn(relation.message));
+
   const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(dataSource, option) : '';
-  const table = components.includes('table') ? getHtmlTable(dataSource, option) : '';
+  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+  const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
 
   log.verbose(`target component: ${components.join(', ')}`);
 
@@ -110,7 +144,17 @@ export async function createImageDoc(option: IErdiaImageOption) {
 
   log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-  const diagram = getERdiagram(dataSource, option);
+  const entityDatas = getEntityDatas(dataSource, option);
+  const relationDatas = getRelationDatas(dataSource);
+
+  const failRelations = relationDatas
+    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+    .map((relationData) => relationData.fail)
+    .flat();
+
+  failRelations.forEach((relation) => log.warn(relation.message));
+
+  const diagram = getERdiagram(entityDatas, relationDatas, option);
 
   const { output } = option;
   if (output !== undefined && output !== null && output.length > 0) {

@@ -1,5 +1,5 @@
+import orderedComponents from '@common/orderedComponents';
 import IErdiaDocumentOption from '@config/interface/IErdiaDocumentOption';
-
 import { Argv } from 'yargs';
 
 export default function documentOptionBuilder(args: Argv<IErdiaDocumentOption>) {
@@ -8,9 +8,9 @@ export default function documentOptionBuilder(args: Argv<IErdiaDocumentOption>) 
     .option('components', {
       alias: 't',
       describe: 'output components of result type',
-      choices: ['table', 'er'],
+      choices: orderedComponents,
       type: 'string',
-      default: ['table', 'er'],
+      default: orderedComponents,
     })
     .option('table-columns', {
       describe: 'output column',

@@ -3,10 +3,8 @@ import TTableColumn, { weight as tableColumnWeight } from '@config/interface/TTa
 import tableHeadingCaption from '@creator/tableHeadingCaption';
 import eol from '@tool/eol';
 import logger from '@tool/logger';
-import getEntityData from '@typeorm/getEntityData';
 import IColumnData from '@typeorm/interface/IColumnData';
 import IEntityData from '@typeorm/interface/IEntityData';
-import { DataSource } from 'typeorm';
 
 const log = logger();
 
@@ -54,9 +52,7 @@ function getEntityNameHeading(entityData: IEntityData): string {
   return `${entityData.entityName}`;
 }
 
-export default function getMarkdownTable(dataSource: DataSource, option: IErdiaMarkdownOption) {
-  const entityDatas = dataSource.entityMetadatas.map((entityMetadata) => getEntityData(entityMetadata, option));
-
+export default function getMarkdownTable(entityDatas: IEntityData[], option: IErdiaMarkdownOption) {
   const exportColumns: TTableColumn[] = ['column-type' as const, 'column-name' as const, ...option.tableColumns].sort(
     (l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0),
   );

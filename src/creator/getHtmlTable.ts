@@ -4,10 +4,8 @@ import TTableColumn, { weight as tableColumnWeight } from '@config/interface/TTa
 import tableHeadingCaption from '@creator/tableHeadingCaption';
 import eol from '@tool/eol';
 import logger from '@tool/logger';
-import getEntityData from '@typeorm/getEntityData';
 import IColumnData from '@typeorm/interface/IColumnData';
 import IEntityData from '@typeorm/interface/IEntityData';
-import { DataSource } from 'typeorm';
 
 const log = logger();
 
@@ -65,9 +63,7 @@ function template(entity: string, headingSize: number, tableHead: string, tableB
   `.trim();
 }
 
-export default function getHtmlTable(dataSource: DataSource, option: IErdiaHtmlOption | IErdiaPDFOption) {
-  const entityDatas = dataSource.entityMetadatas.map((entityMetadata) => getEntityData(entityMetadata, option));
-
+export default function getHtmlTable(entityDatas: IEntityData[], option: IErdiaHtmlOption | IErdiaPDFOption) {
   const exportColumns: TTableColumn[] = ['column-type' as const, 'column-name' as const, ...option.tableColumns].sort(
     (l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0),
   );
