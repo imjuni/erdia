@@ -6,7 +6,7 @@ import { IPass, isPass, TPickPass } from 'my-only-either';
 import path from 'path';
 import { DataSource } from 'typeorm';
 
-const share: { dataSource: DataSource; expect: boolean } = { expect: true } as any;
+const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
 const log = logger();
 

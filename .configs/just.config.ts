@@ -75,17 +75,17 @@ task('test', async () => {
 });
 
 task('+do-dev-html', async () => {
-  const cmd = 'ts-node src/cli.ts html -d ./dataSourceConfig.ts -o table.html -o erdiagram.html';
+  const cmd = 'ts-node src/cli.ts html -v -d ./dataSourceConfig.ts -o erdiagram.html -o table.html';
   await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-md', async () => {
-  const cmd = 'ts-node src/cli.ts md --html-br -v -d ./dataSourceConfig.ts -o table.md -o erdiagram.md';
+  const cmd = 'ts-node src/cli.ts md --html-br -v -d ./dataSourceConfig.ts -o erdiagram.md -o table.md';
   await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-pdf', async () => {
-  const cmd = 'ts-node src/cli.ts pdf -d ./dataSourceConfig.ts -o table.pdf -o erdiagram.pdf';
+  const cmd = 'ts-node src/cli.ts pdf -d ./dataSourceConfig.ts -o erdiagram.pdf -o table.pdf';
   await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
 });
 

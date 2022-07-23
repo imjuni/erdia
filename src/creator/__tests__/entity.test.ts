@@ -9,7 +9,7 @@ import { DataSource } from 'typeorm';
 
 const log = logger();
 
-const share: { dataSource: DataSource; expect: boolean } = { expect: true } as any;
+const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
 beforeAll(async () => {
   log.level = 'trace';

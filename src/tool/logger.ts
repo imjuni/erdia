@@ -37,7 +37,7 @@ export default function logger() {
             case 'warn':
               return `${chalk.yellowBright(pino.levels.labels[logLevel])}`;
             case 'error':
-              return `${chalk.yellowBright(pino.levels.labels[logLevel])}`;
+              return `${chalk.redBright(pino.levels.labels[logLevel])}`;
             default:
               return `${chalk.greenBright(pino.levels.labels[logLevel])}`;
           }

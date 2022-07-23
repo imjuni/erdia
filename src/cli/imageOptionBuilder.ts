@@ -16,7 +16,7 @@ export default function imageOptionBuilder(args: Argv<IErdiaImageOption>) {
       default: 1280,
     })
     .option('viewport-height', {
-      describe: 'puppeteer viewport width',
+      describe: 'puppeteer viewport height',
       type: 'number',
       default: 720 * 2,
     })

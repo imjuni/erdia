@@ -29,6 +29,8 @@ export default async function writeToHtml(
     return true;
   }
 
+  log.debug(`component/file: ${option.components.join(', ')} - ${option.output.join(', ')}`);
+
   // export every component to each file
   const [diagramDocument, tableDocument] = await Promise.all([
     applyPrettier(htmlTemplate('', htmlMermaidTemplate(diagram, true, option)), 'html'),
