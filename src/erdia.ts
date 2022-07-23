@@ -23,144 +23,205 @@ import getRelationDatas from '@typeorm/getRelationDatas';
 import chalk from 'chalk';
 import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
-import { isFalse } from 'my-easy-fp';
+import { isError, isFalse, isNotEmpty } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import { IFail, isFail } from 'my-only-either';
+import { DataSource } from 'typeorm';
 
 const log = logger();
 
 export async function createHtmlDoc(option: IErdiaHtmlOption) {
-  const dataSource = await getDataSource(option);
-  await dataSource.initialize();
+  let localDataSource: DataSource | undefined;
 
-  if (isFalse(dataSource.isInitialized)) {
-    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
-  }
+  try {
+    const dataSource = await getDataSource(option);
+    await dataSource.initialize();
 
-  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    if (isFalse(dataSource.isInitialized)) {
+      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+    }
 
-  const entityDatas = getEntityDatas(dataSource, option);
-  const relationDatas = getRelationDatas(dataSource);
+    localDataSource = dataSource;
 
-  const failRelations = relationDatas
-    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
-    .map((relationData) => relationData.fail)
-    .flat();
+    log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-  failRelations.forEach((relation) => log.warn(relation.message));
+    const entityDatas = getEntityDatas(dataSource, option);
+    const relationDatas = getRelationDatas(dataSource);
 
-  const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
-  const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
+    const failRelations = relationDatas
+      .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+      .map((relationData) => relationData.fail)
+      .flat();
 
-  log.verbose(`target component: ${components.join(', ')}`);
+    failRelations.forEach((relation) => log.warn(relation.message));
 
-  const { output } = option;
-  if (output !== undefined && output !== null && output.length > 0) {
-    await writeToHtml({ ...option, output }, diagram, table);
-  } else {
-    const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)), 'html');
-    console.log(document);
+    const { components } = option;
+    const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+    const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
+
+    log.verbose(`target component: ${components.join(', ')}`);
+
+    const { output } = option;
+    if (output !== undefined && output !== null && output.length > 0) {
+      await writeToHtml({ ...option, output }, diagram, table);
+    } else {
+      const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)), 'html');
+      console.log(document);
+    }
+  } catch (catched) {
+    const err = isError(catched) ?? new Error(`unknown error raised from ${createHtmlDoc}`);
+
+    log.error(err.message);
+    log.error(err.stack);
+  } finally {
+    if (isNotEmpty(localDataSource)) {
+      localDataSource.destroy();
+    }
   }
 }
 
 export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
-  const dataSource = await getDataSource(option);
-  await dataSource.initialize();
+  let localDataSource: DataSource | undefined;
 
-  if (isFalse(dataSource.isInitialized)) {
-    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
-  }
+  try {
+    const dataSource = await getDataSource(option);
+    await dataSource.initialize();
 
-  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
-  log.verbose(`html-br option: ${option.htmlBr}`);
+    if (isFalse(dataSource.isInitialized)) {
+      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+    }
 
-  const entityDatas = getEntityDatas(dataSource, option);
-  const relationDatas = getRelationDatas(dataSource);
+    localDataSource = dataSource;
 
-  const failRelations = relationDatas
-    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
-    .map((relationData) => relationData.fail)
-    .flat();
+    log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    log.verbose(`html-br option: ${option.htmlBr}`);
 
-  failRelations.forEach((relation) => log.warn(relation.message));
+    const entityDatas = getEntityDatas(dataSource, option);
+    const relationDatas = getRelationDatas(dataSource);
 
-  const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
-  const table = components.includes('table') ? getMarkdownTable(entityDatas, option) : '';
+    const failRelations = relationDatas
+      .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+      .map((relationData) => relationData.fail)
+      .flat();
 
-  log.verbose(`target component: ${components.join(', ')}`);
+    failRelations.forEach((relation) => log.warn(relation.message));
 
-  const { output } = option;
-  if (output !== undefined && output !== null && output.length > 0) {
-    await writeToMarkdown({ ...option, output }, diagram, table);
-  } else {
-    const document = await applyPrettier(markdownTemplate(table, true, diagram), 'md');
-    console.log(document);
+    const { components } = option;
+    const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+    const table = components.includes('table') ? getMarkdownTable(entityDatas, option) : '';
+
+    log.verbose(`target component: ${components.join(', ')}`);
+
+    const { output } = option;
+    if (output !== undefined && output !== null && output.length > 0) {
+      await writeToMarkdown({ ...option, output }, diagram, table);
+    } else {
+      const document = await applyPrettier(markdownTemplate(table, true, diagram), 'md');
+      console.log(document);
+    }
+  } catch (catched) {
+    const err = isError(catched) ?? new Error(`unknown error raised from ${createHtmlDoc}`);
+
+    log.error(err.message);
+    log.error(err.stack);
+  } finally {
+    if (isNotEmpty(localDataSource)) {
+      localDataSource.destroy();
+    }
   }
 }
 
 export async function createPdfDoc(option: IErdiaPDFOption) {
-  const dataSource = await getDataSource(option);
-  await dataSource.initialize();
+  let localDataSource: DataSource | undefined;
 
-  if (isFalse(dataSource.isInitialized)) {
-    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
-  }
+  try {
+    const dataSource = await getDataSource(option);
+    await dataSource.initialize();
 
-  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    if (isFalse(dataSource.isInitialized)) {
+      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+    }
 
-  const entityDatas = getEntityDatas(dataSource, option);
-  const relationDatas = getRelationDatas(dataSource);
+    localDataSource = dataSource;
 
-  const failRelations = relationDatas
-    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
-    .map((relationData) => relationData.fail)
-    .flat();
+    log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-  failRelations.forEach((relation) => log.warn(relation.message));
+    const entityDatas = getEntityDatas(dataSource, option);
+    const relationDatas = getRelationDatas(dataSource);
 
-  const { components } = option;
-  const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
-  const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
+    const failRelations = relationDatas
+      .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+      .map((relationData) => relationData.fail)
+      .flat();
 
-  log.verbose(`target component: ${components.join(', ')}`);
+    failRelations.forEach((relation) => log.warn(relation.message));
 
-  const { output } = option;
-  if (output !== undefined && output !== null && output.length > 0) {
-    await writeToPdf({ ...option, output }, diagram, table);
-  } else {
-    log.error('pdf command must set output');
+    const { components } = option;
+    const diagram = components.includes('er') ? getERdiagram(entityDatas, relationDatas, option) : '';
+    const table = components.includes('table') ? getHtmlTable(entityDatas, option) : '';
+
+    log.verbose(`target component: ${components.join(', ')}`);
+
+    const { output } = option;
+    if (output !== undefined && output !== null && output.length > 0) {
+      await writeToPdf({ ...option, output }, diagram, table);
+    } else {
+      log.error('pdf command must set output');
+    }
+  } catch (catched) {
+    const err = isError(catched) ?? new Error(`unknown error raised from ${createHtmlDoc}`);
+
+    log.error(err.message);
+    log.error(err.stack);
+  } finally {
+    if (isNotEmpty(localDataSource)) {
+      localDataSource.destroy();
+    }
   }
 }
 
 export async function createImageDoc(option: IErdiaImageOption) {
-  const dataSource = await getDataSource(option);
-  await dataSource.initialize();
+  let localDataSource: DataSource | undefined;
 
-  if (isFalse(dataSource.isInitialized)) {
-    throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
-  }
+  try {
+    const dataSource = await getDataSource(option);
+    await dataSource.initialize();
 
-  log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    if (isFalse(dataSource.isInitialized)) {
+      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+    }
 
-  const entityDatas = getEntityDatas(dataSource, option);
-  const relationDatas = getRelationDatas(dataSource);
+    localDataSource = dataSource;
 
-  const failRelations = relationDatas
-    .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
-    .map((relationData) => relationData.fail)
-    .flat();
+    log.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
-  failRelations.forEach((relation) => log.warn(relation.message));
+    const entityDatas = getEntityDatas(dataSource, option);
+    const relationDatas = getRelationDatas(dataSource);
 
-  const diagram = getERdiagram(entityDatas, relationDatas, option);
+    const failRelations = relationDatas
+      .filter((relationData): relationData is IFail<IReason> => isFail(relationData))
+      .map((relationData) => relationData.fail)
+      .flat();
 
-  const { output } = option;
-  if (output !== undefined && output !== null && output.length > 0) {
-    await writeToImage({ ...option, output }, diagram);
-  } else {
-    log.error(`pdf command must set output`);
+    failRelations.forEach((relation) => log.warn(relation.message));
+
+    const diagram = getERdiagram(entityDatas, relationDatas, option);
+
+    const { output } = option;
+    if (output !== undefined && output !== null && output.length > 0) {
+      await writeToImage({ ...option, output }, diagram);
+    } else {
+      log.error(`pdf command must set output`);
+    }
+  } catch (catched) {
+    const err = isError(catched) ?? new Error(`unknown error raised from ${createHtmlDoc}`);
+
+    log.error(err.message);
+    log.error(err.stack);
+  } finally {
+    if (isNotEmpty(localDataSource)) {
+      localDataSource.destroy();
+    }
   }
 }
 
