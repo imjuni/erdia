@@ -66,6 +66,7 @@
     "dist/**",
     "dataSourceConfig.ts",
     "entities/**",
+    "erdia-docs/**",
     "webpack.config.dev.ts",
     "webpack.config.prod.ts"
   ]

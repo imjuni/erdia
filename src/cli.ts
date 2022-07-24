@@ -2,7 +2,6 @@ import commonOptionBuilder from '@cli/commonOptionBuilder';
 import documentOptionBuilder from '@cli/documentOptionBuilder';
 import htmlOptionBuilder from '@cli/htmlOptionBuilder';
 import imageOptionBuilder from '@cli/imageOptionBuilder';
-import initErdia from '@cli/initErdia';
 import markdownOptionBuilder from '@cli/markdownOptionBuilder';
 import pdfOptionBuilder from '@cli/pdfOptionBuilder';
 import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
@@ -14,7 +13,7 @@ import preLoadConfig from '@config/preLoadConfig';
 import logger from '@tool/logger';
 import sourceMapSupport from 'source-map-support';
 import yargsAnyType, { Argv } from 'yargs';
-import { cleanDoc, createHtmlDoc, createImageDoc, createMarkdownDoc, createPdfDoc } from './erdia';
+import { cleanDoc, createHtmlDoc, createImageDoc, createMarkdownDoc, createPdfDoc, initErdia } from './erdia';
 
 const log = logger();
 
