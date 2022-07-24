@@ -24,7 +24,8 @@
     "dist": true
   },
   "files.associations": {
-    ".erdiarc": "jsonc"
+    ".erdiarc": "jsonc",
+    "typedoc.json": "jsonc"
   },
   "editor.formatOnSave": true,
   "files.eol": "\n",

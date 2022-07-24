@@ -1,4 +1,4 @@
-import onHandleInitErdia from '@cli/initErdia';
+import getConfigContent from '@cli/getConfigContent';
 import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
 import IErdiaHtmlOption from '@config/interface/IErdiaHtmlOption';
 import IErdiaImageOption from '@config/interface/IErdiaImageOption';
@@ -23,6 +23,7 @@ import getRelationDatas from '@typeorm/getRelationDatas';
 import chalk from 'chalk';
 import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
+import fs from 'fs';
 import { isError, isFalse, isNotEmpty } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import { IFail, isFail } from 'my-only-either';
@@ -245,4 +246,7 @@ export async function cleanDoc(option: IErdiaCommonOption) {
   await del(existFilenames);
 }
 
-export const initErdia = onHandleInitErdia;
+export async function initErdia() {
+  const configContnent = await getConfigContent();
+  await fs.promises.writeFile('.erdiarc', configContnent);
+}

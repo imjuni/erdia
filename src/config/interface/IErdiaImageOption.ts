@@ -15,7 +15,7 @@ export default interface IErdiaImageOption extends IErdiaCommonOption {
   /** puppeteer config file path */
   puppeteerConfigPath?: string;
 
-  /** export image file format */
+  /** ER diagram export image file format */
   imageFormat: 'png' | 'svg';
 
   /** Background color. Example: transparent, red, '#F0F0F0'. Optional. Default: white */

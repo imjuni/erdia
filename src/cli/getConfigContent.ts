@@ -7,7 +7,6 @@ import TOutputComponent from '@config/interface/TOutputComponent';
 import markdownDefaultConfig from '@config/markdownDefaultConfig';
 import pdfDefaultConfig from '@config/pdfDefaultConfig';
 import logger from '@tool/logger';
-import fs from 'fs';
 import Fuse from 'fuse.js';
 import globby from 'globby';
 import inquirer from 'inquirer';
@@ -32,7 +31,7 @@ function getOutputFilename(components: TOutputComponent[], extname: string) {
   throw new Error('invalid components name!');
 }
 
-export default async function initErdia() {
+export default async function getConfigContent() {
   /**
    * html     - er, table
    *          - er
@@ -146,9 +145,7 @@ export default async function initErdia() {
       imageFormat: imageFormatAnswer.imageFormat,
     });
 
-    await fs.promises.writeFile('.erdiarc', jsoncConfigContent);
-
-    return true;
+    return jsoncConfigContent;
   }
 
   docAnswer.documentType = docTypeAnswer.documentType;
@@ -192,7 +189,5 @@ export default async function initErdia() {
     components: componentCheckboxAnswer.components.map((component) => `"${component}"`).join(', '),
   });
 
-  await fs.promises.writeFile('.erdiarc', jsoncConfigContent);
-
-  return true;
+  return jsoncConfigContent;
 }
