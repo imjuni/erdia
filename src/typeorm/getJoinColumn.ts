@@ -24,7 +24,9 @@ function getInverseRelationMetadata(relationMetadata: RelationMetadata) {
 function getManyToOneJoinColumn(
   relationMetadata: RelationMetadata,
 ): Pick<IRelationData, 'joinColumnName' | 'joinPropertyName' | 'inverseJoinColumnNullable'> {
-  const [joinColumn] = relationMetadata.joinColumns;
+  const joinColumn = relationMetadata.joinColumns.find(
+    (column) => getSelectedEntityName(column.entityMetadata) === getSelectedEntityName(relationMetadata.entityMetadata),
+  );
 
   if (isEmpty(joinColumn)) {
     throw new Error(`Invalid joinColumn detected: ${relationMetadata.propertyName}`);
@@ -40,7 +42,10 @@ function getManyToOneJoinColumn(
 function getManyToManyJoinColumn(
   relationMetadata: RelationMetadata,
 ): Pick<IRelationData, 'joinColumnName' | 'joinPropertyName' | 'inverseJoinColumnOne' | 'inverseJoinColumnNullable'> {
-  const joinColumn = relationMetadata.joinColumns.at(0);
+  const joinTable = relationMetadata.joinTableName;
+  const joinColumn = relationMetadata.joinColumns.find(
+    (column) => getSelectedEntityName(column.entityMetadata) === joinTable,
+  );
   const inverseRelationMetadata = getInverseRelationMetadata(relationMetadata);
 
   if (isNotEmpty(joinColumn)) {
