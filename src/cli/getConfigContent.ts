@@ -1,7 +1,6 @@
 import orderedComponents from '@common/orderedComponents';
 import htmlDefaultConfig from '@config/htmlDefaultConfig';
 import imageDefaultConfig from '@config/imageDefaultConfig';
-import IErdiaImageOption from '@config/interface/IErdiaImageOption';
 import { IInitDocAnswer, IInitImageAnswer } from '@config/interface/InquirerAnswer';
 import TOutputComponent from '@config/interface/TOutputComponent';
 import markdownDefaultConfig from '@config/markdownDefaultConfig';
@@ -55,18 +54,6 @@ export default async function getConfigContent() {
 
   const fuse = new Fuse(sourceFiles, { includeScore: true });
 
-  const docAnswer: IInitDocAnswer = {
-    type: 'document',
-    documentType: 'html',
-    components: [],
-  };
-
-  const imageAnswer: IInitImageAnswer = {
-    type: 'image',
-    documentType: 'image',
-    imageFormat: 'svg',
-  };
-
   const fuzzyScoreLimit = 50;
   inquirer.registerPrompt('autocomplete', inquirerPrompt);
 
@@ -104,9 +91,7 @@ export default async function getConfigContent() {
     },
   ]);
 
-  const docTypeAnswer = await inquirer.prompt<{
-    documentType: IInitDocAnswer['documentType'] | IInitImageAnswer['documentType'];
-  }>([
+  const answer = await inquirer.prompt<IInitDocAnswer | IInitImageAnswer>([
     {
       type: 'list',
       name: 'documentType',
@@ -118,39 +103,17 @@ export default async function getConfigContent() {
         { name: 'image', value: 'image' },
       ],
     },
-  ]);
-
-  log.debug(`first answer: ${docTypeAnswer.documentType}`);
-
-  if (docTypeAnswer.documentType === 'image') {
-    const imageFormatAnswer = await inquirer.prompt<{ imageFormat: IErdiaImageOption['imageFormat'] }>([
-      {
-        type: 'list',
-        name: 'imageFormat',
-        message: 'Select image format: ',
-        choices: [
-          { name: 'svg', checked: true },
-          { name: 'png', checked: false },
-        ],
-      },
-    ]);
-
-    imageAnswer.imageFormat = imageFormatAnswer.imageFormat;
-
-    log.debug(`test: ${imageAnswer}`);
-
-    const jsoncConfigContent = imageDefaultConfig({
-      output: `"erdiagram.${imageFormatAnswer.imageFormat}"`,
-      dataSourceFilePath: dataSourceFileAnswer.dataSourceFile,
-      imageFormat: imageFormatAnswer.imageFormat,
-    });
-
-    return jsoncConfigContent;
-  }
-
-  docAnswer.documentType = docTypeAnswer.documentType;
-
-  const componentCheckboxAnswer = await inquirer.prompt<{ components: TOutputComponent[] }>([
+    {
+      type: 'list',
+      name: 'theme',
+      message: 'Select mermaid theme: ',
+      choices: [
+        { name: 'default', value: 'default' },
+        { name: 'forest', value: 'forest' },
+        { name: 'dark', value: 'dark' },
+        { name: 'neutral', value: 'neutral' },
+      ],
+    },
     {
       type: 'checkbox',
       name: 'components',
@@ -162,21 +125,47 @@ export default async function getConfigContent() {
             : { name: 'Entity schema table', value: 'table', checked: true },
         ),
       ],
+      when: (answerForWhen: IInitDocAnswer | IInitImageAnswer) => {
+        return answerForWhen.documentType !== 'image';
+      },
+    },
+    {
+      type: 'list',
+      name: 'imageFormat',
+      message: 'Select image format: ',
+      choices: [
+        { name: 'svg', checked: true },
+        { name: 'png', checked: false },
+      ],
+      when: (answerForWhen: IInitDocAnswer | IInitImageAnswer) => {
+        return answerForWhen.documentType === 'image';
+      },
     },
   ]);
 
-  docAnswer.components.push(...componentCheckboxAnswer.components);
+  log.trace(`answer: ${answer.documentType}`);
+
+  if (answer.documentType === 'image') {
+    const jsoncConfigContent = imageDefaultConfig({
+      output: `"erdiagram.${answer.imageFormat}"`,
+      dataSourceFilePath: dataSourceFileAnswer.dataSourceFile,
+      imageFormat: answer.imageFormat,
+      theme: answer.theme,
+    });
+
+    return jsoncConfigContent;
+  }
 
   const configTemplate = (() => {
-    if (docAnswer.documentType === 'html') {
+    if (answer.documentType === 'html') {
       return htmlDefaultConfig;
     }
 
-    if (docAnswer.documentType === 'md') {
+    if (answer.documentType === 'md') {
       return markdownDefaultConfig;
     }
 
-    if (docAnswer.documentType === 'pdf') {
+    if (answer.documentType === 'pdf') {
       return pdfDefaultConfig;
     }
 
@@ -184,9 +173,10 @@ export default async function getConfigContent() {
   })();
 
   const jsoncConfigContent = configTemplate({
-    output: getOutputFilename(componentCheckboxAnswer.components, docAnswer.documentType).join(', '),
+    output: getOutputFilename(answer.components, answer.documentType).join(', '),
     dataSourceFilePath: dataSourceFileAnswer.dataSourceFile,
-    components: componentCheckboxAnswer.components.map((component) => `"${component}"`).join(', '),
+    components: answer.components.map((component) => `"${component}"`).join(', '),
+    theme: answer.theme,
   });
 
   return jsoncConfigContent;

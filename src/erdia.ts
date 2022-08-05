@@ -117,7 +117,7 @@ export async function createMarkdownDoc(option: IErdiaMarkdownOption) {
     if (output !== undefined && output !== null && output.length > 0) {
       await writeToMarkdown({ ...option, output }, diagram, table);
     } else {
-      const document = await applyPrettier(markdownTemplate(table, true, diagram), 'md');
+      const document = await applyPrettier(markdownTemplate(table, true, diagram, option.theme), 'md');
       console.log(document);
     }
   } catch (catched) {

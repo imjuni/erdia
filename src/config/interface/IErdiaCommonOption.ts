@@ -33,4 +33,11 @@ export default interface IErdiaCommonOption {
   d: string;
   /** typeorm dataSourcePath */
   dataSourcePath: string;
+
+  /**
+   * mermaid.js plugin theme configuration
+   *
+   * @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
+   * */
+  theme: 'default' | 'forest' | 'dark' | 'neutral' | 'null';
 }

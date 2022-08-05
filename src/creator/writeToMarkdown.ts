@@ -16,7 +16,7 @@ export default async function writeToMarkdown(
   // export every component to single file
   if (option.output.length === 1 && option.components.includes('er') && option.components.includes('table')) {
     const filename = option.output.at(0);
-    const document = await applyPrettier(markdownTemplate(table, true, diagram), 'md');
+    const document = await applyPrettier(markdownTemplate(table, true, diagram, option.theme), 'md');
 
     if (isEmpty(filename)) {
       throw new Error(`invalid output filename: ${filename}`);
@@ -29,8 +29,8 @@ export default async function writeToMarkdown(
 
   // export every component to each file
   const [diagramDocument, tableDocument] = await Promise.all([
-    applyPrettier(markdownTemplate('', true, diagram), 'md'),
-    applyPrettier(markdownTemplate(table, false, ''), 'md'),
+    applyPrettier(markdownTemplate('', true, diagram, option.theme), 'md'),
+    applyPrettier(markdownTemplate(table, false, '', option.theme), 'md'),
   ]);
 
   const nullableFileInfos = option.components.map((component, index) => ({

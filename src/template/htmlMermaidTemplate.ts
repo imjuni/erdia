@@ -14,6 +14,7 @@ export default function htmlMermaidTemplate(
   const { width } = option;
 
   return `<pre id="mermaid-box" class="mermaid" style="width: ${width};">
+%%{init: {'theme':'${option.theme}'}}%%
 ${mermaid}
 </pre>
 

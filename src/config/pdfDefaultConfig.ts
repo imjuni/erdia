@@ -1,11 +1,15 @@
+import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
+
 const pdfDefaultConfig = ({
   output,
   dataSourceFilePath,
   components,
+  theme,
 }: {
   dataSourceFilePath: string;
   components: string;
   output: string;
+  theme: IErdiaCommonOption['theme'];
 }) =>
   `
 {
@@ -64,7 +68,9 @@ const pdfDefaultConfig = ({
   "puppeteer-config-path": "",
 
   // Background color. Example: transparent, red, '#F0F0F0'. Optional. Default: white
-  "background-color": "white"
+  "background-color": "white",
+  
+  "theme": "${theme}"
 }
 `.trim();
 

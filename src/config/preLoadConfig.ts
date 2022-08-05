@@ -59,6 +59,7 @@ export default function preLoadConfig() {
       viewportHeight: configObject['viewport-height'],
       puppeteerConfigPath: configObject['puppeteer-config-path'],
       imageFormat: configObject['image-format'],
+      theme: configObject.theme,
     };
 
     return partialImageConfig;
@@ -80,6 +81,7 @@ export default function preLoadConfig() {
       components: configObject.components,
       tableColumns: configObject['table-columns'],
       width: configObject.width,
+      theme: configObject.theme,
     };
 
     return partialHtmlConfig;
@@ -101,6 +103,7 @@ export default function preLoadConfig() {
       components: configObject.components,
       tableColumns: configObject['table-columns'],
       htmlBr: configObject['html-br'],
+      theme: configObject.theme,
     };
 
     return partialMarkdownOption;
@@ -125,6 +128,7 @@ export default function preLoadConfig() {
       viewportWidth: configObject['viewport-width'],
       viewportHeight: configObject['viewport-height'],
       puppeteerConfigPath: configObject['puppeteer-config-path'],
+      theme: configObject.theme,
     };
 
     return partialPdfOption;
