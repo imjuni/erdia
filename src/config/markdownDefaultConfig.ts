@@ -1,11 +1,15 @@
+import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
+
 const markdownDefaultConfig = ({
   output,
   dataSourceFilePath,
   components,
+  theme,
 }: {
   dataSourceFilePath: string;
   components: string;
   output: string;
+  theme: IErdiaCommonOption['theme'];
 }) =>
   `
 {
@@ -51,7 +55,9 @@ const markdownDefaultConfig = ({
      "entity-name",
      "attribute-key",
      "comment"
-  ]
+  ],
+
+  "theme": "${theme}"
 }
 `.trim();
 

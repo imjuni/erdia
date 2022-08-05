@@ -32,6 +32,12 @@ export default function commonOptionBuilder(args: Argv<IErdiaCommonOption>) {
       describe: 'verbose message',
       type: 'boolean',
     })
+    .option('theme', {
+      describe: 'mermaid theme',
+      choices: ['default', 'forest', 'dark', 'neutral', 'null'],
+      default: 'dark',
+      type: 'string',
+    })
     .option('data-source-path', {
       alias: 'd',
       describe: 'dataSource file path',

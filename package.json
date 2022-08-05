@@ -15,7 +15,8 @@
     "pub": "just --config ./.configs/just.config.ts pub",
     "pub:prod": "just --config ./.configs/just.config.ts pub:prod",
     "lint": "just --config ./.configs/just.config.ts lint",
-    "just": "just --config ./.configs/just.config.ts"
+    "just": "just --config ./.configs/just.config.ts",
+    "httpd": "http-server -p 19832 -o erdiagram.html"
   },
   "keywords": [
     "typeorm",
@@ -105,6 +106,7 @@
     "inquirer-autocomplete-prompt": "^2.0.0",
     "jsonc-parser": "^3.1.0",
     "mathjs": "^10.6.4",
+    "mermaid": "^9.1.4",
     "my-easy-fp": "^0.13.0",
     "my-node-fp": "^0.7.0",
     "my-only-either": "^1.1.2",

@@ -1,11 +1,15 @@
+import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
+
 const htmlDefaultConfig = ({
   output,
   dataSourceFilePath,
   components,
+  theme,
 }: {
   dataSourceFilePath: string;
   components: string;
   output: string;
+  theme: IErdiaCommonOption['theme'];
 }) =>
   `
 {
@@ -52,7 +56,9 @@ const htmlDefaultConfig = ({
      "entity-name",
      "attribute-key",
      "comment"
-  ]
+  ],
+
+  "theme": "${theme}"
 }
 `.trim();
 

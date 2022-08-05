@@ -1,7 +1,7 @@
 import markdownMermaidTemplate from '@template/markdownMermaidTemplate';
 
-export default function markdownTemplate(table: string, includeRawMermaid: boolean, diagram: string) {
-  const mermaid = markdownMermaidTemplate(diagram);
+export default function markdownTemplate(table: string, includeRawMermaid: boolean, diagram: string, theme: string) {
+  const mermaid = markdownMermaidTemplate(diagram, theme);
 
   return `
 ${table !== '' ? table : ''}

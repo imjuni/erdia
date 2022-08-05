@@ -1,11 +1,15 @@
+import IErdiaCommonOption from '@config/interface/IErdiaCommonOption';
+
 const imageDefaultConfig = ({
   output,
   dataSourceFilePath,
   imageFormat,
+  theme,
 }: {
   dataSourceFilePath: string;
   output: string;
   imageFormat: string;
+  theme: IErdiaCommonOption['theme'];
 }) => `
 {
   // configuration file type
@@ -47,7 +51,9 @@ const imageDefaultConfig = ({
   "viewport-height": 1440,
 
   // puppeteer config file path
-  "puppeteer-config-path": ""
+  "puppeteer-config-path": "",
+
+  "theme": "${theme}"
 }
 `;
 

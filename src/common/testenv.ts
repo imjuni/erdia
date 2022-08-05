@@ -17,6 +17,7 @@ export const htmlOption: IErdiaHtmlOption = {
   dataSourcePath: '',
   width: '100%',
   indent: 2,
+  theme: 'dark',
 };
 
 export const markdownOption: IErdiaMarkdownOption = {
@@ -35,4 +36,5 @@ export const markdownOption: IErdiaMarkdownOption = {
   indent: 2,
   dataSourcePath: '',
   htmlBr: false,
+  theme: 'dark',
 };
