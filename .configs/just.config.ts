@@ -69,6 +69,16 @@ task('lint', async () => {
   }
 });
 
+task('prettier', async () => {
+  const cmd = 'prettier';
+  const option = '--write src/**/*.ts';
+
+  await exec(`${cmd} ${option}`, {
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
+});
+
 task('test', async () => {
   const cmd = 'jest --runInBand';
   await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
