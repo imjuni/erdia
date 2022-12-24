@@ -1,5 +1,6 @@
+import columnWeight from '@config/interface/columnWeight';
 import IErdiaMarkdownOption from '@config/interface/IErdiaMarkdownOption';
-import TTableColumn, { weight as tableColumnWeight } from '@config/interface/TTableColumn';
+import { TTABLE_COLUMN } from '@config/interface/TTABLE_COLUMN';
 import tableHeadingCaption from '@creator/tableHeadingCaption';
 import eol from '@tool/eol';
 import logger from '@tool/logger';
@@ -8,16 +9,17 @@ import IEntityData from '@typeorm/interface/IEntityData';
 
 const log = logger();
 
-const tableSplitter: Record<TTableColumn, string> = {
-  'column-type': ':-',
-  'column-name': ':-',
-  'entity-name': ':-',
-  'is-nullable': ':-:',
-  comment: ':-',
-  'attribute-key': ':-:',
+const tableSplitter: Record<TTABLE_COLUMN, string> = {
+  [TTABLE_COLUMN.COLUMN_TYPE]: ':-',
+  [TTABLE_COLUMN.COLUMN_NAME]: ':-',
+  [TTABLE_COLUMN.ENTITY_NAME]: ':-',
+  [TTABLE_COLUMN.IS_NULLABLE]: ':-:',
+  [TTABLE_COLUMN.CHARSET]: ':-:',
+  [TTABLE_COLUMN.COMMENT]: ':-',
+  [TTABLE_COLUMN.ATTRIBUTE_KEY]: ':-:',
 };
 
-function columnDataToMarkdown(columnData: IColumnData, exportColumns: TTableColumn[]) {
+function columnDataToMarkdown(columnData: IColumnData, exportColumns: TTABLE_COLUMN[]) {
   const columns = exportColumns.map((column) => {
     if (column === 'column-name') {
       return columnData.columnName;
@@ -58,12 +60,12 @@ function getEntityNameHeading(entityData: IEntityData): string {
 }
 
 export default function getMarkdownTable(entityDatas: IEntityData[], option: IErdiaMarkdownOption) {
-  const exportColumns: TTableColumn[] = [
-    'column-type' as const,
-    'column-name' as const,
-    'is-nullable' as const,
+  const exportColumns: TTABLE_COLUMN[] = [
+    TTABLE_COLUMN.COLUMN_TYPE,
+    TTABLE_COLUMN.COLUMN_NAME,
+    TTABLE_COLUMN.IS_NULLABLE,
     ...option.tableColumns,
-  ].sort((l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0));
+  ].sort((l, r) => (columnWeight[l] ?? 0) - (columnWeight[r] ?? 0));
 
   log.debug(`will export column: ${exportColumns.join(', ')}`);
 

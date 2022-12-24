@@ -27,7 +27,7 @@ export class License extends BaseEntity implements ILicense {
   @Column()
   title: string;
 
-  @Column()
+  @Column({ charset: 'utf8mb4' })
   description: string;
 
   @Column()

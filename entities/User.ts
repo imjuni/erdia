@@ -15,10 +15,10 @@ export class User extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'first_name', comment: 'user firstname' })
+  @Column({ name: 'first_name', comment: 'user firstname', charset: 'utf8mb4' })
   firstName: string;
 
-  @Column({ type: 'varchar', length: 64 })
+  @Column({ type: 'varchar', length: 64, charset: 'utf8mb4' })
   lastName: string;
 
   @Column({ comment: 'line1\nline2\nline3' })

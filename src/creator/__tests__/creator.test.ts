@@ -24,6 +24,7 @@ test('get.column.weight', async () => {
     isNullable: 'nullable',
     columnTypeWithLength: 'number',
     comment: 'i am comment',
+    charset: '',
   });
 
   const weight002 = getColumnWeight({
@@ -35,6 +36,7 @@ test('get.column.weight', async () => {
     isNullable: 'nullable',
     columnTypeWithLength: 'varchar(10)',
     comment: 'i am comment',
+    charset: '',
   });
 
   const weight003 = getColumnWeight({
@@ -46,6 +48,7 @@ test('get.column.weight', async () => {
     isNullable: 'nullable',
     columnTypeWithLength: 'char(10)',
     comment: 'i am comment',
+    charset: '',
   });
 
   log.debug(weight001.toString(), weight002.toString(), weight003.toString());

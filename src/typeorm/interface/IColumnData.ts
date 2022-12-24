@@ -17,6 +17,9 @@ export default interface IColumnData {
   /** column is nullable */
   isNullable: string;
 
+  /** column charset */
+  charset: string;
+
   /** column type with column length(if column is lengthed typed) */
   columnTypeWithLength: string;
 

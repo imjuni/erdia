@@ -14,8 +14,8 @@ export default function documentOptionBuilder(args: Argv<IErdiaDocumentOption>) 
     })
     .option('table-columns', {
       describe: 'output column',
-      choices: ['attribute-key', 'entity-name', 'comment'],
-      default: ['attribute-key', 'entity-name', 'comment'],
+      choices: ['attribute-key', 'entity-name', 'charset', 'comment'],
+      default: ['attribute-key', 'entity-name', 'charset', 'comment'],
       type: 'array',
     });
 

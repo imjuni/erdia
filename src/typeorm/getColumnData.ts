@@ -37,6 +37,8 @@ export default function getColumnData(
 
   const isNullable = getIsNullable(columnMetadata);
 
+  const charset = columnMetadata.charset ?? '';
+
   const columnData: Omit<IColumnData, 'weight'> = {
     entityName,
     propertyName,
@@ -44,6 +46,7 @@ export default function getColumnData(
     attributeKey,
     isNullable,
     columnType,
+    charset,
     columnTypeWithLength,
     comment,
   };
