@@ -1,21 +1,37 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { option, series, task } from 'just-scripts';
-import { exec } from 'just-scripts-utils';
+import execa from 'execa';
+import { logger, option, series, task } from 'just-task';
+
+function splitArgs(args: string): string[] {
+  return args
+    .split(' ')
+    .map((line) => line.trim())
+    .filter((line) => line != null && line !== '');
+}
 
 option('env', { default: { env: process.env.RUN_MODE } });
 
 task('clean', async () => {
-  const cmd = 'rimraf dist artifact';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'rimraf';
+  const option = 'dist artifact';
+
+  logger.info('clean - ', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('clean:dts', async () => {
-  const cmd = 'rimraf dist/src dist/example dataSourceConfig.d.ts';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'rimraf';
+  const option = 'dist/src dist/example dataSourceConfig.d.ts';
+
+  logger.info('clean:dts - ', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('clean:doc', async () => {
-  const files = [
+  const cmd = 'rimraf';
+  const option = [
     'erdiagram.md',
     'table.md',
     'erdiagram.html',
@@ -26,87 +42,127 @@ task('clean:doc', async () => {
     'erdiagram.png',
   ];
 
-  const cmd = `rimraf ${files.join(' ')}`;
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  logger.info('clean:doc', cmd, option.join(' '));
+
+  await execa(cmd, option, { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+build', async () => {
-  const cmd = 'tsc --incremental';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'tsc';
+  const option = '--incremental';
+
+  logger.info('+build', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+dts-bundle', async () => {
-  const cmd = 'dts-bundle-generator --no-check --no-banner dist/src/erdia.d.ts -o dist/erdia.d.ts';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'dts-bundle-generator';
+  const option = '--no-check --no-banner dist/src/erdia.d.ts -o dist/erdia.d.ts';
+
+  logger.info('+dts-bundle', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+webpack:prod', async () => {
-  const cmd = 'cross-env NODE_ENV=production webpack --config ./.configs/webpack.config.prod.js';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'webpack';
+  const option = '--config ./.configs/webpack.config.prod.js';
+
+  logger.info('+webpack:prod', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
 });
 
 task('+webpack:dev', async () => {
-  const cmd = 'cross-env NODE_ENV=production webpack --config ./.configs/webpack.config.dev.js';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'webpack';
+  const option = '--config ./.configs/webpack.config.dev.js';
+
+  logger.info('+webpack:dev', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
 });
 
 task('+pub', async () => {
-  const cmd = 'npm publish --registry http://localhost:8901 --force';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'npm';
+  const option = 'publish --registry http://localhost:8901 --force';
+
+  logger.info('+pub', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+pub:prod', async () => {
-  const cmd = 'npm publish';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'npm';
+  const option = 'publish';
+
+  logger.info('+pub:prod', cmd, option);
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('lint', async () => {
-  const cmd = 'eslint --cache --ext ts,tsx .';
-  const resp = await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'eslint';
+  const option = '--cache --ext ts,tsx .';
 
-  if (resp !== '') {
-    throw new Error(`lint error: \n${resp}`);
-  }
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('prettier', async () => {
   const cmd = 'prettier';
   const option = '--write src/**/*.ts';
 
-  await exec(`${cmd} ${option}`, {
+  await execa(cmd, splitArgs(option), {
     stderr: process.stderr,
     stdout: process.stdout,
   });
 });
 
-task('test', async () => {
-  const cmd = 'jest --runInBand';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
-});
-
 task('+do-dev-html', async () => {
-  const cmd = 'ts-node src/cli.ts html -v -d ./dataSourceConfig.ts -o erdiagram.html -o table.html';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'ts-node';
+  const option = 'src/cli.ts html -v -d ./dataSourceConfig.ts -o erdiagram.html -o table.html';
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-md', async () => {
-  const cmd = 'ts-node src/cli.ts md --html-br -v -d ./dataSourceConfig.ts -o erdiagram.md -o table.md';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'ts-node';
+  const option = 'src/cli.ts md --html-br -v -d ./dataSourceConfig.ts -o erdiagram.md -o table.md';
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-pdf', async () => {
-  const cmd = 'ts-node src/cli.ts pdf -d ./dataSourceConfig.ts -o erdiagram.pdf -o table.pdf';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'ts-node';
+  const option = 'src/cli.ts pdf -d ./dataSourceConfig.ts -o erdiagram.pdf -o table.pdf';
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-svg', async () => {
-  const cmd = 'ts-node src/cli.ts image -d ./dataSourceConfig.ts -o erdiagram.svg';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'ts-node';
+  const option = 'src/cli.ts image -d ./dataSourceConfig.ts -o erdiagram.svg';
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('+do-dev-png', async () => {
-  const cmd = 'ts-node src/cli.ts image -d ./dataSourceConfig.ts -o erdiagram.png --image-format png';
-  await exec(cmd, { stderr: process.stderr, stdout: process.stdout });
+  const cmd = 'ts-node';
+  const option = 'src/cli.ts image -d ./dataSourceConfig.ts -o erdiagram.png --image-format png';
+
+  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
 task('ddh', series('clean:doc', '+do-dev-html'));
