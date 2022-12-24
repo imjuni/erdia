@@ -5,6 +5,7 @@ const tableHeadingCaption: Record<TTableColumn, string> = {
   'column-name': 'Name',
   'entity-name': 'Name of Entity',
   comment: 'Comment',
+  'is-nullable': 'Nullable',
   'attribute-key': 'Attribute Key',
 };
 

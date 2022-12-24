@@ -12,6 +12,7 @@ const tableSplitter: Record<TTableColumn, string> = {
   'column-type': ':-',
   'column-name': ':-',
   'entity-name': ':-',
+  'is-nullable': ':-:',
   comment: ':-',
   'attribute-key': ':-:',
 };
@@ -34,6 +35,10 @@ function columnDataToMarkdown(columnData: IColumnData, exportColumns: TTableColu
       return columnData.comment;
     }
 
+    if (column === 'is-nullable') {
+      return columnData.isNullable;
+    }
+
     if (column === 'entity-name') {
       return columnData.propertyName;
     }
@@ -53,9 +58,12 @@ function getEntityNameHeading(entityData: IEntityData): string {
 }
 
 export default function getMarkdownTable(entityDatas: IEntityData[], option: IErdiaMarkdownOption) {
-  const exportColumns: TTableColumn[] = ['column-type' as const, 'column-name' as const, ...option.tableColumns].sort(
-    (l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0),
-  );
+  const exportColumns: TTableColumn[] = [
+    'column-type' as const,
+    'column-name' as const,
+    'is-nullable' as const,
+    ...option.tableColumns,
+  ].sort((l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0));
 
   log.debug(`will export column: ${exportColumns.join(', ')}`);
 
@@ -67,7 +75,7 @@ export default function getMarkdownTable(entityDatas: IEntityData[], option: IEr
       return `| ${row.join(' | ')} |`;
     });
 
-    return [`# ${getEntityNameHeading(entityData)}`, headings, splitter, rows.join('\n')].join('\n');
+    return [`## ${getEntityNameHeading(entityData)}`, headings, splitter, rows.join('\n')].join('\n');
   });
 
   return table.join(eol(2));

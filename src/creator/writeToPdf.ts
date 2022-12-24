@@ -7,7 +7,7 @@ import getPuppeteerConfig from '@tool/getPuppeteerConfig';
 import logger from '@tool/logger';
 import del from 'del';
 import fs from 'fs';
-import { isEmpty, isError, isNotEmpty } from 'my-easy-fp';
+import { atOrUndefined, isEmpty, isError, isNotEmpty } from 'my-easy-fp';
 import path from 'path';
 import puppeteer from 'puppeteer';
 import applyPrettier from './applyPretter';
@@ -38,7 +38,7 @@ export default async function writeToPdf(
 
     // export every component to single file
     if (option.output.length === 1 && option.components.includes('er') && option.components.includes('table')) {
-      const baseFilename = option.output.at(0);
+      const baseFilename = atOrUndefined(option.output, 0);
       const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, false, option)), 'html');
 
       if (isEmpty(baseFilename)) {
@@ -65,7 +65,7 @@ export default async function writeToPdf(
 
     const nullableFileInfos = option.components.map((component, index) => ({
       component,
-      filename: option.output.at(index),
+      filename: atOrUndefined(option.output, index),
     }));
 
     // need overwrtie check

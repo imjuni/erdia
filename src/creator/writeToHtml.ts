@@ -5,7 +5,7 @@ import htmlMermaidTemplate from '@template/htmlMermaidTemplate';
 import htmlTemplate from '@template/htmlTemplate';
 import logger from '@tool/logger';
 import fs from 'fs';
-import { isEmpty, isNotEmpty } from 'my-easy-fp';
+import { atOrUndefined } from 'my-easy-fp';
 
 const log = logger();
 
@@ -16,10 +16,10 @@ export default async function writeToHtml(
 ) {
   // export every component to single file
   if (option.output.length === 1 && option.components.includes('er') && option.components.includes('table')) {
-    const filename = option.output.at(0);
+    const filename = atOrUndefined(option.output, 0);
     const document = await applyPrettier(htmlTemplate(table, htmlMermaidTemplate(diagram, true, option)), 'html');
 
-    if (isEmpty(filename)) {
+    if (filename == null) {
       throw new Error(`invalid output filename: ${filename}`);
     }
 
@@ -39,12 +39,12 @@ export default async function writeToHtml(
 
   const nullableFileInfos = option.components.map((component, index) => ({
     component,
-    filename: option.output.at(index),
+    filename: atOrUndefined(option.output, index),
   }));
 
   // need overwrtie check
   const fileInfos = nullableFileInfos.filter(
-    (filename): filename is { component: TOutputComponent; filename: string } => isNotEmpty(filename.filename),
+    (filename): filename is { component: TOutputComponent; filename: string } => filename.filename != null,
   );
 
   await Promise.all(

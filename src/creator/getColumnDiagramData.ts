@@ -21,7 +21,11 @@ export default function getColumnDiagramData(
       disallowedTagsMode: 'escape',
     });
 
-    columnData.push(`"${comment}"`);
+    const nullable = column.isNullable !== 'nullable' ? 'not null - ' : 'nullable - ';
+    columnData.push(`"${nullable}${comment}"`);
+  } else {
+    const nullable = column.isNullable !== 'nullable' ? 'not null' : 'nullable';
+    columnData.push(`"${nullable}"`);
   }
 
   return {

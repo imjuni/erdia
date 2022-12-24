@@ -6,7 +6,7 @@ import logger from '@tool/logger';
 import findUp from 'find-up';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
-import { isEmpty, isError, isFalse } from 'my-easy-fp';
+import { atOrThrow, isEmpty, isError, isFalse } from 'my-easy-fp';
 import { existsSync } from 'my-node-fp';
 import yargs from 'yargs';
 import IErdiaCommonOption from './interface/IErdiaCommonOption';
@@ -39,7 +39,7 @@ export default function preLoadConfig() {
     return {};
   }
 
-  const command = argv._.at(0);
+  const command = atOrThrow(argv._, 0);
   const configFileType = configObject.type;
 
   if (command === 'image' && configFileType === 'image') {

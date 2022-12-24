@@ -33,7 +33,7 @@ test('html.entity.test', async () => {
     fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(tableDatas, undefined, 2));
   }
 
-  expect(tableDatas).toEqual(expectation.default);
+  expect(tableDatas).toMatchObject(expectation.default);
 });
 
 test('markdown.entity.test', async () => {
@@ -53,5 +53,5 @@ test('markdown.entity.test', async () => {
     fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(tableDatas, undefined, 2));
   }
 
-  expect(tableDatas).toEqual(expectation.default);
+  expect(tableDatas).toMatchObject(expectation.default);
 });

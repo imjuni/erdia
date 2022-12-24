@@ -4,7 +4,7 @@ import applyPrettier from '@creator/applyPretter';
 import markdownTemplate from '@template/markdownTemplate';
 import logger from '@tool/logger';
 import fs from 'fs';
-import { isEmpty, isNotEmpty } from 'my-easy-fp';
+import { atOrUndefined, isEmpty, isNotEmpty } from 'my-easy-fp';
 
 const log = logger();
 
@@ -15,7 +15,7 @@ export default async function writeToMarkdown(
 ) {
   // export every component to single file
   if (option.output.length === 1 && option.components.includes('er') && option.components.includes('table')) {
-    const filename = option.output.at(0);
+    const filename = atOrUndefined(option.output, 0);
     const document = await applyPrettier(markdownTemplate(table, true, diagram, option.theme), 'md');
 
     if (isEmpty(filename)) {
@@ -35,7 +35,7 @@ export default async function writeToMarkdown(
 
   const nullableFileInfos = option.components.map((component, index) => ({
     component,
-    filename: option.output.at(index),
+    filename: atOrUndefined(option.output, index),
   }));
 
   // need overwrtie check

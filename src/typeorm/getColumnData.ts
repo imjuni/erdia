@@ -6,6 +6,7 @@ import getColumnAttributeKey from '@creator/getColumnAttributeKey';
 import getColumnWeight from '@creator/getColumnWeight';
 import getColumnType from '@typeorm/getColumnType';
 import getComment from '@typeorm/getComment';
+import getIsNullable from '@typeorm/getIsNullable';
 import getSelectedEntityName from '@typeorm/getSelectedEntityName';
 import IColumnData from '@typeorm/interface/IColumnData';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
@@ -34,11 +35,14 @@ export default function getColumnData(
   /** comment of entity, column */
   const comment = getComment(option, columnMetadata.comment);
 
+  const isNullable = getIsNullable(columnMetadata);
+
   const columnData: Omit<IColumnData, 'weight'> = {
     entityName,
     propertyName,
     columnName,
     attributeKey,
+    isNullable,
     columnType,
     columnTypeWithLength,
     comment,

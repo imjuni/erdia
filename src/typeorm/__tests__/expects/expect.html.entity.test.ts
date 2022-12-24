@@ -11,6 +11,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 20649017.22,
       },
       {
@@ -21,6 +22,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 10649005.07,
       },
       {
@@ -31,6 +33,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663022.21,
       },
       {
@@ -41,6 +44,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663006.17,
       },
       {
@@ -51,6 +55,7 @@ export default [
         columnType: 'date',
         columnTypeWithLength: 'date',
         comment: '',
+        isNullable: '',
         weight: 414021.02,
       },
     ],
@@ -67,6 +72,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 10649014.17,
       },
       {
@@ -77,6 +83,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 10649011.08,
       },
     ],
@@ -93,6 +100,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 20649017.22,
       },
       {
@@ -103,6 +111,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663022.21,
       },
       {
@@ -113,6 +122,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663006.17,
       },
       {
@@ -123,6 +133,7 @@ export default [
         columnType: 'date',
         columnTypeWithLength: 'date',
         comment: '',
+        isNullable: '',
         weight: 414021.02,
       },
     ],
@@ -139,6 +150,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 20649017.22,
       },
       {
@@ -149,6 +161,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663022.21,
       },
       {
@@ -159,6 +172,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663007.17,
       },
       {
@@ -169,6 +183,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: '',
+        isNullable: '',
         weight: 663006.17,
       },
     ],
@@ -185,6 +200,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: '',
         weight: 20649017.22,
       },
       {
@@ -195,6 +211,7 @@ export default [
         columnType: 'number',
         columnTypeWithLength: 'number',
         comment: '',
+        isNullable: 'nullable',
         weight: 10649010.18,
       },
       {
@@ -205,6 +222,7 @@ export default [
         columnType: 'varchar',
         columnTypeWithLength: 'varchar(64)',
         comment: '',
+        isNullable: '',
         weight: 743014.25,
       },
       {
@@ -215,6 +233,7 @@ export default [
         columnType: 'boolean',
         columnTypeWithLength: 'boolean',
         comment: 'line1<br />line2<br />line3',
+        isNullable: '',
         weight: 736017.07,
       },
       {
@@ -225,6 +244,7 @@ export default [
         columnType: 'string',
         columnTypeWithLength: 'string',
         comment: 'user firstname',
+        isNullable: '',
         weight: 663020.17,
       },
     ],

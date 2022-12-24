@@ -27,6 +27,10 @@ function columnDataToMarkdown(columnData: IColumnData, exportColumns: TTableColu
       return columnData.comment;
     }
 
+    if (column === 'is-nullable') {
+      return columnData.isNullable;
+    }
+
     if (column === 'entity-name') {
       return columnData.propertyName;
     }
@@ -64,9 +68,12 @@ function template(entity: string, headingSize: number, tableHead: string, tableB
 }
 
 export default function getHtmlTable(entityDatas: IEntityData[], option: IErdiaHtmlOption | IErdiaPDFOption) {
-  const exportColumns: TTableColumn[] = ['column-type' as const, 'column-name' as const, ...option.tableColumns].sort(
-    (l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0),
-  );
+  const exportColumns: TTableColumn[] = [
+    'column-type' as const,
+    'column-name' as const,
+    'is-nullable' as const,
+    ...option.tableColumns,
+  ].sort((l, r) => (tableColumnWeight[l] ?? 0) - (tableColumnWeight[r] ?? 0));
 
   log.debug(`will export column: ${exportColumns.join(', ')}`);
 

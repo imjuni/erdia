@@ -29,7 +29,7 @@ test('html.column.test', async () => {
     fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(columns, undefined, 2));
   }
 
-  expect(columns).toEqual(expectation.default);
+  expect(columns).toMatchObject(expectation.default);
 });
 
 test('markdown.column.test', async () => {
@@ -49,5 +49,5 @@ test('markdown.column.test', async () => {
     fs.writeFileSync(`${expectFileName}.json`, fastSafeStringify(columns, undefined, 2));
   }
 
-  expect(columns).toEqual(expectation.default);
+  expect(columns).toMatchObject(expectation.default);
 });

@@ -21,6 +21,7 @@ test('get.column.weight', async () => {
     columnName: 'hello',
     attributeKey: 'PK',
     columnType: 'number',
+    isNullable: 'nullable',
     columnTypeWithLength: 'number',
     comment: 'i am comment',
   });
@@ -31,6 +32,7 @@ test('get.column.weight', async () => {
     columnName: 'hello',
     attributeKey: 'FK',
     columnType: 'varchar',
+    isNullable: 'nullable',
     columnTypeWithLength: 'varchar(10)',
     comment: 'i am comment',
   });
@@ -41,6 +43,7 @@ test('get.column.weight', async () => {
     columnName: 'hello',
     attributeKey: '',
     columnType: 'char',
+    isNullable: 'nullable',
     columnTypeWithLength: 'char(10)',
     comment: 'i am comment',
   });

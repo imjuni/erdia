@@ -35,7 +35,7 @@ export default function commonOptionBuilder(args: Argv<IErdiaCommonOption>) {
     .option('theme', {
       describe: 'mermaid theme',
       choices: ['default', 'forest', 'dark', 'neutral', 'null'],
-      default: 'dark',
+      default: 'neutral',
       type: 'string',
     })
     .option('data-source-path', {

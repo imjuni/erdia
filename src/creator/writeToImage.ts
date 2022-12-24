@@ -6,7 +6,7 @@ import getPuppeteerConfig from '@tool/getPuppeteerConfig';
 import logger from '@tool/logger';
 import del from 'del';
 import fs from 'fs';
-import { isEmpty, isError } from 'my-easy-fp';
+import { atOrUndefined, isEmpty, isError } from 'my-easy-fp';
 import path from 'path';
 import puppeteer from 'puppeteer';
 import applyPrettier from './applyPretter';
@@ -32,7 +32,7 @@ export default async function writeToImage(
     localBrowser = browser;
     localPage = page;
 
-    const filename = option.output.at(0);
+    const filename = atOrUndefined(option.output, 0);
     page.setViewport({ width: option.viewportWidth ?? 1280, height: option.viewportHeight ?? 720 * 2 });
 
     if (isEmpty(filename)) {
