@@ -30,8 +30,6 @@ export default function logger() {
           switch (levelLabel) {
             case 'debug':
               return `${chalk.blueBright(pino.levels.labels[logLevel])}`;
-            case 'verbose':
-              return `${chalk.blue(pino.levels.labels[logLevel])}`;
             case 'info':
               return `${chalk.greenBright(pino.levels.labels[logLevel])}`;
             case 'warn':

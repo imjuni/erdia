@@ -1,15 +1,16 @@
-import { DataSource } from 'typeorm';
 import { TextDecoder } from 'util';
 
-export default function getDatabaseName(dataSource: DataSource): string {
-  const nameFromOption = dataSource.options.database;
+export default function getDatabaseName(dataSource: {
+  options: { database: string | Uint8Array | undefined };
+}): string {
+  const name = dataSource.options.database;
 
-  if (typeof nameFromOption === 'string') {
-    return nameFromOption;
+  if (typeof name === 'string') {
+    return name;
   }
 
-  if (nameFromOption instanceof Uint8Array) {
-    return new TextDecoder().decode(nameFromOption);
+  if (name instanceof Uint8Array) {
+    return new TextDecoder().decode(name);
   }
 
   return 'default';

@@ -1,16 +1,5 @@
+import getPlainRelationType from '@common/getPlainRelationType';
 import IRelationData from '@typeorm/interface/IRelationData';
-
-function getPlainRelationType(relationType: IRelationData['relationType']) {
-  if (relationType === 'one-to-one') {
-    return 'one-to-one';
-  }
-
-  if (relationType === 'many-to-many') {
-    return 'many-to-many';
-  }
-
-  return 'one-to-many';
-}
 
 export default function getRelationHash(
   relationData: Pick<IRelationData, 'entityName' | 'inverseEntityName' | 'relationType'>,

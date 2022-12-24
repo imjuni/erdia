@@ -3,7 +3,7 @@
 
 if [ -d "$HOME/.nvs" ] ; then
   [[ -f "$HOME/.nvs/nvs.sh" ]] && . "$HOME/.nvs/nvs.sh"
-fi;
+fi
 
 green='\033[0;32m'
 yellow='\033[0;33m'

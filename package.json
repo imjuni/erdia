@@ -7,7 +7,7 @@
     "prettier": "just --config ./.configs/just.config.ts prettier",
     "dev": "ts-node src/cli.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "test": "jest --runInBand --coverage ",
+    "test": "jest --coverage ",
     "build": "just --config ./.configs/just.config.ts build",
     "clean": "just --config ./.configs/just.config.ts clean",
     "dts-bundle": "just --config ./.config/just.config.ts dts-bundle",
