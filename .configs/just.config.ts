@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import execa from 'execa';
 import { logger, option, series, task } from 'just-task';
+import readPkg from 'read-pkg';
 
 function splitArgs(args: string): string[] {
   return args
@@ -101,7 +102,31 @@ task('+pub', async () => {
 
   logger.info('+pub', cmd, option);
 
-  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+      RELEASE_MODE: 'true',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
+});
+
+task('unpub', async () => {
+  const packageJson = readPkg.sync();
+  const cmd = 'npm';
+  const option = `unpublish ${packageJson.name}@${packageJson.version} --registry http://localhost:8901 --force`;
+
+  logger.info('Publish package to verdaccio: ', cmd, option);
+
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+      RELEASE_MODE: 'true',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
 });
 
 task('+pub:prod', async () => {
@@ -110,7 +135,14 @@ task('+pub:prod', async () => {
 
   logger.info('+pub:prod', cmd, option);
 
-  await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
+  await execa(cmd, splitArgs(option), {
+    env: {
+      NODE_ENV: 'production',
+      RELEASE_MODE: 'true',
+    },
+    stderr: process.stderr,
+    stdout: process.stdout,
+  });
 });
 
 task('lint', async () => {
@@ -176,3 +208,4 @@ task('rollup:dev', series('clean', 'lint', '+rollup:dev'));
 task('rollup:prod', series('clean', 'lint', '+rollup:prod'));
 task('pub', series('clean', '+rollup:prod', '+pub'));
 task('pub:prod', series('clean', '+rollup:prod', '+pub:prod'));
+task('repub', series('unpub', 'pub'));
