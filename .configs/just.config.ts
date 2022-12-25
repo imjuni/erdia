@@ -65,11 +65,11 @@ task('+dts-bundle', async () => {
   await execa(cmd, splitArgs(option), { stderr: process.stderr, stdout: process.stdout });
 });
 
-task('+webpack:prod', async () => {
-  const cmd = 'webpack';
-  const option = '--config ./.configs/webpack.config.prod.js';
+task('+rollup:dev', async () => {
+  const cmd = 'rollup';
+  const option = '--config ./.configs/rollup.config.dev.ts --configPlugin ts --bundleConfigAsCjs';
 
-  logger.info('+webpack:prod', cmd, option);
+  logger.info('Rollup: ', cmd, option);
 
   await execa(cmd, splitArgs(option), {
     env: {
@@ -80,11 +80,11 @@ task('+webpack:prod', async () => {
   });
 });
 
-task('+webpack:dev', async () => {
-  const cmd = 'webpack';
-  const option = '--config ./.configs/webpack.config.dev.js';
+task('+rollup:prod', async () => {
+  const cmd = 'rollup';
+  const option = '--config ./.configs/rollup.config.prod.ts --configPlugin ts --bundleConfigAsCjs';
 
-  logger.info('+webpack:dev', cmd, option);
+  logger.info('Rollup: ', cmd, option);
 
   await execa(cmd, splitArgs(option), {
     env: {
@@ -172,7 +172,7 @@ task('dds', series('clean:doc', '+do-dev-svg'));
 task('ddn', series('clean:doc', '+do-dev-png'));
 
 task('build', series('clean', '+build'));
-task('webpack:dev', series('clean', 'lint', '+webpack:dev', '+dts-bundle', 'clean:dts'));
-task('webpack:prod', series('clean', 'lint', '+webpack:prod', '+dts-bundle', 'clean:dts'));
-task('pub', series('clean', '+webpack:prod', '+dts-bundle', 'clean:dts', '+pub'));
-task('pub:prod', series('clean', '+webpack:prod', '+dts-bundle', 'clean:dts', '+pub:prod'));
+task('rollup:dev', series('clean', 'lint', '+rollup:dev'));
+task('rollup:prod', series('clean', 'lint', '+rollup:prod'));
+task('pub', series('clean', '+rollup:prod', '+pub'));
+task('pub:prod', series('clean', '+rollup:prod', '+pub:prod'));

@@ -1,4 +1,5 @@
 import IErdiaImageOption from '@config/interface/IErdiaImageOption';
+import applyPrettier from '@creator/applyPretter';
 import htmlMermaidTemplate from '@template/htmlMermaidTemplate';
 import htmlTemplate from '@template/htmlTemplate';
 import getFilename from '@tool/getFilename';
@@ -8,8 +9,7 @@ import del from 'del';
 import fs from 'fs';
 import { atOrUndefined, isEmpty, isError } from 'my-easy-fp';
 import path from 'path';
-import puppeteer from 'puppeteer';
-import applyPrettier from './applyPretter';
+import * as puppeteer from 'puppeteer';
 
 const log = logger();
 

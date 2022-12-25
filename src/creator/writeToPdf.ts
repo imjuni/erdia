@@ -1,5 +1,6 @@
 import IErdiaPDFOption from '@config/interface/IErdiaPDFOption';
 import TOutputComponent from '@config/interface/TOutputComponent';
+import applyPrettier from '@creator/applyPretter';
 import htmlMermaidTemplate from '@template/htmlMermaidTemplate';
 import htmlTemplate from '@template/htmlTemplate';
 import getFilename from '@tool/getFilename';
@@ -9,8 +10,7 @@ import del from 'del';
 import fs from 'fs';
 import { atOrUndefined, isEmpty, isError, isNotEmpty } from 'my-easy-fp';
 import path from 'path';
-import puppeteer from 'puppeteer';
-import applyPrettier from './applyPretter';
+import * as puppeteer from 'puppeteer';
 
 const log = logger();
 
