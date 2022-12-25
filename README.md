@@ -4,6 +4,12 @@ ERdia is create ER Diagram and Database schema table using by TypeORM and mermia
 
 [![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true) [![Github Star](https://img.shields.io/github/stars/imjuni/erdia.svg?style=popout)](https://github.com/imjuni/erdia) [![Github Issues](https://img.shields.io/github/issues-raw/imjuni/erdia.svg)](https://github.com/imjuni/erdia/issues) [![NPM version](https://img.shields.io/npm/v/erdia.svg)](https://www.npmjs.com/package/erdia) [![License](https://img.shields.io/npm/l/erdia.svg)](https://github.com/imjuni/erdia/blob/master/LICENSE)
 
+Automate your database ER diagram drawing!
+
+![Erdia showcase](./assets/erdia-showcase.gif)
+
+![Erdia showcase](./assets/erdiagram.png)
+
 ## Install
 
 ```sh
@@ -22,33 +28,9 @@ erdia html -d [your dataSource path] -o table.html -o erdiagram.html
 
 ## Example
 
-### ER diagram
-
-![Example ER diagram](https://github.com/imjuni/erdia/blob/master/assets/erdiagram.png)
-
-### Database schema table
-
-```md
-# user (User)
-
-| Name       | Name of Entity | Type        | Attribute Key | Comment                     |
-| :--------- | :------------- | :---------- | :-----------: | :-------------------------- |
-| id         | id             | number      |      PK       |                             |
-| photoId    | photo          | number      |      FK       |                             |
-| lastName   | lastName       | varchar(64) |               |                             |
-| isActive   | isActive       | boolean     |               | line1<br />line2<br />line3 |
-| first_name | firstName      | string      |               | user firstname              |
-```
-
-#### user (User)
-
-| Name       | Name of Entity | Type        | Attribute Key | Comment                      |
-| :--------- | :------------- | :---------- | :-----------: | :--------------------------- |
-| id         | id             | number      |      PK       |                              |
-| photoId    | photo          | number      |      FK       |                              |
-| lastName   | lastName       | varchar(64) |               |                              |
-| isActive   | isActive       | boolean     |               | line1<br />line2<br /> line3 |
-| first_name | firstName      | string      |               | user firstname               |
+- [ER diagram png image format](./assets/erdiagram.png)
+- [ER diagram pdf format](./assets/erdiagram.pdf)
+- [Entity definition table pdf format](./assets/table.pdf)
 
 ## Output Format
 
