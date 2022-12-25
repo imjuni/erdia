@@ -17,11 +17,8 @@ export default [
     output: [
       {
         format: 'cjs',
-        file: 'dist/cjs/cli.js',
-      },
-      {
-        format: 'esm',
-        file: 'dist/esm/cli.js',
+        file: 'dist/cli.js',
+        banner: '#!/usr/bin/env node',
       },
     ],
     plugins: [
