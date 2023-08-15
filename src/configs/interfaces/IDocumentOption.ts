@@ -20,5 +20,5 @@ export default interface IDocumentOption extends ICommonOption {
    *
    * @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
    * */
-  theme: 'default' | 'forest' | 'dark' | 'neutral' | 'null';
+  theme: 'default' | 'forest' | 'dark' | 'neutral';
 }

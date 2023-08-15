@@ -3,6 +3,7 @@ import commonOptionBuilder from '#cli/builders/commonOptionBuilder';
 import documentOptionBuilder from '#cli/builders/documentOptionBuilder';
 import buildDocumentCommandHandler from '#cli/commands/buildDocumentCommandHandler';
 import cleanDocumentCommandHandler from '#cli/commands/cleanDocumentCommandHandler';
+import initDocumentCommandHandler from '#cli/commands/initDocumentCommandHandler';
 import { CE_COMMAND_LIST } from '#configs/const-enum/CE_COMMAND_LIST';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import type ICommonOption from '#configs/interfaces/ICommonOption';
@@ -52,11 +53,26 @@ const cleanCmdModule: CommandModule<ICommonOption, ICommonOption> = {
   },
 };
 
+const initCmdModule: CommandModule<{}, {}> = {
+  command: CE_COMMAND_LIST.INIT,
+  aliases: CE_COMMAND_LIST.INIT_ALIAS,
+  describe: 'create `.erdiarc` configuration',
+  handler: async () => {
+    try {
+      await initDocumentCommandHandler();
+    } catch (caught) {
+      const err = isError(caught, new Error('unknown error raised'));
+      consola.error(err);
+    }
+  },
+};
+
 const parser = yargs(process.argv.slice(2));
 
 parser
   .command(buildCmdModule as CommandModule<{}, IBuildCommandOption>)
   .command(cleanCmdModule as CommandModule<{}, ICommonOption>)
+  .command(initCmdModule as CommandModule<{}, ICommonOption>)
   .demandCommand()
   .recommendCommands()
   .config(preLoadConfig())

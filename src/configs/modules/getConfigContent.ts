@@ -1,31 +1,13 @@
+import { CE_DEFAULT_VALUE } from '#configs/const-enum/CE_DEFAULT_VALUE';
 import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
-import htmlDefaultConfig from '#configs/htmlDefaultConfig';
-import imageDefaultConfig from '#configs/imageDefaultConfig';
-import type { IInitDocAnswer, IInitImageAnswer } from '#configs/interfaces/InquirerAnswer';
-import markdownDefaultConfig from '#configs/markdownDefaultConfig';
-import pdfDefaultConfig from '#configs/pdfDefaultConfig';
-import consola from 'consola';
+import type { IInitDocAnswer } from '#configs/interfaces/InquirerAnswer';
+import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
+import evaluateTemplate from '#tools/evaluateTemplate';
 import Fuse from 'fuse.js';
 import globby from 'globby';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
-import { bignumber } from 'mathjs';
-
-function getOutputFilename(components: CE_OUTPUT_COMPONENT[], extname: string) {
-  if (components.includes('er') && components.includes('table')) {
-    return components.map((component) => (component === 'er' ? `"erdiagram.${extname}"` : `"entity.${extname}"`));
-  }
-
-  if (components.includes('er')) {
-    return [`"erdiagram.${extname}"`];
-  }
-
-  if (components.includes('table')) {
-    return [`"erdiagram.${extname}"`];
-  }
-
-  throw new Error('invalid components name!');
-}
+import getAutoCompleteSource from './getAutoCompleteSource';
 
 export default async function getConfigContent() {
   /**
@@ -49,49 +31,42 @@ export default async function getConfigContent() {
     dot: true,
   });
 
-  const fuse = new Fuse(sourceFiles, { includeScore: true });
+  const directories = await globby(['**'], {
+    cwd: process.cwd(),
+    onlyDirectories: true,
+    dot: true,
+  });
 
-  const fuzzyScoreLimit = 50;
+  const sourceFilesFuse = new Fuse(sourceFiles, { includeScore: true });
+  const directoryFuse = new Fuse(directories, { includeScore: true });
+
   inquirer.registerPrompt('autocomplete', inquirerPrompt);
 
-  const dataSourceFileAnswer = await inquirer.prompt<{ dataSourceFile: string }>([
+  const answer = await inquirer.prompt<IInitDocAnswer>([
     {
       type: 'autocomplete',
       name: 'dataSourceFile',
       message: 'Select a dataSource file: ',
-      source: (_answersSoFar: unknown, input: string | undefined) => {
-        const safeInput = input === undefined || input === null ? '' : input;
-
-        return fuse
-          .search(safeInput)
-          .map((matched) => {
-            return {
-              ...matched,
-              oneBased: bignumber(1)
-                .sub(bignumber(matched.score ?? 0))
-                .mul(100)
-                .floor()
-                .div(100)
-                .toNumber(),
-              percent: bignumber(1)
-                .sub(bignumber(matched.score ?? 0))
-                .mul(10000)
-                .floor()
-                .div(100)
-                .toNumber(),
-            };
-          })
-          .filter((matched) => matched.percent > fuzzyScoreLimit)
-          .sort((l, r) => r.percent - l.percent)
-          .map((matched) => matched.item);
-      },
+      source: getAutoCompleteSource(sourceFilesFuse, CE_DEFAULT_VALUE.DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT),
     },
-  ]);
-
-  const answer = await inquirer.prompt<IInitDocAnswer | IInitImageAnswer>([
+    {
+      type: 'autocomplete',
+      name: 'output',
+      message: 'Select directory for output files: ',
+      source: getAutoCompleteSource(directoryFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
+    },
     {
       type: 'list',
-      name: 'documentType',
+      name: 'projectName',
+      message: 'Select output type: ',
+      choices: [
+        { name: 'database: document name came from database name', value: 'db' },
+        { name: 'application: document name came from name in package.json', value: 'app' },
+      ],
+    },
+    {
+      type: 'list',
+      name: 'format',
       message: 'Select output type: ',
       choices: [
         { name: 'html', value: 'html' },
@@ -109,6 +84,7 @@ export default async function getConfigContent() {
         { name: 'forest', value: 'forest' },
         { name: 'dark', value: 'dark' },
         { name: 'neutral', value: 'neutral' },
+        { name: 'base', value: 'base' },
       ],
     },
     {
@@ -119,11 +95,11 @@ export default async function getConfigContent() {
         ...[CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER].map((component) =>
           component === CE_OUTPUT_COMPONENT.ER
             ? { name: 'ER diagram', value: 'er', checked: true }
-            : { name: 'Entity schema table', value: 'table', checked: true },
+            : { name: 'Entity specification table', value: 'table', checked: true },
         ),
       ],
-      when: (answerForWhen: IInitDocAnswer | IInitImageAnswer) => {
-        return answerForWhen.documentType !== 'image';
+      when: (answerForWhen: IInitDocAnswer) => {
+        return answerForWhen.format !== 'image';
       },
     },
     {
@@ -134,47 +110,14 @@ export default async function getConfigContent() {
         { name: 'svg', checked: true },
         { name: 'png', checked: false },
       ],
-      when: (answerForWhen: IInitDocAnswer | IInitImageAnswer) => {
-        return answerForWhen.documentType === 'image';
+      when: (answerForWhen: IInitDocAnswer) => {
+        return answerForWhen.format === 'image';
       },
     },
   ]);
 
-  consola.debug(`answer: ${answer.documentType}`);
-
-  if (answer.documentType === 'image') {
-    const jsoncConfigContent = imageDefaultConfig({
-      output: `"erdiagram.${answer.imageFormat}"`,
-      dataSourceFilePath: dataSourceFileAnswer.dataSourceFile,
-      imageFormat: answer.imageFormat,
-      theme: answer.theme,
-    });
-
-    return jsoncConfigContent;
-  }
-
-  const configTemplate = (() => {
-    if (answer.documentType === 'html') {
-      return htmlDefaultConfig;
-    }
-
-    if (answer.documentType === 'md') {
-      return markdownDefaultConfig;
-    }
-
-    if (answer.documentType === 'pdf') {
-      return pdfDefaultConfig;
-    }
-
-    throw new Error('invalid document type');
-  })();
-
-  const jsoncConfigContent = configTemplate({
-    output: getOutputFilename(answer.components, answer.documentType).join(', '),
-    dataSourceFilePath: dataSourceFileAnswer.dataSourceFile,
-    components: answer.components.map((component) => `"${component}"`).join(', '),
-    theme: answer.theme,
+  const file = await evaluateTemplate(CE_TEMPLATE_NAME.CONFIG_JSON, {
+    config: { ...answer, config: CE_DEFAULT_VALUE.CONFIG_FILE_NAME },
   });
-
-  return jsoncConfigContent;
+  return file;
 }

@@ -1,3 +1,4 @@
+import buildConfig from '#template/config/build-command';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
 import htmlDocument from '#template/html/document';
 import htmlToC from '#template/html/document-toc';
@@ -49,6 +50,8 @@ const defaultTemplates: Record<string, string> = {
   [CE_TEMPLATE_NAME.PDF_MERMAID_SCRIPT]: pdfMermaidScript,
   [CE_TEMPLATE_NAME.PDF_STYLE]: pdfStyle,
   [CE_TEMPLATE_NAME.PDF_TABLE]: pdfTable,
+
+  [CE_TEMPLATE_NAME.CONFIG_JSON]: buildConfig,
 };
 
 export default defaultTemplates;
