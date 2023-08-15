@@ -4,7 +4,7 @@ import applyPrettier from '#creators/applyPretter';
 import consola from 'consola';
 import fs from 'fs';
 
-export default async function initDocumentCommandHandler() {
+export default async function initConfigCommandHandler() {
   const rawConfig = await getConfigContent();
   const prettiered = await applyPrettier(rawConfig, 'json');
 

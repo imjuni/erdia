@@ -18,6 +18,10 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       type: 'string',
       default: CE_OUTPUT_FORMAT.HTML,
     })
+    .option('template-path', {
+      describe: 'template file path',
+      type: 'string',
+    })
     .option('theme', {
       describe: 'mermaid.js plugin theme configuration. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
       choices: ['default', 'forest', 'dark', 'neutral', 'null'],

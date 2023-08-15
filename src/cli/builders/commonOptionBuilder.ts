@@ -1,16 +1,12 @@
+import outputOptionBuilder from '#cli/builders/outputOptionBuilder';
 import type { Argv } from 'yargs';
 
 export default function commonOptionBuilder<T>(args: Argv<T>) {
   // option
-  args
+  outputOptionBuilder(args)
     .option('config', {
       alias: 'c',
       describe: 'file path of configuration',
-      type: 'string',
-    })
-    .option('output', {
-      alias: 'o',
-      describe: 'output file name',
       type: 'string',
     })
     .option('data-source-path', {

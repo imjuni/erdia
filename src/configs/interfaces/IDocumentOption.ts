@@ -6,6 +6,9 @@ export default interface IDocumentOption extends ICommonOption {
   /** type of generated document */
   components: CE_OUTPUT_COMPONENT[];
 
+  /** custom template file path. `erdia` are using [EJS](https://ejs.co/) template engine */
+  templatePath?: string;
+
   /**
    * output format of generated documents
    * - html
