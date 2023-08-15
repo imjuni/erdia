@@ -6,6 +6,9 @@ export const CE_DEFAULT_VALUE = {
   HTML_MERMAID_FILENAME: 'mermaid.html',
 
   MARKDOWN_FILENAME: 'erdia.md',
+
+  DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT: 50,
+  OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT: 50,
 } as const;
 
 export type CE_DEFAULT_VALUE = (typeof CE_DEFAULT_VALUE)[keyof typeof CE_DEFAULT_VALUE];

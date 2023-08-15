@@ -25,6 +25,8 @@ export const CE_TEMPLATE_NAME = {
   PDF_MERMAID_SCRIPT: 'pdf/mermaid-script',
   PDF_STYLE: 'pdf/style',
   PDF_TABLE: 'pdf/table',
+
+  CONFIG_JSON: 'config/json',
 } as const;
 
 export type CE_TEMPLATE_NAME = (typeof CE_TEMPLATE_NAME)[keyof typeof CE_TEMPLATE_NAME];

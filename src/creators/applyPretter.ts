@@ -3,7 +3,7 @@ import { isError } from 'my-easy-fp';
 
 export default async function applyPrettier(
   document: string,
-  format: 'html' | 'md',
+  format: 'html' | 'md' | 'json',
   configPath?: string,
 ): Promise<string> {
   try {
@@ -12,7 +12,7 @@ export default async function applyPrettier(
 
     const formatted = await prettier.format(document, {
       ...(prettierConfig ?? {}),
-      parser: format === 'md' ? 'markdown' : 'html',
+      parser: format === 'md' ? 'markdown' : format,
     });
 
     return formatted;
