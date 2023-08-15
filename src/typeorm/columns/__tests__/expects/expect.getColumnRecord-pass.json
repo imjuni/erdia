@@ -1,0 +1,86 @@
+[
+  {
+    "$kind": "column",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "firstName",
+    "dbName": "first_name",
+    "attributeKey": [],
+    "isNullable": "",
+    "columnType": "varchar",
+    "charset": "utf8mb4",
+    "columnTypeWithLength": "varchar(256)",
+    "comment": "user firstname",
+    "weight": 743020.17
+  },
+  {
+    "$kind": "column",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "id",
+    "dbName": "id",
+    "attributeKey": [
+      "PK"
+    ],
+    "isNullable": "",
+    "columnType": "int",
+    "charset": "",
+    "columnTypeWithLength": "int",
+    "comment": "",
+    "weight": 20331017.22
+  },
+  {
+    "$kind": "column",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "isActive",
+    "dbName": "is_active",
+    "attributeKey": [],
+    "isNullable": "",
+    "columnType": "boolean",
+    "charset": "",
+    "columnTypeWithLength": "boolean",
+    "comment": "line1<br />line2<br />line3",
+    "weight": 736017.07
+  },
+  {
+    "$kind": "column",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "lastName",
+    "dbName": "last_name",
+    "attributeKey": [],
+    "isNullable": "",
+    "columnType": "varchar",
+    "charset": "utf8mb4",
+    "columnTypeWithLength": "varchar(256)",
+    "comment": "",
+    "weight": 743014.25
+  },
+  {
+    "$kind": "column",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "photo",
+    "dbName": "photo_id",
+    "attributeKey": [
+      "FK"
+    ],
+    "isNullable": "nullable",
+    "columnType": "int",
+    "charset": "",
+    "columnTypeWithLength": "int",
+    "comment": "",
+    "weight": 10331010.18
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_license",
+    "name": "License",
+    "dbName": "tbl_license",
+    "hasRelation": true
+  },
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_organization",
+    "name": "Organization",
+    "dbName": "tbl_organization",
+    "hasRelation": true
+  },
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_photo",
+    "name": "Photo",
+    "dbName": "tbl_photo",
+    "hasRelation": true
+  },
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_mtm_license_organization",
+    "name": "tbl_mtm_license_organization",
+    "dbName": "tbl_mtm_license_organization",
+    "hasRelation": false
+  },
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_mtm_license_organization",
+    "name": "tbl_mtm_license_organization",
+    "dbName": "tbl_mtm_license_organization",
+    "hasRelation": false
+  },
+  {
+    "$kind": "entity",
+    "version": "1.0.0",
+    "createdAt": "2023-01-01T11:22:33.000+09:00",
+    "updatedAt": "2023-01-02T11:22:33.000+09:00",
+    "entity": "tbl_user",
+    "name": "User",
+    "dbName": "tbl_user",
+    "hasRelation": true
+  }
+]

@@ -184,7 +184,7 @@ describe('dedupeManaToManyRelationRecord', () => {
     const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
     const deduped = dedupeManaToManyRelationRecord(relations);
 
-    if (share.expect === false) {
+    if (share.expect) {
       fs.writeFileSync(
         path.join(__dirname, 'expects', `${expectFileName}.json`),
         fastSafeStringify(deduped, undefined, 2),

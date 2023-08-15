@@ -110,8 +110,8 @@ sqlite3.db
 test.html
 test.md
 
-expect.*.json
 .erdiarc
 erdia-docs
 template/**/*.ejs
 template2/
+**/.DS_Store

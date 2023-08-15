@@ -1,0 +1,47 @@
+{
+  "type": "pass",
+  "pass": [
+    {
+      "version": "1.0.0",
+      "createdAt": "2023-01-01T11:22:33.000+09:00",
+      "updatedAt": "2023-01-02T11:22:33.000+09:00",
+      "$kind": "relation",
+      "entity": "tbl_license",
+      "name": "License",
+      "dbName": "tbl_license",
+      "inverseEntityName": "Organization",
+      "inverseEntityDBName": "tbl_organization",
+      "joinColumnName": "license_id",
+      "joinPropertyName": "license_id",
+      "relationHash": "dGJsX2xpY2Vuc2U6dGJsX29yZ2FuaXphdGlvbjptYW55LXRvLW1hbnk=",
+      "joinColumnOne": false,
+      "joinColumnNullable": true,
+      "inverseJoinColumnNullable": true,
+      "inverseJoinColumnOne": false,
+      "relationType": "many-to-many",
+      "order": 1,
+      "isDuplicate": false
+    },
+    {
+      "version": "1.0.0",
+      "createdAt": "2023-01-01T11:22:33.000+09:00",
+      "updatedAt": "2023-01-02T11:22:33.000+09:00",
+      "$kind": "relation",
+      "entity": "tbl_mtm_license_organization",
+      "name": "tbl_mtm_license_organization",
+      "dbName": "tbl_mtm_license_organization",
+      "inverseEntityName": "License",
+      "inverseEntityDBName": "tbl_license",
+      "joinPropertyName": "license_id",
+      "joinColumnName": "license_id",
+      "joinColumnOne": false,
+      "joinColumnNullable": false,
+      "inverseJoinColumnOne": true,
+      "inverseJoinColumnNullable": false,
+      "relationType": "many-to-one",
+      "relationHash": "dGJsX210bV9saWNlbnNlX29yZ2FuaXphdGlvbjp0YmxfbXRtX2xpY2Vuc2Vfb3JnYW5pemF0aW9uOm9uZS10by1tYW55",
+      "isDuplicate": false,
+      "order": 2
+    }
+  ]
+}

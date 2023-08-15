@@ -1,0 +1,7 @@
+{
+  "inverseJoinColumnOne": false,
+  "inverseJoinColumnNullable": true,
+  "joinPropertyName": "organization_id",
+  "joinColumnName": "organization_id",
+  "isDuplicate": false
+}

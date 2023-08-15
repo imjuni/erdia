@@ -9,6 +9,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "schema:sync": "typeorm-ts-node-commonjs schema:sync -d ./examples/schema-type/dataSourceConfig.ts",
     "test": "jest --coverage --runInBand",
+    "test:silent": "LOG_LEVEL=info node --trace-warnings --no-compilation-cache node_modules/.bin/jest --coverage --silent",
     "test-with-vm": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage --runInBand",
     "build": "just --config ./.configs/just.config.ts build",
     "clean": "just --config ./.configs/just.config.ts clean",

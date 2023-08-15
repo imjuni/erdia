@@ -1,0 +1,8 @@
+{
+  "type": "fail",
+  "fail": {
+    "columnName": "N/A",
+    "entityName": "tbl_license",
+    "message": "tbl_license: raise error for test"
+  }
+}
