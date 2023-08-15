@@ -1,0 +1,7 @@
+{
+  "inverseJoinColumnOne": false,
+  "inverseJoinColumnNullable": true,
+  "joinPropertyName": "license_id",
+  "joinColumnName": "license_id",
+  "isDuplicate": false
+}

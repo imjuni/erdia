@@ -31,5 +31,6 @@
   "editor.formatOnSave": true,
   "files.eol": "\n",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.validate": ["typescript", "typescriptreact"]
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "markdown.extension.toc.levels": "2..6"
 }
