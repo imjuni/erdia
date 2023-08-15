@@ -104,6 +104,8 @@ dist
 .tern-port
 
 # Sqlite3 file
+examples/db/sqlite3.sqlite3
+examples/db/sqlite3.db
 sqlite3.db
 test.html
 test.md

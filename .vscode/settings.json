@@ -27,8 +27,9 @@
     ".erdiarc": "jsonc",
     "typedoc.json": "jsonc"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "files.eol": "\n",
-  "eslint.validate": ["typescript", "typescriptreact"],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": ["typescript", "typescriptreact"]
 }
