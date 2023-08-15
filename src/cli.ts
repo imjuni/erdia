@@ -1,9 +1,11 @@
 import buildOptionBuilder from '#cli/builders/buildOptionBuilder';
 import commonOptionBuilder from '#cli/builders/commonOptionBuilder';
 import documentOptionBuilder from '#cli/builders/documentOptionBuilder';
+import outputOptionBuilder from '#cli/builders/outputOptionBuilder';
 import buildDocumentCommandHandler from '#cli/commands/buildDocumentCommandHandler';
 import cleanDocumentCommandHandler from '#cli/commands/cleanDocumentCommandHandler';
-import initDocumentCommandHandler from '#cli/commands/initDocumentCommandHandler';
+import initConfigCommandHandler from '#cli/commands/initConfigCommandHandler';
+import templateDetachCommandHandler from '#cli/commands/templateDetachCommandHandler';
 import { CE_COMMAND_LIST } from '#configs/const-enum/CE_COMMAND_LIST';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import type ICommonOption from '#configs/interfaces/ICommonOption';
@@ -59,7 +61,26 @@ const initCmdModule: CommandModule<{}, {}> = {
   describe: 'create `.erdiarc` configuration',
   handler: async () => {
     try {
-      await initDocumentCommandHandler();
+      await initConfigCommandHandler();
+    } catch (caught) {
+      const err = isError(caught, new Error('unknown error raised'));
+      consola.error(err);
+    }
+  },
+};
+
+const templateCmdModule: CommandModule<Pick<ICommonOption, 'output'>, Pick<ICommonOption, 'output'>> = {
+  command: CE_COMMAND_LIST.TEMPLATE,
+  aliases: CE_COMMAND_LIST.TEMPLATE_ALIAS,
+  describe: 'detach template file',
+  builder: (argv) => {
+    const withCommonArgv = outputOptionBuilder<Pick<ICommonOption, 'output'>>(argv);
+    return withCommonArgv;
+  },
+  handler: async (argv) => {
+    try {
+      consola.info('template command');
+      await templateDetachCommandHandler(argv);
     } catch (caught) {
       const err = isError(caught, new Error('unknown error raised'));
       consola.error(err);
@@ -73,6 +94,7 @@ parser
   .command(buildCmdModule as CommandModule<{}, IBuildCommandOption>)
   .command(cleanCmdModule as CommandModule<{}, ICommonOption>)
   .command(initCmdModule as CommandModule<{}, ICommonOption>)
+  .command(templateCmdModule as CommandModule<{}, ICommonOption>)
   .demandCommand()
   .recommendCommands()
   .config(preLoadConfig())

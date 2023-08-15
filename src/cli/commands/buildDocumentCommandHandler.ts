@@ -11,6 +11,7 @@ import type IReason from '#creators/interfaces/IReason';
 import writeToImage from '#creators/writeToImage';
 import writeToPdf from '#creators/writeToPdf';
 import type IRelationRecord from '#databases/interfaces/IRelationRecord';
+import { loadTemplates } from '#template/loadTemplates';
 import getColumnRecord from '#typeorm/columns/getColumnRecord';
 import getEntityRecords from '#typeorm/entities/getEntityRecords';
 import getDataSource from '#typeorm/getDataSource';
@@ -36,6 +37,7 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
     }
 
     localDataSource = dataSource;
+    await loadTemplates(option);
 
     const metadata = await getMetadata(dataSource, option);
 

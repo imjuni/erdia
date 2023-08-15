@@ -2,7 +2,7 @@ import { CE_DEFAULT_VALUE } from '#configs/const-enum/CE_DEFAULT_VALUE';
 import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 import type { IInitDocAnswer } from '#configs/interfaces/InquirerAnswer';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
-import evaluateTemplate from '#tools/evaluateTemplate';
+import evaluateTemplate from '#template/evaluateTemplate';
 import Fuse from 'fuse.js';
 import globby from 'globby';
 import inquirer from 'inquirer';

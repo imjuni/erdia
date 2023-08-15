@@ -113,3 +113,5 @@ test.md
 expect.*.json
 .erdiarc
 erdia-docs
+template/**/*.ejs
+template2/

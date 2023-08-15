@@ -6,7 +6,7 @@ import applyPrettier from '#creators/applyPretter';
 import type getRenderData from '#creators/getRenderData';
 import type IErdiaDocument from '#creators/interfaces/IErdiaDocument';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
-import evaluateTemplate from '#tools/evaluateTemplate';
+import evaluateTemplate from '#template/evaluateTemplate';
 import getOutputDirectory from '#tools/files/getOutputDirectory';
 import consola from 'consola';
 import path from 'path';

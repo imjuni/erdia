@@ -23,7 +23,7 @@ import pdfMermaidScript from '#template/pdf/mermaid-script';
 import pdfStyle from '#template/pdf/style';
 import pdfTable from '#template/pdf/table';
 
-const defaultTemplates: Record<string, string> = {
+const defaultTemplates: Record<CE_TEMPLATE_NAME, string> = {
   [CE_TEMPLATE_NAME.HTML_DOCUMENT_TOC]: htmlToC,
   [CE_TEMPLATE_NAME.HTML_DOCUMENT]: htmlDocument,
   [CE_TEMPLATE_NAME.HTML_MERMAID_SCRIPT]: mermaidScript,
