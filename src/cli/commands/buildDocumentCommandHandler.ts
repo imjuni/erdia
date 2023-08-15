@@ -1,0 +1,105 @@
+import getDatabaseName from '#common/getDatabaseName';
+import getMetadata from '#common/getMetadata';
+import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
+import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
+import createHtml from '#creators/createHtml';
+import createImageHtml from '#creators/createImageHtml';
+import createMarkdown from '#creators/createMarkdown';
+import createPdfHtml from '#creators/createPdfHtml';
+import getRenderData from '#creators/getRenderData';
+import type IReason from '#creators/interfaces/IReason';
+import writeToImage from '#creators/writeToImage';
+import writeToPdf from '#creators/writeToPdf';
+import type IRelationRecord from '#databases/interfaces/IRelationRecord';
+import getColumnRecord from '#typeorm/columns/getColumnRecord';
+import getEntityRecords from '#typeorm/entities/getEntityRecords';
+import getDataSource from '#typeorm/getDataSource';
+import dedupeManaToManyRelationRecord from '#typeorm/relations/dedupeManaToManyRelationRecord';
+import getRelationRecords from '#typeorm/relations/getRelationRecords';
+import chalk from 'chalk';
+import consola from 'consola';
+import fastSafeStringify from 'fast-safe-stringify';
+import fs from 'fs';
+import { isError, isFalse } from 'my-easy-fp';
+import { isFail, isPass, type IFail, type IPass } from 'my-only-either';
+import type { DataSource } from 'typeorm';
+
+export default async function buildDocumentCommandHandler(option: IBuildCommandOption) {
+  let localDataSource: DataSource | undefined;
+
+  try {
+    const dataSource = await getDataSource(option);
+    await dataSource.initialize();
+
+    if (isFalse(dataSource.isInitialized)) {
+      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+    }
+
+    localDataSource = dataSource;
+
+    const metadata = await getMetadata(dataSource, option);
+
+    consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    consola.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
+
+    const entities = getEntityRecords(dataSource, metadata);
+    const columns = dataSource.entityMetadatas
+      .map((entity) => entity.columns.map((column) => getColumnRecord(column, option, metadata)))
+      .flat();
+    const relationRecords = getRelationRecords(dataSource, metadata);
+
+    const failRelations = relationRecords
+      .filter((relationRecord): relationRecord is IFail<IReason> => isFail(relationRecord))
+      .map((relationRecord) => relationRecord.fail)
+      .flat();
+
+    failRelations.forEach((relation) => consola.warn(relation.message));
+
+    const passRelations = relationRecords
+      .filter((relation): relation is IPass<IRelationRecord[]> => isPass(relation))
+      .map((relationRecord) => relationRecord.pass)
+      .flat();
+
+    const dedupedRelations = dedupeManaToManyRelationRecord(passRelations);
+    const renderData = await getRenderData([...entities, ...columns, ...dedupedRelations], metadata, option);
+
+    consola.info(`output format: ${option.format}`);
+
+    if (option.format === CE_OUTPUT_FORMAT.HTML) {
+      const documents = await createHtml(option, renderData);
+      await Promise.all(documents.map((document) => fs.promises.writeFile(document.filename, document.content)));
+      return documents.map((document) => document.filename);
+    }
+
+    if (option.format === CE_OUTPUT_FORMAT.MARKDOWN) {
+      const document = await createMarkdown(option, renderData);
+      await fs.promises.writeFile(document.filename, document.content);
+      return [document.filename];
+    }
+
+    if (option.format === CE_OUTPUT_FORMAT.PDF) {
+      const document = await createPdfHtml(option, renderData);
+      const filenames = await writeToPdf(document, option, renderData);
+      return filenames;
+    }
+
+    if (option.format === CE_OUTPUT_FORMAT.IMAGE) {
+      const document = await createImageHtml(option, renderData);
+      const filenames = await writeToImage(document, option, renderData);
+      return filenames;
+    }
+
+    return [];
+  } catch (caught) {
+    const err = isError(caught, new Error('unknown error raised from createHtmlDocCommand'));
+
+    consola.error(err.message);
+    consola.error(err.stack);
+
+    return [];
+  } finally {
+    if (localDataSource != null) {
+      await localDataSource.destroy();
+    }
+  }
+}

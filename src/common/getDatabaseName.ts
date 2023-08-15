@@ -1,9 +1,7 @@
 import { TextDecoder } from 'util';
 
-export default function getDatabaseName(dataSource: {
-  options: { database: string | Uint8Array | undefined };
-}): string {
-  const name = dataSource.options.database;
+export default function getDatabaseName(options: { database?: string | Uint8Array | undefined }): string {
+  const name = options.database;
 
   if (typeof name === 'string') {
     return name;

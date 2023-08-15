@@ -1,6 +1,6 @@
-import IRelationData from '@typeorm/interface/IRelationData';
+import type IRelationRecord from '#databases/interfaces/IRelationRecord';
 
-export default function getPlainRelationType(relationType: IRelationData['relationType']) {
+export default function getPlainRelationType(relationType: IRelationRecord['relationType']) {
   if (relationType === 'one-to-one') {
     return 'one-to-one';
   }
