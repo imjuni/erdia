@@ -1,10 +1,10 @@
 {
   "name": "erdia",
-  "version": "3.0.0-next.0",
+  "version": "3.0.0-next.1",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "scripts": {
     "clean": "rimraf dist artifact",
-    "clean:dts": "rimraf dist/cjs/src dist/esm/src dist/src",
+    "clean:dts": "rimraf dist/cjs/src dist/esm/src dist/src dist/examples",
     "debug": "node -r ts-node/register -r tsconfig-paths/register --inspect-brk src/cli.ts",
     "prettier": "prettier --write src/**/*.ts",
     "dev": "ts-node src/cli.ts",
@@ -18,8 +18,10 @@
     "build": "tsc --incremental",
     "prerollup:prod": "run-s clean lint",
     "rollup:prod": "rollup --config ./.configs/rollup.config.prod.ts --configPlugin typescript --bundleConfigAsCjs",
+    "postrollup:prod": "run-s clean:dts",
     "prerollup:dev": "run-s clean lint",
     "rollup:dev": "rollup --config ./.configs/rollup.config.dev.ts --configPlugin typescript --bundleConfigAsCjs",
+    "postrollup:dev": "run-s clean:dts",
     "prepub": "npm run rollup:prod",
     "pub": "NODE_ENV=production npm publish --registry http://localhost:8901 --force",
     "unpub": "npm unpublish erdia@latest --registry http://localhost:8901 --force",

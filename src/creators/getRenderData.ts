@@ -7,6 +7,7 @@ import type IRelationRecord from '#databases/interfaces/IRelationRecord';
 import type IRenderData from '#databases/interfaces/IRenderData';
 import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
 import alasql from 'alasql';
+import { compareVersions } from 'compare-versions';
 
 export default async function getRenderData(
   records: TDatabaseRecord[],
@@ -17,7 +18,11 @@ export default async function getRenderData(
     version: string;
   }[];
 
-  const versions = versionRows.map((version) => version.version);
+  const unSortedVersions = versionRows.map((version) => version.version);
+  const versions =
+    option.versionFrom === 'timestamp'
+      ? unSortedVersions.sort((l, r) => r.localeCompare(l))
+      : unSortedVersions.sort((l, r) => compareVersions(r, l));
 
   const renderDatas = await Promise.all(
     versions.map(async (version) => {

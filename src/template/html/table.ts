@@ -1,7 +1,7 @@
 const htmlTable = `<div class="container-fluid">
-  <% entities.forEach((entity) => { -%>
+  <% version.entities.forEach((entity) => { -%>
 <div class="container-fluid">
-  <h2 id="<%= entity.dbName %>-<%= entity.name %>" class="title is-3">
+  <h2 id="<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>" class="title is-3">
     <% if (entity.change === 'add') { -%>
     <span class="badge text-bg-success">Add</span><%= -%>
     <% } else if (entity.change === 'change') { -%>
@@ -11,7 +11,7 @@ const htmlTable = `<div class="container-fluid">
     <% } -%>
     <%= entity.dbName %>
     <small class="text-body-secondary">(<%= entity.name %>)</small>
-    <a class="anchor-link" href="#<%= entity.dbName %>-<%= entity.name %>" aria-label="Link to this section: <%= entity.dbName %>(<%= entity.name %>)">#</a>
+    <a class="anchor-link" href="#<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>" aria-label="Link to this section: <%= entity.dbName %>(<%= entity.name %>)">#</a>
   </h2>
 
   <table class="table table-striped table-hover">
@@ -38,12 +38,12 @@ const htmlTable = `<div class="container-fluid">
           <span class="badge text-bg-danger">Delete</span><%= -%>
           <% } -%>
         </td>
-        <td id="<%= entity.dbName %>-<%= entity.name %>-<%= column.dbName %>">
-          <a class="anchor-link" href="#<%= entity.dbName %>-<%= entity.name %>-<%= column.dbName %>" aria-label="Link to this section: <%= column.dbName %> in <%= entity.dbName %>(<%= entity.name %>)">#</a>
+        <td id="<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>-<%= column.dbName %>">
+          <a class="anchor-link" href="#<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>-<%= column.dbName %>" aria-label="Link to this section: <%= column.dbName %> in <%= entity.dbName %>(<%= entity.name %>)">#</a>
           <span><%= column.dbName %></span>
         </td>
-        <td id="<%= entity.dbName %>-<%= entity.name %>-<%= column.name %>">
-          <a class="anchor-link" href="#<%= entity.dbName %>-<%= entity.name %>-<%= column.name %>" aria-label="Link to this section: <%= column.name %> in <%= entity.dbName %>(<%= entity.name %>)">#</a>
+        <td id="<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>-<%= column.name %>">
+          <a class="anchor-link" href="#<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>-<%= column.name %>" aria-label="Link to this section: <%= column.name %> in <%= entity.dbName %>(<%= entity.name %>)">#</a>
           <span><%= column.name %></span>
         </td>
         <td><span><%= column.attributeKey.join(',') %></span></td>

@@ -67,7 +67,7 @@ const htmlDocument = `<!DOCTYPE html>
       hide
     <% } %>">
       <h2><%= metadata.name %> <%= version.version %></h2>
-      <%- include('${CE_TEMPLATE_NAME.HTML_TABLE}', { entities: version.entities, option, metadata }); %>
+      <%- include('${CE_TEMPLATE_NAME.HTML_TABLE}', { version, option, metadata }); %>
     </section>
   <% }) %>
   </div>
