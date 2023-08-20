@@ -1,3 +1,4 @@
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import type IEntityRecord from '#databases/interfaces/IEntityRecord';
 import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
 import getEntityName from '#typeorm/entities/getEntityName';
@@ -26,6 +27,7 @@ describe('getEntityName', () => {
       updatedAt: '2023-01-02T11:22:33.000+09:00',
       entity: 'i-am-table-name',
       dbName: 'i-am-db-name',
+      change: CE_CHANGE_KIND.NONE,
       name: 'i-am-property-name',
       hasRelation: false,
     } satisfies IEntityRecord);
@@ -41,6 +43,7 @@ describe('getEntityName', () => {
       updatedAt: '2023-01-02T11:22:33.000+09:00',
       entity: 'i-am-table-name',
       dbName: '',
+      change: CE_CHANGE_KIND.NONE,
       name: 'i-am-property-name',
       hasRelation: false,
     } satisfies IEntityRecord);
@@ -76,6 +79,7 @@ describe('getEntityPropertyName', () => {
       updatedAt: '2023-01-02T11:22:33.000+09:00',
       entity: 'i-am-table-name',
       dbName: 'i-am-table-name',
+      change: CE_CHANGE_KIND.NONE,
       name: 'i-am-property-name',
       hasRelation: false,
     } satisfies IEntityRecord);
@@ -91,6 +95,7 @@ describe('getEntityPropertyName', () => {
       updatedAt: '2023-01-02T11:22:33.000+09:00',
       entity: 'i-am-table-name',
       dbName: 'i-am-table-name',
+      change: CE_CHANGE_KIND.NONE,
       name: '',
       hasRelation: false,
     } satisfies IEntityRecord);

@@ -24,7 +24,7 @@ export default async function cleanDocumentCommandHandler(option: ICommonOption)
 
     localDataSource = dataSource;
 
-    const metadata = await getMetadata(dataSource, { ...option, usePkgVer: false, projectName: 'app' });
+    const metadata = await getMetadata(dataSource, { ...option, versionFrom: 'package.json', projectName: 'app' });
     const outputDir = await getOutputDirectory(option, getCwd(process.env));
 
     const filenames = [

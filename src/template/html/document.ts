@@ -13,7 +13,7 @@ const htmlDocument = `<!DOCTYPE html>
   <meta charset="utf-8"> 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  <%- include('${CE_TEMPLATE_NAME.HTML_STYLE}', { entities, option, metadata }); %>
+  <%- include('${CE_TEMPLATE_NAME.HTML_STYLE}', { versions, option, metadata }); %>
 </head>
 
 <body class="bg-body-tertiary">
@@ -44,14 +44,70 @@ const htmlDocument = `<!DOCTYPE html>
     </div>
   </nav>
 
-  <%- include('${CE_TEMPLATE_NAME.HTML_DOCUMENT_TOC}', { entities, option, metadata }); %>
+  <%- include('${CE_TEMPLATE_NAME.HTML_DOCUMENT_TOC}', { versions, option, metadata }); %>
 
   <div class="bd-cheatsheet container-fluid bg-body">
-    <section id="content">
-      <%- include('${CE_TEMPLATE_NAME.HTML_TABLE}', { entities, option, metadata }); %>
+    <section>
+      <select id="entity-version-select" class="form-select form-select-lg mb-3" aria-label="Large select example">
+      <% versions.forEach((version) => { %>
+        <option
+          value="<%= metadata.name %>-<%= version.version.replaceAll('.', '-') %>"
+          <% if (version.latest) { -%>
+            <%= " selected" -%>
+          <% } -%>
+        >
+          <%= metadata.name %> <%= version.version %>
+        </option>
+      <% }) %>
+      </select>
     </section>
+
+  <% versions.forEach((version) => { %>
+    <section class="entity-version-content-section content-<%= metadata.name %>-<%= version.version.replaceAll('.', '-') %> <% if (!version.latest) { -%>
+      hide
+    <% } %>">
+      <h2><%= metadata.name %> <%= version.version %></h2>
+      <%- include('${CE_TEMPLATE_NAME.HTML_TABLE}', { entities: version.entities, option, metadata }); %>
+    </section>
+  <% }) %>
   </div>
 </body>
+
+<script>
+var so = document.getElementById("entity-version-select");
+
+so.addEventListener('change', (e) => {
+  var sectionsForContentHide = document.getElementsByClassName('entity-version-content-section');
+  [].forEach.call(sectionsForContentHide, (element) => {
+    element.className = element.className
+      .split(' ')
+      .filter(className => className !== 'hide')
+      .concat(['hide'])
+      .join(' ');
+  });
+
+  var sectionsForTocHide = document.getElementsByClassName('entity-version-toc-section');
+  [].forEach.call(sectionsForTocHide, (element) => {
+    element.className = element.className
+      .split(' ')
+      .filter(className => className !== 'hide')
+      .concat(['hide'])
+      .join(' ');
+  });
+
+  var sectionsForContentReveal = document.querySelector('.content-' + e.target.value);
+  sectionsForContentReveal.className = sectionsForContentReveal.className
+    .split(' ')
+    .filter(className => className !== 'hide')
+    .join(' ');
+  
+  var sectionsForTocReveal = document.querySelector('.toc-' + e.target.value);
+  sectionsForTocReveal.className = sectionsForTocReveal.className
+    .split(' ')
+    .filter(className => className !== 'hide')
+    .join(' ');
+});
+</script>
 </html>`;
 
 export default htmlDocument;

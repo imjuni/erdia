@@ -3,17 +3,6 @@ import type { Argv } from 'yargs';
 export default function buildOptionBuilder<T>(args: Argv<T>) {
   // option
   args
-    .option('use-pkg-ver', {
-      describe: 'entity version set from package.json version field',
-      type: 'boolean',
-      default: false,
-    })
-    .option('project-name', {
-      describe: 'entity version set from package.json version field',
-      type: 'string',
-      choices: ['database', 'application'],
-      default: 'application',
-    })
     .option('prettier-config', {
       describe: 'prettier configuration file path',
       type: 'string',

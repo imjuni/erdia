@@ -10,7 +10,11 @@ import getRenderData from '#creators/getRenderData';
 import type IReason from '#creators/interfaces/IReason';
 import writeToImage from '#creators/writeToImage';
 import writeToPdf from '#creators/writeToPdf';
+import compareDatabase from '#databases/compareDatabase';
+import flushDatabase from '#databases/flushDatabase';
 import type IRelationRecord from '#databases/interfaces/IRelationRecord';
+import openDatabase from '#databases/openDatabase';
+import processDatabase from '#databases/processDatabase';
 import { loadTemplates } from '#template/loadTemplates';
 import getColumnRecord from '#typeorm/columns/getColumnRecord';
 import getEntityRecords from '#typeorm/entities/getEntityRecords';
@@ -43,6 +47,7 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
 
     consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
     consola.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
+    consola.info(`version: ${metadata.version}`);
 
     const entities = getEntityRecords(dataSource, metadata);
     const columns = dataSource.entityMetadatas
@@ -63,7 +68,15 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
       .flat();
 
     const dedupedRelations = dedupeManaToManyRelationRecord(passRelations);
-    const renderData = await getRenderData([...entities, ...columns, ...dedupedRelations], metadata, option);
+    const records = [...entities, ...columns, ...dedupedRelations];
+    const db = await openDatabase(option);
+    const processedDb = await processDatabase(metadata, db, option);
+    const compared = compareDatabase(metadata, records, processedDb.prev);
+
+    const nextDb = [...compared, ...processedDb.next];
+    const renderData = await getRenderData(nextDb, metadata, option);
+
+    await flushDatabase(option, nextDb);
 
     consola.info(`output format: ${option.format}`);
 

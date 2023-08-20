@@ -1,5 +1,6 @@
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import getColumnWeight from '#creators/columns/getColumnWeight';
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import type IColumnRecord from '#databases/interfaces/IColumnRecord';
 import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
 import getColumnAttributeKey from '#typeorm/columns/getColumnAttributeKey';
@@ -41,6 +42,7 @@ export default function getColumnRecord(
   const columnData: Omit<IColumnRecord, 'weight'> = {
     $kind: 'column',
     ...metadata,
+    change: CE_CHANGE_KIND.ADD,
     entity: entityName,
     name: propertyName,
     dbName: columnName,

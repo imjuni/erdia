@@ -5,7 +5,7 @@ import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 export const buildOption: IBuildCommandOption = {
   $kind: 'build',
   config: '',
-  usePkgVer: false,
+  versionFrom: 'package.json',
   projectName: 'app',
   output: undefined,
   components: [],

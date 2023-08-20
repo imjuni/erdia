@@ -1,3 +1,4 @@
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import type IRelationRecord from '#databases/interfaces/IRelationRecord';
 import dedupeManaToManyRelationRecord from '#typeorm/relations/dedupeManaToManyRelationRecord';
 import fastSafeStringify from 'fast-safe-stringify';
@@ -17,6 +18,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_user',
     name: 'User',
     dbName: 'tbl_user',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'Photo',
     inverseEntityDBName: 'tbl_photo',
     joinColumnName: 'photo_id',
@@ -38,6 +40,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_user',
     name: 'User',
     dbName: 'tbl_user',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'License',
     inverseEntityDBName: 'tbl_license',
     joinColumnName: 'user_id',
@@ -59,6 +62,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_photo',
     name: 'Photo',
     dbName: 'tbl_photo',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'User',
     inverseEntityDBName: 'tbl_user',
     joinColumnName: 'photo_id',
@@ -80,6 +84,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_license',
     name: 'License',
     dbName: 'tbl_license',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'User',
     inverseEntityDBName: 'tbl_user',
     joinColumnName: 'user_id',
@@ -101,6 +106,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_license',
     name: 'License',
     dbName: 'tbl_license',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'Organization',
     inverseEntityDBName: 'tbl_organization',
     joinColumnName: 'license_id',
@@ -122,6 +128,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_mtm_license_organization',
     name: 'tbl_mtm_license_organization',
     dbName: 'tbl_mtm_license_organization',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'License',
     inverseEntityDBName: 'tbl_license',
     joinPropertyName: 'license_id',
@@ -143,6 +150,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_organization',
     name: 'Organization',
     dbName: 'tbl_organization',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'License',
     inverseEntityDBName: 'tbl_license',
     joinColumnName: 'organization_id',
@@ -164,6 +172,7 @@ const relations: IRelationRecord[] = [
     entity: 'tbl_mtm_license_organization',
     name: 'tbl_mtm_license_organization',
     dbName: 'tbl_mtm_license_organization',
+    change: CE_CHANGE_KIND.NONE,
     inverseEntityName: 'Organization',
     inverseEntityDBName: 'tbl_organization',
     joinPropertyName: 'organization_id',

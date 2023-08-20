@@ -3,17 +3,6 @@ import type IDocumentOption from '#configs/interfaces/IDocumentOption';
 export default interface IBuildCommandOption extends IDocumentOption {
   $kind: 'build';
 
-  /** document version using package.json version or timestamp */
-  usePkgVer: boolean;
-
-  /**
-   * kind of document name
-   *
-   * - db: database name from TypeORM
-   * - app: application name from package.json
-   * */
-  projectName: 'db' | 'app';
-
   /** prettier config path */
   prettierConfig?: string;
 

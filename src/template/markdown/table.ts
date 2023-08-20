@@ -1,4 +1,4 @@
-const table = `## Entities
+const table = `## <%= metadata.version %> Entities
 <% entities.forEach((entity) => { %>
 ### <%= entity.dbName %>(<%= entity.name %>)
 
