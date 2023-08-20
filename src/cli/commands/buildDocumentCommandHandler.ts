@@ -1,5 +1,6 @@
 import getDatabaseName from '#common/getDatabaseName';
 import getMetadata from '#common/getMetadata';
+import { CE_MERMAID_THEME } from '#configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import createHtml from '#creators/createHtml';
@@ -33,6 +34,8 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
   let localDataSource: DataSource | undefined;
 
   try {
+    consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+
     const dataSource = await getDataSource(option);
     await dataSource.initialize();
 
@@ -45,9 +48,10 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
 
     const metadata = await getMetadata(dataSource, option);
 
-    consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
-    consola.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
+    consola.success('connection initialized');
     consola.info(`version: ${metadata.version}`);
+
+    consola.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
 
     const entities = getEntityRecords(dataSource, metadata);
     const columns = dataSource.entityMetadatas
@@ -69,6 +73,10 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
 
     const dedupedRelations = dedupeManaToManyRelationRecord(passRelations);
     const records = [...entities, ...columns, ...dedupedRelations];
+
+    consola.success('complete extraction');
+    consola.info('Database open and processing');
+
     const db = await openDatabase(option);
     const processedDb = await processDatabase(metadata, db, option);
     const compared = compareDatabase(metadata, records, processedDb.prev);
@@ -77,12 +85,23 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
     const renderData = await getRenderData(nextDb, metadata, option);
 
     await flushDatabase(option, nextDb);
+    consola.success('Database open and processing completed');
 
     consola.info(`output format: ${option.format}`);
 
     if (option.format === CE_OUTPUT_FORMAT.HTML) {
+      const imageOption: IBuildCommandOption = {
+        ...option,
+        format: CE_OUTPUT_FORMAT.IMAGE,
+        imageFormat: 'svg',
+        theme: CE_MERMAID_THEME.DARK,
+      };
       const documents = await createHtml(option, renderData);
+      const imageDocument = await createImageHtml(imageOption, renderData);
+
+      await writeToImage(imageDocument, imageOption, renderData);
       await Promise.all(documents.map((document) => fs.promises.writeFile(document.filename, document.content)));
+
       return documents.map((document) => document.filename);
     }
 

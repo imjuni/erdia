@@ -54,11 +54,23 @@ const mermaid = `<!DOCTYPE html>
         <a class="anchor-link" href="#entity-relationship-mermiad-diagram" aria-label="Link to this section: Entity Relationship Diagram">#</a>
       </h2>
 
+      <h3 class="title is-4">Diagram</h3>
       <pre class="mermaid">
       <% versions.filter((version) => version.latest).forEach((version) => { -%>
       <%- include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities: version.entities, option, metadata }); %>
       <% }) -%>
       </pre>
+
+      <h3 class="title is-4">
+        <a class="anchor-link" href="/<%= metadata.name %>.svg" target="_blank" aria-label="Link to this section: Entity Relationship Diagram Image">Image</a>
+      </h3>
+    </section>
+
+    <section>
+      <h2 id="entity-relationship-mermiad-diagram" class="title is-3">
+        ER Diagram Link
+        <a class="anchor-link" href="/<%= metadata.name %>.svg" aria-label="Link to this section: Entity Relationship Diagram">#</a>
+      </h2>
     </section>
 
     <div class="mx-auto p-2" style="width: 100%;"></div>

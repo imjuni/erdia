@@ -1,3 +1,4 @@
+import type { CE_MERMAID_THEME } from '#configs/const-enum/CE_MERMAID_THEME';
 import type { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 import type { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import type { CE_PROJECT_NAME_FROM } from '#configs/const-enum/CE_PROJECT_NAME_FROM';
@@ -41,5 +42,5 @@ export default interface IDocumentOption extends ICommonOption {
    *
    * @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
    * */
-  theme: 'default' | 'forest' | 'dark' | 'neutral';
+  theme: CE_MERMAID_THEME;
 }
