@@ -1,4 +1,5 @@
 import { CE_ENTITY_VERSION_FROM } from '#configs/const-enum/CE_ENTITY_VERSION_FROM';
+import { CE_MERMAID_THEME } from '#configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import { CE_PROJECT_NAME_FROM } from '#configs/const-enum/CE_PROJECT_NAME_FROM';
@@ -43,8 +44,15 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
     })
     .option('theme', {
       describe: 'mermaid.js plugin theme configuration. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
-      choices: ['default', 'forest', 'dark', 'neutral', 'null'],
-      default: 'dark',
+      choices: [
+        CE_MERMAID_THEME.DEFAULT,
+        CE_MERMAID_THEME.DARK,
+        CE_MERMAID_THEME.FOREST,
+        CE_MERMAID_THEME.DARK,
+        CE_MERMAID_THEME.NEUTRAL,
+        CE_MERMAID_THEME.NULL,
+      ],
+      default: CE_MERMAID_THEME.DARK,
       type: 'string',
     });
 

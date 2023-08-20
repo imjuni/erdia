@@ -26,21 +26,17 @@ Automate your database ER diagram drawing!
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Showcase](#showcase)
 - [Getting started](#getting-started)
 - [How it works?](#how-it-works)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Requirement](#requirement)
 - [Example](#example)
+  - [Showcase](#showcase)
+  - [Documents](#documents)
 - [Output Format](#output-format)
+- [Template](#template)
 - [TypeScript and Re-Map Paths](#typescript-and-re-map-paths)
-
-## Showcase
-
-![Erdia showcase](./assets/erdia-showcase.gif)
-
-![Erdia showcase](./assets/erdiagram.png)
 
 ## Getting started
 
@@ -71,8 +67,16 @@ D-->H[image]
 
 ## Installation
 
+installation
+
 ```basn
 npm i erdia --save-dev
+```
+
+initialization
+
+```basn
+npx erdia init
 ```
 
 ## Usage
@@ -87,9 +91,14 @@ erdia build -d [your dataSource path] -o dbdoc --format html
 
 ## Example
 
+### Showcase
+
+![Erdia showcase](./assets/erdia-showcase.gif)
+
+### Documents
+
 - [ER diagram png image format](./assets/erdiagram.png)
-- [ER diagram pdf format](./assets/erdiagram.pdf)
-- [Entity definition table pdf format](./assets/table.pdf)
+- [ER diagram & table pdf format](./assets/erdiagram.pdf)
 
 ## Output Format
 
@@ -100,10 +109,20 @@ ERdia support html, markdown, pdf, svg, png. Database entity specification table
 erdia build -d [your dataSourcePath] -o db.pdf --format pdf
 ```
 
+## Template
+
+`erdia` use EJS template for entity specification document and ER diagram. Template easily detach from erdia.
+
+```bash
+npx erdia template
+```
+
+Detached template can change and every document customizable. The template can be found [here](https://github.com/imjuni/erdia/tree/master/src/template).
+
 ## TypeScript and Re-Map Paths
 
 ```sh
-ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
+TS_NODE_PROJECT="./tsconfig.json" ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
 ```
 
 ERdia load dataSource file using TypeORM module. If you use module resolution need additional parameter need for successfully execution. You have to pass tsconfig-paths/register. See ts-node [paths and baseUrl](https://github.com/TypeStrong/ts-node#paths-and-baseurl) section
