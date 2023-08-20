@@ -8,7 +8,7 @@ const documentToC = `<aside class="bd-aside sticky-xl-top text-body-secondary al
       <ul class="list-unstyled">
         <% version.entities.forEach((entity) => { %>
         <li class="my-2">
-          <a class="anchor-link" href="#<%= entity.dbName %>-<%= entity.name %>" aria-label="Link to this section: <%= entity.dbName %>(<%= entity.name %>)">
+          <a class="anchor-link" href="#<%= version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>" aria-label="Link to this section: <%= entity.dbName %>(<%= entity.name %>)">
             <%= entity.dbName %>
           </a>
         </li>
