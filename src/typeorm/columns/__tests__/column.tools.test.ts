@@ -1,4 +1,5 @@
 import { CE_COLUMN_ATTRIBUTE } from '#configs/const-enum/CE_COLUMN_ATTRIBUTE';
+import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import getColumnAttributeKey from '#typeorm/columns/getColumnAttributeKey';
 import getColumnType from '#typeorm/columns/getColumnType';
 import getComment from '#typeorm/columns/getComment';
@@ -23,22 +24,22 @@ describe('getIsNullable', () => {
 
 describe('getComment', () => {
   test('undefined comment', () => {
-    const comment = getComment({ format: 'html' }, undefined);
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.HTML }, undefined);
     expect(comment).toEqual('');
   });
 
   test('markdown comment', () => {
-    const comment = getComment({ format: 'markdown' }, 'i-am-comment');
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.MARKDOWN }, 'i-am-comment');
     expect(comment).toEqual('i-am-comment');
   });
 
   test('html comment', () => {
-    const comment = getComment({ format: 'html' }, 'i-am-comment\ni-am-comment');
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.HTML }, 'i-am-comment\ni-am-comment');
     expect(comment).toEqual('i-am-comment<br />i-am-comment');
   });
 
   test('pdf comment', () => {
-    const comment = getComment({ format: 'pdf' }, 'i-am-comment\ni-am-comment');
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.PDF }, 'i-am-comment\ni-am-comment');
     expect(comment).toEqual('i-am-comment<br />i-am-comment');
   });
 });

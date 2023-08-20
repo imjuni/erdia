@@ -1,5 +1,5 @@
 const htmlTable = `<div class="container-fluid">
-  <% entities.forEach((entity) => { -%>
+<%- it.entities.forEach((entity) => { %>
 <div class="container-fluid">
   <h2 id="<%= entity.dbName %>-<%= entity.name %>" class="title is-3">
   <%= entity.dbName %>
