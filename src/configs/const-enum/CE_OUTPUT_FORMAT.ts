@@ -1,6 +1,6 @@
 export const CE_OUTPUT_FORMAT = {
   HTML: 'html',
-  MARKDOWN: 'markdown',
+  MARKDOWN: 'md',
   PDF: 'pdf',
   IMAGE: 'image',
 } as const;

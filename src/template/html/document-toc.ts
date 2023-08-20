@@ -1,6 +1,6 @@
 const documentToC = `<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start mb-3 mb-xl-5 px-2">
-<% versions.forEach((version) => { %>
-  <section class="entity-version-toc-section toc-<%= metadata.name %>-<%= version.version.replaceAll('.', '-') %> <% if (!version.latest) { -%>
+<% it.versions.forEach((version) => { %>
+  <section class="entity-version-toc-section toc-<%= it.metadata.name %>-<%= version.version.replaceAll('.', '-') %> <% if (!version.latest) { -%>
     hide
   <% } -%>">
     <h2 class="h6 pt-4 pb-3 mb-4 border-bottom"><%= version.version %></h2>

@@ -1,18 +1,15 @@
 import { getTemplates } from '#template/loadTemplates';
 import consola from 'consola';
-import { compile } from 'ejs';
+import { Eta } from 'eta';
 import { isError } from 'my-easy-fp';
+
+const eta = new Eta({ views: 'erdia' });
+eta.resolvePath = (templatePath: string) => templatePath;
+eta.readFile = (templatePath: string) => getTemplates()[templatePath];
 
 export default async function evaluateTemplate<T extends object>(name: string, data: T) {
   try {
-    const templates = getTemplates();
-    const template = templates[name];
-
-    const renderer = compile(template, {
-      includer: (op, _pp) => ({ template: templates[op] }),
-    });
-
-    const rendered = renderer(data);
+    const rendered = eta.render(name, data);
     return rendered;
   } catch (caught) {
     const err = isError(caught, new Error('raise error from evaluateTemplate'));

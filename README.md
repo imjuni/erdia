@@ -14,12 +14,12 @@ ERdia is create ER Diagram and Entity schema specification using by TypeORM and 
 
 Why `ERdia` ?
 
-`erdia` automatic create DB entity specification, ER diagram. DB entity specification, ER diagram important document that are maintainence and develop process. But not so easy keep freshness. `erdia` help to easily keep freshness and easily create beautiful document using [EJS](https://ejs.co) template engine.
+`erdia` automatic create DB entity specification, ER diagram. DB entity specification, ER diagram important document that are maintainence and develop process. But not so easy keep freshness. `erdia` help to easily keep freshness and easily create beautiful document using [ETA](https://eta.js.org/) template engine.
 
 Summary,
 
 1. ER diagram create using [mermaid.js](http://mermaid.js.org/) syntax.
-1. Every document create using EJS template engine
+1. Every document create using ETA template engine
 1. Only need TypeORM configuration
 
 Automate your database ER diagram drawing!
@@ -59,7 +59,7 @@ direction TB
 C[TypeORM Entity]-->|extract <br/>entity specification|B[erdia]
 end
 erdia-->|extract <br />specification|D
-D[EJS<br />template<br />engine]-->E[html]
+D[ETA<br />template<br />engine]-->E[html]
 D-->F[markdown]
 D-->G[pdf]
 D-->H[image]
@@ -111,7 +111,7 @@ erdia build -d [your dataSourcePath] -o db.pdf --format pdf
 
 ## Template
 
-`erdia` use EJS template for entity specification document and ER diagram. Template easily detach from erdia.
+`erdia` use ETA template for entity specification document and ER diagram. Template easily detach from erdia.
 
 ```bash
 npx erdia template
