@@ -98,7 +98,6 @@ parser
   .demandCommand()
   .recommendCommands()
   .config(preLoadConfig())
-  // .check(isValidConfig)
   .help();
 
 const handler = async () => {
