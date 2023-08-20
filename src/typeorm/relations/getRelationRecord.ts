@@ -1,5 +1,6 @@
 import getRelationHash from '#common/getRelationHash';
 import type IReason from '#creators/interfaces/IReason';
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
 import type IRelationRecord from '#databases/interfaces/IRelationRecord';
 import getEntityName from '#typeorm/entities/getEntityName';
@@ -55,6 +56,7 @@ export default function getRelationRecord(
         entity: entityDBName,
         name: entityPropertyName,
         dbName: entityDBName,
+        change: CE_CHANGE_KIND.ADD,
         inverseEntityName: inverseEntityPropertyName,
         inverseEntityDBName,
         joinColumnName,
@@ -75,6 +77,7 @@ export default function getRelationRecord(
         entity: joinEntityName,
         name: joinEntityPropertyName,
         dbName: joinEntityName,
+        change: CE_CHANGE_KIND.ADD,
         inverseEntityName: entityPropertyName,
         inverseEntityDBName: entityDBName,
         joinPropertyName,
@@ -103,6 +106,7 @@ export default function getRelationRecord(
         entity: entityDBName,
         name: entityPropertyName,
         dbName: entityDBName,
+        change: CE_CHANGE_KIND.ADD,
         inverseEntityName: inverseEntityPropertyName,
         inverseEntityDBName,
         joinColumnName,

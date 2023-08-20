@@ -11,10 +11,10 @@ const mermaid = `<!DOCTYPE html>
   <title><% metadata.name %> entity specification</title>
   <% } %>
   <meta charset="utf-8">
-  <%- include('${CE_TEMPLATE_NAME.HTML_MERMAID_SCRIPT}', { entities, option, metadata }); %>
+  <%- include('${CE_TEMPLATE_NAME.HTML_MERMAID_SCRIPT}', { versions, option, metadata }); %>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  <%- include('${CE_TEMPLATE_NAME.HTML_STYLE}', { entities, option, metadata }); %>
+  <%- include('${CE_TEMPLATE_NAME.HTML_STYLE}', { versions, option, metadata }); %>
 </head>
 
 <body class="bg-body-tertiary">
@@ -45,7 +45,7 @@ const mermaid = `<!DOCTYPE html>
     </div>
   </nav>
 
-  <%- include('${CE_TEMPLATE_NAME.HTML_MERMAID_TOC}', { entities, option, metadata }); %>
+  <%# include('${CE_TEMPLATE_NAME.HTML_MERMAID_TOC}', { entities, option, metadata }); %>
 
   <div class="bd-cheatsheet container-fluid bg-body">
     <section id="content">
@@ -55,7 +55,9 @@ const mermaid = `<!DOCTYPE html>
       </h2>
 
       <pre class="mermaid">
-        <%- include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities, option, metadata }); %>
+      <% versions.filter((version) => version.latest).forEach((version) => { -%>
+      <%- include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities: version.entities, option, metadata }); %>
+      <% }) -%>
       </pre>
     </section>
 
@@ -67,8 +69,10 @@ const mermaid = `<!DOCTYPE html>
         <a class="anchor-link" href="#entity-relationship-mermiad-source-code" aria-label="Link to this section: Mermaid source code">#</a>
       </h2>
       
-      <textarea rows="10" class="form-control meramid-source-code">
-        <%- include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities, option, metadata }); %>
+      <textarea rows="10" class="form-control meramid-source-code"><%= -%>
+      <% versions.filter((version) => version.latest).forEach((version) => { -%>
+        <%- include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities: version.entities, option, metadata }); -%>
+      <% }) -%>
       </textarea>
     </section>
 

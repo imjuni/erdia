@@ -7,6 +7,9 @@ export const CE_DEFAULT_VALUE = {
 
   MARKDOWN_FILENAME: 'erdia.md',
 
+  DATABASE_FILENAME: 'erdiadb.json',
+  VERSION_FILENAME: '.erdiaverrc',
+
   DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT: 50,
   OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT: 50,
 } as const;

@@ -49,17 +49,29 @@ describe('getRelationHash', () => {
   });
 
   test('getRelationHash - one-to-many', () => {
-    const hash = getRelationHash({ entity: 'a', inverseEntityName: 'b', relationType: 'one-to-many' });
+    const hash = getRelationHash({
+      entity: 'a',
+      inverseEntityName: 'b',
+      relationType: 'one-to-many',
+    });
     expect('YTpiOm9uZS10by1tYW55').toEqual(hash);
   });
 
   test('getRelationHash - many-to-one', () => {
-    const hash = getRelationHash({ entity: 'a', inverseEntityName: 'b', relationType: 'many-to-one' });
+    const hash = getRelationHash({
+      entity: 'a',
+      inverseEntityName: 'b',
+      relationType: 'many-to-one',
+    });
     expect('YTpiOm9uZS10by1tYW55').toEqual(hash);
   });
 
   test('getRelationHash - many-to-many', () => {
-    const hash = getRelationHash({ entity: 'a', inverseEntityName: 'b', relationType: 'many-to-many' });
+    const hash = getRelationHash({
+      entity: 'a',
+      inverseEntityName: 'b',
+      relationType: 'many-to-many',
+    });
     expect('YTpiOm1hbnktdG8tbWFueQ==').toEqual(hash);
   });
 });

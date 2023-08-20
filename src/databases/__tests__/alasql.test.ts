@@ -1,3 +1,4 @@
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
 import alasql from 'alasql';
 
@@ -10,6 +11,7 @@ const db: TDatabaseRecord[] = [
     entity: 'tbl_license',
     name: 'tbl_license',
     dbName: 'License',
+    change: CE_CHANGE_KIND.NONE,
     hasRelation: false,
   },
 ];

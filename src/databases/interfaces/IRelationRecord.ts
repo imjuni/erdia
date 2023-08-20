@@ -1,4 +1,5 @@
 import type IBaseRecord from '#databases/interfaces/IBaseRecord';
+import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
 import type { RelationType } from 'typeorm/metadata/types/RelationTypes';
 
 export default interface IRelationRecord extends IBaseRecord {
@@ -38,4 +39,6 @@ export default interface IRelationRecord extends IBaseRecord {
 
   /** will be deduped */
   isDuplicate: boolean;
+
+  prev?: TDatabaseRecord;
 }

@@ -2,7 +2,7 @@ import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 
 const toc = `## Table Of Contents
 
-1. Entities
+1. <%= metadata.version %> Entities
 <% entities.forEach((entity, index) => { -%>
     <%= index + 1 %>. <%= entity.dbName %>(<%= entity.name %>)
 <% }) %><%= -%>

@@ -1,12 +1,13 @@
 import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 
-const documentToC = `<ul class="list-group list-group-flush">
+const documentToC = `<% versions.filter((version) => version.latest).forEach((version) => { %>
+<ul class="list-group list-group-flush">
   <li class="list-group-item">
     <a class="anchor-link" href="#entity-relationship-entities" aria-label="Link to this section: Entities">
-      Entities
+      <%= metadata.version %> Entities
     </a>
     <ul class="list-group list-group-flush">
-      <% entities.forEach((entity) => { %>
+      <% version.entities.forEach((entity) => { %>
       <li class="list-group-item">
         <a class="anchor-link" href="#<%= entity.dbName %>-<%= entity.name %>" aria-label="Link to this section: <%= entity.dbName %>(<%= entity.name %>)">
           <%= entity.dbName %>
@@ -22,6 +23,7 @@ const documentToC = `<ul class="list-group list-group-flush">
     </a>
   </li>
   <% } %>
-</ul>`;
+</ul>
+<% }) %>`;
 
 export default documentToC;

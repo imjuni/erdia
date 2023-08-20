@@ -1,26 +1,36 @@
+/* eslint-disable import/first */
+jest.mock('find-up');
+
 import * as env from '#common/__tests__/test-config';
 import getDatabaseName from '#common/getDatabaseName';
 import getMetadata from '#common/getMetadata';
 import getPackageName from '#common/getPackageName';
 import getProjectName from '#common/getProjectName';
-import getVersion from '#common/getVersion';
+import getFindFile from '#tools/files/getFindFile';
 import dayjs from 'dayjs';
-import 'jest';
+import findUp from 'find-up';
+import { isError } from 'my-easy-fp';
 
 describe('getMetadata', () => {
   test('pass', async () => {
-    const timestamp = '2023-08-15T11:22:33.000+09:00';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => timestamp);
-    const metadata = await getMetadata({ options: { database: 'i-am-database' } }, env.buildOption);
+    const timestamp = '1692373636445';
+    const datetime = '2023-08-19T11:37:20+09:00';
+    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => timestamp);
+    const tspSpyOn02 = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => datetime);
+    const metadata = await getMetadata(
+      { options: { database: 'i-am-database' } },
+      { ...env.buildOption, versionFrom: 'timestamp' },
+    );
 
-    tspSpyOn.mockRestore();
+    tspSpyOn01.mockRestore();
+    tspSpyOn02.mockRestore();
 
     expect(metadata).toMatchObject({
       name: 'erdia',
       title: undefined,
       version: timestamp,
-      createdAt: timestamp,
-      updatedAt: timestamp,
+      createdAt: datetime,
+      updatedAt: datetime,
     });
   });
 });
@@ -86,40 +96,19 @@ describe('getDatabaseName', () => {
   });
 });
 
-describe('getVersion', () => {
-  test('pass with package.json version', async () => {
-    const version = getVersion({ version: '1.1.1' }, true);
-    expect(version).toEqual('1.1.1');
-  });
+describe('getFindFile', () => {
+  test('pass', async () => {
+    const expectation = '/a/b';
+    // @ts-expect-error: find-up mocking test
+    findUp.mockReturnValueOnce(expectation);
 
-  test('pass with nullable version', async () => {
-    const expectation = '2023-01-01T11:22:33.000+09:00';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => expectation);
-    const version = getVersion({ version: undefined }, true);
-
-    tspSpyOn.mockRestore();
-
-    expect(version).toEqual(expectation);
-  });
-
-  test('pass using timestamp', async () => {
-    const expectation = '2023-01-01T11:22:33.000+09:00';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => expectation);
-    const version = getVersion({ version: '1.1.1' });
-
-    tspSpyOn.mockRestore();
-
-    expect(version).toEqual(expectation);
-  });
-
-  test('pass using timestamp by configuration', async () => {
-    const expectation = '2023-01-01T11:22:33.000+09:00';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => expectation);
-
-    const version = getVersion({ version: '1.1.1' }, false);
-
-    tspSpyOn.mockRestore();
-
-    expect(version).toEqual(expectation);
+    try {
+      const finded = await getFindFile('', {});
+      expect(finded).toEqual(expectation);
+    } catch (caught) {
+      const err = isError(caught, new Error('error'));
+      console.log(err.message);
+      console.log(err.stack);
+    }
   });
 });

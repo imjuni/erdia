@@ -120,6 +120,10 @@ const style = `<style>
         z-index: 1;
       }
     }
+
+    .hide {
+      display: none !important;
+    }
   </style>`;
 
 export default style;

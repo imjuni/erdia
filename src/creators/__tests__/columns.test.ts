@@ -1,4 +1,5 @@
 import getColumnWeight from '#creators/columns/getColumnWeight';
+import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
 import { consola } from 'consola';
 import type { DataSource } from 'typeorm';
 
@@ -20,6 +21,7 @@ test('get.column.weight', async () => {
     entity: 'testEntity',
     dbName: 'hello',
     name: 'hello',
+    change: CE_CHANGE_KIND.NONE,
     attributeKey: ['PK'],
     columnType: 'number',
     isNullable: 'nullable',
@@ -36,6 +38,7 @@ test('get.column.weight', async () => {
     entity: 'testEntity',
     name: 'hello',
     dbName: 'hello',
+    change: CE_CHANGE_KIND.NONE,
     attributeKey: ['FK'],
     columnType: 'varchar',
     isNullable: 'nullable',
@@ -52,6 +55,7 @@ test('get.column.weight', async () => {
     entity: 'testEntity',
     name: 'hello',
     dbName: 'hello',
+    change: CE_CHANGE_KIND.NONE,
     attributeKey: [],
     columnType: 'char',
     isNullable: 'nullable',
