@@ -23,6 +23,13 @@ const build = `{
   // erdia entity database file path
   "database-path": "<%= it.config.databasePath %>",
 
+  // erdia entity database file path
+<% if (it.config.routeBasePath != null) { %>
+  "route-base-path": "<%= it.config.routeBasePath %>",
+<% } else { %>
+  // "route-base-path": "",
+<% } %>
+
   // document version using package.json version or timestamp
   "version-from": "<%= it.config.versionFrom %>",
 
