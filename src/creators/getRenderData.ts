@@ -1,3 +1,4 @@
+import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import type IColumnRecord from '#databases/interfaces/IColumnRecord';
 import type IEntityRecord from '#databases/interfaces/IEntityRecord';
@@ -6,6 +7,7 @@ import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
 import type IRelationRecord from '#databases/interfaces/IRelationRecord';
 import type IRenderData from '#databases/interfaces/IRenderData';
 import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
+import getSlashEndRoutePath from '#tools/getSlashEndRoutePath';
 import alasql from 'alasql';
 import { compareVersions } from 'compare-versions';
 
@@ -57,6 +59,17 @@ export default async function getRenderData(
       return { version, entities: renderData, latest: version === metadata.version };
     }),
   );
+
+  if (option.format === CE_OUTPUT_FORMAT.HTML) {
+    return {
+      versions: renderDatas,
+      option: {
+        ...option,
+        routeBasePath: option.routeBasePath != null ? getSlashEndRoutePath(option.routeBasePath) : undefined,
+      },
+      metadata,
+    };
+  }
 
   return { versions: renderDatas, option, metadata };
 }

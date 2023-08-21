@@ -94,8 +94,10 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
         ...option,
         format: CE_OUTPUT_FORMAT.IMAGE,
         imageFormat: 'svg',
+        width: '200%',
         theme: CE_MERMAID_THEME.DARK,
       };
+
       const documents = await createHtml(option, renderData);
       await Promise.all(documents.map((document) => fs.promises.writeFile(document.filename, document.content)));
 
