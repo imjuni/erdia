@@ -1,6 +1,6 @@
-# ERdia
+# ERDIA
 
-ERdia is create ER Diagram and Entity schema specification using by TypeORM and mermiad.js
+erdia is create ER Diagram and Entity schema specification using by TypeORM and mermiad.js
 
 ![ts](https://flat.badgen.net/badge/Built%20With/TypeScript/blue)
 [![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true)
@@ -12,7 +12,7 @@ ERdia is create ER Diagram and Entity schema specification using by TypeORM and 
 [![codecov](https://codecov.io/gh/imjuni/fast-maker/branch/master/graph/badge.svg?token=YrUlnfDbso&style=flat-square)](https://codecov.io/gh/imjuni/fast-maker)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-Why `ERdia` ?
+Why `erdia` ?
 
 `erdia` automatic create DB entity specification, ER diagram. DB entity specification, ER diagram important document that are maintainence and develop process. But not so easy keep freshness. `erdia` help to easily keep freshness and easily create beautiful document using [ETA](https://eta.js.org/) template engine.
 
@@ -93,7 +93,7 @@ erdia build -d [your dataSource path] -o dbdoc --format html
 
 ### Showcase
 
-![Erdia showcase](./assets/erdia-showcase.gif)
+![erdia showcase](./assets/erdia-showcase.gif)
 
 ### Documents
 
@@ -102,7 +102,7 @@ erdia build -d [your dataSource path] -o dbdoc --format html
 
 ## Output Format
 
-ERdia support html, markdown, pdf, svg, png. Database entity specification table only support html, markdown, pdf format.
+`erdia` support html, markdown, pdf, svg, png. Database entity specification table only support html, markdown, pdf format.
 
 ```sh
 # PDF document generate
@@ -125,4 +125,4 @@ Detached template can change and every document customizable. The template can b
 TS_NODE_PROJECT="./tsconfig.json" ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
 ```
 
-ERdia load dataSource file using TypeORM module. If you use module resolution need additional parameter need for successfully execution. You have to pass tsconfig-paths/register. See ts-node [paths and baseUrl](https://github.com/TypeStrong/ts-node#paths-and-baseurl) section
+`erdia` load dataSource file using TypeORM module. If you use module resolution need additional parameter need for successfully execution. You have to pass tsconfig-paths/register. See ts-node [paths and baseUrl](https://github.com/TypeStrong/ts-node#paths-and-baseurl) section

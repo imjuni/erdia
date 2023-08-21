@@ -10,9 +10,10 @@ import path from 'path';
 
 export default async function templateDetachCommandHandler(option: Pick<ICommonOption, 'output'>) {
   const outputDir = await getOutputDirectory(option, getCwd(process.env));
+  const templateDir = path.join(outputDir, 'template');
 
   const writeFile = async (template: CE_TEMPLATE_NAME) => {
-    const filename = path.resolve(path.join(outputDir, 'template', `${template}.ejs`));
+    const filename = path.resolve(path.join(templateDir, `${template}.eta`));
     const dirname = await getDirname(filename);
 
     if (isFalse(await exists(dirname))) {
@@ -48,4 +49,6 @@ export default async function templateDetachCommandHandler(option: Pick<ICommonO
       CE_TEMPLATE_NAME.PDF_TABLE,
     ].map((template) => writeFile(template)),
   );
+
+  return templateDir;
 }

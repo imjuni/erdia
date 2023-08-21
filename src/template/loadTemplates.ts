@@ -1,10 +1,10 @@
 import type IDocumentOption from '#configs/interfaces/IDocumentOption';
+import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
 import defaultTemplates from '#template/defaultTemplates';
 import fs from 'fs';
 import { isTrue } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import path from 'path';
-import { CE_TEMPLATE_NAME } from './cosnt-enum/CE_TEMPLATE_NAME';
 
 const templates: Record<string, string> = { ...defaultTemplates };
 
@@ -44,7 +44,7 @@ export async function loadTemplates(option: Pick<IDocumentOption, 'templatePath'
       CE_TEMPLATE_NAME.PDF_STYLE,
       CE_TEMPLATE_NAME.PDF_TABLE,
     ].map(async (template) => {
-      const filename = path.resolve(path.join(templatePath, `${template}.ejs`));
+      const filename = path.resolve(path.join(templatePath, `${template}.eta`));
 
       if (isTrue(await exists(filename))) {
         const buf = await fs.promises.readFile(filename);

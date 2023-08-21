@@ -16,7 +16,7 @@ export default interface IDocumentOption extends ICommonOption {
    * */
   projectName: CE_PROJECT_NAME_FROM;
 
-  /** custom template file path. `erdia` are using [EJS](https://ejs.co/) template engine */
+  /** custom template file path. `erdia` are using [ETA](https://eta.js.org/) template engine */
   templatePath?: string;
 
   /** erdia entity database file path */

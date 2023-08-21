@@ -48,18 +48,45 @@ const htmlTable = `<div class="container-fluid">
         </td>
         <td><span><%= column.attributeKey.join(',') %></span></td>
         <td>
-          <% if (column.change !== 'change') { -%>
+        <% if (column.change !== 'change') { -%>
           <span><%= column.columnTypeWithLength %></span>
-          <% } else { -%>
+        <% } else { -%>
           <span><%= column.columnTypeWithLength %></span><br />
-            <% if (column.prev != null) { -%>
+          <% if (column.prev != null && column?.prev?.columnTypeWithLength) { -%>
           <span><del><%= column.prev.columnTypeWithLength %></del></span>
-            <% } -%>
           <% } -%>
+        <% } -%>
         </td>
-        <td><span><%= column.isNullable ? 'Nullable' : '' %></span></td>
-        <td><span><%= column.charset %></span></td>
-        <td><span><%= column.comment %></span></td>
+        <td>
+        <% if (column.change !== 'change') { -%>
+          <span><%= column.isNullable ? 'Nullable' : '' %></span>
+        <% } else { -%>
+          <span><%= column.isNullable ? 'Nullable' : '' %></span>
+          <% if (column.prev != null && column?.prev?.isNullable) { -%>
+            <span><del><%= column.prev.isNullable ? 'Nullable' : '' %></del></span>
+          <% } -%>
+        <% } -%>
+        </td>
+        <td>
+        <% if (column.change !== 'change') { -%>
+          <span><%= column.charset %></span>
+        <% } else { -%>
+          <span><%= column.charset %></span>
+          <% if (column.prev != null && column?.prev?.charset != null) { -%>
+          <span><del><%= column.prev.charset %></del></span>
+          <% } -%>
+        <% } -%>
+        </td>
+        <td>
+        <% if (column.change !== 'change') { -%>
+          <span><%= column.comment %></span>
+        <% } else { -%>
+          <span><%= column.comment %></span>
+          <% if (column.prev != null && column?.prev?.comment != null) { -%>
+          <span><del><%= column.prev.comment %></del></span>
+          <% } -%>
+        <% } -%>
+        </td>
       </tr>
       <% }) %>
     </tbody>
