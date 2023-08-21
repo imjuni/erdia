@@ -9,6 +9,9 @@ export default interface IBuildCommandOption extends IDocumentOption {
   /** title tag content that inside of html document */
   title?: string;
 
+  /** address of route base path for html document */
+  routeBasePath?: string;
+
   /**
    * ER diagram width, it will be set width css attribute
    * @format html, pdf, image

@@ -119,6 +119,27 @@ export default async function getConfigContent() {
     },
     {
       type: 'list',
+      name: 'isEnterRouteBasePath',
+      message: 'Want to enter route base path for html document? ',
+      default: false,
+      choices: [
+        { name: 'enter rotue base path', value: true },
+        { name: 'skip', value: false },
+      ],
+      when: (answerForWhen: IInitDocAnswer) => {
+        return answerForWhen.format === CE_OUTPUT_FORMAT.HTML;
+      },
+    },
+    {
+      type: 'input',
+      name: 'routeBasePath',
+      message: 'Enter your route base path: ',
+      when: (answerForWhen: IInitDocAnswer) => {
+        return answerForWhen.format === CE_OUTPUT_FORMAT.HTML && answerForWhen.isEnterRouteBasePath;
+      },
+    },
+    {
+      type: 'list',
       name: 'versionFrom',
       message: 'Select version extract style: ',
       choices: [

@@ -11,6 +11,8 @@ export interface IInitDocAnswer {
   templatePath?: string;
   isSelectDatabasePath: boolean;
   databasePath: string;
+  isEnterRouteBasePath: boolean;
+  routeBasePath?: string;
   projectName: CE_PROJECT_NAME_FROM;
   versionFrom: CE_ENTITY_VERSION_FROM;
   versionPath?: string;
