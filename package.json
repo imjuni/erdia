@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "scripts": {
     "clean": "rimraf dist artifact",
