@@ -46,13 +46,24 @@ const htmlTable = `<div class="container-fluid">
           <a class="anchor-link" href="#<%= it.version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>-<%= column.name %>" aria-label="Link to this section: <%= column.name %> in <%= entity.dbName %>(<%= entity.name %>)">#</a>
           <span><%= column.name %></span>
         </td>
-        <td><span><%= column.attributeKey.join(',') %></span></td>
+        <td>
+        <% if (column.change !== 'change') { -%>
+          <span><%= column.attributeKey.join(',') %></span>
+        <% } else { -%>
+          <span><%= column.attributeKey.join(',') %></span>
+          <br />
+          <% if (column.prev != null && column?.prev?.columnTypeWithLength && column.attributeKey.join(',') !== column?.prev?.attributeKey.join(',')) { -%>
+          <span><del><%= column.attributeKey.join(',') %></del></span>
+          <% } -%>
+        <% } -%>
+        </td>
         <td>
         <% if (column.change !== 'change') { -%>
           <span><%= column.columnTypeWithLength %></span>
         <% } else { -%>
-          <span><%= column.columnTypeWithLength %></span><br />
-          <% if (column.prev != null && column?.prev?.columnTypeWithLength) { -%>
+          <span><%= column.columnTypeWithLength %></span>
+          <br />
+          <% if (column.prev != null && column?.prev?.columnTypeWithLength && column.columnTypeWithLength !== column?.prev?.columnTypeWithLength) { -%>
           <span><del><%= column.prev.columnTypeWithLength %></del></span>
           <% } -%>
         <% } -%>
@@ -62,7 +73,8 @@ const htmlTable = `<div class="container-fluid">
           <span><%= column.isNullable ? 'Nullable' : '' %></span>
         <% } else { -%>
           <span><%= column.isNullable ? 'Nullable' : '' %></span>
-          <% if (column.prev != null && column?.prev?.isNullable) { -%>
+          <br />
+          <% if (column.prev != null && column?.prev?.isNullable && column.isNullable !== column?.prev?.isNullable) { -%>
             <span><del><%= column.prev.isNullable ? 'Nullable' : '' %></del></span>
           <% } -%>
         <% } -%>
@@ -72,7 +84,8 @@ const htmlTable = `<div class="container-fluid">
           <span><%= column.charset %></span>
         <% } else { -%>
           <span><%= column.charset %></span>
-          <% if (column.prev != null && column?.prev?.charset != null) { -%>
+          <br />
+          <% if (column.prev != null && column?.prev?.charset != null && column.charset !== column?.prev?.charset) { -%>
           <span><del><%= column.prev.charset %></del></span>
           <% } -%>
         <% } -%>
@@ -82,7 +95,8 @@ const htmlTable = `<div class="container-fluid">
           <span><%= column.comment %></span>
         <% } else { -%>
           <span><%= column.comment %></span>
-          <% if (column.prev != null && column?.prev?.comment != null) { -%>
+          <br />
+          <% if (column.prev != null && column?.prev?.comment != null && column.comment !== column?.prev?.comment) { -%>
           <span><del><%= column.prev.comment %></del></span>
           <% } -%>
         <% } -%>
