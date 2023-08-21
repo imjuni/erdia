@@ -13,7 +13,10 @@ export default async function createImageHtml(
   option: IBuildCommandOption,
   renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<IErdiaDocument> {
-  const rawHtml = await evaluateTemplate(CE_TEMPLATE_NAME.IMAGE_DOCUMENT, renderData);
+  const rawHtml = await evaluateTemplate(CE_TEMPLATE_NAME.IMAGE_DOCUMENT, {
+    ...renderData,
+    option: { ...renderData.option, width: '200vw' },
+  });
   const prettiedHtml = await applyPrettier(rawHtml, 'html');
   const outputDir = await getDirname(option.output ?? process.cwd());
   const tempFileName = path.join(outputDir, `${randomUUID()}.html`);

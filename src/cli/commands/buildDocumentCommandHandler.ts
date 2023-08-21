@@ -97,10 +97,12 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
         theme: CE_MERMAID_THEME.DARK,
       };
       const documents = await createHtml(option, renderData);
-      const imageDocument = await createImageHtml(imageOption, renderData);
-
-      await writeToImage(imageDocument, imageOption, renderData);
       await Promise.all(documents.map((document) => fs.promises.writeFile(document.filename, document.content)));
+
+      if (!option.skipImageInHtml) {
+        const imageDocument = await createImageHtml(imageOption, renderData);
+        await writeToImage(imageDocument, imageOption, renderData);
+      }
 
       return documents.map((document) => document.filename);
     }
