@@ -1,31 +1,48 @@
 const build = `{
   // directory for output files
-  "output": "<%= config.output %>",
+  "output": "<%= it.config.output %>",
 
   // typeorm dataSourcePath
-  "data-source-path": "<%= config.dataSourceFile %>",
+  "data-source-path": "<%= it.config.dataSourceFile %>",
 
   // type of generated document
-  "components": <%- JSON.stringify(config.components) %>,
+  "components": <%~ JSON.stringify(it.config.components) %>,
+
+  // kind of document name
+  // - db: database name from TypeORM
+  // - app: application name from package.json
+  "project-name": "<%= it.config.projectName %>",
+
+  // custom template file path. erdia are using [ETA](https://eta.js.org/) template engine
+  <% if (it.config.templatePath != null) { %>
+    "template-path": "<%= it.config.templatePath %>",
+  <% } else { %>
+    // "template-path": "",
+  <% } %>
+
+  // erdia entity database file path
+  "database-path": "<%= it.config.databasePath %>",
+
+  // document version using package.json version or timestamp
+  "version-from": "<%= it.config.versionFrom %>",
+
+  // If the versionFrom option set file, read the file from this path
+<% if (it.config.versionFrom != null) { %>
+  "version-path": "<%= it.config.versionPath %>",
+<% } else { %>
+  // "version-path": "",
+<% } %>
 
   // output format of generated documents
   // - html
   // - markdown
   // - pdf
   // - image
-  "format": "<%= config.format %>",
+  "format": "<%= it.config.format %>",
 
   // mermaid.js plugin theme configuration
   // @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
-  "theme": "<%= config.theme %>",
-
-  // document version using package.json version or timestamp
-  "use-pkg-ver": true,
-
-  // kind of document name
-  // - db: database name from TypeORM
-  // - app: application name from package.json
-  "project-name": "<%= config.projectName %>",
+  "theme": "<%= it.config.theme %>",
 
   // prettier config path
   // "prettier-config": "set your .prettierrc file path",
@@ -35,7 +52,7 @@ const build = `{
 
   // ER diagram width, it will be set width css attribute
   // @format pdf, image
-  <% if (config.format === 'pdf' || config.format === 'image') { -%>
+  <% if (it.config.format === 'pdf' || it.config.format === 'image') { -%>
   "width": "100%",
   <% } else { -%>
   // "width": "100%",
@@ -43,7 +60,7 @@ const build = `{
 
   // puppeteer viewport width
   // @format pdf, image
-  <% if (config.format === 'pdf' || config.format === 'image') { -%>
+  <% if (it.config.format === 'pdf' || it.config.format === 'image') { -%>
   "viewport-width": 1280,
   <% } else { -%>
   // "viewport-width": 1280,
@@ -51,7 +68,7 @@ const build = `{
 
   // puppeteer viewport height
   // @format pdf, image
-  <% if (config.format === 'pdf' || config.format === 'image') { -%>
+  <% if (it.config.format === 'pdf' || it.config.format === 'image') { -%>
   "viewport-height":  1440,
   <% } else { -%>
   // "viewport-height":  1440,
@@ -67,8 +84,8 @@ const build = `{
 
   // ER diagram export image file format
   // @format image
-  <% if (config.format === 'image') { %>
-  "image-format": "<%= config.imageFormat %>",
+  <% if (it.config.format === 'image') { %>
+  "image-format": "<%= it.config.imageFormat %>",
   <% } else { %>
   // "image-format": "svg",
   <% } %>
