@@ -1,9 +1,22 @@
 import getOutputDirectory from '#tools/files/getOutputDirectory';
 import getPuppeteerConfig from '#tools/getPuppeteerConfig';
+import getSlashEndRoutePath from '#tools/getSlashEndRoutePath';
 import fs from 'fs';
 import 'jest';
 import * as mnf from 'my-node-fp';
 import path from 'path';
+
+describe('getSlashEndRoutePath', () => {
+  test('pass - without slash', () => {
+    const result = getSlashEndRoutePath('https://test.com');
+    expect(result).toEqual('https://test.com/');
+  });
+
+  test('pass - with slash', () => {
+    const result = getSlashEndRoutePath('https://test.com/');
+    expect(result).toEqual('https://test.com/');
+  });
+});
 
 describe('getOutputDirectory', () => {
   test('pass - cwd', async () => {

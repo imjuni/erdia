@@ -20,7 +20,7 @@ const mermaid = `<!DOCTYPE html>
 <body class="bg-body-tertiary">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '/' %>"><%= it.metadata.name %></a>
+      <a class="navbar-brand" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath + 'index.html' : '/' %>"><%= it.metadata.name %></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -28,7 +28,7 @@ const mermaid = `<!DOCTYPE html>
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.TABLE}')) { %>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '/' %>">Entity</a>
+            <a class="nav-link" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath + 'index.html' : '/' %>">Entity</a>
           </li>
           <% } %>
           <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.ER}')) { %>
@@ -36,7 +36,7 @@ const mermaid = `<!DOCTYPE html>
             <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.TABLE}')) { %>
             <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '' %>/mermaid.html">ER Diagram</a>
             <% } else { %>
-            <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '#' %>/">ER Diagram</a>
+            <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath + 'index.html' : '#' %>/">ER Diagram</a>
             <% } %>
           </li>
           <% } %>
