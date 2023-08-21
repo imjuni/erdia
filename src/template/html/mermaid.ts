@@ -34,7 +34,7 @@ const mermaid = `<!DOCTYPE html>
           <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.ER}')) { %>
           <li class="nav-item">
             <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.TABLE}')) { %>
-            <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '' %>/mermaid.html">ER Diagram</a>
+            <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath : '' %>mermaid.html">ER Diagram</a>
             <% } else { %>
             <a class="nav-link active" aria-current="page" href="<%= it.option.routeBasePath != null ? it.option.routeBasePath + 'index.html' : '#' %>/">ER Diagram</a>
             <% } %>
