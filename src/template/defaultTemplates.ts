@@ -1,4 +1,4 @@
-import buildConfig from '#template/config/build-command';
+import buildConfig from '#template/config/init-command';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
 import htmlDocument from '#template/html/document';
 import htmlToC from '#template/html/document-toc';

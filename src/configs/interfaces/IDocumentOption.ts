@@ -22,6 +22,9 @@ export default interface IDocumentOption extends ICommonOption {
   /** erdia entity database file path */
   databasePath?: string;
 
+  /** skip image file attachment in html document */
+  skipImageInHtml?: boolean;
+
   /** document version using package.json version or timestamp */
   versionFrom: 'timestamp' | 'package.json' | 'file';
 

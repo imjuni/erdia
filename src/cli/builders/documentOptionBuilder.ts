@@ -15,6 +15,11 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       type: 'array',
       default: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER],
     })
+    .option('skip-image-in-html', {
+      describe: 'skip image file attachment in html document',
+      type: 'boolean',
+      default: false,
+    })
     .option('format', {
       describe: 'output format of generated documents',
       choices: [CE_OUTPUT_FORMAT.HTML, CE_OUTPUT_FORMAT.MARKDOWN, CE_OUTPUT_FORMAT.PDF, CE_OUTPUT_FORMAT.IMAGE],

@@ -63,16 +63,11 @@ const mermaid = `<!DOCTYPE html>
       <% }) -%>
       </pre>
 
+      <% if (!it.option.skipImageInHtml) { %>
       <h3 class="title is-4">
         <a class="anchor-link" href="/<%= it.metadata.name %>.svg" target="_blank" aria-label="Link to this section: Entity Relationship Diagram Image">Image</a>
       </h3>
-    </section>
-
-    <section>
-      <h2 id="entity-relationship-mermiad-diagram" class="title is-3">
-        ER Diagram Link
-        <a class="anchor-link" href="/<%= it.metadata.name %>.svg" aria-label="Link to this section: Entity Relationship Diagram">#</a>
-      </h2>
+      <% } %>
     </section>
 
     <div class="mx-auto p-2" style="width: 100%;"></div>

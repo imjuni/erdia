@@ -40,6 +40,9 @@ const build = `{
   // - image
   "format": "<%= it.config.format %>",
 
+  // skip image file attachment in html document
+  "skipImageInHtml": false,
+
   // mermaid.js plugin theme configuration
   // @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
   "theme": "<%= it.config.theme %>",
