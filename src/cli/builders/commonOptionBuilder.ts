@@ -6,12 +6,12 @@ export default function commonOptionBuilder<T>(args: Argv<T>) {
   outputOptionBuilder(args)
     .option('config', {
       alias: 'c',
-      describe: 'file path of configuration',
+      describe: 'define the path to to configuration file: .erdiarc',
       type: 'string',
     })
     .option('data-source-path', {
       alias: 'd',
-      describe: 'dataSource file path',
+      describe: 'define the path to TypeORM data source file',
       type: 'string',
     })
     .demandOption('data-source-path');

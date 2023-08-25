@@ -4,42 +4,43 @@ export default function buildOptionBuilder<T>(args: Argv<T>) {
   // option
   args
     .option('prettier-config', {
-      describe: 'prettier configuration file path',
+      describe: 'define the path to the prettier configuration file',
       type: 'string',
       default: undefined,
     })
     .option('title', {
-      describe: 'title tag content that inside of html document',
+      describe: 'define what will be written in the HTML document title tag',
       type: 'string',
       default: undefined,
     })
     .option('width', {
-      describe: 'ER diagram width, it will be set width css attribute',
+      describe: 'define the ER diagram width. The width is defined by the HTML document css attribute width',
       type: 'string',
       default: '100%',
     })
     .option('viewport-width', {
-      describe: 'puppeteer viewport width',
+      describe: 'define the viewport width to puppeteer. The width is defined by the HTML document css attribute width',
       type: 'number',
       default: 1280,
     })
     .option('viewport-height', {
-      describe: 'puppeteer viewport height',
+      describe:
+        'define the viewport height to puppeteer. The width is defined by the HTML document css attribute height',
       type: 'number',
       default: 720 * 2,
     })
     .option('puppeteer-config-path', {
-      describe: 'puppeteer config file path',
+      describe: 'define the path to puppeteer config file',
       type: 'string',
     })
     .option('image-format', {
-      describe: 'puppeteer config file path',
+      describe: 'define the format to image file',
       type: 'string',
       choices: ['svg', 'png'],
       default: 'svg',
     })
     .option('background-color', {
-      describe: "Background color. Example: transparent, red, '#F0F0F0'. Optional. Default: white",
+      describe: "define the background color to html documents. eg. transparent, red, '#F0F0F0'",
       type: 'string',
       default: 'white',
     });

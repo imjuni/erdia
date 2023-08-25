@@ -10,30 +10,31 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
   args
     .option('components', {
       alias: 't',
-      describe: 'output components of result type',
+      describe: 'define the output component to builded documents',
       choices: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER],
       type: 'array',
       default: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER],
     })
     .option('skip-image-in-html', {
-      describe: 'skip image file attachment in html document',
+      describe: 'enabling the this option will skip attaching the ER diagram image file to the html document',
       type: 'boolean',
       default: false,
     })
     .option('format', {
-      describe: 'output format of generated documents',
+      describe: 'define the output format to builded documents',
       choices: [CE_OUTPUT_FORMAT.HTML, CE_OUTPUT_FORMAT.MARKDOWN, CE_OUTPUT_FORMAT.PDF, CE_OUTPUT_FORMAT.IMAGE],
       type: 'string',
       default: CE_OUTPUT_FORMAT.HTML,
     })
     .option('project-name', {
-      describe: 'determine whether project name will come from the name in `package.json` or database name',
+      describe: 'define whether project name will come from the `package.json` name field or database name',
       type: 'string',
       choices: [CE_PROJECT_NAME_FROM.APPLICATION, CE_PROJECT_NAME_FROM.DATABASE],
       default: CE_PROJECT_NAME_FROM.APPLICATION,
     })
     .option('version-from', {
-      describe: 'document version using package.json version or timestamp',
+      describe:
+        'define whether document version will come from the `package.json` version field or specific file, timestamp',
       choices: [CE_ENTITY_VERSION_FROM.PACKAGE_JSON, CE_ENTITY_VERSION_FROM.FILE, CE_ENTITY_VERSION_FROM.TIMESTAMP],
       type: 'string',
       default: CE_ENTITY_VERSION_FROM.PACKAGE_JSON,
@@ -44,11 +45,11 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       default: undefined,
     })
     .option('template-path', {
-      describe: 'template file path',
+      describe: 'define the directory to ETA templates',
       type: 'string',
     })
     .option('theme', {
-      describe: 'mermaid.js plugin theme configuration. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
+      describe: 'define whether mermaid.js plugin theme. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
       choices: [
         CE_MERMAID_THEME.DEFAULT,
         CE_MERMAID_THEME.DARK,
