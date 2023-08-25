@@ -5,7 +5,7 @@ import outputOptionBuilder from '#cli/builders/outputOptionBuilder';
 import buildDocumentCommandHandler from '#cli/commands/buildDocumentCommandHandler';
 import cleanDocumentCommandHandler from '#cli/commands/cleanDocumentCommandHandler';
 import initConfigCommandHandler from '#cli/commands/initConfigCommandHandler';
-import templateDetachCommandHandler from '#cli/commands/templateDetachCommandHandler';
+import templateEjectCommandHandler from '#cli/commands/templateEjectCommandHandler';
 import { CE_COMMAND_LIST } from '#configs/const-enum/CE_COMMAND_LIST';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 import type ICommonOption from '#configs/interfaces/ICommonOption';
@@ -20,7 +20,7 @@ sourceMapSupport.install();
 const buildCmdModule: CommandModule<IBuildCommandOption, IBuildCommandOption> = {
   command: CE_COMMAND_LIST.BUILD,
   aliases: CE_COMMAND_LIST.BUILD_ALIAS,
-  describe: 'build entity, er diagram document',
+  describe: 'generate an entity specification document and ER diagram document',
   builder: (argv) => {
     const withCommonArgv = commonOptionBuilder<IBuildCommandOption>(argv);
     const withDocumentArgv = documentOptionBuilder<IBuildCommandOption>(withCommonArgv);
@@ -40,7 +40,7 @@ const buildCmdModule: CommandModule<IBuildCommandOption, IBuildCommandOption> = 
 const cleanCmdModule: CommandModule<ICommonOption, ICommonOption> = {
   command: CE_COMMAND_LIST.CLEAN,
   aliases: CE_COMMAND_LIST.CLEAN_ALIAS,
-  describe: 'clean entity, er diagram document',
+  describe: 'clean generated document',
   builder: (argv) => {
     const withCommonArgv = commonOptionBuilder<ICommonOption>(argv);
     return withCommonArgv;
@@ -58,7 +58,7 @@ const cleanCmdModule: CommandModule<ICommonOption, ICommonOption> = {
 const initCmdModule: CommandModule<{}, {}> = {
   command: CE_COMMAND_LIST.INIT,
   aliases: CE_COMMAND_LIST.INIT_ALIAS,
-  describe: 'create `.erdiarc` configuration',
+  describe: 'generate configuration file: `.erdiarc`',
   handler: async () => {
     try {
       await initConfigCommandHandler();
@@ -69,18 +69,17 @@ const initCmdModule: CommandModule<{}, {}> = {
   },
 };
 
-const templateCmdModule: CommandModule<Pick<ICommonOption, 'output'>, Pick<ICommonOption, 'output'>> = {
-  command: CE_COMMAND_LIST.TEMPLATE,
-  aliases: CE_COMMAND_LIST.TEMPLATE_ALIAS,
-  describe: 'detach template file',
+const ejectCmdModule: CommandModule<Pick<ICommonOption, 'output'>, Pick<ICommonOption, 'output'>> = {
+  command: CE_COMMAND_LIST.EJECT,
+  aliases: CE_COMMAND_LIST.EJECT_ALIAS,
+  describe: 'eject document template files',
   builder: (argv) => {
     const withCommonArgv = outputOptionBuilder<Pick<ICommonOption, 'output'>>(argv);
     return withCommonArgv;
   },
   handler: async (argv) => {
     try {
-      consola.info('template command');
-      await templateDetachCommandHandler(argv);
+      await templateEjectCommandHandler(argv);
     } catch (caught) {
       const err = isError(caught, new Error('unknown error raised'));
       consola.error(err);
@@ -94,7 +93,7 @@ parser
   .command(buildCmdModule as CommandModule<{}, IBuildCommandOption>)
   .command(cleanCmdModule as CommandModule<{}, ICommonOption>)
   .command(initCmdModule as CommandModule<{}, ICommonOption>)
-  .command(templateCmdModule as CommandModule<{}, ICommonOption>)
+  .command(ejectCmdModule as CommandModule<{}, ICommonOption>)
   .demandCommand()
   .recommendCommands()
   .config(preLoadConfig())

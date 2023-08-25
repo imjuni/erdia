@@ -1,6 +1,10 @@
 const style = `<style>
     /* Layout */
     @media (min-width: 1200px) {
+      html {
+        scroll-padding-top: 4rem;
+      }
+      
       body {
         display: grid;
         grid-template-rows: auto;

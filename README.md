@@ -19,8 +19,8 @@ Why `erdia` ?
 Summary,
 
 1. ER diagram create using [mermaid.js](http://mermaid.js.org/) syntax.
-1. Every document create using ETA template engine
-1. Only need TypeORM configuration
+1. Every document create using [ETA](https://eta.js.org/) template engine
+1. Use [TypeORM](https://typeorm.io/)
 
 Automate your database ER diagram drawing!
 
@@ -69,20 +69,20 @@ D-->H[image]
 
 installation
 
-```basn
+```bash
 npm i erdia --save-dev
 ```
 
 initialization
 
-```basn
+```bash
 npx erdia init
 ```
 
 ## Usage
 
 ```sh
-erdia build -d [your dataSource path] -o dbdoc --format html
+erdia build -d [your dataSource path] -o dist/entity --format html
 ```
 
 ## Requirement
@@ -106,7 +106,7 @@ erdia build -d [your dataSource path] -o dbdoc --format html
 
 ```sh
 # PDF document generate
-erdia build -d [your dataSourcePath] -o db.pdf --format pdf
+erdia build -d [your dataSourcePath] -o dist/entity --format pdf
 ```
 
 ## Template
@@ -114,7 +114,7 @@ erdia build -d [your dataSourcePath] -o db.pdf --format pdf
 `erdia` use ETA template for entity specification document and ER diagram. Template easily detach from erdia.
 
 ```bash
-npx erdia template
+npx erdia eject
 ```
 
 Detached template can change and every document customizable. The template can be found [here](https://github.com/imjuni/erdia/tree/master/src/template).

@@ -1,4 +1,4 @@
-import templateDetachCommandHandler from '#cli/commands/templateDetachCommandHandler';
+import templateEjectCommandHandler from '#cli/commands/templateEjectCommandHandler';
 import { CE_DEFAULT_VALUE } from '#configs/const-enum/CE_DEFAULT_VALUE';
 import { CE_ENTITY_VERSION_FROM } from '#configs/const-enum/CE_ENTITY_VERSION_FROM';
 import { CE_IMAGE_FORMAT } from '#configs/const-enum/CE_IMAGE_FORMAT';
@@ -6,6 +6,8 @@ import { CE_MERMAID_THEME } from '#configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import type { IInitDocAnswer } from '#configs/interfaces/InquirerAnswer';
+import getAutoCompleteSource from '#configs/modules/getAutoCompleteSource';
+import getCwd from '#configs/modules/getCwd';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
 import evaluateTemplate from '#template/evaluateTemplate';
 import Fuse from 'fuse.js';
@@ -13,8 +15,6 @@ import globby from 'globby';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
 import path from 'path';
-import getAutoCompleteSource from './getAutoCompleteSource';
-import getCwd from './getCwd';
 
 export default async function getConfigContent() {
   /**
@@ -202,7 +202,7 @@ export default async function getConfigContent() {
   ]);
 
   const templateDir = await (answer.isDetachTemplate
-    ? templateDetachCommandHandler({ output: getCwd(process.env) })
+    ? templateEjectCommandHandler({ output: getCwd(process.env) })
     : Promise.resolve(undefined));
 
   const file = await evaluateTemplate(CE_TEMPLATE_NAME.CONFIG_JSON, {

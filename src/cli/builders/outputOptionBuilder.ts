@@ -4,7 +4,7 @@ export default function outputOptionBuilder<T>(args: Argv<T>) {
   // option
   args.option('output', {
     alias: 'o',
-    describe: 'output file name',
+    describe: 'define the directory to output file',
     type: 'string',
   });
 

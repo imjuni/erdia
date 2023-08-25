@@ -2,12 +2,12 @@ export const CE_COMMAND_LIST = {
   BUILD: 'build',
   INIT: 'init',
   CLEAN: 'clean',
-  TEMPLATE: 'template',
+  EJECT: 'eject',
 
   BUILD_ALIAS: 'b',
   INIT_ALIAS: 'i',
   CLEAN_ALIAS: 'c',
-  TEMPLATE_ALIAS: 't',
+  EJECT_ALIAS: 'e',
 } as const;
 
 export type CE_COMMAND_LIST = (typeof CE_COMMAND_LIST)[keyof typeof CE_COMMAND_LIST];

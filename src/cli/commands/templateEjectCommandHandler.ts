@@ -3,14 +3,17 @@ import getCwd from '#configs/modules/getCwd';
 import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
 import defaultTemplates from '#template/defaultTemplates';
 import getOutputDirectory from '#tools/files/getOutputDirectory';
+import consola from 'consola';
 import fs from 'fs';
 import { isFalse } from 'my-easy-fp';
 import { exists, getDirname } from 'my-node-fp';
 import path from 'path';
 
-export default async function templateDetachCommandHandler(option: Pick<ICommonOption, 'output'>) {
+export default async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output'>) {
   const outputDir = await getOutputDirectory(option, getCwd(process.env));
   const templateDir = path.join(outputDir, 'template');
+
+  consola.info('Output directory: ', templateDir);
 
   const writeFile = async (template: CE_TEMPLATE_NAME) => {
     const filename = path.resolve(path.join(templateDir, `${template}.eta`));
@@ -49,6 +52,8 @@ export default async function templateDetachCommandHandler(option: Pick<ICommonO
       CE_TEMPLATE_NAME.PDF_TABLE,
     ].map((template) => writeFile(template)),
   );
+
+  consola.success('eject success: ', templateDir);
 
   return templateDir;
 }
