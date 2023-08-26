@@ -19,7 +19,7 @@ export default async function writeToPdf(
   let localPage: puppeteer.Page | undefined;
 
   try {
-    const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfigPath);
+    const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);
     const browser = await puppeteer.launch({ ...puppeteerConfig, headless: 'new' });
     const page = await browser.newPage();
     const puppeteerGotoOption: Parameters<typeof page.goto>[1] = {

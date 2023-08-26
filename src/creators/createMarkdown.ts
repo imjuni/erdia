@@ -13,7 +13,7 @@ export default async function createMarkdown(
   renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<IErdiaDocument> {
   const rawMarkdown = await evaluateTemplate(CE_TEMPLATE_NAME.MARKDOWN_DOCUMENT, renderData);
-  const prettiedMarkdown = await applyPrettier(rawMarkdown, 'md');
+  const prettiedMarkdown = await applyPrettier(rawMarkdown, 'md', option.prettierConfig);
   const markdownFileName = `${renderData.metadata.name}.md`;
   const outputDir = await getDirname(option.output ?? process.cwd());
 

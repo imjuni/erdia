@@ -1,3 +1,4 @@
+import type { CE_ENTITY_VERSION_FROM } from '#configs/const-enum/CE_ENTITY_VERSION_FROM';
 import type { CE_MERMAID_THEME } from '#configs/const-enum/CE_MERMAID_THEME';
 import type { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
 import type { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
@@ -5,34 +6,29 @@ import type { CE_PROJECT_NAME_FROM } from '#configs/const-enum/CE_PROJECT_NAME_F
 import type ICommonOption from '#configs/interfaces/ICommonOption';
 
 export default interface IDocumentOption extends ICommonOption {
-  /** type of generated document */
+  /** define the output component to builded documents */
   components: CE_OUTPUT_COMPONENT[];
 
   /**
-   * determine whether project name will come from the name in `package.json` or database name
+   * define whether project name will come from the `package.json` name field or database name
    *
    * - db: database name from TypeORM
    * - app: application name from package.json
    * */
   projectName: CE_PROJECT_NAME_FROM;
 
-  /** custom template file path. `erdia` are using [ETA](https://eta.js.org/) template engine */
-  templatePath?: string;
-
-  /** erdia entity database file path */
+  /** define the directory to store `erdiadb.json` */
   databasePath?: string;
 
-  /** skip image file attachment in html document */
+  /** define the directory to ETA templates. `erdia` are using [ETA](https://eta.js.org/) template engine */
+  templatePath?: string;
+
+  /** enabling the this option will skip attaching the ER diagram image file to the html document */
   skipImageInHtml?: boolean;
 
-  /** document version using package.json version or timestamp */
-  versionFrom: 'timestamp' | 'package.json' | 'file';
-
-  /** If the versionFrom option set `file`, read the file from this path */
-  versionPath?: string;
-
   /**
-   * output format of generated documents
+   * define the output format to builded documents
+   *
    * - html
    * - markdown
    * - pdf
@@ -41,7 +37,15 @@ export default interface IDocumentOption extends ICommonOption {
   format: CE_OUTPUT_FORMAT;
 
   /**
-   * mermaid.js plugin theme configuration
+   * define whether document version will come from the `package.json` version field or specific file, timestamp
+   * */
+  versionFrom: CE_ENTITY_VERSION_FROM;
+
+  /** If the versionFrom option set `file`, read the file from this path */
+  versionPath?: string;
+
+  /**
+   * define the mermaid.js plugin theme
    *
    * @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
    * */

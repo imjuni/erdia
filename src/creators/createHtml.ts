@@ -22,7 +22,7 @@ async function getTables(
   }
 
   const rawTables = await evaluateTemplate(CE_TEMPLATE_NAME.HTML_DOCUMENT, renderData);
-  const prettiedTables = await applyPrettier(rawTables, 'html');
+  const prettiedTables = await applyPrettier(rawTables, 'html', option.prettierConfig);
   const tablesFileName = path.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
   return [
     {
@@ -43,7 +43,7 @@ async function getDiagram(
   }
 
   const rawDiagram = await evaluateTemplate(CE_TEMPLATE_NAME.HTML_MERMAID, renderData);
-  const prettiedDiagram = await applyPrettier(rawDiagram, 'html');
+  const prettiedDiagram = await applyPrettier(rawDiagram, 'html', option.prettierConfig);
   const diagramFileName = option.components.includes(CE_OUTPUT_COMPONENT.TABLE)
     ? path.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME)
     : path.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);

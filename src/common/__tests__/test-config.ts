@@ -3,7 +3,6 @@ import { CE_OUTPUT_FORMAT } from '#configs/const-enum/CE_OUTPUT_FORMAT';
 import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
 
 export const buildOption: IBuildCommandOption = {
-  $kind: 'build',
   config: '',
   versionFrom: 'package.json',
   projectName: 'app',

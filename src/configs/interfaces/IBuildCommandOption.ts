@@ -1,49 +1,53 @@
 import type IDocumentOption from '#configs/interfaces/IDocumentOption';
 
 export default interface IBuildCommandOption extends IDocumentOption {
-  $kind: 'build';
-
-  /** prettier config path */
-  prettierConfig?: string;
-
-  /** title tag content that inside of html document */
-  title?: string;
-
-  /** address of route base path for html document */
+  /**
+   * define the route base path. The route base path is used as the base path for navbar anchor when generating HTML documents
+   * @format html
+   * */
   routeBasePath?: string;
 
   /**
-   * ER diagram width, it will be set width css attribute
+   * define what will be written in the HTML document title tag
+   * @format html
+   * */
+  title?: string;
+
+  /** define the path to the prettier configuration file */
+  prettierConfig?: string;
+
+  /**
+   * define the path to the puppeteer configuration file
+   * @format html, pdf, image
+   * */
+  puppeteerConfig?: string;
+
+  /**
+   * define the ER diagram width. The width is defined by the HTML document css attribute width
    * @format html, pdf, image
    * */
   width?: string;
 
   /**
-   * puppeteer viewport width
-   * @format pdf, image
+   * define the viewport width to puppeteer. The width is defined by the HTML document css attribute width
+   * @format html, pdf, image
    * */
   viewportWidth?: number;
 
   /**
-   * puppeteer viewport height
-   * @format pdf, image
+   * define the viewport height to puppeteer. The width is defined by the HTML document css attribute height
+   * @format html, pdf, image
    * */
   viewportHeight?: number;
 
   /**
-   * puppeteer config file path
-   * @format pdf, image
-   * */
-  puppeteerConfigPath?: string;
-
-  /**
-   * Background color. Example: transparent, red, '#F0F0F0'. Optional. Default: white
+   * define the background color to html documents. eg. transparent, red, '#F0F0F0'
    * @format pdf, image
    * */
   backgroundColor?: string;
 
   /**
-   * ER diagram export image file format
+   * define the format to image file
    * @format image
    * */
   imageFormat?: 'png' | 'svg';

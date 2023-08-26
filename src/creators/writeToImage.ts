@@ -19,7 +19,7 @@ export default async function writeToImage(
   let localPage: puppeteer.Page | undefined;
 
   try {
-    const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfigPath);
+    const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);
     const browser = await puppeteer.launch({ ...puppeteerConfig, headless: 'new' });
     const page = await browser.newPage();
     const puppeteerGotoOption: Parameters<typeof page.goto>[1] = {
@@ -57,8 +57,8 @@ export default async function writeToImage(
       consola.debug('file write end');
 
       await del(document.filename);
+      consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.svg`);
 
-      consola.info(`Component er will be write on ${document.filename}`);
       return [path.join(document.dirname, `${renderData.metadata.name}.svg`)];
     }
 
@@ -77,6 +77,7 @@ export default async function writeToImage(
     consola.debug('file write end');
 
     await del(document.filename);
+    consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.png`);
 
     return [path.join(document.dirname, `${renderData.metadata.name}.png`)];
   } catch (caught) {
