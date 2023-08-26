@@ -35,6 +35,7 @@ export default async function getConfigContent() {
     cwd: process.cwd(),
     onlyFiles: true,
     gitignore: true,
+    ignore: ['node_modules'],
     dot: true,
   });
 
@@ -42,12 +43,15 @@ export default async function getConfigContent() {
     cwd: process.cwd(),
     onlyFiles: true,
     gitignore: true,
+    ignore: ['node_modules'],
     dot: true,
   });
 
   const directories = await globby(['**'], {
     cwd: process.cwd(),
     onlyDirectories: true,
+    gitignore: true,
+    ignore: ['node_modules'],
     dot: true,
   });
 
@@ -81,17 +85,18 @@ export default async function getConfigContent() {
     },
     {
       type: 'list',
-      name: 'isDetachTemplate',
-      message: 'Want to detach template? ',
+      name: 'isEjectTemplate',
+      message: 'Want to eject template? ',
       choices: [
-        { name: 'use custom template: detach template', value: true },
-        { name: 'use default template: not detach template', value: false },
+        { name: 'use custom template: eject template', value: true },
+        { name: 'use default template: not eject template', value: false },
       ],
     },
     {
       type: 'list',
       name: 'format',
       message: 'Select output type: ',
+      default: CE_OUTPUT_FORMAT.HTML,
       choices: [
         { name: 'html', value: CE_OUTPUT_FORMAT.HTML },
         { name: 'markdown', value: CE_OUTPUT_FORMAT.MARKDOWN },
@@ -103,6 +108,7 @@ export default async function getConfigContent() {
       type: 'list',
       name: 'isSelectDatabasePath',
       message: 'Want to select the entity database file path?',
+      default: false,
       choices: [
         { name: 'yes', value: true },
         { name: 'no', value: false },
@@ -201,7 +207,7 @@ export default async function getConfigContent() {
     },
   ]);
 
-  const templateDir = await (answer.isDetachTemplate
+  const templateDir = await (answer.isEjectTemplate
     ? templateEjectCommandHandler({ output: getCwd(process.env) })
     : Promise.resolve(undefined));
 

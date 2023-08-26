@@ -1,10 +1,10 @@
 export default interface ICommonOption {
-  /** file path of configuration */
+  /** define the path to to configuration file: .erdiarc */
   config: string;
 
-  /** directory for output files */
+  /** define the directory to output file */
   output?: string;
 
-  /** typeorm dataSourcePath */
+  /** define the path to TypeORM data source file */
   dataSourcePath: string;
 }

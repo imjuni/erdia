@@ -7,7 +7,7 @@ import type { CE_PROJECT_NAME_FROM } from '#configs/const-enum/CE_PROJECT_NAME_F
 export interface IInitDocAnswer {
   format: CE_OUTPUT_FORMAT;
   dataSourceFile: string;
-  isDetachTemplate: boolean;
+  isEjectTemplate: boolean;
   templatePath?: string;
   isSelectDatabasePath: boolean;
   databasePath: string;

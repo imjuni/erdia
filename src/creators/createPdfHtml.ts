@@ -14,7 +14,7 @@ export default async function createPdfHtml(
   renderData: AsyncReturnType<typeof getRenderData>,
 ) {
   const rawHtml = await evaluateTemplate(CE_TEMPLATE_NAME.PDF_DOCUMENT, renderData);
-  const prettiedHtml = await applyPrettier(rawHtml, 'html');
+  const prettiedHtml = await applyPrettier(rawHtml, 'html', option.prettierConfig);
   const outputDir = await getDirname(option.output ?? process.cwd());
   const tempFileName = path.join(outputDir, `${randomUUID()}.html`);
 

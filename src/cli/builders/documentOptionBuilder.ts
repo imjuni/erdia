@@ -15,6 +15,21 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       type: 'array',
       default: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER],
     })
+    .option('project-name', {
+      describe: 'define whether project name will come from the `package.json` name field or database name',
+      type: 'string',
+      choices: [CE_PROJECT_NAME_FROM.APPLICATION, CE_PROJECT_NAME_FROM.DATABASE],
+      default: CE_PROJECT_NAME_FROM.APPLICATION,
+    })
+    .option('database-path', {
+      describe: 'define the directory to store `erdiadb.json`',
+      type: 'string',
+      default: undefined,
+    })
+    .option('template-path', {
+      describe: 'define the directory to ETA templates',
+      type: 'string',
+    })
     .option('skip-image-in-html', {
       describe: 'enabling the this option will skip attaching the ER diagram image file to the html document',
       type: 'boolean',
@@ -25,12 +40,6 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       choices: [CE_OUTPUT_FORMAT.HTML, CE_OUTPUT_FORMAT.MARKDOWN, CE_OUTPUT_FORMAT.PDF, CE_OUTPUT_FORMAT.IMAGE],
       type: 'string',
       default: CE_OUTPUT_FORMAT.HTML,
-    })
-    .option('project-name', {
-      describe: 'define whether project name will come from the `package.json` name field or database name',
-      type: 'string',
-      choices: [CE_PROJECT_NAME_FROM.APPLICATION, CE_PROJECT_NAME_FROM.DATABASE],
-      default: CE_PROJECT_NAME_FROM.APPLICATION,
     })
     .option('version-from', {
       describe:
@@ -44,12 +53,8 @@ export default function documentOptionBuilder<T>(args: Argv<T>) {
       type: 'string',
       default: undefined,
     })
-    .option('template-path', {
-      describe: 'define the directory to ETA templates',
-      type: 'string',
-    })
     .option('theme', {
-      describe: 'define whether mermaid.js plugin theme. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
+      describe: 'define the mermaid.js plugin theme. see https://mermaid-js.github.io/mermaid/#/Setup?id=theme',
       choices: [
         CE_MERMAID_THEME.DEFAULT,
         CE_MERMAID_THEME.DARK,

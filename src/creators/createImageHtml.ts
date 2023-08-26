@@ -17,7 +17,7 @@ export default async function createImageHtml(
     ...renderData,
     option: { ...renderData.option, width: '200vw' },
   });
-  const prettiedHtml = await applyPrettier(rawHtml, 'html');
+  const prettiedHtml = await applyPrettier(rawHtml, 'html', option.prettierConfig);
   const outputDir = await getDirname(option.output ?? process.cwd());
   const tempFileName = path.join(outputDir, `${randomUUID()}.html`);
 
