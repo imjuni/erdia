@@ -2,8 +2,7 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "ts-node": {
     "transpileOnly": true,
-    "files": true,
-    "require": ["tsconfig-paths/register"]
+    "files": true
   },
   "compilerOptions": {
     /* Basic Options */
@@ -13,7 +12,6 @@
     "declarationMap": true /* Generates corresponding '.d.ts' file. */,
     "outDir": "dist" /* Redirect output structure to the directory. */,
     "removeComments": false /* Do not emit comments to output. */,
-    // "noEmit": true,                        /* Do not emit outputs. */
     "importHelpers": true /* Import emit helpers from 'tslib'. */,
     "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
 
@@ -25,7 +23,6 @@
     "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
     "strictPropertyInitialization": true /* Enable strict checking of property initialization in classes. */,
     "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
-    // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
 
     /* Additional Checks */
     "noUnusedLocals": true /* Report errors on unused locals. */,
@@ -35,30 +32,12 @@
 
     /* Module Resolution Options */
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
-    "paths": {
-      "#common/*": ["src/common/*"],
-      "#typeorm/*": ["src/typeorm/*"],
-      "#databases/*": ["src/databases/*"],
-      "#tools/*": ["src/tools/*"],
-      "#configs/*": ["src/configs/*"],
-      "#cli/*": ["src/cli/*"],
-      "#creators/*": ["src/creators/*"],
-      "#template/*": ["src/template/*"]
-    } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
-    // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
-    // "typeRoots": [],
-    // "types": [],                           /* Type declaration files to be included in compilation. */
-    // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "resolveJsonModule": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-    // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
 
     /* Source Map Options */
     "sourceMap": true /* Generates corresponding '.map' file. */,
-    // "sourceRoot": "",                      /* Specify the location where debugger should locate TypeScript files instead of source locations. */
-    // "mapRoot": "",                         /* Specify the location where debugger should locate map files instead of generated locations. */
-    // "inlineSourceMap": true /* Emit a single file with source maps instead of having a separate file. */,
-    // "inlineSources": true,                 /* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. */
 
     /* Experimental Options */
     "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
@@ -71,8 +50,6 @@
     "examples/class-type/dataSourceConfig.ts",
     "examples/schema-type/dataSourceConfig.ts",
     "examples/**",
-    "erdia-docs/**",
-    "webpack.config.dev.ts",
-    "webpack.config.prod.ts"
+    "erdia-docs/**"
   ]
 }

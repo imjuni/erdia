@@ -1,5 +1,5 @@
-import type IBaseRecord from '#databases/interfaces/IBaseRecord';
-import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
+import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
+import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 import type { RelationType } from 'typeorm/metadata/types/RelationTypes';
 
 export default interface IRelationRecord extends IBaseRecord {

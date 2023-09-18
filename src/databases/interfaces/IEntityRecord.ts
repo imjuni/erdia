@@ -1,5 +1,5 @@
-import type IBaseRecord from '#databases/interfaces/IBaseRecord';
-import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
+import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
+import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 
 export default interface IEntityRecord extends IBaseRecord {
   /** kind of record */

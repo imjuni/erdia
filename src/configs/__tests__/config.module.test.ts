@@ -1,5 +1,5 @@
-import getCwd from '#configs/modules/getCwd';
 import 'jest';
+import getCwd from 'src/configs/modules/getCwd';
 
 describe('getCwd', () => {
   test('pass - process.cwd()', async () => {

@@ -1,9 +1,9 @@
-import getProjectName from '#common/getProjectName';
-import getVersion from '#common/getVersion';
-import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
-import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
 import dayjs from 'dayjs';
 import readPkg from 'read-pkg';
+import getProjectName from 'src/common/getProjectName';
+import getVersion from 'src/common/getVersion';
+import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
 
 export default async function getMetadata(
   dataSource: { options: { database?: string | Uint8Array | undefined } },

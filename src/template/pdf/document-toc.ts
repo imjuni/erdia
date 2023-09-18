@@ -1,4 +1,4 @@
-import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
+import { CE_OUTPUT_COMPONENT } from 'src/configs/const-enum/CE_OUTPUT_COMPONENT';
 
 const documentToC = `<ul class="list-group list-group-flush">
   <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.TABLE}')) { %>

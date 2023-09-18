@@ -1,13 +1,13 @@
-import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
-import getColumnWeight from '#creators/columns/getColumnWeight';
-import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
-import type IColumnRecord from '#databases/interfaces/IColumnRecord';
-import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
-import getColumnAttributeKey from '#typeorm/columns/getColumnAttributeKey';
-import getColumnType from '#typeorm/columns/getColumnType';
-import getComment from '#typeorm/columns/getComment';
-import getIsNullable from '#typeorm/columns/getIsNullable';
-import getEntityName from '#typeorm/entities/getEntityName';
+import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import getColumnWeight from 'src/creators/columns/getColumnWeight';
+import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
+import type IColumnRecord from 'src/databases/interfaces/IColumnRecord';
+import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
+import getColumnAttributeKey from 'src/typeorm/columns/getColumnAttributeKey';
+import getColumnType from 'src/typeorm/columns/getColumnType';
+import getComment from 'src/typeorm/columns/getComment';
+import getIsNullable from 'src/typeorm/columns/getIsNullable';
+import getEntityName from 'src/typeorm/entities/getEntityName';
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 export default function getColumnRecord(

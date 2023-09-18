@@ -1,12 +1,12 @@
 /* eslint-disable import/first */
 jest.mock('find-up');
 
-import getFileVersion from '#common/getFileVersion';
-import getVersion from '#common/getVersion';
-import * as getFindFile from '#tools/files/getFindFile';
-import * as getOutputDirectory from '#tools/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
+import getFileVersion from 'src/common/getFileVersion';
+import getVersion from 'src/common/getVersion';
+import * as getFindFile from 'src/tools/files/getFindFile';
+import * as getOutputDirectory from 'src/tools/files/getOutputDirectory';
 
 describe('getFileVersion', () => {
   test('pass - plain', async () => {

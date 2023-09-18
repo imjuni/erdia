@@ -1,12 +1,12 @@
-import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
-import type IEntityRecord from '#databases/interfaces/IEntityRecord';
-import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
-import getEntityName from '#typeorm/entities/getEntityName';
-import getEntityRecord from '#typeorm/entities/getEntityRecord';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import path from 'path';
+import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
+import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
+import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
+import getEntityName from 'src/typeorm/entities/getEntityName';
+import getEntityRecord from 'src/typeorm/entities/getEntityRecord';
 import type { DataSource } from 'typeorm';
 import getEntityPropertyName from '../getEntityPropertyName';
 import getEntityRecords from '../getEntityRecords';

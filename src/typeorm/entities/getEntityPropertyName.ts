@@ -1,4 +1,4 @@
-import type IEntityRecord from '#databases/interfaces/IEntityRecord';
+import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
 import type { EntityMetadata } from 'typeorm';
 
 /**

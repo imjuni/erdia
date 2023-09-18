@@ -1,5 +1,5 @@
-import type IRelationRecord from '#databases/interfaces/IRelationRecord';
-import getEntityName from '#typeorm/entities/getEntityName';
+import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
+import getEntityName from 'src/typeorm/entities/getEntityName';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 export default function getManyToOneJoinColumn(

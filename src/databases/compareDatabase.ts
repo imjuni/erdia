@@ -1,11 +1,11 @@
-import getColumnHash from '#common/getColumnHash';
-import getEntityHash from '#common/getEntityHash';
-import getRelationHash from '#common/getRelationHash';
-import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
-import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
-import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
 import { detailedDiff } from 'deep-object-diff';
 import { settify } from 'my-easy-fp';
+import getColumnHash from 'src/common/getColumnHash';
+import getEntityHash from 'src/common/getEntityHash';
+import getRelationHash from 'src/common/getRelationHash';
+import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
+import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
+import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 
 export default function compareDatabase(
   metadata: IRecordMetadata,

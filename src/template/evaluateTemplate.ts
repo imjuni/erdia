@@ -1,7 +1,7 @@
-import { getTemplates } from '#template/loadTemplates';
 import consola from 'consola';
 import { Eta } from 'eta';
 import { isError } from 'my-easy-fp';
+import { getTemplates } from 'src/template/loadTemplates';
 
 const eta = new Eta({ views: 'erdia' });
 eta.resolvePath = (templatePath: string) => templatePath;

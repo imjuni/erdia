@@ -1,10 +1,10 @@
-import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
-import type IRelationRecord from '#databases/interfaces/IRelationRecord';
-import dedupeManaToManyRelationRecord from '#typeorm/relations/dedupeManaToManyRelationRecord';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import path from 'path';
+import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
+import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
+import dedupeManaToManyRelationRecord from 'src/typeorm/relations/dedupeManaToManyRelationRecord';
 import type { DataSource } from 'typeorm';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;

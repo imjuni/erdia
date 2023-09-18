@@ -1,4 +1,4 @@
-import type IEntityRecord from '#databases/interfaces/IEntityRecord';
+import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
 
 export default function getEntityHash(entity: Pick<IEntityRecord, 'entity' | 'dbName'>): string {
   const baseHash = [entity.entity, entity.dbName].join(':');

@@ -1,4 +1,4 @@
-import { CE_COLUMN_ATTRIBUTE } from '#configs/const-enum/CE_COLUMN_ATTRIBUTE';
+import { CE_COLUMN_ATTRIBUTE } from 'src/configs/const-enum/CE_COLUMN_ATTRIBUTE';
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 export default function getColumnAttributeKey(columnMetadata: Pick<ColumnMetadata, 'relationMetadata' | 'isPrimary'>) {
