@@ -116,3 +116,4 @@ template/**/*.ejs
 template2/
 erdiadb.json
 **/.DS_Store
+.npmrc

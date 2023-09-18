@@ -4,6 +4,7 @@ import type ICommonOption from '#configs/interfaces/ICommonOption';
 import getCwd from '#configs/modules/getCwd';
 import getOutputDirectory from '#tools/files/getOutputDirectory';
 import getDataSource from '#typeorm/getDataSource';
+import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
@@ -15,6 +16,16 @@ export default async function cleanDocumentCommandHandler(option: ICommonOption)
   let localDataSource: DataSource | undefined;
 
   try {
+    if (option.showLogo != null) {
+      await showLogo({
+        message: 'erdia',
+        figlet: { font: 'ANSI Shadow', width: 80 },
+        color: 'cyan',
+      });
+    } else {
+      consola.info('erdia build start');
+    }
+
     const dataSource = await getDataSource(option);
     await dataSource.initialize();
 

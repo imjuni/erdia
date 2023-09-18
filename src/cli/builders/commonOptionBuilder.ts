@@ -14,6 +14,11 @@ export default function commonOptionBuilder<T>(args: Argv<T>) {
       describe: 'define the path to TypeORM data source file',
       type: 'string',
     })
+    .option('show-logo', {
+      describe: 'define the logo display on cli interface',
+      type: 'boolean',
+      default: false,
+    })
     .demandOption('data-source-path');
 
   return args;
