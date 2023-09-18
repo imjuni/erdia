@@ -1,9 +1,9 @@
+import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
+import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
+import type TDatabaseRecord from '#/databases/interfaces/TDatabaseRecord';
 import alasql from 'alasql';
 import { compareVersions } from 'compare-versions';
 import { atOrThrow } from 'my-easy-fp';
-import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
-import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
-import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 
 export default async function processDatabase(
   metadata: IRecordMetadata,

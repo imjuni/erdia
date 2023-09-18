@@ -1,4 +1,4 @@
-import type IColumnRecord from 'src/databases/interfaces/IColumnRecord';
+import type IColumnRecord from '#/databases/interfaces/IColumnRecord';
 
 export default function getColumnHash(column: Pick<IColumnRecord, 'entity' | 'dbName'>): string {
   const baseHash = [column.entity, column.dbName].join(':');

@@ -1,13 +1,13 @@
+import getInverseRelationMetadata from '#/typeorm/relations/getInverseRelationMetadata';
+import getJoinColumn from '#/typeorm/relations/getJoinColumn';
+import getManyToManyEntityMetadata from '#/typeorm/relations/getManyToManyEntityMetadata';
+import getManyToManyJoinColumn from '#/typeorm/relations/getManyToManyJoinColumn';
+import getManyToOneJoinColumn from '#/typeorm/relations/getManyToOneJoinColumn';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import { findOrThrow } from 'my-easy-fp';
 import path from 'path';
-import getInverseRelationMetadata from 'src/typeorm/relations/getInverseRelationMetadata';
-import getJoinColumn from 'src/typeorm/relations/getJoinColumn';
-import getManyToManyEntityMetadata from 'src/typeorm/relations/getManyToManyEntityMetadata';
-import getManyToManyJoinColumn from 'src/typeorm/relations/getManyToManyJoinColumn';
-import getManyToOneJoinColumn from 'src/typeorm/relations/getManyToOneJoinColumn';
 import type { DataSource } from 'typeorm';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;

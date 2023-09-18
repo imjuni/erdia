@@ -1,7 +1,7 @@
-import getDatabaseName from 'src/common/getDatabaseName';
-import getPackageName from 'src/common/getPackageName';
-import { CE_PROJECT_NAME_FROM } from 'src/configs/const-enum/CE_PROJECT_NAME_FROM';
-import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import getDatabaseName from '#/common/getDatabaseName';
+import getPackageName from '#/common/getPackageName';
+import { CE_PROJECT_NAME_FROM } from '#/configs/const-enum/CE_PROJECT_NAME_FROM';
+import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
 
 export default async function getProjectName(
   dataSource: { options: { database?: string | Uint8Array | undefined } },

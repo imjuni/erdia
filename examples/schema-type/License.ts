@@ -5,6 +5,7 @@ import type { IUser } from './User';
 export interface ILicense {
   id: number;
   title: string;
+  code: string;
   description: string;
   expire: Date;
 }
@@ -29,6 +30,12 @@ export const License = new EntitySchema<ILicense & ILicenseRelation>({
       comment: 'organization title',
       charset: 'utf8mb4',
     },
+    code: {
+      type: 'varchar',
+      length: 200,
+      comment: 'organization code',
+      charset: 'utf8mb4',
+    },
     description: {
       type: 'varchar',
       length: 2048,
@@ -40,6 +47,12 @@ export const License = new EntitySchema<ILicense & ILicenseRelation>({
       default: () => 'CURRENT_TIMESTAMP',
     },
   },
+  uniques: [
+    {
+      name: 'uk_license_code',
+      columns: ['code', 'title'],
+    },
+  ],
   relations: {
     user: {
       target: 'User',

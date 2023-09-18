@@ -1,5 +1,5 @@
+import getTemplatePath from '#/tools/files/getTemplatePath';
 import * as mnf from 'my-node-fp';
-import getTemplatePath from 'src/tools/files/getTemplatePath';
 
 jest.mock('my-node-fp');
 

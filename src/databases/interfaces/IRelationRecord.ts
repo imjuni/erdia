@@ -1,9 +1,9 @@
-import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
-import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
+import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
+import type IBaseRecord from '#/databases/interfaces/IBaseRecord';
 import type { RelationType } from 'typeorm/metadata/types/RelationTypes';
 
 export default interface IRelationRecord extends IBaseRecord {
-  $kind: 'relation';
+  $kind: typeof CE_RECORD_KIND.RELATION;
 
   /** relation property name */
   name: string;
@@ -39,6 +39,4 @@ export default interface IRelationRecord extends IBaseRecord {
 
   /** will be deduped */
   isDuplicate: boolean;
-
-  prev?: TDatabaseRecord;
 }

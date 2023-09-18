@@ -1,3 +1,28 @@
+import getDatabaseName from '#/common/getDatabaseName';
+import getMetadata from '#/common/getMetadata';
+import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
+import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
+import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
+import createHtml from '#/creators/createHtml';
+import createImageHtml from '#/creators/createImageHtml';
+import createMarkdown from '#/creators/createMarkdown';
+import createPdfHtml from '#/creators/createPdfHtml';
+import getRenderData from '#/creators/getRenderData';
+import type IReason from '#/creators/interfaces/IReason';
+import writeToImage from '#/creators/writeToImage';
+import writeToPdf from '#/creators/writeToPdf';
+import compareDatabase from '#/databases/compareDatabase';
+import flushDatabase from '#/databases/flushDatabase';
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
+import openDatabase from '#/databases/openDatabase';
+import processDatabase from '#/databases/processDatabase';
+import { loadTemplates } from '#/template/loadTemplates';
+import getColumnRecord from '#/typeorm/columns/getColumnRecord';
+import getEntityRecords from '#/typeorm/entities/getEntityRecords';
+import getDataSource from '#/typeorm/getDataSource';
+import getIndexRecords from '#/typeorm/indices/getIndexRecords';
+import dedupeManaToManyRelationRecord from '#/typeorm/relations/dedupeManaToManyRelationRecord';
+import getRelationRecords from '#/typeorm/relations/getRelationRecords';
 import { showLogo } from '@maeum/cli-logo';
 import chalk from 'chalk';
 import consola from 'consola';
@@ -5,30 +30,6 @@ import fastSafeStringify from 'fast-safe-stringify';
 import { isError, isFalse } from 'my-easy-fp';
 import { isFail, isPass, type IFail, type IPass } from 'my-only-either';
 import fs from 'node:fs';
-import getDatabaseName from 'src/common/getDatabaseName';
-import getMetadata from 'src/common/getMetadata';
-import { CE_MERMAID_THEME } from 'src/configs/const-enum/CE_MERMAID_THEME';
-import { CE_OUTPUT_FORMAT } from 'src/configs/const-enum/CE_OUTPUT_FORMAT';
-import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
-import createHtml from 'src/creators/createHtml';
-import createImageHtml from 'src/creators/createImageHtml';
-import createMarkdown from 'src/creators/createMarkdown';
-import createPdfHtml from 'src/creators/createPdfHtml';
-import getRenderData from 'src/creators/getRenderData';
-import type IReason from 'src/creators/interfaces/IReason';
-import writeToImage from 'src/creators/writeToImage';
-import writeToPdf from 'src/creators/writeToPdf';
-import compareDatabase from 'src/databases/compareDatabase';
-import flushDatabase from 'src/databases/flushDatabase';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
-import openDatabase from 'src/databases/openDatabase';
-import processDatabase from 'src/databases/processDatabase';
-import { loadTemplates } from 'src/template/loadTemplates';
-import getColumnRecord from 'src/typeorm/columns/getColumnRecord';
-import getEntityRecords from 'src/typeorm/entities/getEntityRecords';
-import getDataSource from 'src/typeorm/getDataSource';
-import dedupeManaToManyRelationRecord from 'src/typeorm/relations/dedupeManaToManyRelationRecord';
-import getRelationRecords from 'src/typeorm/relations/getRelationRecords';
 import type { DataSource } from 'typeorm';
 
 export default async function buildDocumentCommandHandler(option: IBuildCommandOption) {
@@ -65,9 +66,11 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
     consola.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
 
     const entities = getEntityRecords(dataSource, metadata);
+    const indicesRecords = getIndexRecords(dataSource, metadata);
     const columns = dataSource.entityMetadatas
-      .map((entity) => entity.columns.map((column) => getColumnRecord(column, option, metadata)))
+      .map((entity) => entity.columns.map((column) => getColumnRecord(column, option, metadata, indicesRecords)))
       .flat();
+
     const relationRecords = getRelationRecords(dataSource, metadata);
 
     const failRelations = relationRecords
@@ -83,7 +86,7 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
       .flat();
 
     const dedupedRelations = dedupeManaToManyRelationRecord(passRelations);
-    const records = [...entities, ...columns, ...dedupedRelations];
+    const records = [...entities, ...columns, ...dedupedRelations, ...indicesRecords];
 
     consola.success('complete extraction');
     consola.info('Database open and processing');

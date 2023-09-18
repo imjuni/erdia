@@ -7,8 +7,8 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "dev": "tsx src/cli.ts",
-    "debug": "node --inspect-brk -r ts-node/register src/cli.ts",
+    "dev": "ts-node src/cli.ts",
+    "debug": "node --inspect-brk -r ts-node/register -r tsconfig-paths/register src/cli.ts",
     "ctix": "ctix single -p ./tsconfig.prod.json --config .configs/.ctirc -g .configs/.ctiignore",
     "ctix:remove": "ctix remove -p ./tsconfig.json --config .configs/.ctirc -g .configs/.ctiignore",
     "build": "npm run clean && tsc --incremental --project tsconfig.prod.json",
@@ -112,6 +112,8 @@
     "rollup-plugin-dts": "^5.3.1",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.8.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^3.12.10",
     "typescript": "^5.1.6"
   },
   "dependencies": {

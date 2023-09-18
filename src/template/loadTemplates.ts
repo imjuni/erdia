@@ -1,10 +1,10 @@
+import type IDocumentOption from '#/configs/interfaces/IDocumentOption';
+import defaultTemplates from '#/template/defaultTemplates';
 import fs from 'fs';
 import globby from 'globby';
 import { isTrue } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import path from 'node:path';
-import type IDocumentOption from 'src/configs/interfaces/IDocumentOption';
-import defaultTemplates from 'src/template/defaultTemplates';
 
 const templates: Record<string, string> = { ...defaultTemplates };
 

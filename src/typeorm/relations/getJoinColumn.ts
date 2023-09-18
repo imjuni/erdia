@@ -1,7 +1,7 @@
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
-import getEntityName from 'src/typeorm/entities/getEntityName';
-import getManyToManyJoinColumn from 'src/typeorm/relations/getManyToManyJoinColumn';
-import getManyToOneJoinColumn from 'src/typeorm/relations/getManyToOneJoinColumn';
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
+import getEntityName from '#/typeorm/entities/getEntityName';
+import getManyToManyJoinColumn from '#/typeorm/relations/getManyToManyJoinColumn';
+import getManyToOneJoinColumn from '#/typeorm/relations/getManyToOneJoinColumn';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 export default function getJoinColumn(

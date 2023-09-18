@@ -2,7 +2,8 @@
   "extends": "@tsconfig/node18/tsconfig.json",
   "ts-node": {
     "transpileOnly": true,
-    "files": true
+    "files": true,
+    "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     /* Basic Options */
@@ -32,6 +33,9 @@
 
     /* Module Resolution Options */
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
+    "paths": {
+      "#/*": ["src/*"]
+    },
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "resolveJsonModule": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,

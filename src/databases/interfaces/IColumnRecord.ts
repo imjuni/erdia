@@ -1,9 +1,9 @@
-import type { CE_COLUMN_ATTRIBUTE } from 'src/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
-import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
+import type { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
+import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
+import type IBaseRecord from '#/databases/interfaces/IBaseRecord';
 
 export default interface IColumnRecord extends IBaseRecord {
-  $kind: 'column';
+  $kind: typeof CE_RECORD_KIND.COLUMN;
 
   /** property name of entity */
   name: string;
@@ -31,6 +31,4 @@ export default interface IColumnRecord extends IBaseRecord {
 
   /** comment of entity, column */
   comment: string;
-
-  prev?: TDatabaseRecord;
 }

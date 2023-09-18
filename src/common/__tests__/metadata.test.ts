@@ -1,15 +1,15 @@
 /* eslint-disable import/first */
 jest.mock('find-up');
 
+import * as env from '#/common/__tests__/test-config';
+import getDatabaseName from '#/common/getDatabaseName';
+import getMetadata from '#/common/getMetadata';
+import getPackageName from '#/common/getPackageName';
+import getProjectName from '#/common/getProjectName';
+import getFindFile from '#/tools/files/getFindFile';
 import dayjs from 'dayjs';
 import findUp from 'find-up';
 import { isError } from 'my-easy-fp';
-import * as env from 'src/common/__tests__/test-config';
-import getDatabaseName from 'src/common/getDatabaseName';
-import getMetadata from 'src/common/getMetadata';
-import getPackageName from 'src/common/getPackageName';
-import getProjectName from 'src/common/getProjectName';
-import getFindFile from 'src/tools/files/getFindFile';
 
 describe('getMetadata', () => {
   test('pass', async () => {

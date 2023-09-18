@@ -1,9 +1,9 @@
-import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
-import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
+import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
+import type IBaseRecord from '#/databases/interfaces/IBaseRecord';
 
 export default interface IEntityRecord extends IBaseRecord {
   /** kind of record */
-  $kind: 'entity';
+  $kind: typeof CE_RECORD_KIND.ENTITY;
 
   /** name from property name */
   name: string;
@@ -13,7 +13,4 @@ export default interface IEntityRecord extends IBaseRecord {
 
   /** entity has relation that is set true otherwise false */
   hasRelation: boolean;
-
-  /** prev entity */
-  prev?: TDatabaseRecord;
 }
