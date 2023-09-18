@@ -7,4 +7,7 @@ export default interface ICommonOption {
 
   /** define the path to TypeORM data source file */
   dataSourcePath: string;
+
+  /** define the logo display on cli interface */
+  showLogo?: boolean;
 }

@@ -22,6 +22,7 @@ import getEntityRecords from '#typeorm/entities/getEntityRecords';
 import getDataSource from '#typeorm/getDataSource';
 import dedupeManaToManyRelationRecord from '#typeorm/relations/dedupeManaToManyRelationRecord';
 import getRelationRecords from '#typeorm/relations/getRelationRecords';
+import { showLogo } from '@maeum/cli-logo';
 import chalk from 'chalk';
 import consola from 'consola';
 import fastSafeStringify from 'fast-safe-stringify';
@@ -34,6 +35,16 @@ export default async function buildDocumentCommandHandler(option: IBuildCommandO
   let localDataSource: DataSource | undefined;
 
   try {
+    if (option.showLogo != null) {
+      await showLogo({
+        message: 'erdia',
+        figlet: { font: 'ANSI Shadow', width: 80 },
+        color: 'cyan',
+      });
+    } else {
+      consola.info('erdia build start');
+    }
+
     consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
     const dataSource = await getDataSource(option);
