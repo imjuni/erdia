@@ -1,4 +1,4 @@
-import outputOptionBuilder from '#cli/builders/outputOptionBuilder';
+import outputOptionBuilder from 'src/cli/builders/outputOptionBuilder';
 import type { Argv } from 'yargs';
 
 export default function commonOptionBuilder<T>(args: Argv<T>) {

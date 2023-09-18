@@ -1,9 +1,9 @@
-import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
-import getConfigFilePath from '#configs/modules/getConfigFilePath';
 import consola from 'consola';
 import { parse } from 'jsonc-parser';
 import minimist from 'minimist';
 import * as fs from 'node:fs';
+import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import getConfigFilePath from 'src/configs/modules/getConfigFilePath';
 
 export default function preLoadConfig() {
   try {

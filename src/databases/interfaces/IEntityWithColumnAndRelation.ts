@@ -1,6 +1,6 @@
-import type IBaseRecord from '#databases/interfaces/IBaseRecord';
-import type IColumnRecord from '#databases/interfaces/IColumnRecord';
-import type IRelationRecord from '#databases/interfaces/IRelationRecord';
+import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
+import type IColumnRecord from 'src/databases/interfaces/IColumnRecord';
+import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
 
 export default interface IEntityWithColumnAndRelation extends IBaseRecord {
   /** kind of record */

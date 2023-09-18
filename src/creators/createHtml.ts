@@ -1,15 +1,15 @@
-import { CE_DEFAULT_VALUE } from '#configs/const-enum/CE_DEFAULT_VALUE';
-import { CE_OUTPUT_COMPONENT } from '#configs/const-enum/CE_OUTPUT_COMPONENT';
-import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
-import getCwd from '#configs/modules/getCwd';
-import applyPrettier from '#creators/applyPretter';
-import type getRenderData from '#creators/getRenderData';
-import type IErdiaDocument from '#creators/interfaces/IErdiaDocument';
-import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
-import evaluateTemplate from '#template/evaluateTemplate';
-import getOutputDirectory from '#tools/files/getOutputDirectory';
 import consola from 'consola';
 import path from 'path';
+import { CE_DEFAULT_VALUE } from 'src/configs/const-enum/CE_DEFAULT_VALUE';
+import { CE_OUTPUT_COMPONENT } from 'src/configs/const-enum/CE_OUTPUT_COMPONENT';
+import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import getCwd from 'src/configs/modules/getCwd';
+import applyPrettier from 'src/creators/applyPretter';
+import type getRenderData from 'src/creators/getRenderData';
+import type IErdiaDocument from 'src/creators/interfaces/IErdiaDocument';
+import { CE_TEMPLATE_NAME } from 'src/template/cosnt-enum/CE_TEMPLATE_NAME';
+import evaluateTemplate from 'src/template/evaluateTemplate';
+import getOutputDirectory from 'src/tools/files/getOutputDirectory';
 import type { AsyncReturnType } from 'type-fest';
 
 async function getTables(

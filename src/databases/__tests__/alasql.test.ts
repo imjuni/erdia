@@ -1,6 +1,6 @@
-import { CE_CHANGE_KIND } from '#databases/interfaces/CE_CHANGE_KIND';
-import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
 import alasql from 'alasql';
+import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
+import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 
 const db: TDatabaseRecord[] = [
   {

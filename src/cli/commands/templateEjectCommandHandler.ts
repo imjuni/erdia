@@ -1,14 +1,14 @@
-import type ICommonOption from '#configs/interfaces/ICommonOption';
-import getCwd from '#configs/modules/getCwd';
-import { CE_TEMPLATE_NAME } from '#template/cosnt-enum/CE_TEMPLATE_NAME';
-import defaultTemplates from '#template/defaultTemplates';
-import getOutputDirectory from '#tools/files/getOutputDirectory';
 import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import fs from 'fs';
 import { isFalse } from 'my-easy-fp';
 import { exists, getDirname } from 'my-node-fp';
 import path from 'path';
+import type ICommonOption from 'src/configs/interfaces/ICommonOption';
+import getCwd from 'src/configs/modules/getCwd';
+import { CE_TEMPLATE_NAME } from 'src/template/cosnt-enum/CE_TEMPLATE_NAME';
+import defaultTemplates from 'src/template/defaultTemplates';
+import getOutputDirectory from 'src/tools/files/getOutputDirectory';
 
 export default async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
   if (option.showLogo != null) {

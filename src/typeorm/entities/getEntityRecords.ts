@@ -1,7 +1,7 @@
-import type IEntityRecord from '#databases/interfaces/IEntityRecord';
-import type IRecordMetadata from '#databases/interfaces/IRecordMetadata';
-import type TDatabaseRecord from '#databases/interfaces/TDatabaseRecord';
-import getEntityRecord from '#typeorm/entities/getEntityRecord';
+import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
+import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
+import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
+import getEntityRecord from 'src/typeorm/entities/getEntityRecord';
 import { type DataSource } from 'typeorm';
 
 export default function getEntityRecords(dataSource: DataSource, metadata: IRecordMetadata): TDatabaseRecord[] {

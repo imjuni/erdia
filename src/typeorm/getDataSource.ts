@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
-import type ICommonOption from '#configs/interfaces/ICommonOption';
 import consola from 'consola';
 import { isError, isFalse } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import path from 'path';
+import type ICommonOption from 'src/configs/interfaces/ICommonOption';
 import { InstanceChecker, type DataSource } from 'typeorm';
 import { importOrRequireFile } from 'typeorm/util/ImportUtils';
 

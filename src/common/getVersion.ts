@@ -1,12 +1,12 @@
-import getFileVersion from '#common/getFileVersion';
-import { CE_DEFAULT_VALUE } from '#configs/const-enum/CE_DEFAULT_VALUE';
-import type IBuildCommandOption from '#configs/interfaces/IBuildCommandOption';
-import getCwd from '#configs/modules/getCwd';
-import getFindFile from '#tools/files/getFindFile';
-import getOutputDirectory from '#tools/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import path from 'path';
+import getFileVersion from 'src/common/getFileVersion';
+import { CE_DEFAULT_VALUE } from 'src/configs/const-enum/CE_DEFAULT_VALUE';
+import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import getCwd from 'src/configs/modules/getCwd';
+import getFindFile from 'src/tools/files/getFindFile';
+import getOutputDirectory from 'src/tools/files/getOutputDirectory';
 
 async function getVersionFilename(
   option: Pick<IBuildCommandOption, 'versionFrom' | 'versionPath'>,

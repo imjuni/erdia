@@ -1,10 +1,10 @@
-import getOutputDirectory from '#tools/files/getOutputDirectory';
-import getPuppeteerConfig from '#tools/getPuppeteerConfig';
-import getSlashEndRoutePath from '#tools/getSlashEndRoutePath';
 import fs from 'fs';
 import 'jest';
 import * as mnf from 'my-node-fp';
 import path from 'path';
+import getOutputDirectory from 'src/tools/files/getOutputDirectory';
+import getPuppeteerConfig from 'src/tools/getPuppeteerConfig';
+import getSlashEndRoutePath from 'src/tools/getSlashEndRoutePath';
 
 describe('getSlashEndRoutePath', () => {
   test('pass - without slash', () => {
