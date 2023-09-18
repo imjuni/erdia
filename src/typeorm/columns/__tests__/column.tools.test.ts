@@ -1,9 +1,9 @@
-import { CE_COLUMN_ATTRIBUTE } from 'src/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import { CE_OUTPUT_FORMAT } from 'src/configs/const-enum/CE_OUTPUT_FORMAT';
-import getColumnAttributeKey from 'src/typeorm/columns/getColumnAttributeKey';
-import getColumnType from 'src/typeorm/columns/getColumnType';
-import getComment from 'src/typeorm/columns/getComment';
-import getIsNullable from 'src/typeorm/columns/getIsNullable';
+import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
+import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
+import getColumnAttributeKey from '#/typeorm/columns/getColumnAttributeKey';
+import getColumnType from '#/typeorm/columns/getColumnType';
+import getComment from '#/typeorm/columns/getComment';
+import getIsNullable from '#/typeorm/columns/getIsNullable';
 
 describe('getIsNullable', () => {
   test('primary', () => {
@@ -46,17 +46,17 @@ describe('getComment', () => {
 
 describe('getColumnAttributeKey', () => {
   test('foreign-key', () => {
-    const key = getColumnAttributeKey({ relationMetadata: {} as any, isPrimary: false });
+    const key = getColumnAttributeKey({ relationMetadata: {} as any, isPrimary: false }, '', '', []);
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.FK]);
   });
 
   test('primary-key', () => {
-    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: true });
+    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: true }, '', '', []);
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.PK]);
   });
 
   test('normal-column', () => {
-    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: false });
+    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: false }, '', '', []);
     expect(key).toEqual([]);
   });
 });

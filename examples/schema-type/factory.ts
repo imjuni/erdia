@@ -51,6 +51,7 @@ function licenseFactory({ value: nullableValue }: { entity: 'license'; value?: P
 
   const license: ILicense = {
     id: value.id ?? 0,
+    code: value.code ?? '',
     title: value.title ?? '',
     description: value.description ?? '',
     expire: value.expire ?? new Date(),

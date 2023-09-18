@@ -1,20 +1,20 @@
+import templateEjectCommandHandler from '#/cli/commands/templateEjectCommandHandler';
+import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
+import { CE_ENTITY_VERSION_FROM } from '#/configs/const-enum/CE_ENTITY_VERSION_FROM';
+import { CE_IMAGE_FORMAT } from '#/configs/const-enum/CE_IMAGE_FORMAT';
+import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
+import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
+import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
+import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
+import getAutoCompleteSource from '#/configs/modules/getAutoCompleteSource';
+import getCwd from '#/configs/modules/getCwd';
+import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
+import evaluateTemplate from '#/template/evaluateTemplate';
 import Fuse from 'fuse.js';
 import globby from 'globby';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
 import path from 'node:path';
-import templateEjectCommandHandler from 'src/cli/commands/templateEjectCommandHandler';
-import { CE_DEFAULT_VALUE } from 'src/configs/const-enum/CE_DEFAULT_VALUE';
-import { CE_ENTITY_VERSION_FROM } from 'src/configs/const-enum/CE_ENTITY_VERSION_FROM';
-import { CE_IMAGE_FORMAT } from 'src/configs/const-enum/CE_IMAGE_FORMAT';
-import { CE_MERMAID_THEME } from 'src/configs/const-enum/CE_MERMAID_THEME';
-import { CE_OUTPUT_COMPONENT } from 'src/configs/const-enum/CE_OUTPUT_COMPONENT';
-import { CE_OUTPUT_FORMAT } from 'src/configs/const-enum/CE_OUTPUT_FORMAT';
-import type { IInitDocAnswer } from 'src/configs/interfaces/InquirerAnswer';
-import getAutoCompleteSource from 'src/configs/modules/getAutoCompleteSource';
-import getCwd from 'src/configs/modules/getCwd';
-import { CE_TEMPLATE_NAME } from 'src/template/cosnt-enum/CE_TEMPLATE_NAME';
-import evaluateTemplate from 'src/template/evaluateTemplate';
 
 export default async function getConfigContent() {
   /**

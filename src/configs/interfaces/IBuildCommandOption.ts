@@ -1,4 +1,4 @@
-import type IDocumentOption from 'src/configs/interfaces/IDocumentOption';
+import type IDocumentOption from '#/configs/interfaces/IDocumentOption';
 
 export default interface IBuildCommandOption extends IDocumentOption {
   /**

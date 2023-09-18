@@ -1,5 +1,5 @@
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
 import { atOrThrow } from 'my-easy-fp';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
 
 export default function dedupeManaToManyRelationRecord(relations: IRelationRecord[]) {
   const otherRelations = relations.filter((relation) => relation.relationType !== 'many-to-many');

@@ -1,10 +1,12 @@
-import type IBaseRecord from 'src/databases/interfaces/IBaseRecord';
-import type IColumnRecord from 'src/databases/interfaces/IColumnRecord';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
+import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
+import type IBaseRecord from '#/databases/interfaces/IBaseRecord';
+import type IColumnRecord from '#/databases/interfaces/IColumnRecord';
+import type IIndexRecord from '#/databases/interfaces/IIndexRecord';
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
 
-export default interface IEntityWithColumnAndRelation extends IBaseRecord {
+export default interface IEntityWithColumnAndRelationAndIndex extends IBaseRecord {
   /** kind of record */
-  $kind: 'entity';
+  $kind: typeof CE_RECORD_KIND.ENTITY;
 
   /** name from property name */
   name: string;
@@ -20,4 +22,7 @@ export default interface IEntityWithColumnAndRelation extends IBaseRecord {
 
   /** relation record in this entity */
   relations: IRelationRecord[];
+
+  /** index record in this entity */
+  indices: IIndexRecord[];
 }

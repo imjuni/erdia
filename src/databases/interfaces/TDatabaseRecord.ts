@@ -1,7 +1,8 @@
-import type IColumnRecord from 'src/databases/interfaces/IColumnRecord';
-import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
+import type IColumnRecord from '#/databases/interfaces/IColumnRecord';
+import type IEntityRecord from '#/databases/interfaces/IEntityRecord';
+import type IIndexRecord from '#/databases/interfaces/IIndexRecord';
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
 
-type TDatabaseRecord = IColumnRecord | IEntityRecord | IRelationRecord;
+type TDatabaseRecord = IColumnRecord | IEntityRecord | IRelationRecord | IIndexRecord;
 
 export default TDatabaseRecord;

@@ -1,12 +1,12 @@
+import * as gjc from '#/common/getRelationHash';
+import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
+import getRelationRecord from '#/typeorm/relations/getRelationRecord';
+import getRelationRecords from '#/typeorm/relations/getRelationRecords';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import { findOrThrow } from 'my-easy-fp';
 import path from 'path';
-import * as gjc from 'src/common/getRelationHash';
-import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
-import getRelationRecord from 'src/typeorm/relations/getRelationRecord';
-import getRelationRecords from 'src/typeorm/relations/getRelationRecords';
 import type { DataSource } from 'typeorm';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;

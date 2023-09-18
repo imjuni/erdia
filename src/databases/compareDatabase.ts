@@ -1,11 +1,13 @@
+import getColumnHash from '#/common/getColumnHash';
+import getEntityHash from '#/common/getEntityHash';
+import getIndexHash from '#/common/getIndexHash';
+import getRelationHash from '#/common/getRelationHash';
+import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
+import { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
+import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
+import type TDatabaseRecord from '#/databases/interfaces/TDatabaseRecord';
 import { detailedDiff } from 'deep-object-diff';
 import { settify } from 'my-easy-fp';
-import getColumnHash from 'src/common/getColumnHash';
-import getEntityHash from 'src/common/getEntityHash';
-import getRelationHash from 'src/common/getRelationHash';
-import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
-import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
-import type TDatabaseRecord from 'src/databases/interfaces/TDatabaseRecord';
 
 export default function compareDatabase(
   metadata: IRecordMetadata,
@@ -18,12 +20,14 @@ export default function compareDatabase(
 
   const nextMap = next.reduce<Record<string, TDatabaseRecord>>((aggregation, record) => {
     switch (record.$kind) {
-      case 'entity':
+      case CE_RECORD_KIND.ENTITY:
         return { ...aggregation, [getEntityHash(record)]: record };
-      case 'column':
+      case CE_RECORD_KIND.COLUMN:
         return { ...aggregation, [getColumnHash(record)]: record };
-      case 'relation':
+      case CE_RECORD_KIND.RELATION:
         return { ...aggregation, [getRelationHash(record)]: record };
+      case CE_RECORD_KIND.INDEX:
+        return { ...aggregation, [getIndexHash(record)]: record };
       default:
         return aggregation;
     }
@@ -31,12 +35,14 @@ export default function compareDatabase(
 
   const prevMap = prev.reduce<Record<string, TDatabaseRecord>>((aggregation, record) => {
     switch (record.$kind) {
-      case 'entity':
+      case CE_RECORD_KIND.ENTITY:
         return { ...aggregation, [getEntityHash(record)]: record };
-      case 'column':
+      case CE_RECORD_KIND.COLUMN:
         return { ...aggregation, [getColumnHash(record)]: record };
-      case 'relation':
+      case CE_RECORD_KIND.RELATION:
         return { ...aggregation, [getRelationHash(record)]: record };
+      case CE_RECORD_KIND.INDEX:
+        return { ...aggregation, [getIndexHash(record)]: record };
       default:
         return aggregation;
     }

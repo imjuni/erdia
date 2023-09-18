@@ -1,6 +1,6 @@
+import getColumnWeight from '#/creators/columns/getColumnWeight';
+import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import { consola } from 'consola';
-import getColumnWeight from 'src/creators/columns/getColumnWeight';
-import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
 import type { DataSource } from 'typeorm';
 
 const share: { dataSource: DataSource } = {} as any;

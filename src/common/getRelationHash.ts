@@ -1,5 +1,5 @@
-import getPlainRelationType from 'src/common/getPlainRelationType';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
+import getPlainRelationType from '#/common/getPlainRelationType';
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
 
 export default function getRelationHash(
   relation: Pick<IRelationRecord, 'entity' | 'inverseEntityName' | 'relationType'>,

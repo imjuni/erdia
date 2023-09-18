@@ -1,7 +1,7 @@
+import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
+import getEntityName from '#/typeorm/entities/getEntityName';
+import getInverseRelationMetadata from '#/typeorm/relations/getInverseRelationMetadata';
 import consola from 'consola';
-import type IRelationRecord from 'src/databases/interfaces/IRelationRecord';
-import getEntityName from 'src/typeorm/entities/getEntityName';
-import getInverseRelationMetadata from 'src/typeorm/relations/getInverseRelationMetadata';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 export default function getManyToManyJoinColumn(

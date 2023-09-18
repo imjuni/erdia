@@ -1,7 +1,7 @@
-import { CE_CHANGE_KIND } from 'src/databases/interfaces/CE_CHANGE_KIND';
-import type IEntityRecord from 'src/databases/interfaces/IEntityRecord';
-import type IRecordMetadata from 'src/databases/interfaces/IRecordMetadata';
-import getEntityName from 'src/typeorm/entities/getEntityName';
+import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
+import type IEntityRecord from '#/databases/interfaces/IEntityRecord';
+import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
+import getEntityName from '#/typeorm/entities/getEntityName';
 import type { EntityMetadata } from 'typeorm';
 
 export default function getEntityRecord(entityMetadata: EntityMetadata, metadata: IRecordMetadata): IEntityRecord {

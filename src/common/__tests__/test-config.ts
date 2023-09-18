@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import { CE_OUTPUT_FORMAT } from 'src/configs/const-enum/CE_OUTPUT_FORMAT';
-import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
+import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
+import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
 
 export const buildOption: IBuildCommandOption = {
   config: '',

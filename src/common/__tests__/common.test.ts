@@ -1,7 +1,7 @@
+import getDatabaseName from '#/common/getDatabaseName';
+import getPlainRelationType from '#/common/getPlainRelationType';
+import getRelationHash from '#/common/getRelationHash';
 import 'jest';
-import getDatabaseName from 'src/common/getDatabaseName';
-import getPlainRelationType from 'src/common/getPlainRelationType';
-import getRelationHash from 'src/common/getRelationHash';
 
 describe('getDatabaseName', () => {
   test('getDatabaseName - string', () => {

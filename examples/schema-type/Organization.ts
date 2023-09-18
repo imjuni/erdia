@@ -38,6 +38,12 @@ export const Organization = new EntitySchema<IOrganization & IOrganizationRelati
       default: () => 'CURRENT_TIMESTAMP',
     },
   },
+  indices: [
+    {
+      name: 'idx_organization_title',
+      columns: ['title', 'description'],
+    },
+  ],
   relations: {
     licenses: {
       target: 'License',

@@ -1,13 +1,13 @@
+import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
+import type getRenderData from '#/creators/getRenderData';
+import type IErdiaDocument from '#/creators/interfaces/IErdiaDocument';
+import getPuppeteerConfig from '#/tools/getPuppeteerConfig';
 import consola from 'consola';
 import del from 'del';
 import fs from 'fs';
 import { isError } from 'my-easy-fp';
 import path from 'path';
 import * as puppeteer from 'puppeteer';
-import type IBuildCommandOption from 'src/configs/interfaces/IBuildCommandOption';
-import type getRenderData from 'src/creators/getRenderData';
-import type IErdiaDocument from 'src/creators/interfaces/IErdiaDocument';
-import getPuppeteerConfig from 'src/tools/getPuppeteerConfig';
 import type { AsyncReturnType } from 'type-fest';
 
 export default async function writeToPdf(
