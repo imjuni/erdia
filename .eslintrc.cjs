@@ -49,7 +49,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/__test__/*.ts', '**/__tests__/*.ts', 'jest.config.cjs'],
+      files: ['**/__test__/*.ts', '**/__tests__/*.ts', 'jest.config.cjs', 'prepublish.cjs'],
       rules: {
         '@typescript-eslint/no-unsafe-call': ['off'],
         '@typescript-eslint/no-unsafe-assignment': ['off'],
