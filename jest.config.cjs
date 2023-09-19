@@ -1,3 +1,5 @@
+const { pathsToModuleNameMapper } = require('ts-jest');
+
 module.exports = {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
@@ -8,4 +10,5 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', 'examples/', 'dist', 'test-config.ts'],
   setupFilesAfterEnv: ['<rootDir>/.configs/jest.setup.cjs'],
   moduleDirectories: ['node_modules', 'src', __dirname],
+  moduleNameMapper: pathsToModuleNameMapper({ '#/*': ['src/*'] }, { prefix: '<rootDir>/' }),
 };
