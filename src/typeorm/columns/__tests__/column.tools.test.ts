@@ -55,6 +55,29 @@ describe('getColumnAttributeKey', () => {
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.PK]);
   });
 
+  test('unique-key', () => {
+    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: false }, 'code', 'tbl_license', [
+      {
+        $kind: 'index',
+        name: 'uk_license_code',
+        title: undefined,
+        version: '3.2.0',
+        createdAt: '2023-09-19T22:36:39+09:00',
+        updatedAt: '2023-09-19T22:36:39+09:00',
+        change: 'add',
+        entity: 'tbl_license',
+        dbName: 'uk_license_code',
+        tableName: 'License',
+        tableDBName: 'tbl_license',
+        isUnique: true,
+        isFulltext: false,
+        isSpatial: false,
+        columnNames: ['code', 'title'],
+      },
+    ]);
+    expect(key).toEqual([CE_COLUMN_ATTRIBUTE.UK]);
+  });
+
   test('normal-column', () => {
     const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: false }, '', '', []);
     expect(key).toEqual([]);
