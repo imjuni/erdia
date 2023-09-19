@@ -1,6 +1,6 @@
 {
   "name": "erdia",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "engines": {
     "node": ">=18"
@@ -24,8 +24,8 @@
     "lint": "eslint --cache .",
     "lint-staged": "lint-staged",
     "prettier": "prettier --write src/**/*.ts",
-    "pub": "npm run bundle && NODE_ENV=production npm publish --registry http://localhost:8901",
-    "unpub": "npm unpublish erdia@latest --registry http://localhost:8901",
+    "pub": "npm run bundle && RELEASE_MODE=true NODE_ENV=production npm publish --registry http://localhost:8901",
+    "unpub": "npm unpublish erdia@$npm_package_version --registry http://localhost:8901",
     "pub:prod": "npm run bundle && cross-env RELEASE_MODE=true npm publish --access=public",
     "clean:dts": "rimraf dist/cjs/src dist/esm/src dist/src dist/examples",
     "typeorm": "typeorm-ts-node-commonjs",
@@ -51,21 +51,26 @@
     "type": "git",
     "url": "git+https://github.com/imjuni/erdia.git"
   },
-  "main": "./dist/cjs/index.cjs",
-  "module": "./disg/cjs/index.mjs",
-  "types": "./dist/esm/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "default": "./dist/cjs/index.cjs",
+        "types": "./dist/types/index.d.ts"
+      },
+      "import": {
+        "default": "./dist/esm/index.mjs",
+        "types": "./dist/types/index.d.ts"
+      }
+    }
+  },
   "files": [
     "dist"
   ],
-  "exports": {
-    ".": {
-      "require": "./dist/cjs/index.js",
-      "import": "./dist/esm/index.js",
-      "typings": "./dist/esm/index.d.ts"
-    }
-  },
   "bin": {
-    "erdia": "./dist/cli.js"
+    "erdia": "./dist/cjs/cli.cjs"
   },
   "author": "ByungJoon Lee",
   "license": "MIT",
