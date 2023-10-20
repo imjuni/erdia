@@ -14,7 +14,7 @@ import getEntityRecords from '../getEntityRecords';
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
 beforeAll(async () => {
-  share.dataSource = (await import('../../../../examples/schema-type/dataSourceConfig')).default;
+  share.dataSource = await (await import('../../../../examples/async-schema-type/dataSourceConfig')).default;
   await share.dataSource.initialize();
 });
 
