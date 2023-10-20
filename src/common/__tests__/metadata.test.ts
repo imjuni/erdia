@@ -1,5 +1,6 @@
 /* eslint-disable import/first */
 jest.mock('find-up');
+jest.mock('read-pkg');
 
 import * as env from '#/common/__tests__/test-config';
 import getDatabaseName from '#/common/getDatabaseName';
@@ -10,13 +11,18 @@ import getFindFile from '#/tools/files/getFindFile';
 import dayjs from 'dayjs';
 import findUp from 'find-up';
 import { isError } from 'my-easy-fp';
+import readPkg from 'read-pkg';
 
 describe('getMetadata', () => {
-  test('pass', async () => {
+  test('project name from application', async () => {
     const timestamp = '1692373636445';
     const datetime = '2023-08-19T11:37:20+09:00';
     const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => timestamp);
     const tspSpyOn02 = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => datetime);
+
+    // @ts-expect-error: read-pkg mocking test
+    readPkg.mockReturnValueOnce(Promise.resolve({ name: 'erdia', version: '1.1.1' }));
+
     const metadata = await getMetadata(
       { options: { database: 'i-am-database' } },
       { ...env.buildOption, versionFrom: 'timestamp' },
@@ -27,6 +33,32 @@ describe('getMetadata', () => {
 
     expect(metadata).toMatchObject({
       name: 'erdia',
+      title: undefined,
+      version: timestamp,
+      createdAt: datetime,
+      updatedAt: datetime,
+    });
+  });
+
+  test('project name with package namespace', async () => {
+    const timestamp = '1692373636445';
+    const datetime = '2023-08-19T11:37:20+09:00';
+    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => timestamp);
+    const tspSpyOn02 = jest.spyOn(dayjs.prototype, 'format').mockImplementation(() => datetime);
+
+    // @ts-expect-error: read-pkg mocking test
+    readPkg.mockReturnValueOnce(Promise.resolve({ name: '@maeum/pet-store', version: '1.1.1' }));
+
+    const metadata = await getMetadata(
+      { options: { database: 'i-am-database' } },
+      { ...env.buildOption, versionFrom: 'timestamp' },
+    );
+
+    tspSpyOn01.mockRestore();
+    tspSpyOn02.mockRestore();
+
+    expect(metadata).toMatchObject({
+      name: '@maeum_pet-store',
       title: undefined,
       version: timestamp,
       createdAt: datetime,
