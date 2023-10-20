@@ -86,6 +86,17 @@ module.exports = {
       },
     },
     {
+      files: ['src/typeorm/loadDataSource.ts'],
+      rules: {
+        'no-restricted-syntax': ['off'],
+        'guard-for-in': ['off'],
+        'no-await-in-loop': ['off'],
+        '@typescript-eslint/no-unsafe-assignment': ['off'],
+        '@typescript-eslint/no-unsafe-member-access': ['off'],
+        '@typescript-eslint/no-unsafe-return': ['off'],
+      },
+    },
+    {
       files: ['src/creators/writeToImage.ts'],
       rules: {
         '@typescript-eslint/no-unsafe-argument': ['off'],
