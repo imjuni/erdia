@@ -3,6 +3,7 @@ import getVersion from '#/common/getVersion';
 import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
 import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
 import dayjs from 'dayjs';
+import filenamify from 'filenamify';
 import readPkg from 'read-pkg';
 
 export default async function getMetadata(
@@ -10,7 +11,8 @@ export default async function getMetadata(
   option: Pick<IBuildCommandOption, 'projectName' | 'versionFrom' | 'versionPath' | 'title'>,
 ): Promise<IRecordMetadata> {
   const json = await readPkg({ normalize: false });
-  const name = await getProjectName(dataSource, json, option);
+  const rawName = await getProjectName(dataSource, json, option);
+  const name = filenamify(rawName, { replacement: '_' });
   const { version } = await getVersion(json, option);
 
   return {
