@@ -24,8 +24,8 @@
     "lint": "eslint --cache .",
     "lint-staged": "lint-staged",
     "prettier": "prettier --write src/**/*.ts",
-    "pub": "npm run bundle && RELEASE_MODE=true NODE_ENV=production npm publish --registry http://localhost:8901",
-    "unpub": "npm unpublish erdia@$npm_package_version --registry http://localhost:8901",
+    "pub": "npm run bundle && cross-env RELEASE_MODE=true NODE_ENV=production npm publish --registry http://localhost:8901",
+    "unpub": "npm unpublish $npm_package_name@$npm_package_version --registry http://localhost:8901",
     "pub:prod": "npm run bundle && cross-env RELEASE_MODE=true npm publish --access=public",
     "clean:dts": "rimraf dist/cjs/src dist/esm/src dist/src dist/examples",
     "typeorm": "typeorm-ts-node-commonjs",
@@ -155,5 +155,13 @@
     "type-fest": "^4.2.0",
     "typeorm": "^0.3.17",
     "yargs": "^17.7.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "cross-env NODE_ENV=production eslint --cache"
+    ],
+    "*.{js,jsx,ts,tsx},*.json,.{eslintrc.cjs,prettierrc}": [
+      "cross-env NODE_ENV=production prettier --ignore-path .eslintignore --parser json --write"
+    ]
   }
 }
