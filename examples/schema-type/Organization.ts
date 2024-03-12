@@ -5,6 +5,7 @@ export interface IOrganization {
   id: number;
   title: string;
   description: string;
+  supports: { name: string; year: number }[];
   expire: Date;
 }
 
@@ -32,6 +33,10 @@ export const Organization = new EntitySchema<IOrganization & IOrganizationRelati
       length: 2048,
       comment: 'organization description',
       charset: 'utf8mb4',
+    },
+    supports: {
+      type: 'simple-json',
+      comment: 'organization supports other organization',
     },
     expire: {
       type: 'datetime',

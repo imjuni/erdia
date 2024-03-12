@@ -117,3 +117,4 @@ template2/
 erdiadb.json
 **/.DS_Store
 .npmrc
+git-short.sh

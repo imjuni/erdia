@@ -40,6 +40,7 @@ function organizationFactory({
     id: value.id ?? 0,
     title: value.title ?? '',
     description: value.description ?? '',
+    supports: [{ name: 'ironman', year: 1970 }],
     expire: value.expire ?? new Date(),
   };
 
@@ -54,6 +55,7 @@ function licenseFactory({ value: nullableValue }: { entity: 'license'; value?: P
     code: value.code ?? '',
     title: value.title ?? '',
     description: value.description ?? '',
+    weight: 0.3,
     expire: value.expire ?? new Date(),
   };
 

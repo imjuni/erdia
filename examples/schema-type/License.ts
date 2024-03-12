@@ -7,6 +7,7 @@ export interface ILicense {
   title: string;
   code: string;
   description: string;
+  weight: number;
   expire: Date;
 }
 
@@ -29,6 +30,10 @@ export const License = new EntitySchema<ILicense & ILicenseRelation>({
       length: 512,
       comment: 'organization title',
       charset: 'utf8mb4',
+    },
+    weight: {
+      type: 'double precision',
+      comment: 'sort weight',
     },
     code: {
       type: 'varchar',

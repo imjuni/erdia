@@ -86,32 +86,32 @@ describe('getColumnAttributeKey', () => {
 
 describe('getColumnType', () => {
   test('numeric-type', () => {
-    const columnType = getColumnType({ type: 'bigint', length: '0' });
+    const columnType = getColumnType({ type: 'bigint', length: '0', isPrimary: false, isNullable: true });
     expect(columnType).toEqual('bigint');
   });
 
   test('function-type without length + undefined', () => {
-    const columnType = getColumnType({ type: Boolean, length: '200' });
+    const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: true });
     expect(columnType).toEqual('boolean');
   });
 
   test('function-type with length', () => {
-    const columnType = getColumnType({ type: Boolean, length: '200' }, true);
+    const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: true }, true);
     expect(columnType).toEqual('boolean(200)');
   });
 
   test('function-type without length', () => {
-    const columnType = getColumnType({ type: Boolean, length: '200' }, false);
+    const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: true }, false);
     expect(columnType).toEqual('boolean');
   });
 
   test('string-type with length', () => {
-    const columnType = getColumnType({ type: 'varchar', length: '200' }, true);
+    const columnType = getColumnType({ type: 'varchar', length: '200', isPrimary: false, isNullable: true }, true);
     expect(columnType).toEqual('varchar(200)');
   });
 
   test('string-type without length', () => {
-    const columnType = getColumnType({ type: 'varchar', length: '200' }, false);
+    const columnType = getColumnType({ type: 'varchar', length: '200', isPrimary: false, isNullable: true }, false);
     expect(columnType).toEqual('varchar');
   });
 });
