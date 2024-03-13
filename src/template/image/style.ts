@@ -1,4 +1,4 @@
-const style = `<style>
+export const style = `<style>
     /* Layout */
     @media (min-width: 1200px) {
       body {
@@ -54,5 +54,3 @@ const style = `<style>
       }
     }
   </style>`;
-
-export default style;

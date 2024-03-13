@@ -1,10 +1,10 @@
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import getConfigContent from '#/configs/modules/getConfigContent';
-import applyPrettier from '#/creators/applyPretter';
+import { getConfigContent } from '#/configs/modules/getConfigContent';
+import { applyPrettier } from '#/creators/applyPretter';
 import consola from 'consola';
 import fs from 'fs';
 
-export default async function initConfigCommandHandler() {
+export async function initConfigCommandHandler() {
   const rawConfig = await getConfigContent();
   const prettiered = await applyPrettier(rawConfig, 'json');
 

@@ -1,4 +1,4 @@
-export default function getPackageName(json: Record<string, unknown>): string {
+export function getPackageName(json: Record<string, unknown>): string {
   const { name } = json;
 
   if (typeof name === 'string' && name !== '') {

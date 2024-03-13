@@ -3,24 +3,28 @@ module.exports = {
     es6: true,
     node: true,
   },
+  ignorePatterns: ['__test__/*', '__tests__/*', 'examples/*', 'coverage/*', 'dist/*'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: 'tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
+  },
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:@typescript-eslint/strict',
     'airbnb-base',
     'airbnb-typescript/base',
+    'prettier',
     'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'prettier',
   ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.eslint.json',
-    tsconfigRootDir: __dirname,
-  },
   plugins: ['@typescript-eslint', 'prettier', 'import'],
   rules: {
+    // ----------------------------------------------------------------------------------------------------------
+    // eslint
+    // ----------------------------------------------------------------------------------------------------------
     'max-len': [
       'error',
       {
@@ -32,30 +36,72 @@ module.exports = {
         code: 120,
       },
     ],
+    'no-underscore-dangle': ['error', { allowAfterThis: true }],
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'TSEnumDeclaration:not([const=true])',
+        message: "Don't declare non-const enums",
+      },
+    ],
+    // ----------------------------------------------------------------------------------------------------------
+    // @typescript-eslint
+    // ----------------------------------------------------------------------------------------------------------
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        custom: {
+          regex: '^I[A-Z]+',
+          match: true,
+        },
+      },
+      {
+        selector: 'typeAlias',
+        format: ['PascalCase'],
+        custom: {
+          regex: '^T[A-Z]+',
+          match: true,
+        },
+      },
+    ],
+    '@typescript-eslint/member-delimiter-style': [
+      'off',
+      {
+        multiline: {
+          delimiter: 'none',
+          requireLast: true,
+        },
+        singleline: {
+          delimiter: 'semi',
+          requireLast: false,
+        },
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
         varsIgnorePattern: '^_.+$',
         argsIgnorePattern: '^_.+$',
-        ignoreRestSiblings: true,
       },
     ],
-    'import/extensions': ['off'],
-    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
-    // static function use this: void
-    '@typescript-eslint/no-invalid-void-type': ['error', { allowAsThisParameter: true }],
-    '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['off'],
-    'no-underscore-dangle': ['error', { allowAfterThis: true }],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        prefer: 'type-imports',
+      },
+    ],
+    // ----------------------------------------------------------------------------------------------------------
+    // eslint-plugin-import
+    // ----------------------------------------------------------------------------------------------------------
+    'import/prefer-default-export': ['off'],
+    'import/no-default-export': ['error'],
   },
   overrides: [
     {
-      files: ['**/__test__/*.ts', '**/__tests__/*.ts', 'jest.config.cjs', 'prepublish.cjs'],
+      files: ['**/scripts/*.js'],
       rules: {
-        '@typescript-eslint/no-unsafe-call': ['off'],
-        '@typescript-eslint/no-unsafe-assignment': ['off'],
-        '@typescript-eslint/no-unsafe-argument': ['off'],
-        '@typescript-eslint/no-unsafe-member-access': ['off'],
-        '@typescript-eslint/no-explicit-any': ['off'],
         'no-console': ['off'],
       },
     },
@@ -67,45 +113,22 @@ module.exports = {
       },
     },
     {
-      files: ['**/*.cjs'],
+      files: ['**/__tests__/*.ts'],
       rules: {
-        '@typescript-eslint/no-var-requires': ['off'],
-        'import/no-extraneous-dependencies': ['off'],
-      },
-    },
-    {
-      files: ['src/cli.ts'],
-      rules: {
-        '@typescript-eslint/ban-types': ['off'],
-      },
-    },
-    {
-      files: ['examples/class-type/**/*.ts', 'examples/schema-type/**/*.ts'],
-      rules: {
-        '@typescript-eslint/consistent-type-imports': ['off'],
-      },
-    },
-    {
-      files: ['src/typeorm/loadDataSource.ts'],
-      rules: {
-        'no-restricted-syntax': ['off'],
-        'guard-for-in': ['off'],
-        'no-await-in-loop': ['off'],
-        '@typescript-eslint/no-unsafe-assignment': ['off'],
-        '@typescript-eslint/no-unsafe-member-access': ['off'],
-        '@typescript-eslint/no-unsafe-return': ['off'],
-      },
-    },
-    {
-      files: ['src/creators/writeToImage.ts'],
-      rules: {
-        '@typescript-eslint/no-unsafe-argument': ['off'],
-        '@typescript-eslint/no-unsafe-return': ['off'],
-        '@typescript-eslint/no-unsafe-assignment': ['off'],
-        '@typescript-eslint/no-unsafe-member-access': ['off'],
-        '@typescript-eslint/no-unsafe-call': ['off'],
         '@typescript-eslint/no-explicit-any': ['off'],
-        'no-param-reassign': ['off'],
+        '@typescript-eslint/no-unsafe-call': ['off'],
+        '@typescript-eslint/no-unsafe-assignment': ['off'],
+        '@typescript-eslint/no-unsafe-argument': ['off'],
+        '@typescript-eslint/no-unsafe-member-access': ['off'],
+        '@typescript-eslint/ban-ts-comment': ['off'],
+        'no-console': ['off'],
+      },
+    },
+    {
+      files: ['vitest.config.ts'],
+      rules: {
+        'import/no-extraneous-dependencies': ['off'],
+        'import/no-default-export': ['off'],
       },
     },
   ],

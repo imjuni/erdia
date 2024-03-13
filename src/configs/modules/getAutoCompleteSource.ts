@@ -1,7 +1,7 @@
 import type Fuse from 'fuse.js';
 import { bignumber } from 'mathjs';
 
-export default function getAutoCompleteSource(fuse: Fuse<string>, limit: number) {
+export function getAutoCompleteSource(fuse: Fuse<string>, limit: number) {
   return (_answersSoFar: unknown, input: string | undefined) => {
     const safeInput = input === undefined || input === null ? '' : input;
 

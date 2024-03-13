@@ -1,9 +1,9 @@
 import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import getColumnAttributeKey from '#/typeorm/columns/getColumnAttributeKey';
-import getColumnType from '#/typeorm/columns/getColumnType';
-import getComment from '#/typeorm/columns/getComment';
-import getIsNullable from '#/typeorm/columns/getIsNullable';
+import { getColumnAttributeKey } from '#/typeorm/columns/getColumnAttributeKey';
+import { getColumnType } from '#/typeorm/columns/getColumnType';
+import { getComment } from '#/typeorm/columns/getComment';
+import { getIsNullable } from '#/typeorm/columns/getIsNullable';
 
 describe('getIsNullable', () => {
   test('primary', () => {

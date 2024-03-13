@@ -6,7 +6,7 @@ import path from 'path';
  *
  * istanbul ignore next
  * */
-export default async function getTemplatePath(filePath: string) {
+export async function getTemplatePath(filePath: string) {
   const dirPath = await getDirname(filePath);
 
   if (dirPath == null && !(await exists(dirPath))) {

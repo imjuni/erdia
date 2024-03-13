@@ -1,9 +1,9 @@
-import getMetadata from '#/common/getMetadata';
+import { getMetadata } from '#/common/getMetadata';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type ICommonOption from '#/configs/interfaces/ICommonOption';
-import getCwd from '#/configs/modules/getCwd';
-import getOutputDirectory from '#/tools/files/getOutputDirectory';
-import getDataSource from '#/typeorm/getDataSource';
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import { getCwd } from '#/configs/modules/getCwd';
+import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { getDataSource } from '#/typeorm/getDataSource';
 import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import del from 'del';
@@ -12,7 +12,7 @@ import { isError, isFalse } from 'my-easy-fp';
 import path from 'path';
 import type { DataSource } from 'typeorm';
 
-export default async function cleanDocumentCommandHandler(option: ICommonOption) {
+export async function cleanDocumentCommandHandler(option: ICommonOption) {
   let localDataSource: DataSource | undefined;
 
   try {

@@ -1,28 +1,28 @@
-import getDatabaseName from '#/common/getDatabaseName';
-import getMetadata from '#/common/getMetadata';
+import { getDatabaseName } from '#/common/getDatabaseName';
+import { getMetadata } from '#/common/getMetadata';
 import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
-import createHtml from '#/creators/createHtml';
-import createImageHtml from '#/creators/createImageHtml';
-import createMarkdown from '#/creators/createMarkdown';
-import createPdfHtml from '#/creators/createPdfHtml';
-import getRenderData from '#/creators/getRenderData';
-import type IReason from '#/creators/interfaces/IReason';
-import writeToImage from '#/creators/writeToImage';
-import writeToPdf from '#/creators/writeToPdf';
-import compareDatabase from '#/databases/compareDatabase';
-import flushDatabase from '#/databases/flushDatabase';
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
-import openDatabase from '#/databases/openDatabase';
-import processDatabase from '#/databases/processDatabase';
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import { createHtml } from '#/creators/createHtml';
+import { createImageHtml } from '#/creators/createImageHtml';
+import { createMarkdown } from '#/creators/createMarkdown';
+import { createPdfHtml } from '#/creators/createPdfHtml';
+import { getRenderData } from '#/creators/getRenderData';
+import type { IReason } from '#/creators/interfaces/IReason';
+import { writeToImage } from '#/creators/writeToImage';
+import { writeToPdf } from '#/creators/writeToPdf';
+import { compareDatabase } from '#/databases/compareDatabase';
+import { flushDatabase } from '#/databases/flushDatabase';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import { openDatabase } from '#/databases/openDatabase';
+import { processDatabase } from '#/databases/processDatabase';
 import { loadTemplates } from '#/template/loadTemplates';
-import getColumnRecord from '#/typeorm/columns/getColumnRecord';
-import getEntityRecords from '#/typeorm/entities/getEntityRecords';
-import getDataSource from '#/typeorm/getDataSource';
-import getIndexRecords from '#/typeorm/indices/getIndexRecords';
-import dedupeManaToManyRelationRecord from '#/typeorm/relations/dedupeManaToManyRelationRecord';
-import getRelationRecords from '#/typeorm/relations/getRelationRecords';
+import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
+import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
+import { getDataSource } from '#/typeorm/getDataSource';
+import { getIndexRecords } from '#/typeorm/indices/getIndexRecords';
+import { dedupeManaToManyRelationRecord } from '#/typeorm/relations/dedupeManaToManyRelationRecord';
+import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
 import { showLogo } from '@maeum/cli-logo';
 import chalk from 'chalk';
 import consola from 'consola';
@@ -32,7 +32,7 @@ import { isFail, isPass, type IFail, type IPass } from 'my-only-either';
 import fs from 'node:fs';
 import type { DataSource } from 'typeorm';
 
-export default async function buildDocumentCommandHandler(option: IBuildCommandOption) {
+export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
   let localDataSource: DataSource | undefined;
 
   try {

@@ -1,8 +1,8 @@
-import getInverseRelationMetadata from '#/typeorm/relations/getInverseRelationMetadata';
-import getJoinColumn from '#/typeorm/relations/getJoinColumn';
-import getManyToManyEntityMetadata from '#/typeorm/relations/getManyToManyEntityMetadata';
-import getManyToManyJoinColumn from '#/typeorm/relations/getManyToManyJoinColumn';
-import getManyToOneJoinColumn from '#/typeorm/relations/getManyToOneJoinColumn';
+import { getInverseRelationMetadata } from '#/typeorm/relations/getInverseRelationMetadata';
+import { getJoinColumn } from '#/typeorm/relations/getJoinColumn';
+import { getManyToManyEntityMetadata } from '#/typeorm/relations/getManyToManyEntityMetadata';
+import { getManyToManyJoinColumn } from '#/typeorm/relations/getManyToManyJoinColumn';
+import { getManyToOneJoinColumn } from '#/typeorm/relations/getManyToOneJoinColumn';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';

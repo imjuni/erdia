@@ -1,7 +1,7 @@
 import consola from 'consola';
 import { isError } from 'my-easy-fp';
 
-export default async function applyPrettier(
+export async function applyPrettier(
   document: string,
   format: 'html' | 'md' | 'json',
   configPath?: string,

@@ -1,8 +1,8 @@
 /* eslint-disable import/first */
 jest.mock('find-up');
 
-import getFileVersion from '#/common/getFileVersion';
-import getVersion from '#/common/getVersion';
+import { getFileVersion } from '#/common/getFileVersion';
+import { getVersion } from '#/common/getVersion';
 import * as getFindFile from '#/tools/files/getFindFile';
 import * as getOutputDirectory from '#/tools/files/getOutputDirectory';
 import dayjs from 'dayjs';
@@ -58,7 +58,7 @@ describe('getVersion', () => {
   test('pass using file', async () => {
     const expectation = '1692373636445';
     const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'default').mockImplementation(() => Promise.resolve('/a/b/c'));
+    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
     const tspSpyOn03 = jest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('1.1.1')));
@@ -75,11 +75,13 @@ describe('getVersion', () => {
   test('pass using file with versionPath', async () => {
     const expectation = '1692373636445';
     const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'default').mockImplementation(() => Promise.resolve('/a/b/c'));
+    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
     const tspSpyOn03 = jest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('1.1.1')));
-    const tspSpyOn04 = jest.spyOn(getOutputDirectory, 'default').mockImplementation(() => Promise.resolve('/a/b/c'));
+    const tspSpyOn04 = jest
+      .spyOn(getOutputDirectory, 'getOutputDirectory')
+      .mockImplementation(() => Promise.resolve('/a/b/c'));
 
     const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'file', versionPath: '/a/b/c' });
 
@@ -94,7 +96,7 @@ describe('getVersion', () => {
   test('exception using package.json', async () => {
     const expectation = '1692373636445';
     const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'default').mockImplementation(() => Promise.resolve(undefined));
+    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
 
     await expect(async () => {
       try {
@@ -109,7 +111,7 @@ describe('getVersion', () => {
   test('exception using file', async () => {
     const expectation = '1692373636445';
     const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'default').mockImplementation(() => Promise.resolve(undefined));
+    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
 
     await expect(async () => {
       try {

@@ -1,15 +1,15 @@
-import buildOptionBuilder from '#/cli/builders/buildOptionBuilder';
-import commonOptionBuilder from '#/cli/builders/commonOptionBuilder';
-import documentOptionBuilder from '#/cli/builders/documentOptionBuilder';
-import outputOptionBuilder from '#/cli/builders/outputOptionBuilder';
-import buildDocumentCommandHandler from '#/cli/commands/buildDocumentCommandHandler';
-import cleanDocumentCommandHandler from '#/cli/commands/cleanDocumentCommandHandler';
-import initConfigCommandHandler from '#/cli/commands/initConfigCommandHandler';
-import templateEjectCommandHandler from '#/cli/commands/templateEjectCommandHandler';
+import { buildOptionBuilder } from '#/cli/builders/buildOptionBuilder';
+import { commonOptionBuilder } from '#/cli/builders/commonOptionBuilder';
+import { documentOptionBuilder } from '#/cli/builders/documentOptionBuilder';
+import { outputOptionBuilder } from '#/cli/builders/outputOptionBuilder';
+import { buildDocumentCommandHandler } from '#/cli/commands/buildDocumentCommandHandler';
+import { cleanDocumentCommandHandler } from '#/cli/commands/cleanDocumentCommandHandler';
+import { initConfigCommandHandler } from '#/cli/commands/initConfigCommandHandler';
+import { templateEjectCommandHandler } from '#/cli/commands/templateEjectCommandHandler';
 import { CE_COMMAND_LIST } from '#/configs/const-enum/CE_COMMAND_LIST';
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
-import type ICommonOption from '#/configs/interfaces/ICommonOption';
-import preLoadConfig from '#/configs/modules/preLoadConfig';
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import { preLoadConfig } from '#/configs/modules/preLoadConfig';
 import consola from 'consola';
 import { isError } from 'my-easy-fp';
 import sourceMapSupport from 'source-map-support';
@@ -56,7 +56,7 @@ const cleanCmdModule: CommandModule<ICommonOption, ICommonOption> = {
   },
 };
 
-const initCmdModule: CommandModule<{}, {}> = {
+const initCmdModule: CommandModule<object, object> = {
   command: CE_COMMAND_LIST.INIT,
   aliases: CE_COMMAND_LIST.INIT_ALIAS,
   describe: 'generate configuration file: `.erdiarc`',
@@ -91,10 +91,10 @@ const ejectCmdModule: CommandModule<Pick<ICommonOption, 'output'>, Pick<ICommonO
 const parser = yargs(hideBin(process.argv));
 
 parser
-  .command(buildCmdModule as CommandModule<{}, IBuildCommandOption>)
-  .command(cleanCmdModule as CommandModule<{}, ICommonOption>)
-  .command(initCmdModule as CommandModule<{}, ICommonOption>)
-  .command(ejectCmdModule as CommandModule<{}, ICommonOption>)
+  .command(buildCmdModule as CommandModule<object, IBuildCommandOption>)
+  .command(cleanCmdModule as CommandModule<object, ICommonOption>)
+  .command(initCmdModule as CommandModule<object, ICommonOption>)
+  .command(ejectCmdModule as CommandModule<object, ICommonOption>)
   .demandCommand()
   .recommendCommands()
   .config(preLoadConfig())

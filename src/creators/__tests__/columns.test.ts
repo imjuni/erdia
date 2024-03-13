@@ -1,4 +1,4 @@
-import getColumnWeight from '#/creators/columns/getColumnWeight';
+import { getColumnWeight } from '#/creators/columns/getColumnWeight';
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import { consola } from 'consola';
 import type { DataSource } from 'typeorm';

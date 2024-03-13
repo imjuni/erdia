@@ -1,6 +1,6 @@
-import type IDocumentOption from '#/configs/interfaces/IDocumentOption';
+import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
 
-export default interface IBuildCommandOption extends IDocumentOption {
+export interface IBuildCommandOption extends IDocumentOption {
   /**
    * define the route base path. The route base path is used as the base path for navbar anchor when generating HTML documents
    * @format html

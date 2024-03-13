@@ -1,4 +1,4 @@
-const build = `{
+export const build = `{
   // directory for output files
   "output": "<%= it.config.output %>",
 
@@ -100,5 +100,3 @@ const build = `{
   // "image-format": "svg",
   <% } %>
 }`;
-
-export default build;

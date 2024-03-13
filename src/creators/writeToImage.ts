@@ -1,7 +1,8 @@
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
-import type getRenderData from '#/creators/getRenderData';
-import type IErdiaDocument from '#/creators/interfaces/IErdiaDocument';
-import getPuppeteerConfig from '#/tools/getPuppeteerConfig';
+/* eslint-disable no-param-reassign, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { getRenderData } from '#/creators/getRenderData';
+import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
+import { getPuppeteerConfig } from '#/tools/getPuppeteerConfig';
 import consola from 'consola';
 import del from 'del';
 import fs from 'fs';
@@ -10,7 +11,7 @@ import path from 'path';
 import * as puppeteer from 'puppeteer';
 import type { AsyncReturnType } from 'type-fest';
 
-export default async function writeToImage(
+export async function writeToImage(
   document: IErdiaDocument,
   option: IBuildCommandOption,
   renderData: AsyncReturnType<typeof getRenderData>,

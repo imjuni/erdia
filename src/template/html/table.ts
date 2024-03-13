@@ -1,4 +1,4 @@
-const htmlTable = `<div class="container-fluid">
+export const htmlTable = `<div class="container-fluid">
   <% it.version.entities.forEach((entity) => { -%>
   <div class="container-fluid">
     <h2 id="<%= it.version.version.replaceAll('.', '-') %>-<%= entity.dbName %>-<%= entity.name %>" class="title is-3">
@@ -208,5 +208,3 @@ const htmlTable = `<div class="container-fluid">
   </div>
 <% }) -%>
 </div>`;
-
-export default htmlTable;

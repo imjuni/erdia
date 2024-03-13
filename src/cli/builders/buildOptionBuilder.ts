@@ -1,6 +1,6 @@
 import type { Argv } from 'yargs';
 
-export default function buildOptionBuilder<T>(args: Argv<T>) {
+export function buildOptionBuilder<T>(args: Argv<T>) {
   // option
   args
 

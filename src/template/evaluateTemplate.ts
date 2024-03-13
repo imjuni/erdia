@@ -7,7 +7,7 @@ const eta = new Eta({ views: 'erdia' });
 eta.resolvePath = (templatePath: string) => templatePath;
 eta.readFile = (templatePath: string) => getTemplates()[templatePath];
 
-export default async function evaluateTemplate<T extends object>(name: string, data: T) {
+export async function evaluateTemplate<T extends object>(name: string, data: T) {
   try {
     const rendered = eta.render(name, data);
     return rendered;

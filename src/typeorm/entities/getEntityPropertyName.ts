@@ -1,4 +1,4 @@
-import type IEntityRecord from '#/databases/interfaces/IEntityRecord';
+import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
 import type { EntityMetadata } from 'typeorm';
 
 /**
@@ -9,7 +9,7 @@ import type { EntityMetadata } from 'typeorm';
  * @param entityMeta 엔티티 메타 데이터
  * @returns entity name in CF-ER Diagram
  */
-export default function getEntityPropertyName(entityMeta: Pick<EntityMetadata, 'tableName' | 'name'> | IEntityRecord) {
+export function getEntityPropertyName(entityMeta: Pick<EntityMetadata, 'tableName' | 'name'> | IEntityRecord) {
   if ('$kind' in entityMeta) {
     if (entityMeta.name == null || entityMeta.name === '') {
       return entityMeta.dbName;

@@ -1,5 +1,5 @@
-import type IDocumentOption from '#/configs/interfaces/IDocumentOption';
-import defaultTemplates from '#/template/defaultTemplates';
+import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
+import { defaultTemplates } from '#/template/defaultTemplates';
 import fs from 'fs';
 import globby from 'globby';
 import { isTrue } from 'my-easy-fp';

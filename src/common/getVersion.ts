@@ -1,9 +1,9 @@
-import getFileVersion from '#/common/getFileVersion';
+import { getFileVersion } from '#/common/getFileVersion';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
-import getCwd from '#/configs/modules/getCwd';
-import getFindFile from '#/tools/files/getFindFile';
-import getOutputDirectory from '#/tools/files/getOutputDirectory';
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import { getCwd } from '#/configs/modules/getCwd';
+import { getFindFile } from '#/tools/files/getFindFile';
+import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import path from 'path';
@@ -25,7 +25,7 @@ async function getVersionFilename(
   return filename;
 }
 
-export default async function getVersion(
+export async function getVersion(
   json: Record<string, unknown>,
   option: Pick<IBuildCommandOption, 'versionFrom' | 'versionPath'>,
 ): Promise<{ version: string }> {

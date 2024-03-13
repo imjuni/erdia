@@ -1,6 +1,6 @@
-import getOutputDirectory from '#/tools/files/getOutputDirectory';
-import getPuppeteerConfig from '#/tools/getPuppeteerConfig';
-import getSlashEndRoutePath from '#/tools/getSlashEndRoutePath';
+import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { getPuppeteerConfig } from '#/tools/getPuppeteerConfig';
+import { getSlashEndRoutePath } from '#/tools/getSlashEndRoutePath';
 import fs from 'fs';
 import 'jest';
 import * as mnf from 'my-node-fp';

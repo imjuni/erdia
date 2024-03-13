@@ -1,4 +1,4 @@
-import getCwd from '#/configs/modules/getCwd';
+import { getCwd } from '#/configs/modules/getCwd';
 import 'jest';
 
 describe('getCwd', () => {

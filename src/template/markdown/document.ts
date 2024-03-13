@@ -1,7 +1,7 @@
 import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
 import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
 
-const markdownDocument = `# <%= it.metadata.name %>
+export const markdownDocument = `# <%= it.metadata.name %>
 
 <% it.versions.filter((version) => version.latest).forEach((version) => { %>
 <% if (it.option.components.includes('${CE_OUTPUT_COMPONENT.TABLE}')) { %>
@@ -14,5 +14,3 @@ const markdownDocument = `# <%= it.metadata.name %>
 <% } %>
 <% }) %>
 `;
-
-export default markdownDocument;

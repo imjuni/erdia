@@ -1,4 +1,4 @@
-export default interface ICommonOption {
+export interface ICommonOption {
   /** define the path to to configuration file: .erdiarc */
   config: string;
 

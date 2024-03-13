@@ -1,4 +1,4 @@
-export default interface IRecordMetadata {
+export interface IRecordMetadata {
   /**
    * Project name, default option use database name. You can choose this value from database name or package.json name
    */

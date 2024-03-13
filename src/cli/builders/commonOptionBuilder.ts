@@ -1,7 +1,7 @@
-import outputOptionBuilder from '#/cli/builders/outputOptionBuilder';
+import { outputOptionBuilder } from '#/cli/builders/outputOptionBuilder';
 import type { Argv } from 'yargs';
 
-export default function commonOptionBuilder<T>(args: Argv<T>) {
+export function commonOptionBuilder<T>(args: Argv<T>) {
   // option
   outputOptionBuilder(args)
     .option('config', {

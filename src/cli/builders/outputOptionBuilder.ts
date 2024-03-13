@@ -1,6 +1,6 @@
 import type { Argv } from 'yargs';
 
-export default function outputOptionBuilder<T>(args: Argv<T>) {
+export function outputOptionBuilder<T>(args: Argv<T>) {
   // option
   args.option('output', {
     alias: 'o',

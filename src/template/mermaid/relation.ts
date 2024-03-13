@@ -1,4 +1,4 @@
-const relation = `<% it.entity.relations.forEach((relation) => { %>
+export const relation = `<% it.entity.relations.forEach((relation) => { %>
 <% if (relation.isDuplicate) { return; } %>
 "<%= relation.dbName %>(<%= relation.name %>)"<% -%>
 <% if (relation.joinColumnOne && relation.joinColumnNullable) { %>
@@ -24,5 +24,3 @@ o{  <% -%>
 "<%= [relation.joinColumnName,relation.inverseJoinColumnName].filter((name) => name != null).sort().join(',') %>"<% -%>
 
 <% }) %>`;
-
-export default relation;

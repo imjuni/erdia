@@ -1,6 +1,6 @@
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
-export default function getIsNullable(metadata: {
+export function getIsNullable(metadata: {
   isNullable: ColumnMetadata['isNullable'];
   isPrimary: ColumnMetadata['isPrimary'];
 }) {
