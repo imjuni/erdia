@@ -1,4 +1,4 @@
-const documentToC = `<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start mb-3 mb-xl-5 px-2">
+export const documentToC = `<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start mb-3 mb-xl-5 px-2">
 <% it.versions.forEach((version) => { %>
   <section class="entity-version-toc-section toc-<%= it.metadata.name %>-<%= version.version.replaceAll('.', '-') %> <% if (!version.latest) { -%>
     hide
@@ -18,5 +18,3 @@ const documentToC = `<aside class="bd-aside sticky-xl-top text-body-secondary al
   </section>
 <% }) %>
 </aside>`;
-
-export default documentToC;

@@ -1,6 +1,6 @@
 import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
 
-const htmlDocument = `<!DOCTYPE html>
+export const htmlDocument = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,5 +33,3 @@ const htmlDocument = `<!DOCTYPE html>
 </body>
 
 </html>`;
-
-export default htmlDocument;

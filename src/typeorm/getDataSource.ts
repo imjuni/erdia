@@ -1,11 +1,11 @@
-import type ICommonOption from '#/configs/interfaces/ICommonOption';
-import loadDataSource from '#/typeorm/loadDataSource';
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import { loadDataSource } from '#/typeorm/loadDataSource';
 import { isFalse } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
 import path from 'node:path';
 import { type DataSource } from 'typeorm';
 
-export default async function getDataSource(options: ICommonOption): Promise<DataSource> {
+export async function getDataSource(options: ICommonOption): Promise<DataSource> {
   const dataSourcePath = path.resolve(options.dataSourcePath);
 
   if (isFalse(await exists(dataSourcePath))) {

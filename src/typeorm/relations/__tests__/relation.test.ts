@@ -1,7 +1,7 @@
 import * as gjc from '#/common/getRelationHash';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import getRelationRecord from '#/typeorm/relations/getRelationRecord';
-import getRelationRecords from '#/typeorm/relations/getRelationRecords';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import { getRelationRecord } from '#/typeorm/relations/getRelationRecord';
+import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
@@ -104,7 +104,7 @@ describe('getRelationRecord', () => {
       },
     );
 
-    const spyOnHandle = jest.spyOn(gjc, 'default').mockImplementation(() => {
+    const spyOnHandle = jest.spyOn(gjc, 'getRelationHash').mockImplementation(() => {
       throw new Error('raise error for test');
     });
 

@@ -1,29 +1,29 @@
-import buildConfig from '#/template/config/init-command';
+import { build as buildConfig } from '#/template/config/init-command';
 import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import htmlDocument from '#/template/html/document';
-import htmlToC from '#/template/html/document-toc';
-import htmlMermaid from '#/template/html/mermaid';
-import mermaidScript from '#/template/html/mermaid-script';
-import mermaidToC from '#/template/html/mermaid-toc';
-import htmlStyle from '#/template/html/style';
-import htmlTable from '#/template/html/table';
-import imageDocument from '#/template/image/document';
-import imageMermaidScript from '#/template/image/mermaid-script';
-import imageStyle from '#/template/image/style';
-import markdownDocument from '#/template/markdown/document';
-import markdownMermaid from '#/template/markdown/mermaid';
-import markdownTable from '#/template/markdown/table';
-import markdownToC from '#/template/markdown/toc';
-import mermaidDocument from '#/template/mermaid/document';
-import mermaidEntity from '#/template/mermaid/entity';
-import mermaidRelation from '#/template/mermaid/relation';
-import pdfDocument from '#/template/pdf/document';
-import pdfToC from '#/template/pdf/document-toc';
-import pdfMermaidScript from '#/template/pdf/mermaid-script';
-import pdfStyle from '#/template/pdf/style';
-import pdfTable from '#/template/pdf/table';
+import { htmlDocument } from '#/template/html/document';
+import { documentToC as htmlToC } from '#/template/html/document-toc';
+import { mermaid as htmlMermaid } from '#/template/html/mermaid';
+import { mermaidScript } from '#/template/html/mermaid-script';
+import { documentToC as mermaidToC } from '#/template/html/mermaid-toc';
+import { style as htmlStyle } from '#/template/html/style';
+import { htmlTable } from '#/template/html/table';
+import { htmlDocument as imageDocument } from '#/template/image/document';
+import { mermaidScript as imageMermaidScript } from '#/template/image/mermaid-script';
+import { style as imageStyle } from '#/template/image/style';
+import { markdownDocument } from '#/template/markdown/document';
+import { mermaid as markdownMermaid } from '#/template/markdown/mermaid';
+import { table as markdownTable } from '#/template/markdown/table';
+import { toc as markdownToC } from '#/template/markdown/toc';
+import { mermaidDocument } from '#/template/mermaid/document';
+import { entity as mermaidEntity } from '#/template/mermaid/entity';
+import { relation as mermaidRelation } from '#/template/mermaid/relation';
+import { htmlDocument as pdfDocument } from '#/template/pdf/document';
+import { documentToC as pdfToC } from '#/template/pdf/document-toc';
+import { mermaidScript as pdfMermaidScript } from '#/template/pdf/mermaid-script';
+import { style as pdfStyle } from '#/template/pdf/style';
+import { htmlTable as pdfTable } from '#/template/pdf/table';
 
-const defaultTemplates: Record<CE_TEMPLATE_NAME, string> = {
+export const defaultTemplates: Record<CE_TEMPLATE_NAME, string> = {
   [CE_TEMPLATE_NAME.HTML_DOCUMENT_TOC]: htmlToC,
   [CE_TEMPLATE_NAME.HTML_DOCUMENT]: htmlDocument,
   [CE_TEMPLATE_NAME.HTML_MERMAID_SCRIPT]: mermaidScript,
@@ -53,5 +53,3 @@ const defaultTemplates: Record<CE_TEMPLATE_NAME, string> = {
 
   [CE_TEMPLATE_NAME.CONFIG_JSON]: buildConfig,
 };
-
-export default defaultTemplates;

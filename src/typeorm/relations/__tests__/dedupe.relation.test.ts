@@ -1,6 +1,6 @@
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
-import dedupeManaToManyRelationRecord from '#/typeorm/relations/dedupeManaToManyRelationRecord';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import { dedupeManaToManyRelationRecord } from '#/typeorm/relations/dedupeManaToManyRelationRecord';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';

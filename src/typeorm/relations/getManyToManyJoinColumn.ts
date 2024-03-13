@@ -1,10 +1,10 @@
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
-import getEntityName from '#/typeorm/entities/getEntityName';
-import getInverseRelationMetadata from '#/typeorm/relations/getInverseRelationMetadata';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
+import { getInverseRelationMetadata } from '#/typeorm/relations/getInverseRelationMetadata';
 import consola from 'consola';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
-export default function getManyToManyJoinColumn(
+export function getManyToManyJoinColumn(
   relationMetadata: Pick<
     RelationMetadata,
     'joinTableName' | 'joinColumns' | 'entityMetadata' | 'inverseEntityMetadata' | 'inverseJoinColumns'

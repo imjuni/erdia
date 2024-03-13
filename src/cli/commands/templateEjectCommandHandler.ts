@@ -1,8 +1,8 @@
-import type ICommonOption from '#/configs/interfaces/ICommonOption';
-import getCwd from '#/configs/modules/getCwd';
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import { getCwd } from '#/configs/modules/getCwd';
 import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import defaultTemplates from '#/template/defaultTemplates';
-import getOutputDirectory from '#/tools/files/getOutputDirectory';
+import { defaultTemplates } from '#/template/defaultTemplates';
+import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
 import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import fs from 'fs';
@@ -10,7 +10,7 @@ import { isFalse } from 'my-easy-fp';
 import { exists, getDirname } from 'my-node-fp';
 import path from 'path';
 
-export default async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
+export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
   if (option.showLogo != null) {
     await showLogo({
       message: 'erdia',

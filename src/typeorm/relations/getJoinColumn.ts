@@ -1,10 +1,10 @@
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
-import getEntityName from '#/typeorm/entities/getEntityName';
-import getManyToManyJoinColumn from '#/typeorm/relations/getManyToManyJoinColumn';
-import getManyToOneJoinColumn from '#/typeorm/relations/getManyToOneJoinColumn';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
+import { getManyToManyJoinColumn } from '#/typeorm/relations/getManyToManyJoinColumn';
+import { getManyToOneJoinColumn } from '#/typeorm/relations/getManyToOneJoinColumn';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
-export default function getJoinColumn(
+export function getJoinColumn(
   relationMetadata: RelationMetadata,
 ): Pick<
   IRelationRecord,

@@ -1,8 +1,8 @@
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
-import type IEntityWithColumnAndRelationAndIndex from '#/databases/interfaces/IEntityWithColumnAndRelationAndIndex';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { IEntityWithColumnAndRelationAndIndex } from '#/databases/interfaces/IEntityWithColumnAndRelationAndIndex';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 
-export default interface IRenderData {
+export interface IRenderData {
   versions: {
     version: string;
     latest: boolean;

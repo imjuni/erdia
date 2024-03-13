@@ -1,6 +1,6 @@
 import * as env from '#/common/__tests__/test-config';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import getColumnRecord from '#/typeorm/columns/getColumnRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';

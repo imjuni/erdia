@@ -1,4 +1,4 @@
-export default interface IReason {
+export interface IReason {
   entityName: string;
   columnName?: string;
   message: string;

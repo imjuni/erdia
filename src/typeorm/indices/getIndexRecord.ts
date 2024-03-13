@@ -1,11 +1,11 @@
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type IIndexRecord from '#/databases/interfaces/IIndexRecord';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import getEntityName from '#/typeorm/entities/getEntityName';
+import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
 import type { EntityMetadata } from 'typeorm';
 
-export default function getIndexRecord(entityMetadata: EntityMetadata, metadata: IRecordMetadata) {
+export function getIndexRecord(entityMetadata: EntityMetadata, metadata: IRecordMetadata) {
   const indices = entityMetadata.indices.map((entityIndex) => {
     const record: IIndexRecord = {
       $kind: CE_RECORD_KIND.INDEX,

@@ -3,9 +3,7 @@ import { parse } from 'jsonc-parser';
 import { exists } from 'my-node-fp';
 import type puppeteer from 'puppeteer';
 
-export default async function getPuppeteerConfig(
-  confgFilePath?: string,
-): Promise<Parameters<typeof puppeteer.launch>[0]> {
+export async function getPuppeteerConfig(confgFilePath?: string): Promise<Parameters<typeof puppeteer.launch>[0]> {
   try {
     if (confgFilePath == null) {
       return {};

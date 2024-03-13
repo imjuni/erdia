@@ -1,7 +1,7 @@
-import getPlainRelationType from '#/common/getPlainRelationType';
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
+import { getPlainRelationType } from '#/common/getPlainRelationType';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
-export default function getRelationHash(
+export function getRelationHash(
   relation: Pick<IRelationRecord, 'entity' | 'inverseEntityName' | 'relationType'>,
 ): string {
   const entities = [relation.entity, relation.inverseEntityName].sort((l, r) => l.localeCompare(r));

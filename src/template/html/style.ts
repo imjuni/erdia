@@ -1,4 +1,4 @@
-const style = `<style>
+export const style = `<style>
     .bd-aside a {
       padding: .1875rem .5rem;
       margin-top: .125rem;
@@ -129,5 +129,3 @@ const style = `<style>
       display: none !important;
     }
   </style>`;
-
-export default style;

@@ -1,4 +1,4 @@
-const table = `## <%= it.metadata.version %> Entities
+export const table = `## <%= it.metadata.version %> Entities
 <% it.entities.forEach((entity) => { %>
 ### <%= entity.dbName %>(<%= entity.name %>)
 
@@ -37,5 +37,3 @@ const table = `## <%= it.metadata.version %> Entities
 <% } %><% /* end of indices if */ %>
 <% }) %>
 `;
-
-export default table;

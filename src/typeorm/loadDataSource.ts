@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access, no-await-in-loop, @typescript-eslint/no-unsafe-assignment, guard-for-in */
 import { isError } from 'my-easy-fp';
 import { InstanceChecker, type DataSource } from 'typeorm';
 import { importOrRequireFile } from 'typeorm/util/ImportUtils';
@@ -8,7 +9,7 @@ import { importOrRequireFile } from 'typeorm/util/ImportUtils';
  * @param dataSourceFilePath dataSource file path
  * @returns
  */
-export default async function loadDataSource(dataSourceFilePath: string): Promise<DataSource> {
+export async function loadDataSource(dataSourceFilePath: string): Promise<DataSource> {
   let dataSourceFileExports;
 
   try {

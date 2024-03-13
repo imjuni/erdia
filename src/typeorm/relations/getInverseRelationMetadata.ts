@@ -1,8 +1,8 @@
-import getEntityName from '#/typeorm/entities/getEntityName';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { atOrUndefined } from 'my-easy-fp';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
-export default function getInverseRelationMetadata(
+export function getInverseRelationMetadata(
   relationMetadata: Pick<RelationMetadata, 'entityMetadata' | 'inverseEntityMetadata' | 'inverseJoinColumns'>,
 ) {
   const entityName = getEntityName(relationMetadata.entityMetadata);

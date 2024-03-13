@@ -1,9 +1,9 @@
 import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import type IColumnRecord from '#/databases/interfaces/IColumnRecord';
+import type { IColumnRecord } from '#/databases/interfaces/IColumnRecord';
 import { bignumber, type BigNumber } from 'mathjs';
 import { populate } from 'my-easy-fp';
 
-export default function getColumnWeight(column: Omit<IColumnRecord, 'weight'>): BigNumber {
+export function getColumnWeight(column: Omit<IColumnRecord, 'weight'>): BigNumber {
   const weight = bignumber(0);
 
   const type = bignumber(

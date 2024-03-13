@@ -1,19 +1,19 @@
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import type IBuildCommandOption from '#/configs/interfaces/IBuildCommandOption';
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type IColumnRecord from '#/databases/interfaces/IColumnRecord';
-import type IEntityRecord from '#/databases/interfaces/IEntityRecord';
-import type IEntityWithColumnAndRelationAndIndex from '#/databases/interfaces/IEntityWithColumnAndRelationAndIndex';
-import type IIndexRecord from '#/databases/interfaces/IIndexRecord';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import type IRelationRecord from '#/databases/interfaces/IRelationRecord';
-import type IRenderData from '#/databases/interfaces/IRenderData';
-import type TDatabaseRecord from '#/databases/interfaces/TDatabaseRecord';
-import getSlashEndRoutePath from '#/tools/getSlashEndRoutePath';
+import type { IColumnRecord } from '#/databases/interfaces/IColumnRecord';
+import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
+import type { IEntityWithColumnAndRelationAndIndex } from '#/databases/interfaces/IEntityWithColumnAndRelationAndIndex';
+import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import type { IRenderData } from '#/databases/interfaces/IRenderData';
+import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
+import { getSlashEndRoutePath } from '#/tools/getSlashEndRoutePath';
 import alasql from 'alasql';
 import { compareVersions } from 'compare-versions';
 
-export default async function getRenderData(
+export async function getRenderData(
   records: TDatabaseRecord[],
   metadata: IRecordMetadata,
   option: IBuildCommandOption,

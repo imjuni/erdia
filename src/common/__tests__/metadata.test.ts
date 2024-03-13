@@ -3,11 +3,11 @@ jest.mock('find-up');
 jest.mock('read-pkg');
 
 import * as env from '#/common/__tests__/test-config';
-import getDatabaseName from '#/common/getDatabaseName';
-import getMetadata from '#/common/getMetadata';
-import getPackageName from '#/common/getPackageName';
-import getProjectName from '#/common/getProjectName';
-import getFindFile from '#/tools/files/getFindFile';
+import { getDatabaseName } from '#/common/getDatabaseName';
+import { getMetadata } from '#/common/getMetadata';
+import { getPackageName } from '#/common/getPackageName';
+import { getProjectName } from '#/common/getProjectName';
+import { getFindFile } from '#/tools/files/getFindFile';
 import dayjs from 'dayjs';
 import findUp from 'find-up';
 import { isError } from 'my-easy-fp';

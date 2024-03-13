@@ -1,15 +1,15 @@
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import type IEntityRecord from '#/databases/interfaces/IEntityRecord';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import getEntityName from '#/typeorm/entities/getEntityName';
-import getEntityRecord from '#/typeorm/entities/getEntityRecord';
+import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
+import { getEntityPropertyName } from '#/typeorm/entities/getEntityPropertyName';
+import { getEntityRecord } from '#/typeorm/entities/getEntityRecord';
+import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
 import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import path from 'path';
 import type { DataSource } from 'typeorm';
-import getEntityPropertyName from '../getEntityPropertyName';
-import getEntityRecords from '../getEntityRecords';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 

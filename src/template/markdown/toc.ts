@@ -1,6 +1,6 @@
 import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
 
-const toc = `## Table Of Contents
+export const toc = `## Table Of Contents
 
 1. <%= it.metadata.version %> Entities
 <% it.entities.forEach((entity, index) => { -%>
@@ -10,5 +10,3 @@ const toc = `## Table Of Contents
 2. ER Diagram
 <% } %>
 `;
-
-export default toc;

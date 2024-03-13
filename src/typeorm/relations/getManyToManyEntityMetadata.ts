@@ -1,8 +1,8 @@
-import getEntityName from '#/typeorm/entities/getEntityName';
+import { getEntityName } from '#/typeorm/entities/getEntityName';
 import type { EntityMetadata } from 'typeorm';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
-export default function getManyToManyEntityMetadata(
+export function getManyToManyEntityMetadata(
   entityMetadatas: EntityMetadata[],
   relationMetadata: Pick<RelationMetadata, 'entityMetadata' | 'joinTableName' | 'inverseEntityMetadata'>,
 ) {

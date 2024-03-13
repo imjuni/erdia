@@ -1,10 +1,10 @@
 import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import type IIndexRecord from '#/databases/interfaces/IIndexRecord';
+import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
 import alasql from 'alasql';
 import { atOrUndefined } from 'my-easy-fp';
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
-export default function getColumnAttributeKey(
+export function getColumnAttributeKey(
   columnMetadata: Pick<ColumnMetadata, 'relationMetadata' | 'isPrimary'>,
   dbName: string,
   tableDBName: string,

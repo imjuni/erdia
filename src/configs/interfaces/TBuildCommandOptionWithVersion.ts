@@ -1,3 +1,1 @@
-type TBuildCommandOptionWithVersion<T> = { version: string } & T;
-
-export default TBuildCommandOptionWithVersion;
+export type TBuildCommandOptionWithVersion<T> = { version: string } & T;

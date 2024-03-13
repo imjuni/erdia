@@ -1,8 +1,8 @@
-import getIsNullable from '#/typeorm/columns/getIsNullable';
+import { getIsNullable } from '#/typeorm/columns/getIsNullable';
 import { isTrue } from 'my-easy-fp';
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
-export default function getColumnType(
+export function getColumnType(
   columnMetadata: Pick<ColumnMetadata, 'type' | 'length' | 'isNullable' | 'isPrimary'>,
   includeLength?: boolean,
 ) {

@@ -1,4 +1,4 @@
-export default function getCwd(env: NodeJS.ProcessEnv): string {
+export function getCwd(env: NodeJS.ProcessEnv): string {
   if ((env.USE_INIT_CWD ?? 'false') === 'false') {
     return process.cwd();
   }

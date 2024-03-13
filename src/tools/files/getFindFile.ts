@@ -1,6 +1,6 @@
 import findUp from 'find-up';
 
-export default async function getFindFile(
+export async function getFindFile(
   filename: string | readonly string[],
   option?: findUp.Options,
 ): Promise<string | undefined> {

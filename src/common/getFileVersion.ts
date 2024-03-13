@@ -1,7 +1,7 @@
 import { parse } from 'jsonc-parser';
 import semver from 'semver';
 
-export default function getFileVersion(buf: Buffer): string {
+export function getFileVersion(buf: Buffer): string {
   const rawJson = buf.toString();
 
   if (semver.valid(rawJson)) {

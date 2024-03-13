@@ -1,6 +1,6 @@
 import { TextDecoder } from 'util';
 
-export default function getDatabaseName(options: { database?: string | Uint8Array | undefined }): string {
+export function getDatabaseName(options: { database?: string | Uint8Array | undefined }): string {
   const name = options.database;
 
   if (typeof name === 'string') {

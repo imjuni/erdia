@@ -1,4 +1,4 @@
-const entity = `"<%= it.entity.dbName %>(<%= it.entity.name %>)" {
+export const entity = `"<%= it.entity.dbName %>(<%= it.entity.name %>)" {
 <% it.entity.columns.forEach((column) => { %>
   <%= column.columnTypeWithLength %> <%= column.name -%>
   <% if (column.attributeKey != null && column.attributeKey.length > 0) { %>
@@ -11,5 +11,3 @@ const entity = `"<%= it.entity.dbName %>(<%= it.entity.name %>)" {
 <% }) %>
 }
 `;
-
-export default entity;

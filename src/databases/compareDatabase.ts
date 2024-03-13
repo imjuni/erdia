@@ -1,15 +1,15 @@
-import getColumnHash from '#/common/getColumnHash';
-import getEntityHash from '#/common/getEntityHash';
-import getIndexHash from '#/common/getIndexHash';
-import getRelationHash from '#/common/getRelationHash';
+import { getColumnHash } from '#/common/getColumnHash';
+import { getEntityHash } from '#/common/getEntityHash';
+import { getIndexHash } from '#/common/getIndexHash';
+import { getRelationHash } from '#/common/getRelationHash';
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type IRecordMetadata from '#/databases/interfaces/IRecordMetadata';
-import type TDatabaseRecord from '#/databases/interfaces/TDatabaseRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
 import { detailedDiff } from 'deep-object-diff';
 import { settify } from 'my-easy-fp';
 
-export default function compareDatabase(
+export function compareDatabase(
   metadata: IRecordMetadata,
   next: TDatabaseRecord[],
   prev: TDatabaseRecord[],
