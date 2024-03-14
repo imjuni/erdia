@@ -57,11 +57,13 @@ export const mermaid = `<!DOCTYPE html>
       </h2>
 
       <h3 class="title is-4">Diagram</h3>
-      <pre class="mermaid">
-      <% it.versions.filter((version) => version.latest).forEach((version) => { -%>
-      <%~ include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities: version.entities, option: it.option, metadata: it.metadata }) %>
-      <% }) -%>
-      </pre>
+      <div class="mermaid-box">
+        <pre id="mermaid-pre" class="mermaid">
+        <% it.versions.filter((version) => version.latest).forEach((version) => { -%>
+        <%~ include('${CE_TEMPLATE_NAME.MERMAID_DOCUMENT}', { entities: version.entities, option: it.option, metadata: it.metadata }) %>
+        <% }) -%>
+        </pre>
+      </div>
 
       <% if (!it.option.skipImageInHtml) { %>
       <h3 class="title is-4">
@@ -88,5 +90,18 @@ export const mermaid = `<!DOCTYPE html>
   </div>
 
 </body>
+<script>
+  mermaid.initialize({ startOnLoad: true, er:{ useMaxWidth:false } });
+  setTimeout(() => {
+    svgPanZoom(document.querySelector('#mermaid-pre>svg'), { 
+      minZoom: 0.5, 
+      maxZoom: 10, 
+      fit: true, 
+      contain: false, 
+      controlIconsEnabled: true, center: true, 
+      refreshRate: 'auto'
+    });
+  }, 200);
+</script>
 
 </html>`;
