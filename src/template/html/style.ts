@@ -128,4 +128,22 @@ export const style = `<style>
     .hide {
       display: none !important;
     }
+
+    .mermaid-box {
+      height: 60vh;
+      min-height: 600px;
+      width: 85vw;
+    }
+
+    .mermaid {
+      height: 60vh;
+      min-height: 600px;
+      width: 85vw;
+      overflow: hidden;
+
+      svg {
+        height: 100% !important;
+        width: 100%  !important;
+      }
+    }
   </style>`;
