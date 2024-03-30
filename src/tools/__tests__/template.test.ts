@@ -1,15 +1,14 @@
 import { getTemplatePath } from '#/tools/files/getTemplatePath';
 import * as mnf from 'my-node-fp';
-
-jest.mock('my-node-fp');
+import { describe, expect, test, vitest } from 'vitest';
 
 const basePathForGetTemplatePath = '/path01/path02/path03';
 
 describe('getTemplatePath', () => {
   test(`__dirname is 'src/tools/files/getTemplatePath'`, async () => {
     const expectation = '/path01/templates';
-    const getDirnameSpyOn = jest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
+    const getDirnameSpyOn = vitest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
       switch (existPath) {
         case basePathForGetTemplatePath:
         case expectation:
@@ -29,8 +28,8 @@ describe('getTemplatePath', () => {
 
   test(`__dirname is 'src/templates/html'`, async () => {
     const expectation = '/path01/path02/templates';
-    const getDirnameSpyOn = jest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
+    const getDirnameSpyOn = vitest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
       switch (existPath) {
         case basePathForGetTemplatePath:
         case expectation:
@@ -53,8 +52,8 @@ describe('getTemplatePath', () => {
 
   test(`__dirname is 'templates'`, async () => {
     const expectation = '/path01/path02/path03/path04/templates';
-    const getDirnameSpyOn = jest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
+    const getDirnameSpyOn = vitest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
       switch (existPath) {
         case basePathForGetTemplatePath:
         case expectation:
@@ -73,8 +72,8 @@ describe('getTemplatePath', () => {
   });
 
   test('not found, every where', async () => {
-    const getDirnameSpyOn = jest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
+    const getDirnameSpyOn = vitest.spyOn(mnf, 'getDirname').mockImplementation(async (dirname: string) => dirname);
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(async (existPath: string) => {
       switch (existPath) {
         case basePathForGetTemplatePath:
           return true;

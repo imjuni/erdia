@@ -3,7 +3,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  ignorePatterns: ['__test__/*', '__tests__/*', 'examples/*', 'coverage/*', 'dist/*'],
+  ignorePatterns: ['__test__/*', '__tests__/*', 'examples/*', 'coverage/*', 'dist/*', 'vitest.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.eslint.json',

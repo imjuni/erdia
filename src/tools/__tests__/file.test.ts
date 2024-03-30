@@ -2,9 +2,9 @@ import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
 import { getPuppeteerConfig } from '#/tools/getPuppeteerConfig';
 import { getSlashEndRoutePath } from '#/tools/getSlashEndRoutePath';
 import fs from 'fs';
-import 'jest';
 import * as mnf from 'my-node-fp';
 import path from 'path';
+import { describe, expect, test, vitest } from 'vitest';
 
 describe('getSlashEndRoutePath', () => {
   test('pass - without slash', () => {
@@ -20,8 +20,8 @@ describe('getSlashEndRoutePath', () => {
 
 describe('getOutputDirectory', () => {
   test('pass - cwd', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(false));
-    const mkdirSpyOn = jest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(false));
+    const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
     const p = await getOutputDirectory({ output: undefined }, 'i-am-cwd');
 
@@ -32,9 +32,9 @@ describe('getOutputDirectory', () => {
   });
 
   test('pass - current directory', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
-    const isDirectorySpyOn = jest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(false));
-    const mkdirSpyOn = jest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
+    const isDirectorySpyOn = vitest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(false));
+    const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
     const p = await getOutputDirectory({ output: undefined }, 'examples');
 
@@ -46,9 +46,9 @@ describe('getOutputDirectory', () => {
   });
 
   test('pass - cwd directory', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
-    const isDirectorySpyOn = jest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(true));
-    const mkdirSpyOn = jest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
+    const isDirectorySpyOn = vitest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(true));
+    const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
     const p = await getOutputDirectory({ output: undefined }, 'examples');
 
@@ -67,7 +67,7 @@ describe('getPuppeteerConfig', () => {
   });
 
   test('pass - not found', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(false));
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(false));
     const config = await getPuppeteerConfig('config-path');
 
     existsSpyOn.mockRestore();
@@ -76,8 +76,8 @@ describe('getPuppeteerConfig', () => {
   });
 
   test('pass - read-config', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
-    const readFileSpyOn = jest
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(true));
+    const readFileSpyOn = vitest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('{ "name": "hello" }')));
 
@@ -90,10 +90,10 @@ describe('getPuppeteerConfig', () => {
   });
 
   test('exception', async () => {
-    const existsSpyOn = jest.spyOn(mnf, 'exists').mockImplementation(() => {
+    const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => {
       throw new Error('invalid configuration path');
     });
-    const readFileSpyOn = jest
+    const readFileSpyOn = vitest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('{ "name": "hello" }')));
 

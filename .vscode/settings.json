@@ -24,6 +24,8 @@
     "dist": true
   },
   "files.associations": {
+    ".depsdiffrc": "jsonc",
+    ".ctirc": "jsonc",
     ".erdiarc": "jsonc",
     "typedoc.json": "jsonc"
   },

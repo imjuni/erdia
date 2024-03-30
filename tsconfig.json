@@ -12,6 +12,7 @@
     "declaration": true /* Generates corresponding '.d.ts' file. */,
     "declarationMap": true /* Generates corresponding '.d.ts' file. */,
     "outDir": "dist" /* Redirect output structure to the directory. */,
+    "rootDir": "./" /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */,
     "removeComments": false /* Do not emit comments to output. */,
     "importHelpers": true /* Import emit helpers from 'tslib'. */,
     "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
@@ -47,13 +48,6 @@
     "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "dist/**",
-    "examples/class-type/dataSourceConfig.ts",
-    "examples/schema-type/dataSourceConfig.ts",
-    "examples/**",
-    "erdia-docs/**"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist/**", "examples/**", "erdia-docs/**"]
 }

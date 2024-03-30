@@ -1,6 +1,7 @@
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
 import alasql from 'alasql';
+import { describe, test } from 'vitest';
 
 const db: TDatabaseRecord[] = [
   {

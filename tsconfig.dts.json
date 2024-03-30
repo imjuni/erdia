@@ -7,6 +7,8 @@
     "emitDeclarationOnly": true,
     "rootDir": "src"
   },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/__tests__/**/*", "**/__test__/**/*", "dist/**", "examples/**/*", "erdia-docs/**"],
   "tsc-alias": {
     "replacers": {
       "base-url": {

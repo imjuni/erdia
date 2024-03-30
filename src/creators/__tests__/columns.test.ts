@@ -2,6 +2,7 @@ import { getColumnWeight } from '#/creators/columns/getColumnWeight';
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import { consola } from 'consola';
 import type { DataSource } from 'typeorm';
+import { beforeAll, expect, test } from 'vitest';
 
 const share: { dataSource: DataSource } = {} as any;
 
