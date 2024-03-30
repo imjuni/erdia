@@ -1,12 +1,10 @@
-/* eslint-disable import/first */
-jest.mock('find-up');
-
 import { getFileVersion } from '#/common/getFileVersion';
 import { getVersion } from '#/common/getVersion';
 import * as getFindFile from '#/tools/files/getFindFile';
 import * as getOutputDirectory from '#/tools/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
+import { describe, expect, test, vitest } from 'vitest';
 
 describe('getFileVersion', () => {
   test('pass - plain', async () => {
@@ -36,7 +34,7 @@ describe('getVersion', () => {
 
   test('pass using timestamp', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
     const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'timestamp' });
 
     tspSpyOn.mockRestore();
@@ -46,7 +44,7 @@ describe('getVersion', () => {
 
   test('pass using timestamp by configuration', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
 
     const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'timestamp' });
 
@@ -57,9 +55,9 @@ describe('getVersion', () => {
 
   test('pass using file', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
-    const tspSpyOn03 = jest
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn02 = vitest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
+    const tspSpyOn03 = vitest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('1.1.1')));
 
@@ -74,12 +72,12 @@ describe('getVersion', () => {
 
   test('pass using file with versionPath', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
-    const tspSpyOn03 = jest
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn02 = vitest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve('/a/b/c'));
+    const tspSpyOn03 = vitest
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('1.1.1')));
-    const tspSpyOn04 = jest
+    const tspSpyOn04 = vitest
       .spyOn(getOutputDirectory, 'getOutputDirectory')
       .mockImplementation(() => Promise.resolve('/a/b/c'));
 
@@ -95,8 +93,8 @@ describe('getVersion', () => {
 
   test('exception using package.json', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn02 = vitest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
 
     await expect(async () => {
       try {
@@ -110,8 +108,8 @@ describe('getVersion', () => {
 
   test('exception using file', async () => {
     const expectation = '1692373636445';
-    const tspSpyOn01 = jest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const tspSpyOn02 = jest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+    const tspSpyOn02 = vitest.spyOn(getFindFile, 'getFindFile').mockImplementation(() => Promise.resolve(undefined));
 
     await expect(async () => {
       try {

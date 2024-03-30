@@ -1,5 +1,5 @@
 import { getCwd } from '#/configs/modules/getCwd';
-import 'jest';
+import { describe, expect, test } from 'vitest';
 
 describe('getCwd', () => {
   test('pass - process.cwd()', async () => {

@@ -8,6 +8,7 @@ import { parse } from 'jsonc-parser';
 import { findOrThrow } from 'my-easy-fp';
 import path from 'path';
 import type { DataSource } from 'typeorm';
+import { afterAll, beforeAll, describe, expect, test, vitest } from 'vitest';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
@@ -104,7 +105,7 @@ describe('getRelationRecord', () => {
       },
     );
 
-    const spyOnHandle = jest.spyOn(gjc, 'getRelationHash').mockImplementation(() => {
+    const spyOnHandle = vitest.spyOn(gjc, 'getRelationHash').mockImplementation(() => {
       throw new Error('raise error for test');
     });
 

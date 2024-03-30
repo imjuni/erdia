@@ -4,6 +4,7 @@ import { getColumnAttributeKey } from '#/typeorm/columns/getColumnAttributeKey';
 import { getColumnType } from '#/typeorm/columns/getColumnType';
 import { getComment } from '#/typeorm/columns/getComment';
 import { getIsNullable } from '#/typeorm/columns/getIsNullable';
+import { describe, expect, test } from 'vitest';
 
 describe('getIsNullable', () => {
   test('primary', () => {

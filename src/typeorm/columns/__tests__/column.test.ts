@@ -6,6 +6,7 @@ import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import path from 'path';
 import type { DataSource } from 'typeorm';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
