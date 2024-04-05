@@ -5,20 +5,47 @@ import { getPackageName } from '#/common/getPackageName';
 import { getProjectName } from '#/common/getProjectName';
 import { getFindFile } from '#/tools/files/getFindFile';
 import dayjs from 'dayjs';
-import findUp from 'find-up';
+import * as findUp from 'find-up';
 import { isError } from 'my-easy-fp';
-import readPkg from 'read-pkg';
+import * as readPkg from 'read-pkg';
 import { describe, expect, test, vitest } from 'vitest';
+
+vitest.mock('dayjs', async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import('dayjs')>();
+  return {
+    ...mod,
+  };
+});
+
+vitest.mock('read-pkg', async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import('read-pkg')>();
+  return {
+    ...mod,
+  };
+});
+
+vitest.mock('find-up', async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import('find-up')>();
+  return {
+    ...mod,
+  };
+});
 
 describe('getMetadata', () => {
   test('project name from application', async () => {
     const timestamp = '1692373636445';
     const datetime = '2023-08-19T11:37:20+09:00';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => timestamp);
-    const tspSpyOn02 = vitest.spyOn(dayjs.prototype, 'format').mockImplementation(() => datetime);
-
-    // @ts-expect-error: read-pkg mocking test
-    readPkg.mockReturnValueOnce(Promise.resolve({ name: 'erdia', version: '1.1.1' }));
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementationOnce(() => timestamp);
+    const tspSpyOn02 = vitest
+      .spyOn(dayjs.prototype, 'format')
+      .mockImplementationOnce(() => datetime)
+      .mockImplementationOnce(() => datetime);
+    const tspSpyOn03 = vitest
+      .spyOn(readPkg, 'default')
+      .mockImplementationOnce(() => Promise.resolve({ name: 'erdia', version: '1.1.1' }));
 
     const metadata = await getMetadata(
       { options: { database: 'i-am-database' } },
@@ -27,6 +54,7 @@ describe('getMetadata', () => {
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
+    tspSpyOn03.mockRestore();
 
     expect(metadata).toMatchObject({
       name: 'erdia',
@@ -40,11 +68,14 @@ describe('getMetadata', () => {
   test('project name with package namespace', async () => {
     const timestamp = '1692373636445';
     const datetime = '2023-08-19T11:37:20+09:00';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => timestamp);
-    const tspSpyOn02 = vitest.spyOn(dayjs.prototype, 'format').mockImplementation(() => datetime);
-
-    // @ts-expect-error: read-pkg mocking test
-    readPkg.mockReturnValueOnce(Promise.resolve({ name: '@maeum/pet-store', version: '1.1.1' }));
+    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementationOnce(() => timestamp);
+    const tspSpyOn02 = vitest
+      .spyOn(dayjs.prototype, 'format')
+      .mockImplementationOnce(() => datetime)
+      .mockImplementationOnce(() => datetime);
+    const tspSpyOn03 = vitest
+      .spyOn(readPkg, 'default')
+      .mockImplementationOnce(() => Promise.resolve({ name: '@maeum_pet-store', version: '1.1.1' }));
 
     const metadata = await getMetadata(
       { options: { database: 'i-am-database' } },
@@ -53,6 +84,7 @@ describe('getMetadata', () => {
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
+    tspSpyOn03.mockRestore();
 
     expect(metadata).toMatchObject({
       name: '@maeum_pet-store',
@@ -128,11 +160,11 @@ describe('getDatabaseName', () => {
 describe('getFindFile', () => {
   test('pass', async () => {
     const expectation = '/a/b';
-    // @ts-expect-error: find-up mocking test
-    findUp.mockReturnValueOnce(expectation);
+    const tspSpyOn01 = vitest.spyOn(findUp, 'default').mockImplementation(() => Promise.resolve(expectation));
 
     try {
       const finded = await getFindFile('', {});
+      tspSpyOn01.mockRestore();
       expect(finded).toEqual(expectation);
     } catch (caught) {
       const err = isError(caught, new Error('error'));

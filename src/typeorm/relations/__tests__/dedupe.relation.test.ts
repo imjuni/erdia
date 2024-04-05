@@ -190,19 +190,16 @@ const relations: IRelationRecord[] = [
 ];
 
 describe('dedupeManaToManyRelationRecord', () => {
-  test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+  test('dedupe relations', async () => {
+    const expectFileName = 'expect-07.json';
     const deduped = dedupeManaToManyRelationRecord(relations);
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(deduped, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(deduped, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(deduped).toMatchObject(expectation);

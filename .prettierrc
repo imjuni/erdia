@@ -14,7 +14,7 @@
     },
     {
       "files": [
-        "**/__tests/expects/*"
+        "**/__tests__/expects/*.json"
       ],
       "options": {
         "parser": "json"

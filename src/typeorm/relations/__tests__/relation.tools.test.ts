@@ -125,7 +125,7 @@ describe('getInverseRelationMetadata', () => {
 
 describe('getManyToManyJoinColumn', () => {
   test('pass-joinColumns', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-01.json';
     const relationMetadata = findOrThrow(
       findOrThrow(share.dataSource.entityMetadatas, (entity) => {
         return entity.name === 'License';
@@ -139,20 +139,20 @@ describe('getManyToManyJoinColumn', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
+        path.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(relations, undefined, 2),
       );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relations).toMatchObject(expectation);
   });
 
   test('pass-relationMetadata', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-02.json';
     const relationMetadata = findOrThrow(
       findOrThrow(share.dataSource.entityMetadatas, (entity) => {
         return entity.name === 'License';
@@ -169,7 +169,7 @@ describe('getManyToManyJoinColumn', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
+        path.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(relations, undefined, 2),
       );
     }
@@ -177,7 +177,7 @@ describe('getManyToManyJoinColumn', () => {
     relationMetadata.joinColumns = joinColumnsBackup;
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relations).toMatchObject(expectation);
