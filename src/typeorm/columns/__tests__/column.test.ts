@@ -16,8 +16,8 @@ beforeAll(async () => {
 });
 
 describe('getColumnRecord', () => {
-  test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+  test('column list', async () => {
+    const expectFileName = 'expect-01.json';
     const userEntity = share.dataSource.entityMetadatas.find((entityMetadata) => entityMetadata.name === 'User');
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
@@ -35,14 +35,11 @@ describe('getColumnRecord', () => {
       .sort((l, r) => l.name.localeCompare(r.name));
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(columns, undefined, 2),
-      );
+      fs.writeFileSync(expectFileName, fastSafeStringify(columns, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', expectFileName))).toString(),
     ) as object;
 
     expect(columns).toMatchObject(expectation);

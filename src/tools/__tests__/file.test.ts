@@ -6,6 +6,14 @@ import * as mnf from 'my-node-fp';
 import path from 'path';
 import { describe, expect, test, vitest } from 'vitest';
 
+vitest.mock('my-node-fp', async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import('my-node-fp')>();
+  return {
+    ...mod,
+  };
+});
+
 describe('getSlashEndRoutePath', () => {
   test('pass - without slash', () => {
     const result = getSlashEndRoutePath('https://test.com');

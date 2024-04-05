@@ -2,6 +2,14 @@ import { getTemplatePath } from '#/tools/files/getTemplatePath';
 import * as mnf from 'my-node-fp';
 import { describe, expect, test, vitest } from 'vitest';
 
+vitest.mock('my-node-fp', async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const mod = await importOriginal<typeof import('my-node-fp')>();
+  return {
+    ...mod,
+  };
+});
+
 const basePathForGetTemplatePath = '/path01/path02/path03';
 
 describe('getTemplatePath', () => {

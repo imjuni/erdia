@@ -125,7 +125,7 @@ describe('getEntityPropertyName', () => {
 
 describe('getEntityRecord', () => {
   test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-01.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -144,13 +144,13 @@ describe('getEntityRecord', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
+        path.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(tableDatas, undefined, 2),
       );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(tableDatas).toMatchObject(expectation);
@@ -159,7 +159,7 @@ describe('getEntityRecord', () => {
 
 describe('getEntityRecords', () => {
   test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-02.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -170,14 +170,11 @@ describe('getEntityRecords', () => {
     const records = getEntityRecords(share.dataSource, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(records, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(records, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(records).toMatchObject(expectation);

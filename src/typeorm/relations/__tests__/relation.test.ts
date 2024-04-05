@@ -23,7 +23,7 @@ afterAll(async () => {
 
 describe('getRelationRecord', () => {
   test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-03.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -42,21 +42,18 @@ describe('getRelationRecord', () => {
     const relation = getRelationRecord(share.dataSource.entityMetadatas, relationMetadata, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(relation, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
   });
 
   test('pass - many-to-many', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-04.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -75,21 +72,18 @@ describe('getRelationRecord', () => {
     const relation = getRelationRecord(share.dataSource.entityMetadatas, relationMetadata, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(relation, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
   });
 
   test('exception - many-to-many', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-05.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -114,14 +108,11 @@ describe('getRelationRecord', () => {
     spyOnHandle.mockRestore();
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(relation, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
@@ -130,7 +121,7 @@ describe('getRelationRecord', () => {
 
 describe('getRelationRecords', () => {
   test('pass', async () => {
-    const expectFileName = `expect.${expect.getState().currentTestName}`.replaceAll(' ', '-');
+    const expectFileName = 'expect-06.json';
     const metadata: IRecordMetadata = {
       name: 'i-am-application-name',
       version: '1.0.0',
@@ -141,14 +132,11 @@ describe('getRelationRecords', () => {
     const relation = getRelationRecords(share.dataSource, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}.json`),
-        fastSafeStringify(relation, undefined, 2),
-      );
+      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}.json`))).toString(),
+      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);

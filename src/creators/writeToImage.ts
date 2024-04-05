@@ -21,7 +21,7 @@ export async function writeToImage(
 
   try {
     const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);
-    const browser = await puppeteer.launch({ ...puppeteerConfig, headless: 'new' });
+    const browser = await puppeteer.launch({ ...puppeteerConfig, headless: true });
     const page = await browser.newPage();
     const puppeteerGotoOption: Parameters<typeof page.goto>[1] = {
       waitUntil: 'domcontentloaded',
