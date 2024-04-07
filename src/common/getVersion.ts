@@ -2,11 +2,11 @@ import { getFileVersion } from '#/common/getFileVersion';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import { getCwd } from '#/configs/modules/getCwd';
-import { getFindFile } from '#/tools/files/getFindFile';
-import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { getFindFile } from '#/modules/files/getFindFile';
+import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
-import path from 'path';
+import pathe from 'pathe';
 
 async function getVersionFilename(
   option: Pick<IBuildCommandOption, 'versionFrom' | 'versionPath'>,
@@ -14,7 +14,7 @@ async function getVersionFilename(
 ) {
   if (option.versionPath != null) {
     const filename = await getFindFile(
-      path.join(await getOutputDirectory({ output: option.versionPath }, getCwd(process.env)), versionFilename),
+      pathe.join(await getOutputDirectory({ output: option.versionPath }, getCwd(process.env)), versionFilename),
       { cwd: getCwd(process.env) },
     );
 

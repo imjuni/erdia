@@ -10,6 +10,7 @@ import { CE_COMMAND_LIST } from '#/configs/const-enum/CE_COMMAND_LIST';
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { preLoadConfig } from '#/configs/modules/preLoadConfig';
+import '#/modules/containers/container';
 import consola from 'consola';
 import { isError } from 'my-easy-fp';
 import sourceMapSupport from 'source-map-support';

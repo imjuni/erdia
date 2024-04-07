@@ -2,14 +2,17 @@ import { getMetadata } from '#/common/getMetadata';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { getCwd } from '#/configs/modules/getCwd';
-import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { container } from '#/modules/containers/container';
+import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
+import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
 import { getDataSource } from '#/typeorm/getDataSource';
 import { showLogo } from '@maeum/cli-logo';
+import { asValue } from 'awilix';
 import consola from 'consola';
 import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
 import { isError, isFalse } from 'my-easy-fp';
-import path from 'path';
+import pathe from 'pathe';
 import type { DataSource } from 'typeorm';
 
 export async function cleanDocumentCommandHandler(option: ICommonOption) {
@@ -33,17 +36,17 @@ export async function cleanDocumentCommandHandler(option: ICommonOption) {
       throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
     }
 
-    localDataSource = dataSource;
+    container.register(SymbolDataSource, asValue(dataSource));
 
-    const metadata = await getMetadata(dataSource, { ...option, versionFrom: 'package.json', projectName: 'app' });
+    const metadata = await getMetadata({ ...option, versionFrom: 'package.json', projectName: 'app' });
     const outputDir = await getOutputDirectory(option, getCwd(process.env));
 
     const filenames = [
-      path.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME),
-      path.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME),
-      path.join(outputDir, `${metadata.name}.md`),
-      path.join(outputDir, `${metadata.name}.png`),
-      path.join(outputDir, `${metadata.name}.svg`),
+      pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME),
+      pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME),
+      pathe.join(outputDir, `${metadata.name}.md`),
+      pathe.join(outputDir, `${metadata.name}.png`),
+      pathe.join(outputDir, `${metadata.name}.svg`),
     ];
 
     await del(filenames);

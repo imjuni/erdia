@@ -1,7 +1,7 @@
 import { getFileVersion } from '#/common/getFileVersion';
 import { getVersion } from '#/common/getVersion';
-import * as getFindFile from '#/tools/files/getFindFile';
-import * as getOutputDirectory from '#/tools/files/getOutputDirectory';
+import * as getFindFile from '#/modules/files/getFindFile';
+import * as getOutputDirectory from '#/modules/files/getOutputDirectory';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import { describe, expect, test, vitest } from 'vitest';

@@ -9,7 +9,7 @@ import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import type { IRenderData } from '#/databases/interfaces/IRenderData';
 import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
-import { getSlashEndRoutePath } from '#/tools/getSlashEndRoutePath';
+import { getSlashEndRoutePath } from '#/modules/getSlashEndRoutePath';
 import alasql from 'alasql';
 import { compareVersions } from 'compare-versions';
 

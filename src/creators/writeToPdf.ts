@@ -1,12 +1,12 @@
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { getPuppeteerConfig } from '#/tools/getPuppeteerConfig';
+import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
 import consola from 'consola';
 import del from 'del';
 import fs from 'fs';
 import { isError } from 'my-easy-fp';
-import path from 'path';
+import pathe from 'pathe';
 import * as puppeteer from 'puppeteer';
 import type { AsyncReturnType } from 'type-fest';
 
@@ -36,13 +36,13 @@ export async function writeToPdf(
     await fs.promises.writeFile(document.filename, document.content);
     await page.goto(`file://${document.filename}`, puppeteerGotoOption);
     await page.pdf({
-      path: path.join(document.dirname, `${renderData.metadata.name}.pdf`),
+      path: pathe.join(document.dirname, `${renderData.metadata.name}.pdf`),
       printBackground: option.backgroundColor !== 'transparent',
     });
 
     await del(document.filename);
 
-    return [path.join(document.dirname, `${renderData.metadata.name}.pdf`)];
+    return [pathe.join(document.dirname, `${renderData.metadata.name}.pdf`)];
   } catch (caught) {
     const err = isError(caught, new Error('unknown error raised from writeToPdf'));
 

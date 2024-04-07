@@ -3,7 +3,10 @@ import { getDatabaseName } from '#/common/getDatabaseName';
 import { getMetadata } from '#/common/getMetadata';
 import { getPackageName } from '#/common/getPackageName';
 import { getProjectName } from '#/common/getProjectName';
-import { getFindFile } from '#/tools/files/getFindFile';
+import { container } from '#/modules/containers/container';
+import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
+import { getFindFile } from '#/modules/files/getFindFile';
+import { asValue } from 'awilix';
 import dayjs from 'dayjs';
 import * as findUp from 'find-up';
 import { isError } from 'my-easy-fp';
@@ -47,10 +50,8 @@ describe('getMetadata', () => {
       .spyOn(readPkg, 'default')
       .mockImplementationOnce(() => Promise.resolve({ name: 'erdia', version: '1.1.1' }));
 
-    const metadata = await getMetadata(
-      { options: { database: 'i-am-database' } },
-      { ...env.buildOption, versionFrom: 'timestamp' },
-    );
+    container.register(SymbolDataSource, asValue({ options: { database: 'i-am-database' } }));
+    const metadata = await getMetadata({ ...env.buildOption, versionFrom: 'timestamp' });
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
@@ -77,10 +78,8 @@ describe('getMetadata', () => {
       .spyOn(readPkg, 'default')
       .mockImplementationOnce(() => Promise.resolve({ name: '@maeum_pet-store', version: '1.1.1' }));
 
-    const metadata = await getMetadata(
-      { options: { database: 'i-am-database' } },
-      { ...env.buildOption, versionFrom: 'timestamp' },
-    );
+    container.register(SymbolDataSource, asValue({ options: { database: 'i-am-database' } }));
+    const metadata = await getMetadata({ ...env.buildOption, versionFrom: 'timestamp' });
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();

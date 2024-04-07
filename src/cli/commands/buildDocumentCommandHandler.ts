@@ -16,7 +16,14 @@ import { flushDatabase } from '#/databases/flushDatabase';
 import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import { openDatabase } from '#/databases/openDatabase';
 import { processDatabase } from '#/databases/processDatabase';
-import { loadTemplates } from '#/template/loadTemplates';
+import { container } from '#/modules/containers/container';
+import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
+import { SymbolDefaultTemplate } from '#/modules/containers/keys/SymbolDefaultTemplate';
+import { SymbolTemplate } from '#/modules/containers/keys/SymbolTemplate';
+import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
+import { betterMkdir } from '#/modules/files/betterMkdir';
+import { TemplateRenderer } from '#/templates/TemplateRenderer';
+import { loadTemplates } from '#/templates/modules/loadTemplates';
 import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
 import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
 import { getDataSource } from '#/typeorm/getDataSource';
@@ -24,6 +31,7 @@ import { getIndexRecords } from '#/typeorm/indices/getIndexRecords';
 import { dedupeManaToManyRelationRecord } from '#/typeorm/relations/dedupeManaToManyRelationRecord';
 import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
 import { showLogo } from '@maeum/cli-logo';
+import { asValue } from 'awilix';
 import chalk from 'chalk';
 import consola from 'consola';
 import fastSafeStringify from 'fast-safe-stringify';
@@ -49,16 +57,19 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
     consola.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
 
     const dataSource = await getDataSource(option);
-    await dataSource.initialize();
+    const [templates] = await Promise.all([await loadTemplates(option), await dataSource.initialize()]);
+    const renderer = new TemplateRenderer(templates.default, templates.template);
 
     if (isFalse(dataSource.isInitialized)) {
       throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
     }
 
-    localDataSource = dataSource;
-    await loadTemplates(option);
+    container.register(SymbolDefaultTemplate, asValue(templates.default));
+    container.register(SymbolTemplate, asValue(templates.template));
+    container.register(SymbolDataSource, asValue(dataSource));
+    container.register(SymbolTemplateRenderer, asValue(renderer));
 
-    const metadata = await getMetadata(dataSource, option);
+    const metadata = await getMetadata(option);
 
     consola.success('connection initialized');
     consola.info(`version: ${metadata.version}`);
@@ -113,7 +124,12 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
       };
 
       const documents = await createHtml(option, renderData);
-      await Promise.all(documents.map((document) => fs.promises.writeFile(document.filename, document.content)));
+      await Promise.all(
+        documents.map(async (document) => {
+          await betterMkdir(document.dirname);
+          await fs.promises.writeFile(document.filename, document.content);
+        }),
+      );
 
       if (!option.skipImageInHtml) {
         const imageDocument = await createImageHtml(imageOption, renderData);
@@ -125,6 +141,7 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
 
     if (option.format === CE_OUTPUT_FORMAT.MARKDOWN) {
       const document = await createMarkdown(option, renderData);
+      await betterMkdir(document.dirname);
       await fs.promises.writeFile(document.filename, document.content);
       return [document.filename];
     }
@@ -137,6 +154,7 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
 
     if (option.format === CE_OUTPUT_FORMAT.IMAGE) {
       const document = await createImageHtml(option, renderData);
+      await betterMkdir(document.dirname);
       const filenames = await writeToImage(document, option, renderData);
       return filenames;
     }

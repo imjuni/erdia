@@ -7,7 +7,7 @@ import fastSafeStringify from 'fast-safe-stringify';
 import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import { findOrThrow } from 'my-easy-fp';
-import path from 'path';
+import pathe from 'pathe';
 import type { DataSource } from 'typeorm';
 import { beforeAll, describe, expect, test } from 'vitest';
 
@@ -139,13 +139,13 @@ describe('getManyToManyJoinColumn', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}`),
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(relations, undefined, 2),
       );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relations).toMatchObject(expectation);
@@ -169,7 +169,7 @@ describe('getManyToManyJoinColumn', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}`),
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(relations, undefined, 2),
       );
     }
@@ -177,7 +177,7 @@ describe('getManyToManyJoinColumn', () => {
     relationMetadata.joinColumns = joinColumnsBackup;
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relations).toMatchObject(expectation);

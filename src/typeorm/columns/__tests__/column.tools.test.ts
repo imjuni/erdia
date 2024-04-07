@@ -35,8 +35,8 @@ describe('getComment', () => {
   });
 
   test('html comment', () => {
-    const comment = getComment({ format: CE_OUTPUT_FORMAT.HTML }, 'i-am-comment\ni-am-comment');
-    expect(comment).toEqual('i-am-comment<br />i-am-comment');
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.HTML }, 'i-am-comment\n111\r\n222\n\r333');
+    expect(comment).toEqual('i-am-comment<br />111<br />222<br />333');
   });
 
   test('pdf comment', () => {
@@ -91,14 +91,24 @@ describe('getColumnType', () => {
     expect(columnType).toEqual('bigint');
   });
 
-  test('function-type without length + undefined', () => {
+  test('function-type without length + undefined + nullable', () => {
     const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: true });
     expect(columnType).toEqual('boolean');
   });
 
-  test('function-type with length', () => {
+  test('function-type without length + undefined + non-nullable', () => {
+    const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: false });
+    expect(columnType).toEqual('*boolean');
+  });
+
+  test('function-type with length + nullable', () => {
     const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: true }, true);
     expect(columnType).toEqual('boolean(200)');
+  });
+
+  test('function-type with length + non-nullable', () => {
+    const columnType = getColumnType({ type: Boolean, length: '200', isPrimary: false, isNullable: false }, true);
+    expect(columnType).toEqual('*boolean(200)');
   });
 
   test('function-type without length', () => {

@@ -3,10 +3,10 @@ import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 import { getRelationRecord } from '#/typeorm/relations/getRelationRecord';
 import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
 import fastSafeStringify from 'fast-safe-stringify';
-import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import { findOrThrow } from 'my-easy-fp';
-import path from 'path';
+import fs from 'node:fs';
+import pathe from 'pathe';
 import type { DataSource } from 'typeorm';
 import { afterAll, beforeAll, describe, expect, test, vitest } from 'vitest';
 
@@ -42,11 +42,14 @@ describe('getRelationRecord', () => {
     const relation = getRelationRecord(share.dataSource.entityMetadatas, relationMetadata, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
+      fs.writeFileSync(
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
+        fastSafeStringify(relation, undefined, 2),
+      );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
@@ -72,11 +75,14 @@ describe('getRelationRecord', () => {
     const relation = getRelationRecord(share.dataSource.entityMetadatas, relationMetadata, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
+      fs.writeFileSync(
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
+        fastSafeStringify(relation, undefined, 2),
+      );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
@@ -108,11 +114,14 @@ describe('getRelationRecord', () => {
     spyOnHandle.mockRestore();
 
     if (share.expect) {
-      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
+      fs.writeFileSync(
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
+        fastSafeStringify(relation, undefined, 2),
+      );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
@@ -132,11 +141,14 @@ describe('getRelationRecords', () => {
     const relation = getRelationRecords(share.dataSource, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(relation, undefined, 2));
+      fs.writeFileSync(
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
+        fastSafeStringify(relation, undefined, 2),
+      );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(relation).toMatchObject(expectation);
