@@ -21,7 +21,11 @@
   <% } %>
 
   // erdia entity database file path
-  "database-path": "<%= it.config.databasePath %>",
+  <% if (it.config.templatePath != null) { %>
+    "database-path": "<%= it.config.databasePath %>",
+  <% } else { %>
+    // "database-path": "",
+  <% } %>
 
   // erdia entity database file path
 <% if (it.config.routeBasePath != null) { %>
@@ -34,7 +38,7 @@
   "version-from": "<%= it.config.versionFrom %>",
 
   // If the versionFrom option set file, read the file from this path
-<% if (it.config.versionFrom != null) { %>
+<% if (it.config.versionPath != null) { %>
   "version-path": "<%= it.config.versionPath %>",
 <% } else { %>
   // "version-path": "",

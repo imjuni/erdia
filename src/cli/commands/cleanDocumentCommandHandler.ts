@@ -39,14 +39,14 @@ export async function cleanDocumentCommandHandler(option: ICommonOption) {
     container.register(SymbolDataSource, asValue(dataSource));
 
     const metadata = await getMetadata({ ...option, versionFrom: 'package.json', projectName: 'app' });
-    const outputDir = await getOutputDirectory(option, getCwd(process.env));
+    const outputDirPath = await getOutputDirectory(option, getCwd(process.env));
 
     const filenames = [
-      pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME),
-      pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME),
-      pathe.join(outputDir, `${metadata.name}.md`),
-      pathe.join(outputDir, `${metadata.name}.png`),
-      pathe.join(outputDir, `${metadata.name}.svg`),
+      pathe.join(outputDirPath, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME),
+      pathe.join(outputDirPath, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME),
+      pathe.join(outputDirPath, `${metadata.name}.md`),
+      pathe.join(outputDirPath, `${metadata.name}.png`),
+      pathe.join(outputDirPath, `${metadata.name}.svg`),
     ];
 
     await del(filenames);

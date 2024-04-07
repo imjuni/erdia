@@ -4,7 +4,7 @@ import { getTemplatePath } from '#/templates/modules/getTemplatePath';
 import { getTemplates } from '#/templates/modules/getTemplates';
 import pathe from 'pathe';
 
-export async function loadTemplates(option: Pick<IDocumentOption, 'templatePath'>) {
+export async function loadTemplates(option?: Pick<IDocumentOption, 'templatePath'>) {
   const defaultTemplatePath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
   const [defaultConfig, defaultHtml, defaultMarkdown, defaultImage, defaultPdf] = await Promise.all([
     getTemplates(pathe.join(defaultTemplatePath, 'config'), {}),
@@ -22,7 +22,7 @@ export async function loadTemplates(option: Pick<IDocumentOption, 'templatePath'
     ...defaultPdf.map((template): [string, string] => [`pdf-${template.key}`, template.content]),
   ]);
 
-  if (option.templatePath == null) {
+  if (option?.templatePath == null) {
     return {
       default: defaultTemplateMap,
       template: defaultTemplateMap,

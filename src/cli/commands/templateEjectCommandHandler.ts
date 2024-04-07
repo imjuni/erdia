@@ -10,7 +10,7 @@ import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import fs from 'fs';
 import { Glob } from 'glob';
-import { getDirname } from 'my-node-fp';
+import { getDirname, startSepRemove } from 'my-node-fp';
 import pathe from 'pathe';
 
 export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
@@ -24,15 +24,16 @@ export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'o
     consola.info('erdia build start');
   }
 
-  const outputDir = await getOutputDirectory(option, getCwd(process.env));
+  const outputDirPath = await getOutputDirectory(option, getCwd(process.env));
   const originTemplateDirPath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
-  const targetTemplateDirPath = pathe.join(outputDir, '__templates');
+  const targetTemplateDirPath =
+    option.output == null ? pathe.join(outputDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH) : outputDirPath;
 
   consola.info('Output directory: ', targetTemplateDirPath);
 
   const originTemplateGlobPaths = new Glob(pathe.join(originTemplateDirPath, `**`, '*.eta'), {
     absolute: true,
-    ignore: defaultExclude,
+    ignore: [...defaultExclude, 'config/**'],
     cwd: originTemplateDirPath,
     windowsPathsNoEscape: true,
   });
@@ -41,13 +42,16 @@ export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'o
   await Promise.all(
     originTemplateFilePaths.map(async (originTemplateFilePath) => {
       const subDirPath = await getDirname(originTemplateFilePath);
-      const subFilePath = originTemplateFilePath.replace(subDirPath, '');
-      const targetTemplateSubDirPath = pathe.join(targetTemplateDirPath, subDirPath);
+      const subFilePath = startSepRemove(originTemplateFilePath.replace(subDirPath, ''));
+      const targetTemplateSubDirPath = pathe.join(
+        targetTemplateDirPath,
+        startSepRemove(subDirPath.replace(originTemplateDirPath, '')),
+      );
 
       await betterMkdir(targetTemplateSubDirPath);
 
       const templateFileBuf = await fs.promises.readFile(originTemplateFilePath);
-      await fs.promises.writeFile(pathe.join(subFilePath, subFilePath), templateFileBuf);
+      await fs.promises.writeFile(pathe.join(targetTemplateSubDirPath, subFilePath), templateFileBuf);
     }),
   );
 

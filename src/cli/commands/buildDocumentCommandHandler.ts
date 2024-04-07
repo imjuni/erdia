@@ -41,8 +41,6 @@ import fs from 'node:fs';
 import type { DataSource } from 'typeorm';
 
 export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
-  let localDataSource: DataSource | undefined;
-
   try {
     if (option.showLogo != null) {
       await showLogo({
@@ -58,7 +56,7 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
 
     const dataSource = await getDataSource(option);
     const [templates] = await Promise.all([await loadTemplates(option), await dataSource.initialize()]);
-    const renderer = new TemplateRenderer(templates.default, templates.template);
+    const renderer = new TemplateRenderer(templates.template, templates.default);
 
     if (isFalse(dataSource.isInitialized)) {
       throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
@@ -168,8 +166,9 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
 
     return [];
   } finally {
-    if (localDataSource != null) {
-      await localDataSource.destroy();
+    const dataSource = container.resolve<DataSource>(SymbolDataSource);
+    if (dataSource != null) {
+      await dataSource.destroy();
     }
   }
 }

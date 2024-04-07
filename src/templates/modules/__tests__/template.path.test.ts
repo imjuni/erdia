@@ -51,7 +51,7 @@ describe('getTemplatePath', () => {
       .mockImplementationOnce(() => Promise.resolve(false))
       .mockImplementationOnce(() => Promise.resolve(true));
 
-    const dirnameTemplatePath = pathe.join(process.cwd(), 'src', 'templates', 'templates');
+    const dirnameTemplatePath = pathe.join(process.cwd(), 'src', 'templates');
     const templatePath = await getTemplatePath('1110a038cb804e8fac8161070a601f66');
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
