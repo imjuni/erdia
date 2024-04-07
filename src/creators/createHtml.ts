@@ -5,11 +5,13 @@ import { getCwd } from '#/configs/modules/getCwd';
 import { applyPrettier } from '#/creators/applyPretter';
 import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import { evaluateTemplate } from '#/template/evaluateTemplate';
-import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { container } from '#/modules/containers/container';
+import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
+import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import type { TemplateRenderer } from '#/templates/TemplateRenderer';
+import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
 import consola from 'consola';
-import path from 'path';
+import pathe from 'pathe';
 import type { AsyncReturnType } from 'type-fest';
 
 async function getTables(
@@ -21,13 +23,14 @@ async function getTables(
     return [];
   }
 
-  const rawTables = await evaluateTemplate(CE_TEMPLATE_NAME.HTML_DOCUMENT, renderData);
+  const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
+  const rawTables = await renderer.evaluate(CE_TEMPLATE_NAME.HTML_DOCUMENT, renderData);
   const prettiedTables = await applyPrettier(rawTables, 'html', option.prettierConfig);
-  const tablesFileName = path.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
+  const tablesFileName = pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
   return [
     {
-      dirname: path.resolve(outputDir),
-      filename: path.resolve(tablesFileName),
+      dirname: pathe.resolve(outputDir),
+      filename: pathe.resolve(tablesFileName),
       content: prettiedTables,
     },
   ];
@@ -42,16 +45,17 @@ async function getDiagram(
     return [];
   }
 
-  const rawDiagram = await evaluateTemplate(CE_TEMPLATE_NAME.HTML_MERMAID, renderData);
+  const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
+  const rawDiagram = await renderer.evaluate(CE_TEMPLATE_NAME.HTML_MERMAID, renderData);
   const prettiedDiagram = await applyPrettier(rawDiagram, 'html', option.prettierConfig);
   const diagramFileName = option.components.includes(CE_OUTPUT_COMPONENT.TABLE)
-    ? path.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME)
-    : path.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
+    ? pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME)
+    : pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
 
   return [
     {
-      dirname: path.resolve(outputDir),
-      filename: path.resolve(diagramFileName),
+      dirname: pathe.resolve(outputDir),
+      filename: pathe.resolve(diagramFileName),
       content: prettiedDiagram,
     },
   ];

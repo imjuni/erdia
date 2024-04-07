@@ -6,9 +6,9 @@ import { getEntityPropertyName } from '#/typeorm/entities/getEntityPropertyName'
 import { getEntityRecord } from '#/typeorm/entities/getEntityRecord';
 import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
 import fastSafeStringify from 'fast-safe-stringify';
-import fs from 'fs';
 import { parse } from 'jsonc-parser';
-import path from 'path';
+import fs from 'node:fs';
+import pathe from 'pathe';
 import type { DataSource } from 'typeorm';
 import { beforeAll, describe, expect, test } from 'vitest';
 
@@ -144,13 +144,13 @@ describe('getEntityRecord', () => {
 
     if (share.expect) {
       fs.writeFileSync(
-        path.join(__dirname, 'expects', `${expectFileName}`),
+        pathe.join(__dirname, 'expects', `${expectFileName}`),
         fastSafeStringify(tableDatas, undefined, 2),
       );
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(tableDatas).toMatchObject(expectation);
@@ -170,11 +170,11 @@ describe('getEntityRecords', () => {
     const records = getEntityRecords(share.dataSource, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(path.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(records, undefined, 2));
+      fs.writeFileSync(pathe.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(records, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(path.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
     ) as object;
 
     expect(records).toMatchObject(expectation);

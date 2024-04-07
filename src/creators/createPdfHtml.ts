@@ -2,22 +2,28 @@ import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOpti
 import { applyPrettier } from '#/creators/applyPretter';
 import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import { evaluateTemplate } from '#/template/evaluateTemplate';
+import { container } from '#/modules/containers/container';
+import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
+import { betterMkdir } from '#/modules/files/betterMkdir';
+import type { TemplateRenderer } from '#/templates/TemplateRenderer';
+import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
 import { getDirname } from 'my-node-fp';
 import { randomUUID } from 'node:crypto';
-import path from 'path';
+import pathe from 'pathe';
 import type { AsyncReturnType } from 'type-fest';
 
 export async function createPdfHtml(option: IBuildCommandOption, renderData: AsyncReturnType<typeof getRenderData>) {
-  const rawHtml = await evaluateTemplate(CE_TEMPLATE_NAME.PDF_DOCUMENT, renderData);
+  const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
+  const rawHtml = await renderer.evaluate(CE_TEMPLATE_NAME.PDF_DOCUMENT, renderData);
   const prettiedHtml = await applyPrettier(rawHtml, 'html', option.prettierConfig);
-  const outputDir = await getDirname(option.output ?? process.cwd());
-  const tempFileName = path.join(outputDir, `${randomUUID()}.html`);
+  const outputDirPath = option.output != null ? pathe.resolve(option.output) : process.cwd();
+  await betterMkdir(outputDirPath);
+
+  const tempFileName = pathe.join(outputDirPath, `${randomUUID()}.html`);
 
   return {
-    dirname: path.resolve(outputDir),
+    dirname: await getDirname(outputDirPath),
     content: prettiedHtml,
-    filename: path.resolve(tempFileName),
+    filename: pathe.resolve(tempFileName),
   } satisfies IErdiaDocument;
 }

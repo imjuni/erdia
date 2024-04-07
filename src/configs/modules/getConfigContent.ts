@@ -8,13 +8,17 @@ import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
 import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
 import { getAutoCompleteSource } from '#/configs/modules/getAutoCompleteSource';
 import { getCwd } from '#/configs/modules/getCwd';
-import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import { evaluateTemplate } from '#/template/evaluateTemplate';
+import { container } from '#/modules/containers/container';
+import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
+import { getGlobFiles } from '#/modules/files/getGlobFiles';
+import { defaultExclude } from '#/modules/scopes/defaultExclude';
+import type { TemplateRenderer } from '#/templates/TemplateRenderer';
+import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
 import Fuse from 'fuse.js';
-import globby from 'globby';
+import { Glob } from 'glob';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
-import path from 'node:path';
+import pathe from 'pathe';
 
 export async function getConfigContent() {
   /**
@@ -31,29 +35,31 @@ export async function getConfigContent() {
    *          - png
    */
 
-  const sourceFiles = await globby(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
+  const sourceGlobFiles = new Glob(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
+    absolute: true,
+    ignore: defaultExclude,
     cwd: process.cwd(),
     onlyFiles: true,
-    gitignore: true,
-    ignore: ['node_modules'],
-    dot: true,
   });
+  const sourceFiles = getGlobFiles(sourceGlobFiles);
 
-  const everyFiles = await globby(['**/*'], {
+  const everyGlobFiles = new Glob(['**/*'], {
+    absolute: true,
+    ignore: defaultExclude,
     cwd: process.cwd(),
+    dot: true,
     onlyFiles: true,
-    gitignore: true,
-    ignore: ['node_modules'],
-    dot: true,
   });
+  const everyFiles = getGlobFiles(everyGlobFiles);
 
-  const directories = await globby(['**'], {
+  const directoryGlobDirPaths = new Glob(['**/*'], {
+    absolute: true,
+    ignore: defaultExclude,
     cwd: process.cwd(),
+    dot: true,
     onlyDirectories: true,
-    gitignore: true,
-    ignore: ['node_modules'],
-    dot: true,
   });
+  const directories = getGlobFiles(directoryGlobDirPaths);
 
   const sourceFilesFuse = new Fuse(sourceFiles, { includeScore: true });
   const everyFilesFuse = new Fuse(everyFiles, { includeScore: true });
@@ -210,11 +216,11 @@ export async function getConfigContent() {
   const templateDir = await (answer.isEjectTemplate
     ? templateEjectCommandHandler({ output: getCwd(process.env), showLogo: false })
     : Promise.resolve(undefined));
-
-  const file = await evaluateTemplate(CE_TEMPLATE_NAME.CONFIG_JSON, {
+  const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
+  const file = await renderer.evaluate(CE_TEMPLATE_NAME.CONFIG_JSON, {
     config: {
       ...answer,
-      templatePath: templateDir != null ? path.relative(getCwd(process.env), templateDir) : templateDir,
+      templatePath: templateDir != null ? pathe.relative(getCwd(process.env), templateDir) : templateDir,
       versionFrom: answer.versionFrom != null ? answer.versionFrom : CE_ENTITY_VERSION_FROM.TIMESTAMP,
       config: CE_DEFAULT_VALUE.CONFIG_FILE_NAME,
     },

@@ -2,11 +2,11 @@ import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { loadDataSource } from '#/typeorm/loadDataSource';
 import { isFalse } from 'my-easy-fp';
 import { exists } from 'my-node-fp';
-import path from 'node:path';
+import pathe from 'pathe';
 import { type DataSource } from 'typeorm';
 
 export async function getDataSource(options: ICommonOption): Promise<DataSource> {
-  const dataSourcePath = path.resolve(options.dataSourcePath);
+  const dataSourcePath = pathe.resolve(options.dataSourcePath);
 
   if (isFalse(await exists(dataSourcePath))) {
     throw new Error(`Cannot found dataSource: ${dataSourcePath}`);

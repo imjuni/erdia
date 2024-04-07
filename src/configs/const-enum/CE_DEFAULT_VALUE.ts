@@ -10,6 +10,8 @@ export const CE_DEFAULT_VALUE = {
   DATABASE_FILENAME: 'erdiadb.json',
   VERSION_FILENAME: '.erdiaverrc',
 
+  TEMPLATES_PATH: 'templates',
+
   DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT: 50,
   OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT: 50,
 } as const;

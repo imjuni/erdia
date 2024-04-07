@@ -1,0 +1,9 @@
+## Table Of Contents
+
+1. <%= it.metadata.version %> Entities
+<% it.entities.forEach((entity, index) => { -%>
+    <%= index + 1 %>. <%= entity.dbName %>(<%= entity.name %>)
+<% }) %>
+<% if (it.option.components.includes('er')) { %>
+2. ER Diagram
+<% } %>

@@ -2,12 +2,13 @@
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { getPuppeteerConfig } from '#/tools/getPuppeteerConfig';
+import { betterMkdir } from '#/modules/files/betterMkdir';
+import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
 import consola from 'consola';
 import del from 'del';
-import fs from 'fs';
 import { isError } from 'my-easy-fp';
-import path from 'path';
+import fs from 'node:fs';
+import pathe from 'pathe';
 import * as puppeteer from 'puppeteer';
 import type { AsyncReturnType } from 'type-fest';
 
@@ -31,6 +32,7 @@ export async function writeToImage(
     localBrowser = browser;
     localPage = page;
 
+    await betterMkdir(document.filename);
     await fs.promises.writeFile(document.filename, document.content);
     await page.setViewport({ width: option.viewportWidth ?? 1280, height: option.viewportHeight ?? 720 * 2 });
     await page.goto(`file://${document.filename}`, puppeteerGotoOption);
@@ -54,13 +56,13 @@ export async function writeToImage(
         throw new Error('invalid image html document template');
       }
 
-      await fs.promises.writeFile(path.join(document.dirname, `${renderData.metadata.name}.svg`), svg);
+      await fs.promises.writeFile(pathe.join(document.dirname, `${renderData.metadata.name}.svg`), svg);
       consola.debug('file write end');
 
       await del(document.filename);
       consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.svg`);
 
-      return [path.join(document.dirname, `${renderData.metadata.name}.svg`)];
+      return [pathe.join(document.dirname, `${renderData.metadata.name}.svg`)];
     }
 
     // this source code from [mermaid-cli](https://github.com/mermaidjs/mermaid.cli/blob/46185413d75384cd7bceed802d187db6852f5190/index.js#L113-L117)
@@ -70,7 +72,7 @@ export async function writeToImage(
     });
 
     await page.screenshot({
-      path: path.join(document.dirname, `${renderData.metadata.name}.png`),
+      path: pathe.join(document.dirname, `${renderData.metadata.name}.png`),
       clip,
       omitBackground: false,
     });
@@ -80,7 +82,7 @@ export async function writeToImage(
     await del(document.filename);
     consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.png`);
 
-    return [path.join(document.dirname, `${renderData.metadata.name}.png`)];
+    return [pathe.join(document.dirname, `${renderData.metadata.name}.png`)];
   } catch (caught) {
     const err = isError(caught, new Error('unknown error raised from writeToImage'));
 

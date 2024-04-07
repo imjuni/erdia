@@ -1,14 +1,17 @@
+import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { getCwd } from '#/configs/modules/getCwd';
-import { CE_TEMPLATE_NAME } from '#/template/cosnt-enum/CE_TEMPLATE_NAME';
-import { defaultTemplates } from '#/template/defaultTemplates';
-import { getOutputDirectory } from '#/tools/files/getOutputDirectory';
+import { betterMkdir } from '#/modules/files/betterMkdir';
+import { getGlobFiles } from '#/modules/files/getGlobFiles';
+import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import { defaultExclude } from '#/modules/scopes/defaultExclude';
+import { getTemplatePath } from '#/templates/modules/getTemplatePath';
 import { showLogo } from '@maeum/cli-logo';
 import consola from 'consola';
 import fs from 'fs';
-import { isFalse } from 'my-easy-fp';
-import { exists, getDirname } from 'my-node-fp';
-import path from 'path';
+import { Glob } from 'glob';
+import { getDirname } from 'my-node-fp';
+import pathe from 'pathe';
 
 export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
   if (option.showLogo != null) {
@@ -22,49 +25,33 @@ export async function templateEjectCommandHandler(option: Pick<ICommonOption, 'o
   }
 
   const outputDir = await getOutputDirectory(option, getCwd(process.env));
-  const templateDir = path.join(outputDir, 'template');
+  const originTemplateDirPath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
+  const targetTemplateDirPath = pathe.join(outputDir, '__templates');
 
-  consola.info('Output directory: ', templateDir);
+  consola.info('Output directory: ', targetTemplateDirPath);
 
-  const writeFile = async (template: CE_TEMPLATE_NAME) => {
-    const filename = path.resolve(path.join(templateDir, `${template}.eta`));
-    const dirname = await getDirname(filename);
-
-    if (isFalse(await exists(dirname))) {
-      await fs.promises.mkdir(dirname, { recursive: true });
-    }
-
-    await fs.promises.writeFile(filename, defaultTemplates[template]);
-  };
+  const originTemplateGlobPaths = new Glob(pathe.join(originTemplateDirPath, `**`, '*.eta'), {
+    absolute: true,
+    ignore: defaultExclude,
+    cwd: originTemplateDirPath,
+    windowsPathsNoEscape: true,
+  });
+  const originTemplateFilePaths = getGlobFiles(originTemplateGlobPaths);
 
   await Promise.all(
-    [
-      CE_TEMPLATE_NAME.HTML_DOCUMENT_TOC,
-      CE_TEMPLATE_NAME.HTML_DOCUMENT,
-      CE_TEMPLATE_NAME.HTML_MERMAID_SCRIPT,
-      CE_TEMPLATE_NAME.HTML_MERMAID_TOC,
-      CE_TEMPLATE_NAME.HTML_MERMAID,
-      CE_TEMPLATE_NAME.HTML_STYLE,
-      CE_TEMPLATE_NAME.HTML_TABLE,
-      CE_TEMPLATE_NAME.IMAGE_DOCUMENT,
-      CE_TEMPLATE_NAME.IMAGE_MERMAID_SCRIPT,
-      CE_TEMPLATE_NAME.IMAGE_STYLE,
-      CE_TEMPLATE_NAME.MARKDOWN_DOCUMENT,
-      CE_TEMPLATE_NAME.MARKDOWN_MERMAID,
-      CE_TEMPLATE_NAME.MARKDOWN_TABLE,
-      CE_TEMPLATE_NAME.MARKDOWN_TOC,
-      CE_TEMPLATE_NAME.MERMAID_DOCUMENT,
-      CE_TEMPLATE_NAME.MERMAID_ENTITY,
-      CE_TEMPLATE_NAME.MERMAID_RELATION,
-      CE_TEMPLATE_NAME.PDF_DOCUMENT_TOC,
-      CE_TEMPLATE_NAME.PDF_DOCUMENT,
-      CE_TEMPLATE_NAME.PDF_MERMAID_SCRIPT,
-      CE_TEMPLATE_NAME.PDF_STYLE,
-      CE_TEMPLATE_NAME.PDF_TABLE,
-    ].map((template) => writeFile(template)),
+    originTemplateFilePaths.map(async (originTemplateFilePath) => {
+      const subDirPath = await getDirname(originTemplateFilePath);
+      const subFilePath = originTemplateFilePath.replace(subDirPath, '');
+      const targetTemplateSubDirPath = pathe.join(targetTemplateDirPath, subDirPath);
+
+      await betterMkdir(targetTemplateSubDirPath);
+
+      const templateFileBuf = await fs.promises.readFile(originTemplateFilePath);
+      await fs.promises.writeFile(pathe.join(subFilePath, subFilePath), templateFileBuf);
+    }),
   );
 
-  consola.success('eject success: ', templateDir);
+  consola.success('eject success: ', targetTemplateDirPath);
 
-  return templateDir;
+  return targetTemplateDirPath;
 }
