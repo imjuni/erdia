@@ -24,7 +24,7 @@ export async function getTemplatePath(templatePathParam?: string): Promise<strin
     return packageRootTemplatePath;
   }
 
-  const distTemplatePath = pathe.resolve(pathe.join(currentFilePath, '..', CE_DEFAULT_VALUE.TEMPLATES_PATH));
+  const distTemplatePath = pathe.resolve(pathe.join(currentFilePath, '..', '..', CE_DEFAULT_VALUE.TEMPLATES_PATH));
   if (await exists(distTemplatePath)) {
     return distTemplatePath;
   }

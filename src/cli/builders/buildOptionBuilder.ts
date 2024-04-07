@@ -3,7 +3,6 @@ import type { Argv } from 'yargs';
 export function buildOptionBuilder<T>(args: Argv<T>) {
   // option
   args
-
     .option('route-base-path', {
       describe:
         'define the route base path. The route base path is used as the base path for navbar anchor when generating HTML documents',

@@ -5,16 +5,17 @@ import { exists, getDirname, isDirectory } from 'my-node-fp';
 import pathe from 'pathe';
 
 export async function getOutputDirectory(option: Pick<IBuildCommandOption, 'output'>, cwd: string) {
-  const output = option.output ?? cwd;
+  const outputDirPath = option.output ?? cwd;
+  const resolvedOutputDirPath = pathe.resolve(outputDirPath);
 
-  if (isFalse(await exists(output))) {
-    await betterMkdir(output);
-    return pathe.resolve(output);
+  if (isFalse(await exists(resolvedOutputDirPath))) {
+    await betterMkdir(pathe.join(resolvedOutputDirPath));
+    return resolvedOutputDirPath;
   }
 
-  if (isFalse(await isDirectory(output))) {
-    return pathe.resolve(await getDirname(output));
+  if (isFalse(await isDirectory(outputDirPath))) {
+    return pathe.resolve(await getDirname(outputDirPath));
   }
 
-  return pathe.resolve(output);
+  return pathe.resolve(outputDirPath);
 }

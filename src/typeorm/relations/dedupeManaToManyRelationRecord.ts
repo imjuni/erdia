@@ -15,8 +15,17 @@ export function dedupeManaToManyRelationRecord(relations: IRelationRecord[]) {
 
   const nextRelations = Object.values(relationMap).map((chunkedRelations) => {
     const sortedRelations = chunkedRelations.sort((l, r) => l.dbName.localeCompare(r.dbName));
-    const firstRelation = atOrThrow(sortedRelations, 0);
-    const secondRelation = atOrThrow(sortedRelations, 1);
+
+    const firstRelation = atOrThrow(
+      sortedRelations,
+      0,
+      new Error(`Cannot found relation: ${sortedRelations.at(0)?.entity} - ${sortedRelations.at(1)?.entity}`),
+    );
+    const secondRelation = atOrThrow(
+      sortedRelations,
+      1,
+      new Error(`Cannot found relation: ${sortedRelations.at(0)?.entity} - ${sortedRelations.at(1)?.entity}`),
+    );
 
     const firstNext = { ...firstRelation, inverseJoinColumnName: secondRelation.joinColumnName };
     const secondNext = { ...secondRelation, inverseJoinColumnName: firstRelation.joinColumnName, isDuplicate: true };
