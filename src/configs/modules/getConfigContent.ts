@@ -1,4 +1,3 @@
-import { templateEjectCommandHandler } from '#/cli/commands/templateEjectCommandHandler';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import { CE_ENTITY_VERSION_FROM } from '#/configs/const-enum/CE_ENTITY_VERSION_FROM';
 import { CE_IMAGE_FORMAT } from '#/configs/const-enum/CE_IMAGE_FORMAT';
@@ -8,6 +7,7 @@ import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
 import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
 import { getAutoCompleteSource } from '#/configs/modules/getAutoCompleteSource';
 import { getCwd } from '#/configs/modules/getCwd';
+import { ejecting } from '#/modules/commands/ejecting';
 import { container } from '#/modules/containers/container';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
 import { getGlobFiles } from '#/modules/files/getGlobFiles';
@@ -214,7 +214,7 @@ export async function getConfigContent() {
   ]);
 
   const templateDir = await (answer.isEjectTemplate
-    ? templateEjectCommandHandler({ output: getCwd(process.env), showLogo: false })
+    ? ejecting({ output: getCwd(process.env), showLogo: false })
     : Promise.resolve(undefined));
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
   const file = await renderer.evaluate(CE_TEMPLATE_NAME.CONFIG_JSON, {

@@ -125,6 +125,16 @@ module.exports = {
       },
     },
     {
+      files: ['src/modules/loggers/Logger.ts'],
+      rules: {
+        'class-methods-use-this': ['off'],
+        '@typescript-eslint/consistent-type-imports': ['off'],
+        '@typescript-eslint/no-redundant-type-constituents': ['off'],
+        '@typescript-eslint/no-unsafe-argument': ['off'],
+        '@typescript-eslint/no-explicit-any': ['off'],
+      },
+    },
+    {
       files: ['vitest.config.ts'],
       rules: {
         'import/no-extraneous-dependencies': ['off'],
