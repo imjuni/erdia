@@ -11,6 +11,7 @@ import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOpti
 import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { preLoadConfig } from '#/configs/modules/preLoadConfig';
 import '#/modules/containers/container';
+import { createLogger } from '#/modules/loggers/createLogger';
 import consola from 'consola';
 import { isError } from 'my-easy-fp';
 import sourceMapSupport from 'source-map-support';
@@ -18,6 +19,7 @@ import yargs, { type CommandModule } from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 sourceMapSupport.install();
+createLogger();
 
 const buildCmdModule: CommandModule<IBuildCommandOption, IBuildCommandOption> = {
   command: CE_COMMAND_LIST.BUILD,
