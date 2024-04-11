@@ -8,6 +8,6 @@ export interface IRenderData {
     latest: boolean;
     entities: IEntityWithColumnAndRelationAndIndex[];
   }[];
-  option: IBuildCommandOption;
+  option: Omit<IBuildCommandOption, 'config'>;
   metadata: IRecordMetadata;
 }

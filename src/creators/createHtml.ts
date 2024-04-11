@@ -15,7 +15,7 @@ import pathe from 'pathe';
 import type { AsyncReturnType } from 'type-fest';
 
 async function getTables(
-  option: IBuildCommandOption,
+  option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,
   renderData: AsyncReturnType<typeof getRenderData>,
   outputDir: string,
 ): Promise<IErdiaDocument[]> {
@@ -37,7 +37,7 @@ async function getTables(
 }
 
 async function getDiagram(
-  option: IBuildCommandOption,
+  option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,
   renderData: AsyncReturnType<typeof getRenderData>,
   outputDir: string,
 ): Promise<IErdiaDocument[]> {
@@ -61,7 +61,10 @@ async function getDiagram(
   ];
 }
 
-export async function createHtml(option: IBuildCommandOption, renderData: AsyncReturnType<typeof getRenderData>) {
+export async function createHtml(
+  option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,
+  renderData: AsyncReturnType<typeof getRenderData>,
+) {
   const outputDir = await getOutputDirectory(option, getCwd(process.env));
 
   consola.info(`export component: ${option.components.join(', ')}`);

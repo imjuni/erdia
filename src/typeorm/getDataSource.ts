@@ -5,7 +5,7 @@ import { exists } from 'my-node-fp';
 import pathe from 'pathe';
 import { type DataSource } from 'typeorm';
 
-export async function getDataSource(options: ICommonOption): Promise<DataSource> {
+export async function getDataSource(options: Pick<ICommonOption, 'dataSourcePath'>): Promise<DataSource> {
   const dataSourcePath = pathe.resolve(options.dataSourcePath);
 
   if (isFalse(await exists(dataSourcePath))) {

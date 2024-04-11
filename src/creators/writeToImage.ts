@@ -14,14 +14,17 @@ import type { AsyncReturnType } from 'type-fest';
 
 export async function writeToImage(
   document: IErdiaDocument,
-  option: IBuildCommandOption,
+  option: Pick<
+    IBuildCommandOption,
+    'output' | 'components' | 'prettierConfig' | 'viewportWidth' | 'viewportHeight' | 'backgroundColor' | 'imageFormat'
+  >,
   renderData: AsyncReturnType<typeof getRenderData>,
 ) {
   let localBrowser: puppeteer.Browser | undefined;
   let localPage: puppeteer.Page | undefined;
 
   try {
-    const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);
+    const puppeteerConfig = await getPuppeteerConfig(option.prettierConfig);
     const browser = await puppeteer.launch({ ...puppeteerConfig, headless: true });
     const page = await browser.newPage();
     const puppeteerGotoOption: Parameters<typeof page.goto>[1] = {

@@ -13,7 +13,7 @@ import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 export function getColumnRecord(
   columnMetadata: ColumnMetadata,
-  option: IBuildCommandOption,
+  option: Pick<IBuildCommandOption, 'format'>,
   metadata: IRecordMetadata,
   indices: IIndexRecord[],
 ): IColumnRecord {

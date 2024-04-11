@@ -39,10 +39,11 @@ import fastSafeStringify from 'fast-safe-stringify';
 import { isError, isFalse } from 'my-easy-fp';
 import { isFail, isPass, type IFail, type IPass } from 'my-only-either';
 import fs from 'node:fs';
+import type { SetOptional } from 'type-fest';
 import type { DataSource } from 'typeorm';
 
-export async function building(option: IBuildCommandOption) {
-  createLogger();
+export async function building(option: SetOptional<IBuildCommandOption, 'config'>, logging?: boolean) {
+  createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {
@@ -107,7 +108,7 @@ export async function building(option: IBuildCommandOption) {
     logger.info(`output format: ${option.format}`);
 
     if (option.format === CE_OUTPUT_FORMAT.HTML) {
-      const imageOption: IBuildCommandOption = {
+      const imageOption: SetOptional<IBuildCommandOption, 'config'> = {
         ...option,
         format: CE_OUTPUT_FORMAT.IMAGE,
         imageFormat: 'svg',

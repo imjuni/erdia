@@ -12,8 +12,8 @@ import { asValue } from 'awilix';
 import fs from 'fs';
 import { isError } from 'my-easy-fp';
 
-export async function initializing() {
-  createLogger();
+export async function initializing(logging?: boolean) {
+  createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {
