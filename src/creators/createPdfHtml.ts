@@ -12,7 +12,10 @@ import { randomUUID } from 'node:crypto';
 import pathe from 'pathe';
 import type { AsyncReturnType } from 'type-fest';
 
-export async function createPdfHtml(option: IBuildCommandOption, renderData: AsyncReturnType<typeof getRenderData>) {
+export async function createPdfHtml(
+  option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,
+  renderData: AsyncReturnType<typeof getRenderData>,
+) {
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
   const rawHtml = await renderer.evaluate(CE_TEMPLATE_NAME.PDF_DOCUMENT, renderData);
   const prettiedHtml = await applyPrettier(rawHtml, 'html', option.prettierConfig);

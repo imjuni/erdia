@@ -16,7 +16,7 @@ import { compareVersions } from 'compare-versions';
 export async function getRenderData(
   records: TDatabaseRecord[],
   metadata: IRecordMetadata,
-  option: IBuildCommandOption,
+  option: Omit<IBuildCommandOption, 'config'>,
 ): Promise<IRenderData> {
   const versionRows = (await alasql.promise('SELECT DISTINCT version FROM ?', [records])) as {
     version: string;

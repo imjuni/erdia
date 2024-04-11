@@ -11,8 +11,8 @@ export class Logger {
     this.#enable = value;
   }
 
-  constructor() {
-    this.#enable = false;
+  constructor(enable?: boolean) {
+    this.#enable = enable ?? false;
   }
 
   get level() {

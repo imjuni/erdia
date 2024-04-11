@@ -11,7 +11,7 @@ import pathe from 'pathe';
 import type { AsyncReturnType } from 'type-fest';
 
 export async function createMarkdown(
-  option: IBuildCommandOption,
+  option: Pick<IBuildCommandOption, 'output' | 'prettierConfig'>,
   renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<IErdiaDocument> {
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);

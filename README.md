@@ -14,37 +14,38 @@ erdia is create ER Diagram and Entity schema specification using by TypeORM and 
 
 Why `erdia` ?
 
-`erdia` automatic generate DB entity specification, ER diagram. DB entity specification, ER diagram important document that are maintainence and develop process. But not so easy keep freshness. `erdia` help to easily keep freshness and easily generate beautiful document using [ETA](https://eta.js.org/) template engine.
+`erdia` is a cli tool that allows you to automatically generate DB specifications and ER diagram documents using TypeORM. It is very hard to be diligent about updating DB specifications and ER diagrams whenever code and DB changes. `erdia` automatically generates DB statement and ER diagram documents using information provided by TypeORM whenever the code changes. By automatically generating documents using TypeORM code, you can maintain the freshness of your documents with minimal effort.
 
 Summary,
 
 1. ER diagram generate using [mermaid.js](http://mermaid.js.org/) syntax.
-1. Every document generate using [ETA](https://eta.js.org/) template engine
-1. Use [TypeORM](https://typeorm.io/)
+2. Every document generate using [ETA](https://eta.js.org/) template engine
+3. Use [TypeORM](https://typeorm.io/)
 
 Automate your database ER diagram drawing!
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Getting started](#getting-started)
 - [How it works?](#how-it-works)
-- [Installation](#installation)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [Confuguration](#confuguration)
+  - [Generation](#generation)
 - [Usage](#usage)
+  - [Commands](#commands)
+  - [CLI Options](#cli-options)
+- [Programming Interfaces](#programming-interfaces)
+  - [Interfaces](#interfaces)
+  - [Function Options](#function-options)
 - [Requirement](#requirement)
 - [Example](#example)
   - [Showcase](#showcase)
   - [Documents](#documents)
 - [Output Format](#output-format)
 - [Template](#template)
-- [TypeScript and Re-Map Paths](#typescript-and-re-map-paths)
-
-## Getting started
-
-```sh
-npm install erdia --save-dev
-npx erdia init
-npx erdia build
-```
+- [TypeScript](#typescript)
+- [License](#license)
+- [References](#references)
 
 `erdia` support initialization command. And you execute `build` command.
 
@@ -65,25 +66,63 @@ D-->G[pdf]
 D-->H[image]
 ```
 
-## Installation
+## Getting started
 
-installation
+### Installation
 
 ```bash
-npm i erdia --save-dev
+npm install erdia --save-dev
 ```
 
-initialization
+### Confuguration
 
 ```bash
 npx erdia init
 ```
 
-## Usage
+### Generation
 
-```sh
+```bash
 erdia build -d [your dataSource path] -o dist/entity --format html
 ```
+
+## Usage
+
+### Commands
+
+`erdia` supports the `build`, `clean`, `init`, and `eject` commands.
+
+| Command | Description                                                 |
+| ------- | ----------------------------------------------------------- |
+| build   | Builds the erdiagram document.                              |
+| init    | Generates a configuration file for creating erdiagrams.     |
+| eject   | Generates a template document file for creating erdiagrams. |
+| clean   | Deletes the previously built erdiagram document.            |
+
+### CLI Options
+
+- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#build-command-cli-options)
+- init options
+- [eject options](./docs/DETAIL_EJECT_COMMAND_OPTION.md#eject-command-cli-options)
+- [clean options](./docs/DETAIL_CLEAN_COMMAND_OPTION.md#clean-command-cli-options)
+
+## Programming Interfaces
+
+### Interfaces
+
+| Command      | Description                                                 |
+| ------------ | ----------------------------------------------------------- |
+| building     | Builds the erdiagram document.                              |
+| initializing | Generates a configuration file for creating erdiagrams.     |
+| ejecting     | Generates a template document file for creating erdiagrams. |
+| cleaning     | Deletes the previously built erdiagram document.            |
+
+### Function Options
+
+- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#building-function-options)
+- init options
+- [eject options](./docs/DETAIL_EJECT_COMMAND_OPTION.md#eject-function-options)
+- [clean options](./docs/DETAIL_CLEAN_COMMAND_OPTION.md#clean-function-options)
 
 ## Requirement
 
@@ -97,6 +136,7 @@ erdia build -d [your dataSource path] -o dist/entity --format html
 
 ### Documents
 
+- [ER diagram html format](./assets/html/index.html)
 - [ER diagram png image format](./assets/erdiagram.png)
 - [ER diagram & table pdf format](./assets/erdiagram.pdf)
 
@@ -104,7 +144,7 @@ erdia build -d [your dataSource path] -o dist/entity --format html
 
 `erdia` support html, markdown, pdf, svg, png. Database entity specification table only support html, markdown, pdf format.
 
-```sh
+```bash
 # PDF document generate
 erdia build -d [your dataSourcePath] -o dist/entity --format pdf
 ```
@@ -119,10 +159,19 @@ npx erdia eject
 
 Detached template can change and every document customizable. The template can be found [here](https://github.com/imjuni/erdia/tree/master/src/template).
 
-## TypeScript and Re-Map Paths
+## TypeScript
 
-```sh
-TS_NODE_PROJECT="./tsconfig.json" ts-node -r tsconfig-paths/register ./node_modules/.bin/erdia er -d [your dataSource path]
-```
+If you are using TypeScript, you must use `ts-node` or `tsx` to run `erdia`. This is because the TypeORM Entity file is written in TypeScript.
 
-`erdia` load dataSource file using TypeORM module. If you use module resolution need additional parameter need for successfully execution. You have to pass tsconfig-paths/register. See ts-node [paths and baseUrl](https://github.com/TypeStrong/ts-node#paths-and-baseurl) section
+- [ts-node](./docs/DETAIL_TYPESCRIPT.md#ts-node)
+- [tsx](./docs/DETAIL_TYPESCRIPT.md#tsx)
+- [scripts](./docs/DETAIL_TYPESCRIPT.md#using-programming-interfaces)
+
+## License
+
+This software is licensed under the [MIT](LICENSE).
+
+## References
+
+- [TypeORM](https://typeorm.io/)
+- [ER Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model)

@@ -16,8 +16,8 @@ import { getDirname, startSepRemove } from 'my-node-fp';
 import fs from 'node:fs';
 import pathe from 'pathe';
 
-export async function ejecting(option: Pick<ICommonOption, 'output' | 'showLogo'>) {
-  createLogger();
+export async function ejecting(option: Pick<ICommonOption, 'output' | 'showLogo'>, logging?: boolean) {
+  createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {

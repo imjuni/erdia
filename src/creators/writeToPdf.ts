@@ -12,7 +12,16 @@ import type { AsyncReturnType } from 'type-fest';
 
 export async function writeToPdf(
   document: IErdiaDocument,
-  option: IBuildCommandOption,
+  option: Pick<
+    IBuildCommandOption,
+    | 'output'
+    | 'components'
+    | 'prettierConfig'
+    | 'puppeteerConfig'
+    | 'viewportWidth'
+    | 'viewportHeight'
+    | 'backgroundColor'
+  >,
   renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<string[]> {
   let localBrowser: puppeteer.Browser | undefined;
