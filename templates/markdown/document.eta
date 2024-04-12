@@ -9,8 +9,8 @@
 <% if (it.option.components.includes('er')) { %>
 ## ER Diagram
 
-\`\`\`mermaid
-<%~ include('markdown-mermaid-diagram', { entities: it.entities, option: it.option, metadata: it.metadata }); -%>
-\`\`\``;
+```mermaid
+<%~ include('markdown-mermaid-diagram', { entities: version.entities, option: it.option, metadata: it.metadata }); -%>
+```
 <% } %>
 <% }) %>
