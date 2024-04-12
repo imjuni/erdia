@@ -1,7 +1,7 @@
 import { getFileVersion } from '#/common/getFileVersion';
 import { getVersion } from '#/common/getVersion';
 import * as getFindFile from '#/modules/files/getFindFile';
-import * as getOutputDirectory from '#/modules/files/getOutputDirectory';
+import * as getOutputDirPath from '#/modules/files/getOutputDirPath';
 import dayjs from 'dayjs';
 import fs from 'fs';
 import { describe, expect, test, vitest } from 'vitest';
@@ -78,7 +78,7 @@ describe('getVersion', () => {
       .spyOn(fs.promises, 'readFile')
       .mockImplementation(() => Promise.resolve(Buffer.from('1.1.1')));
     const tspSpyOn04 = vitest
-      .spyOn(getOutputDirectory, 'getOutputDirectory')
+      .spyOn(getOutputDirPath, 'getOutputDirPath')
       .mockImplementation(() => Promise.resolve('/a/b/c'));
 
     const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'file', versionPath: '/a/b/c' });

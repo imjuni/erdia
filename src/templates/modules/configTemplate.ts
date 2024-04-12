@@ -1,3 +1,4 @@
+export const configTemplate = `
 {
   // directory for output files
   "output": "<%= it.config.output %>",
@@ -21,7 +22,7 @@
   <% } %>
 
   // erdia entity database file path
-  <% if (it.config.templatePath != null) { %>
+  <% if (it.config.databasePath != null) { %>
     "database-path": "<%= it.config.databasePath %>",
   <% } else { %>
     // "database-path": "",
@@ -46,7 +47,7 @@
 
   // output format of generated documents
   // - html
-  // - markdown
+  // - md
   // - pdf
   // - image
   "format": "<%= it.config.format %>",
@@ -104,3 +105,4 @@
   // "image-format": "svg",
   <% } %>
 }
+`;

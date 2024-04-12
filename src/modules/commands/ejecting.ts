@@ -1,32 +1,36 @@
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
 import { getCwd } from '#/configs/modules/getCwd';
 import { container } from '#/modules/containers/container';
 import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
 import { betterMkdir } from '#/modules/files/betterMkdir';
 import { getGlobFiles } from '#/modules/files/getGlobFiles';
-import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import { getTemplateDirPath } from '#/modules/files/getTemplateDirPath';
 import type { Logger } from '#/modules/loggers/Logger';
 import { createLogger } from '#/modules/loggers/createLogger';
 import { defaultExclude } from '#/modules/scopes/defaultExclude';
-import { getTemplatePath } from '#/templates/modules/getTemplatePath';
+import { getTemplateModulePath } from '#/templates/modules/getTemplateModulePath';
 import { Glob } from 'glob';
 import { isError } from 'my-easy-fp';
 import { getDirname, startSepRemove } from 'my-node-fp';
 import fs from 'node:fs';
 import pathe from 'pathe';
 
-export async function ejecting(option: Pick<ICommonOption, 'output' | 'showLogo'>, logging?: boolean) {
+export async function ejecting(
+  option: Pick<ICommonOption & IDocumentOption, 'showLogo' | 'templatePath'>,
+  logging?: boolean,
+) {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {
-    const outputDirPath = await getOutputDirectory(option, getCwd(process.env));
-    const originTemplateDirPath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
+    const templateDirPath = await getTemplateDirPath(option, getCwd(process.env));
+    const originTemplateDirPath = await getTemplateModulePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
     const targetTemplateDirPath =
-      option.output == null ? pathe.join(outputDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH) : outputDirPath;
+      option.templatePath == null ? pathe.join(templateDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH) : templateDirPath;
 
-    logger.info('Output directory: ', targetTemplateDirPath);
+    logger.info('Template directory: ', targetTemplateDirPath);
 
     const originTemplateGlobPaths = new Glob(pathe.join(originTemplateDirPath, `**`, '*.eta'), {
       absolute: true,

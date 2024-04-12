@@ -4,7 +4,7 @@ import { isFalse } from 'my-easy-fp';
 import { exists, getDirname, isDirectory } from 'my-node-fp';
 import pathe from 'pathe';
 
-export async function getOutputDirectory(option: Pick<IBuildCommandOption, 'output'>, cwd: string) {
+export async function getOutputDirPath(option: Pick<IBuildCommandOption, 'output'>, cwd: string) {
   const outputDirPath = option.output ?? cwd;
   const resolvedOutputDirPath = pathe.resolve(outputDirPath);
 

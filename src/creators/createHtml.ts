@@ -7,7 +7,7 @@ import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
 import { container } from '#/modules/containers/container';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
-import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
 import type { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
 import consola from 'consola';
@@ -65,7 +65,7 @@ export async function createHtml(
   option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,
   renderData: AsyncReturnType<typeof getRenderData>,
 ) {
-  const outputDir = await getOutputDirectory(option, getCwd(process.env));
+  const outputDir = await getOutputDirPath(option, getCwd(process.env));
 
   consola.info(`export component: ${option.components.join(', ')}`);
 
