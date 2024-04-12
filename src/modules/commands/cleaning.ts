@@ -4,7 +4,7 @@ import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { getCwd } from '#/configs/modules/getCwd';
 import { container } from '#/modules/containers/container';
 import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
-import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
 import { getDataSource } from '#/typeorm/getDataSource';
 import { showLogo } from '@maeum/cli-logo';
 import { asValue } from 'awilix';
@@ -37,7 +37,7 @@ export async function cleaning(option: ICommonOption) {
     container.register(SymbolDataSource, asValue(dataSource));
 
     const metadata = await getMetadata({ ...option, versionFrom: 'package.json', projectName: 'app' });
-    const outputDirPath = await getOutputDirectory(option, getCwd(process.env));
+    const outputDirPath = await getOutputDirPath(option, getCwd(process.env));
 
     const filenames = [
       pathe.join(outputDirPath, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME),

@@ -36,7 +36,7 @@ export async function getConfigContent() {
    */
 
   const sourceGlobFiles = new Glob(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
-    absolute: true,
+    // absolute: true,
     ignore: defaultExclude,
     cwd: process.cwd(),
     onlyFiles: true,
@@ -44,7 +44,7 @@ export async function getConfigContent() {
   const sourceFiles = getGlobFiles(sourceGlobFiles);
 
   const everyGlobFiles = new Glob(['**/*'], {
-    absolute: true,
+    // absolute: true,
     ignore: defaultExclude,
     cwd: process.cwd(),
     dot: true,
@@ -53,7 +53,7 @@ export async function getConfigContent() {
   const everyFiles = getGlobFiles(everyGlobFiles);
 
   const directoryGlobDirPaths = new Glob(['**/*'], {
-    absolute: true,
+    // absolute: true,
     ignore: defaultExclude,
     cwd: process.cwd(),
     dot: true,
@@ -214,7 +214,7 @@ export async function getConfigContent() {
   ]);
 
   const templateDir = await (answer.isEjectTemplate
-    ? ejecting({ output: getCwd(process.env), showLogo: false })
+    ? ejecting({ templatePath: pathe.join(getCwd(process.env), CE_DEFAULT_VALUE.TEMPLATES_PATH), showLogo: false })
     : Promise.resolve(undefined));
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
   const file = await renderer.evaluate(CE_TEMPLATE_NAME.CONFIG_JSON, {

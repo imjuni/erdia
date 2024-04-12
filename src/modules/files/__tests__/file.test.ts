@@ -1,4 +1,4 @@
-import { getOutputDirectory } from '#/modules/files/getOutputDirectory';
+import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
 import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
 import { getSlashEndRoutePath } from '#/modules/getSlashEndRoutePath';
 import * as mnf from 'my-node-fp';
@@ -31,7 +31,7 @@ describe('getOutputDirectory', () => {
     const existsSpyOn = vitest.spyOn(mnf, 'exists').mockImplementation(() => Promise.resolve(false));
     const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
-    const p = await getOutputDirectory({ output: undefined }, 'i-am-cwd');
+    const p = await getOutputDirPath({ output: undefined }, 'i-am-cwd');
 
     existsSpyOn.mockRestore();
     mkdirSpyOn.mockRestore();
@@ -44,7 +44,7 @@ describe('getOutputDirectory', () => {
     const isDirectorySpyOn = vitest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(false));
     const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
-    const p = await getOutputDirectory({ output: undefined }, 'examples');
+    const p = await getOutputDirPath({ output: undefined }, 'examples');
 
     existsSpyOn.mockRestore();
     isDirectorySpyOn.mockRestore();
@@ -58,7 +58,7 @@ describe('getOutputDirectory', () => {
     const isDirectorySpyOn = vitest.spyOn(mnf, 'isDirectory').mockImplementation(() => Promise.resolve(true));
     const mkdirSpyOn = vitest.spyOn(fs.promises, 'mkdir').mockImplementation(() => Promise.resolve(''));
 
-    const p = await getOutputDirectory({ output: undefined }, 'examples');
+    const p = await getOutputDirPath({ output: undefined }, 'examples');
 
     existsSpyOn.mockRestore();
     isDirectorySpyOn.mockRestore();
