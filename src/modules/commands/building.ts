@@ -31,7 +31,7 @@ import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
 import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
 import { getDataSource } from '#/typeorm/getDataSource';
 import { getIndexRecords } from '#/typeorm/indices/getIndexRecords';
-import { dedupeManaToManyRelationRecord } from '#/typeorm/relations/dedupeManaToManyRelationRecord';
+import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
 import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
 import { asValue } from 'awilix';
 import chalk from 'chalk';
@@ -89,7 +89,7 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
       .map((relationRecord) => relationRecord.pass)
       .flat();
 
-    const dedupedRelations = dedupeManaToManyRelationRecord(passRelations);
+    const dedupedRelations = dedupeManyToManyRelationRecord(passRelations);
     const records = [...entities, ...columns, ...dedupedRelations, ...indicesRecords];
 
     logger.success('complete extraction');
