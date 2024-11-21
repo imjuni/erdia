@@ -1,7 +1,7 @@
 import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import { atOrThrow } from 'my-easy-fp';
 
-export function dedupeManaToManyRelationRecord(relations: IRelationRecord[]) {
+export function dedupeManyToManyRelationRecord(relations: IRelationRecord[]) {
   const otherRelations = relations.filter((relation) => relation.relationType !== 'many-to-many');
   const manyToManyRelations = relations.filter((relation) => relation.relationType === 'many-to-many');
 
@@ -21,16 +21,18 @@ export function dedupeManaToManyRelationRecord(relations: IRelationRecord[]) {
       0,
       new Error(`Cannot found relation: ${sortedRelations.at(0)?.entity} - ${sortedRelations.at(1)?.entity}`),
     );
-    const secondRelation = atOrThrow(
-      sortedRelations,
-      1,
-      new Error(`Cannot found relation: ${sortedRelations.at(0)?.entity} - ${sortedRelations.at(1)?.entity}`),
-    );
 
-    const firstNext = { ...firstRelation, inverseJoinColumnName: secondRelation.joinColumnName };
-    const secondNext = { ...secondRelation, inverseJoinColumnName: firstRelation.joinColumnName, isDuplicate: true };
+    const secondRelation = sortedRelations.length > 1 ? sortedRelations[1] : null;
 
-    return [firstNext, secondNext];
+    if (secondRelation) {
+      const firstNext = { ...firstRelation, inverseJoinColumnName: secondRelation.joinColumnName };
+      const secondNext = { ...secondRelation, inverseJoinColumnName: firstRelation.joinColumnName, isDuplicate: true };
+
+      return [firstNext, secondNext];
+    }
+
+    const firstNext = { ...firstRelation };
+    return [firstNext];
   });
 
   return [...otherRelations, ...nextRelations.flat()];

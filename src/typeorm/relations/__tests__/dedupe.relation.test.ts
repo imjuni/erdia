@@ -1,6 +1,6 @@
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
 import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
-import { dedupeManaToManyRelationRecord } from '#/typeorm/relations/dedupeManaToManyRelationRecord';
+import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
 import fastSafeStringify from 'fast-safe-stringify';
 import { parse } from 'jsonc-parser';
 import fs from 'node:fs';
@@ -192,7 +192,7 @@ const relations: IRelationRecord[] = [
 describe('dedupeManaToManyRelationRecord', () => {
   test('dedupe relations', async () => {
     const expectFileName = 'expect-07.json';
-    const deduped = dedupeManaToManyRelationRecord(relations);
+    const deduped = dedupeManyToManyRelationRecord(relations);
 
     if (share.expect) {
       fs.writeFileSync(pathe.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(deduped, undefined, 2));
