@@ -1,3 +1,9 @@
+import consola from 'consola';
+import { isError } from 'my-easy-fp';
+import sourceMapSupport from 'source-map-support';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
 import { buildOptionBuilder } from '#/cli/builders/buildOptionBuilder';
 import { commonOptionBuilder } from '#/cli/builders/commonOptionBuilder';
 import { documentOptionBuilder } from '#/cli/builders/documentOptionBuilder';
@@ -7,16 +13,14 @@ import { cleanDocumentCommandHandler } from '#/cli/commands/cleanDocumentCommand
 import { initConfigCommandHandler } from '#/cli/commands/initConfigCommandHandler';
 import { templateEjectCommandHandler } from '#/cli/commands/templateEjectCommandHandler';
 import { CE_COMMAND_LIST } from '#/configs/const-enum/CE_COMMAND_LIST';
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 import { preLoadConfig } from '#/configs/modules/preLoadConfig';
 import '#/modules/containers/container';
 import { createLogger } from '#/modules/loggers/createLogger';
-import consola from 'consola';
-import { isError } from 'my-easy-fp';
-import sourceMapSupport from 'source-map-support';
-import yargs, { type CommandModule } from 'yargs';
-import { hideBin } from 'yargs/helpers';
+
+import type { CommandModule } from 'yargs';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 
 sourceMapSupport.install();
 createLogger();

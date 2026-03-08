@@ -1,16 +1,19 @@
+import fs from 'node:fs';
+
+import { asValue } from 'awilix';
+import { isError } from 'my-easy-fp';
+
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import { getConfigContent } from '#/configs/modules/getConfigContent';
 import { applyPrettier } from '#/creators/applyPretter';
 import { container } from '#/modules/containers/container';
 import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
-import type { Logger } from '#/modules/loggers/Logger';
 import { createLogger } from '#/modules/loggers/createLogger';
-import { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { loadTemplates } from '#/templates/modules/loadTemplates';
-import { asValue } from 'awilix';
-import fs from 'fs';
-import { isError } from 'my-easy-fp';
+import { TemplateRenderer } from '#/templates/TemplateRenderer';
+
+import type { Logger } from '#/modules/loggers/Logger';
 
 export async function initializing(logging?: boolean) {
   createLogger(logging);

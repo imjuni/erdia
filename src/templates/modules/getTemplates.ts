@@ -1,9 +1,13 @@
+import { Glob } from 'glob';
+import pathe from 'pathe';
+
 import { getGlobFiles } from '#/modules/files/getGlobFiles';
 import { defaultExclude } from '#/modules/scopes/defaultExclude';
-import type { ITemplate } from '#/templates/interfaces/ITemplate';
 import { getTemplate } from '#/templates/modules/getTemplate';
-import { Glob, type GlobOptions } from 'glob';
-import pathe from 'pathe';
+
+import type { GlobOptions } from 'glob';
+
+import type { ITemplate } from '#/templates/interfaces/ITemplate';
 
 export async function getTemplates(templatePath: string, globOptions?: GlobOptions) {
   const resolvedTemplatePath = pathe.resolve(templatePath);
@@ -21,7 +25,9 @@ export async function getTemplates(templatePath: string, globOptions?: GlobOptio
     .map(([filePath, _flag]) => filePath);
 
   const loadedTemplateFiles = (
-    await Promise.all(templateFilePaths.map((templateFilePath) => getTemplate(resolvedTemplatePath, templateFilePath)))
+    await Promise.all(
+      templateFilePaths.map(async (templateFilePath) => getTemplate(resolvedTemplatePath, templateFilePath)),
+    )
   ).filter((template): template is ITemplate => template != null);
 
   return loadedTemplateFiles;

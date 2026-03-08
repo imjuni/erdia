@@ -1,6 +1,7 @@
+import fs from 'node:fs';
+
 import { isFalse } from 'my-easy-fp';
 import { exists, getDirname } from 'my-node-fp';
-import fs from 'node:fs';
 import pathe from 'pathe';
 
 export async function betterMkdir(filePath: string) {

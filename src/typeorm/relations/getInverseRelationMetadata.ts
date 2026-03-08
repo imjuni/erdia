@@ -1,5 +1,7 @@
-import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { atOrUndefined } from 'my-easy-fp';
+
+import { getEntityName } from '#/typeorm/entities/getEntityName';
+
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 
 export function getInverseRelationMetadata(

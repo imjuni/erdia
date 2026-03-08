@@ -8,7 +8,7 @@ export function getIsNullable(metadata: {
     return '';
   }
 
-  if (metadata.isNullable === false) {
+  if (!metadata.isNullable) {
     return '';
   }
 

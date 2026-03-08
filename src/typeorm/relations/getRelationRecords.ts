@@ -1,8 +1,11 @@
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import consola from 'consola';
+
 import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { getRelationRecord } from '#/typeorm/relations/getRelationRecord';
-import consola from 'consola';
+
 import type { DataSource } from 'typeorm';
+
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 
 export function getRelationRecords(
   dataSource: DataSource,

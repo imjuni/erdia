@@ -1,8 +1,9 @@
-import { getGlobFiles } from '#/modules/files/getGlobFiles';
-import { defaultExclude } from '#/modules/scopes/defaultExclude';
 import { Glob } from 'glob';
 import pathe from 'pathe';
 import { describe, expect, it } from 'vitest';
+
+import { getGlobFiles } from '#/modules/files/getGlobFiles';
+import { defaultExclude } from '#/modules/scopes/defaultExclude';
 
 describe('getGlobFiles', () => {
   it('string type search result', () => {

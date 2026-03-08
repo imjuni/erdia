@@ -1,14 +1,19 @@
+import fs from 'node:fs';
+
+import consola from 'consola';
+import del from 'del';
+import { isError } from 'my-easy-fp';
+import pathe from 'pathe';
+import puppeteer from 'puppeteer';
+
+import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
+
+import type { Browser, Page } from 'puppeteer';
+import type { AsyncReturnType } from 'type-fest';
+
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import type { getRenderData } from '#/creators/getRenderData';
 import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
-import consola from 'consola';
-import del from 'del';
-import fs from 'fs';
-import { isError } from 'my-easy-fp';
-import pathe from 'pathe';
-import * as puppeteer from 'puppeteer';
-import type { AsyncReturnType } from 'type-fest';
 
 export async function writeToPdf(
   document: IErdiaDocument,
@@ -24,8 +29,8 @@ export async function writeToPdf(
   >,
   renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<string[]> {
-  let localBrowser: puppeteer.Browser | undefined;
-  let localPage: puppeteer.Page | undefined;
+  let localBrowser: Browser | undefined;
+  let localPage: Page | undefined;
 
   try {
     const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);

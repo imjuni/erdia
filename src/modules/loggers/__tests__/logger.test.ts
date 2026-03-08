@@ -1,6 +1,7 @@
-import { Logger } from '#/modules/loggers/Logger';
 import { LogLevels } from 'consola';
 import { describe, expect, it } from 'vitest';
+
+import { Logger } from '#/modules/loggers/Logger';
 
 describe('Logger', () => {
   it('logging message display', () => {

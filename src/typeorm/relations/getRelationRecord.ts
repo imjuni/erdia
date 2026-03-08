@@ -1,17 +1,21 @@
+import consola from 'consola';
+import { isError } from 'my-easy-fp';
+import { fail, pass } from 'my-only-either';
+
 import { getRelationHash } from '#/common/getRelationHash';
-import type { IReason } from '#/creators/interfaces/IReason';
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { getEntityPropertyName } from '#/typeorm/entities/getEntityPropertyName';
 import { getJoinColumn } from '#/typeorm/relations/getJoinColumn';
 import { getManyToManyEntityMetadata } from '#/typeorm/relations/getManyToManyEntityMetadata';
-import consola from 'consola';
-import { isError } from 'my-easy-fp';
-import { fail, pass, type PassFailEither } from 'my-only-either';
+
+import type { PassFailEither } from 'my-only-either';
 import type { EntityMetadata } from 'typeorm';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+
+import type { IReason } from '#/creators/interfaces/IReason';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
 export function getRelationRecord(
   entityMetadatas: EntityMetadata[],

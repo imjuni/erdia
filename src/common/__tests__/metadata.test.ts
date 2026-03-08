@@ -1,3 +1,10 @@
+import { asValue } from 'awilix';
+import dayjs from 'dayjs';
+import * as findUp from 'find-up';
+import { isError } from 'my-easy-fp';
+import * as readPkg from 'read-pkg';
+import { describe, expect, test, vitest } from 'vitest';
+
 import * as env from '#/common/__tests__/test-config';
 import { getDatabaseName } from '#/common/getDatabaseName';
 import { getMetadata } from '#/common/getMetadata';
@@ -6,12 +13,6 @@ import { getProjectName } from '#/common/getProjectName';
 import { container } from '#/modules/containers/container';
 import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
 import { getFindFile } from '#/modules/files/getFindFile';
-import { asValue } from 'awilix';
-import dayjs from 'dayjs';
-import * as findUp from 'find-up';
-import { isError } from 'my-easy-fp';
-import * as readPkg from 'read-pkg';
-import { describe, expect, test, vitest } from 'vitest';
 
 vitest.mock('dayjs', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -48,7 +49,7 @@ describe('getMetadata', () => {
       .mockImplementationOnce(() => datetime);
     const tspSpyOn03 = vitest
       .spyOn(readPkg, 'default')
-      .mockImplementationOnce(() => Promise.resolve({ name: 'erdia', version: '1.1.1' }));
+      .mockImplementationOnce(async () => Promise.resolve({ name: 'erdia', version: '1.1.1' }));
 
     container.register(SymbolDataSource, asValue({ options: { database: 'i-am-database' } }));
     const metadata = await getMetadata({ ...env.buildOption, versionFrom: 'timestamp' });
@@ -76,7 +77,7 @@ describe('getMetadata', () => {
       .mockImplementationOnce(() => datetime);
     const tspSpyOn03 = vitest
       .spyOn(readPkg, 'default')
-      .mockImplementationOnce(() => Promise.resolve({ name: '@maeum_pet-store', version: '1.1.1' }));
+      .mockImplementationOnce(async () => Promise.resolve({ name: '@maeum_pet-store', version: '1.1.1' }));
 
     container.register(SymbolDataSource, asValue({ options: { database: 'i-am-database' } }));
     const metadata = await getMetadata({ ...env.buildOption, versionFrom: 'timestamp' });
@@ -159,7 +160,7 @@ describe('getDatabaseName', () => {
 describe('getFindFile', () => {
   test('pass', async () => {
     const expectation = '/a/b';
-    const tspSpyOn01 = vitest.spyOn(findUp, 'default').mockImplementation(() => Promise.resolve(expectation));
+    const tspSpyOn01 = vitest.spyOn(findUp, 'default').mockImplementation(async () => Promise.resolve(expectation));
 
     try {
       const finded = await getFindFile('', {});

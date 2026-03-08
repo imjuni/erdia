@@ -1,19 +1,24 @@
+import fs from 'node:fs';
+
+import { asValue } from 'awilix';
+import chalk from 'chalk';
+import fastSafeStringify from 'fast-safe-stringify';
+import { isError, isFalse } from 'my-easy-fp';
+import { isFail, isPass } from 'my-only-either';
+
 import { getDatabaseName } from '#/common/getDatabaseName';
 import { getMetadata } from '#/common/getMetadata';
 import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import { createHtml } from '#/creators/createHtml';
 import { createImageHtml } from '#/creators/createImageHtml';
 import { createMarkdown } from '#/creators/createMarkdown';
 import { createPdfHtml } from '#/creators/createPdfHtml';
 import { getRenderData } from '#/creators/getRenderData';
-import type { IReason } from '#/creators/interfaces/IReason';
 import { writeToImage } from '#/creators/writeToImage';
 import { writeToPdf } from '#/creators/writeToPdf';
 import { compareDatabase } from '#/databases/compareDatabase';
 import { flushDatabase } from '#/databases/flushDatabase';
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import { openDatabase } from '#/databases/openDatabase';
 import { processDatabase } from '#/databases/processDatabase';
 import { container } from '#/modules/containers/container';
@@ -23,34 +28,34 @@ import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
 import { SymbolTemplate } from '#/modules/containers/keys/SymbolTemplate';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
 import { betterMkdir } from '#/modules/files/betterMkdir';
-import type { Logger } from '#/modules/loggers/Logger';
 import { createLogger } from '#/modules/loggers/createLogger';
-import { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { loadTemplates } from '#/templates/modules/loadTemplates';
+import { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
 import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
 import { getDataSource } from '#/typeorm/getDataSource';
 import { getIndexRecords } from '#/typeorm/indices/getIndexRecords';
 import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
 import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
-import { asValue } from 'awilix';
-import chalk from 'chalk';
-import fastSafeStringify from 'fast-safe-stringify';
-import { isError, isFalse } from 'my-easy-fp';
-import { isFail, isPass, type IFail, type IPass } from 'my-only-either';
-import fs from 'node:fs';
+
+import type { IFail, IPass } from 'my-only-either';
 import type { SetOptional } from 'type-fest';
 import type { DataSource } from 'typeorm';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { IReason } from '#/creators/interfaces/IReason';
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import type { Logger } from '#/modules/loggers/Logger';
 
 export async function building(option: SetOptional<IBuildCommandOption, 'config'>, logging?: boolean) {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {
-    logger.info(`connection initialize: "${chalk.yellowBright(`${option.dataSourcePath}`)}"`);
+    logger.info(`connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`);
 
     const dataSource = await getDataSource(option);
-    const [templates] = await Promise.all([await loadTemplates(option), await dataSource.initialize()]);
+    const [templates] = await Promise.all([loadTemplates(option), dataSource.initialize()]);
     const renderer = new TemplateRenderer(templates.template, templates.default);
 
     if (isFalse(dataSource.isInitialized)) {

@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access, no-await-in-loop, @typescript-eslint/no-unsafe-assignment, guard-for-in */
 import { isError } from 'my-easy-fp';
-import { InstanceChecker, type DataSource } from 'typeorm';
+import { InstanceChecker } from 'typeorm';
 import { importOrRequireFile } from 'typeorm/util/ImportUtils';
+
+import type { DataSource } from 'typeorm';
 
 /**
  * load dataSource, from [CommandUtils.ts](https://github.com/typeorm/typeorm/blob/master/src/commands/CommandUtils.ts#L13)

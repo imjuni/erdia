@@ -1,8 +1,11 @@
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import consola from 'consola';
+
 import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { getInverseRelationMetadata } from '#/typeorm/relations/getInverseRelationMetadata';
-import consola from 'consola';
+
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
 export function getManyToManyJoinColumn(
   relationMetadata: Pick<

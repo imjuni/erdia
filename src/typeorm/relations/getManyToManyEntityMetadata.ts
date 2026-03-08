@@ -1,4 +1,5 @@
 import { getEntityName } from '#/typeorm/entities/getEntityName';
+
 import type { EntityMetadata } from 'typeorm';
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
 

@@ -1,5 +1,6 @@
-import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
 import type { EntityMetadata } from 'typeorm';
+
+import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
 
 /**
  * 엔티티 메타 데이터를 받아서 다이어그램에서 사용할 이름을 반환한다.

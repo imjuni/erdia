@@ -1,5 +1,7 @@
-import { getIsNullable } from '#/typeorm/columns/getIsNullable';
 import { isTrue } from 'my-easy-fp';
+
+import { getIsNullable } from '#/typeorm/columns/getIsNullable';
+
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 export function getColumnType(

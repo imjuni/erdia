@@ -1,6 +1,7 @@
+import type { IndexMetadata } from 'typeorm/metadata/IndexMetadata';
+
 import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
 import type { IBaseRecord } from '#/databases/interfaces/IBaseRecord';
-import type { IndexMetadata } from 'typeorm/metadata/IndexMetadata';
 
 export interface IIndexRecord extends IBaseRecord {
   /** kind of record */
