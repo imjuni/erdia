@@ -27,6 +27,6 @@ export async function createMarkdown(
   return {
     filename: pathe.resolve(pathe.join(outputDir, markdownFileName)),
     dirname: pathe.resolve(outputDir),
-    content: prettiedMarkdown,
+    content: Buffer.from(prettiedMarkdown, 'utf8'),
   } satisfies IErdiaDocument;
 }

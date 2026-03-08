@@ -3,7 +3,7 @@
   "version": "3.7.1",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "clean": "rimraf dist",
@@ -84,11 +84,11 @@
   "homepage": "https://imjuni.github.io/erdia/",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@tsconfig/node18": "^18.2.2",
+    "@tsconfig/node20": "^20.1.9",
     "@types/inquirer": "^9.0.3",
     "@types/inquirer-autocomplete-prompt": "^3.0.0",
     "@types/minimist": "^1.2.2",
-    "@types/node": "^18.11.9",
+    "@types/node": "^20.19.0",
     "@types/semver": "^7.5.0",
     "@types/source-map-support": "^0.5.4",
     "@types/yargs": "^17.0.24",

@@ -34,7 +34,7 @@ async function getTables(
     {
       dirname: pathe.resolve(outputDir),
       filename: pathe.resolve(tablesFileName),
-      content: prettiedTables,
+      content: Buffer.from(prettiedTables, 'utf8'),
     },
   ];
 }
@@ -59,7 +59,7 @@ async function getDiagram(
     {
       dirname: pathe.resolve(outputDir),
       filename: pathe.resolve(diagramFileName),
-      content: prettiedDiagram,
+      content: Buffer.from(prettiedDiagram, 'utf8'),
     },
   ];
 }
