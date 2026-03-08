@@ -30,7 +30,7 @@ export async function createPdfHtml(
 
   return {
     dirname: await getDirname(outputDirPath),
-    content: prettiedHtml,
+    content: Buffer.from(prettiedHtml, 'utf8'),
     filename: pathe.resolve(tempFileName),
   } satisfies IErdiaDocument;
 }
