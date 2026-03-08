@@ -1,12 +1,16 @@
-import * as env from '#/common/__tests__/test-config';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
-import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
+import fs from 'node:fs';
+
 import fastSafeStringify from 'fast-safe-stringify';
 import { parse } from 'jsonc-parser';
-import fs from 'node:fs';
 import pathe from 'pathe';
-import type { DataSource } from 'typeorm';
 import { beforeAll, describe, expect, test } from 'vitest';
+
+import * as env from '#/common/__tests__/test-config';
+import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
+
+import type { DataSource } from 'typeorm';
+
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 

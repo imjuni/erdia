@@ -1,9 +1,12 @@
+import fs from 'node:fs';
+
+import pathe from 'pathe';
+
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
+import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
+
 import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
-import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
-import fs from 'node:fs';
-import pathe from 'pathe';
 
 export async function flushDatabase(
   option: Pick<IBuildCommandOption, 'databasePath'>,

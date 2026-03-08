@@ -1,16 +1,20 @@
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import { randomUUID } from 'node:crypto';
+
+import { getDirname } from 'my-node-fp';
+import pathe from 'pathe';
+
 import { applyPrettier } from '#/creators/applyPretter';
-import type { getRenderData } from '#/creators/getRenderData';
-import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
 import { container } from '#/modules/containers/container';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
 import { betterMkdir } from '#/modules/files/betterMkdir';
-import type { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
-import { getDirname } from 'my-node-fp';
-import { randomUUID } from 'node:crypto';
-import pathe from 'pathe';
+
 import type { AsyncReturnType } from 'type-fest';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { getRenderData } from '#/creators/getRenderData';
+import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
+import type { TemplateRenderer } from '#/templates/TemplateRenderer';
 
 export async function createPdfHtml(
   option: Pick<IBuildCommandOption, 'output' | 'components' | 'prettierConfig'>,

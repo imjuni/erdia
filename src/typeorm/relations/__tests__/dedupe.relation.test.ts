@@ -1,12 +1,16 @@
-import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
-import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
+import fs from 'node:fs';
+
 import fastSafeStringify from 'fast-safe-stringify';
 import { parse } from 'jsonc-parser';
-import fs from 'node:fs';
 import pathe from 'pathe';
-import type { DataSource } from 'typeorm';
 import { describe, expect, test } from 'vitest';
+
+import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
+import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
+
+import type { DataSource } from 'typeorm';
+
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
@@ -195,11 +199,11 @@ describe('dedupeManaToManyRelationRecord', () => {
     const deduped = dedupeManyToManyRelationRecord(relations);
 
     if (share.expect) {
-      fs.writeFileSync(pathe.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(deduped, undefined, 2));
+      fs.writeFileSync(pathe.join(__dirname, 'expects', expectFileName), fastSafeStringify(deduped, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', expectFileName))).toString(),
     ) as object;
 
     expect(deduped).toMatchObject(expectation);

@@ -1,6 +1,8 @@
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 import { getEntityName } from '#/typeorm/entities/getEntityName';
+
 import type { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+
+import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
 export function getManyToOneJoinColumn(
   relationMetadata: Pick<RelationMetadata, 'joinColumns' | 'entityMetadata' | 'propertyName'>,

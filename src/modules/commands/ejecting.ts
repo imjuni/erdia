@@ -1,21 +1,24 @@
+import fs from 'node:fs';
+
+import { Glob } from 'glob';
+import { isError } from 'my-easy-fp';
+import { getDirname, startSepRemove } from 'my-node-fp';
+import pathe from 'pathe';
+
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
-import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
 import { getCwd } from '#/configs/modules/getCwd';
 import { container } from '#/modules/containers/container';
 import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
 import { betterMkdir } from '#/modules/files/betterMkdir';
 import { getGlobFiles } from '#/modules/files/getGlobFiles';
 import { getTemplateDirPath } from '#/modules/files/getTemplateDirPath';
-import type { Logger } from '#/modules/loggers/Logger';
 import { createLogger } from '#/modules/loggers/createLogger';
 import { defaultExclude } from '#/modules/scopes/defaultExclude';
 import { getTemplateModulePath } from '#/templates/modules/getTemplateModulePath';
-import { Glob } from 'glob';
-import { isError } from 'my-easy-fp';
-import { getDirname, startSepRemove } from 'my-node-fp';
-import fs from 'node:fs';
-import pathe from 'pathe';
+
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
+import type { Logger } from '#/modules/loggers/Logger';
 
 export async function ejecting(
   option: Pick<ICommonOption & IDocumentOption, 'showLogo' | 'templatePath'>,

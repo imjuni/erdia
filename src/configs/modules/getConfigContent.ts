@@ -1,10 +1,15 @@
+import Fuse from 'fuse.js';
+import { Glob } from 'glob';
+import inquirer from 'inquirer';
+import inquirerPrompt from 'inquirer-autocomplete-prompt';
+import pathe from 'pathe';
+
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
 import { CE_ENTITY_VERSION_FROM } from '#/configs/const-enum/CE_ENTITY_VERSION_FROM';
 import { CE_IMAGE_FORMAT } from '#/configs/const-enum/CE_IMAGE_FORMAT';
 import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
 import { getAutoCompleteSource } from '#/configs/modules/getAutoCompleteSource';
 import { getCwd } from '#/configs/modules/getCwd';
 import { ejecting } from '#/modules/commands/ejecting';
@@ -12,13 +17,10 @@ import { container } from '#/modules/containers/container';
 import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
 import { getGlobFiles } from '#/modules/files/getGlobFiles';
 import { defaultExclude } from '#/modules/scopes/defaultExclude';
-import type { TemplateRenderer } from '#/templates/TemplateRenderer';
 import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
-import Fuse from 'fuse.js';
-import { Glob } from 'glob';
-import inquirer from 'inquirer';
-import inquirerPrompt from 'inquirer-autocomplete-prompt';
-import pathe from 'pathe';
+
+import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
+import type { TemplateRenderer } from '#/templates/TemplateRenderer';
 
 export async function getConfigContent() {
   /**
@@ -125,9 +127,7 @@ export async function getConfigContent() {
       name: 'databasePath',
       message: 'Select the entity database file path: ',
       source: getAutoCompleteSource(directoriesFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.isSelectDatabasePath;
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.isSelectDatabasePath,
     },
     {
       type: 'list',
@@ -138,17 +138,14 @@ export async function getConfigContent() {
         { name: 'enter rotue base path', value: true },
         { name: 'skip', value: false },
       ],
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.format === CE_OUTPUT_FORMAT.HTML;
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === CE_OUTPUT_FORMAT.HTML,
     },
     {
       type: 'input',
       name: 'routeBasePath',
       message: 'Enter your route base path: ',
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.format === CE_OUTPUT_FORMAT.HTML && answerForWhen.isEnterRouteBasePath;
-      },
+      when: (answerForWhen: IInitDocAnswer) =>
+        answerForWhen.format === CE_OUTPUT_FORMAT.HTML && answerForWhen.isEnterRouteBasePath,
     },
     {
       type: 'list',
@@ -159,18 +156,14 @@ export async function getConfigContent() {
         { name: 'extract from file(need version file selection)', value: CE_ENTITY_VERSION_FROM.FILE },
         { name: 'use timestamp(all stored different version)', value: CE_ENTITY_VERSION_FROM.TIMESTAMP },
       ],
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE;
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE,
     },
     {
       type: 'autocomplete',
       name: 'versionPath',
       message: 'Select the version file path: ',
       source: getAutoCompleteSource(everyFilesFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.versionFrom === CE_ENTITY_VERSION_FROM.FILE;
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.versionFrom === CE_ENTITY_VERSION_FROM.FILE,
     },
     {
       type: 'list',
@@ -195,9 +188,7 @@ export async function getConfigContent() {
             : { name: 'Entity specification table', value: 'table', checked: true },
         ),
       ],
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.format !== 'image';
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== 'image',
     },
     {
       type: 'list',
@@ -207,9 +198,7 @@ export async function getConfigContent() {
         { name: 'svg', checked: CE_IMAGE_FORMAT.SVG },
         { name: 'png', checked: CE_IMAGE_FORMAT.PNG },
       ],
-      when: (answerForWhen: IInitDocAnswer) => {
-        return answerForWhen.format === 'image';
-      },
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === 'image',
     },
   ]);
 
@@ -221,7 +210,7 @@ export async function getConfigContent() {
     config: {
       ...answer,
       templatePath: templateDir != null ? pathe.relative(getCwd(process.env), templateDir) : templateDir,
-      versionFrom: answer.versionFrom != null ? answer.versionFrom : CE_ENTITY_VERSION_FROM.TIMESTAMP,
+      versionFrom: answer.versionFrom ?? CE_ENTITY_VERSION_FROM.TIMESTAMP,
       config: CE_DEFAULT_VALUE.CONFIG_FILE_NAME,
     },
   });

@@ -1,6 +1,8 @@
-import fs from 'fs';
+import fs from 'node:fs';
+
 import { parse } from 'jsonc-parser';
 import { exists } from 'my-node-fp';
+
 import type puppeteer from 'puppeteer';
 
 export async function getPuppeteerConfig(confgFilePath?: string): Promise<Parameters<typeof puppeteer.launch>[0]> {

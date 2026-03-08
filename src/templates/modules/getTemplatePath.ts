@@ -1,6 +1,7 @@
-import { getTemplateModulePath } from '#/templates/modules/getTemplateModulePath';
 import { exists } from 'my-node-fp';
 import pathe from 'pathe';
+
+import { getTemplateModulePath } from '#/templates/modules/getTemplateModulePath';
 
 export async function getTemplatePath(templatePathParam?: string): Promise<string> {
   if (templatePathParam != null && (await exists(pathe.resolve(templatePathParam)))) {

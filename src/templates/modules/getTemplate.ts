@@ -1,8 +1,10 @@
-import type { ITemplate } from '#/templates/interfaces/ITemplate';
+import fs from 'node:fs';
+
 import { isTrue } from 'my-easy-fp';
 import { basenames, exists, getDirname } from 'my-node-fp';
-import fs from 'node:fs';
 import pathe from 'pathe';
+
+import type { ITemplate } from '#/templates/interfaces/ITemplate';
 
 export async function getTemplate(dirPath: string, filePath: string): Promise<ITemplate | undefined> {
   if (isTrue(await exists(filePath))) {

@@ -1,5 +1,6 @@
-import type { Glob, GlobOptions } from 'glob';
 import pathe from 'pathe';
+
+import type { Glob, GlobOptions } from 'glob';
 
 export function getGlobFiles<T extends GlobOptions>(glob: Glob<T>): string[] {
   const filePathSet = new Set<string>();

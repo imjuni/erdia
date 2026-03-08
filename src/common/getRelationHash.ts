@@ -1,4 +1,5 @@
 import { getPlainRelationType } from '#/common/getPlainRelationType';
+
 import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
 
 export function getRelationHash(

@@ -1,9 +1,12 @@
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import { getConfigFilePath } from '#/configs/modules/getConfigFilePath';
+import { readFileSync } from 'node:fs';
+
 import consola from 'consola';
 import { parse } from 'jsonc-parser';
 import minimist from 'minimist';
-import * as fs from 'node:fs';
+
+import { getConfigFilePath } from '#/configs/modules/getConfigFilePath';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 
 export function preLoadConfig() {
   try {
@@ -12,7 +15,7 @@ export function preLoadConfig() {
 
     const readConfigFile = () => {
       if (configFilePath != null) {
-        const buf = fs.readFileSync(configFilePath);
+        const buf = readFileSync(configFilePath);
         const parsed = parse(buf.toString()) as IBuildCommandOption;
         return parsed;
       }

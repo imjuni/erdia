@@ -1,12 +1,15 @@
+import fs from 'node:fs';
+
+import dayjs from 'dayjs';
+import pathe from 'pathe';
+
 import { getFileVersion } from '#/common/getFileVersion';
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 import { getCwd } from '#/configs/modules/getCwd';
 import { getFindFile } from '#/modules/files/getFindFile';
 import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
-import dayjs from 'dayjs';
-import fs from 'fs';
-import pathe from 'pathe';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
 
 async function getVersionFilename(
   option: Pick<IBuildCommandOption, 'versionFrom' | 'versionPath'>,

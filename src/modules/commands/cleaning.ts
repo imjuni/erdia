@@ -1,11 +1,3 @@
-import { getMetadata } from '#/common/getMetadata';
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
-import { getCwd } from '#/configs/modules/getCwd';
-import { container } from '#/modules/containers/container';
-import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
-import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
-import { getDataSource } from '#/typeorm/getDataSource';
 import { showLogo } from '@maeum/cli-logo';
 import { asValue } from 'awilix';
 import consola from 'consola';
@@ -13,7 +5,18 @@ import del from 'del';
 import fastSafeStringify from 'fast-safe-stringify';
 import { isError, isFalse } from 'my-easy-fp';
 import pathe from 'pathe';
+
+import { getMetadata } from '#/common/getMetadata';
+import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
+import { getCwd } from '#/configs/modules/getCwd';
+import { container } from '#/modules/containers/container';
+import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
+import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
+import { getDataSource } from '#/typeorm/getDataSource';
+
 import type { DataSource } from 'typeorm';
+
+import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
 
 export async function cleaning(option: ICommonOption) {
   try {

@@ -1,6 +1,7 @@
-import { loadTemplates } from '#/templates/modules/loadTemplates';
 import pathe from 'pathe';
 import { describe, expect, it } from 'vitest';
+
+import { loadTemplates } from '#/templates/modules/loadTemplates';
 
 const templateDirPath = pathe.join(process.cwd(), 'templates');
 

@@ -1,9 +1,11 @@
-import { betterMkdir } from '#/modules/files/betterMkdir';
-import { existsSync } from 'my-node-fp';
 import fs from 'node:fs';
+
+import { existsSync } from 'my-node-fp';
 import pathe from 'pathe';
 import { sync as rimrafSync } from 'rimraf';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+
+import { betterMkdir } from '#/modules/files/betterMkdir';
 
 const testDirPath = pathe.join(process.cwd(), 'test-dir');
 

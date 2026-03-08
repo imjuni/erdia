@@ -1,8 +1,11 @@
-import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
 import alasql from 'alasql';
 import { atOrUndefined } from 'my-easy-fp';
+
+import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
+
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
+
+import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
 
 export function getColumnAttributeKey(
   columnMetadata: Pick<ColumnMetadata, 'relationMetadata' | 'isPrimary'>,

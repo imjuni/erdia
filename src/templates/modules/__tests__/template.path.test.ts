@@ -1,7 +1,8 @@
-import { getTemplatePath } from '#/templates/modules/getTemplatePath';
 import * as mnf from 'my-node-fp';
 import pathe from 'pathe';
 import { describe, expect, it, vitest } from 'vitest';
+
+import { getTemplatePath } from '#/templates/modules/getTemplatePath';
 
 vitest.mock('my-node-fp', async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
@@ -15,12 +16,10 @@ describe('getTemplatePath', () => {
   it('cannot template path', async () => {
     const handle = vitest
       .spyOn(mnf, 'exists')
-      .mockImplementationOnce(() => Promise.resolve(false))
-      .mockImplementationOnce(() => Promise.resolve(false));
+      .mockImplementationOnce(async () => Promise.resolve(false))
+      .mockImplementationOnce(async () => Promise.resolve(false));
 
-    await expect(async () => {
-      return getTemplatePath();
-    }).rejects.toThrowError();
+    await expect(async () => getTemplatePath()).rejects.toThrowError();
 
     handle.mockRestore();
   });
@@ -46,10 +45,10 @@ describe('getTemplatePath', () => {
   it('template path based on 1 step parent directory, in distribution directory', async () => {
     vitest
       .spyOn(mnf, 'exists')
-      .mockImplementationOnce(() => Promise.resolve(false))
-      .mockImplementationOnce(() => Promise.resolve(false))
-      .mockImplementationOnce(() => Promise.resolve(false))
-      .mockImplementationOnce(() => Promise.resolve(true));
+      .mockImplementationOnce(async () => Promise.resolve(false))
+      .mockImplementationOnce(async () => Promise.resolve(false))
+      .mockImplementationOnce(async () => Promise.resolve(false))
+      .mockImplementationOnce(async () => Promise.resolve(true));
 
     const dirnameTemplatePath = pathe.join(process.cwd(), 'src', 'templates');
     const templatePath = await getTemplatePath('1110a038cb804e8fac8161070a601f66');

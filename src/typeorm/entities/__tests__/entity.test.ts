@@ -1,16 +1,20 @@
+import fs from 'node:fs';
+
+import fastSafeStringify from 'fast-safe-stringify';
+import { parse } from 'jsonc-parser';
+import pathe from 'pathe';
+import { beforeAll, describe, expect, test } from 'vitest';
+
 import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 import { getEntityName } from '#/typeorm/entities/getEntityName';
 import { getEntityPropertyName } from '#/typeorm/entities/getEntityPropertyName';
 import { getEntityRecord } from '#/typeorm/entities/getEntityRecord';
 import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
-import fastSafeStringify from 'fast-safe-stringify';
-import { parse } from 'jsonc-parser';
-import fs from 'node:fs';
-import pathe from 'pathe';
+
 import type { DataSource } from 'typeorm';
-import { beforeAll, describe, expect, test } from 'vitest';
+
+import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
+import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
 
 const share: { dataSource: DataSource; expect: boolean } = { expect: false } as any;
 
@@ -143,14 +147,11 @@ describe('getEntityRecord', () => {
       .sort((l, r) => l.name.localeCompare(r.name));
 
     if (share.expect) {
-      fs.writeFileSync(
-        pathe.join(__dirname, 'expects', `${expectFileName}`),
-        fastSafeStringify(tableDatas, undefined, 2),
-      );
+      fs.writeFileSync(pathe.join(__dirname, 'expects', expectFileName), fastSafeStringify(tableDatas, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', expectFileName))).toString(),
     ) as object;
 
     expect(tableDatas).toMatchObject(expectation);
@@ -170,11 +171,11 @@ describe('getEntityRecords', () => {
     const records = getEntityRecords(share.dataSource, metadata);
 
     if (share.expect) {
-      fs.writeFileSync(pathe.join(__dirname, 'expects', `${expectFileName}`), fastSafeStringify(records, undefined, 2));
+      fs.writeFileSync(pathe.join(__dirname, 'expects', expectFileName), fastSafeStringify(records, undefined, 2));
     }
 
     const expectation = parse(
-      (await fs.promises.readFile(pathe.join(__dirname, 'expects', `${expectFileName}`))).toString(),
+      (await fs.promises.readFile(pathe.join(__dirname, 'expects', expectFileName))).toString(),
     ) as object;
 
     expect(records).toMatchObject(expectation);

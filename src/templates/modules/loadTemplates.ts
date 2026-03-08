@@ -1,9 +1,11 @@
+import pathe from 'pathe';
+
 import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
 import { configTemplate } from '#/templates/modules/configTemplate';
 import { getTemplatePath } from '#/templates/modules/getTemplatePath';
 import { getTemplates } from '#/templates/modules/getTemplates';
-import pathe from 'pathe';
+
+import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
 
 export async function loadTemplates(option?: Pick<IDocumentOption, 'templatePath'>) {
   const defaultTemplatePath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);

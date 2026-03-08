@@ -3,6 +3,7 @@ import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
 import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
 import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
 import { CE_PROJECT_NAME_FROM } from '#/configs/const-enum/CE_PROJECT_NAME_FROM';
+
 import type { Argv } from 'yargs';
 
 export function documentOptionBuilder<T>(args: Argv<T>) {

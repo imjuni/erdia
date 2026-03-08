@@ -1,16 +1,21 @@
-/* eslint-disable no-param-reassign, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any */
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { getRenderData } from '#/creators/getRenderData';
-import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
-import { betterMkdir } from '#/modules/files/betterMkdir';
-import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
+/* eslint-disable no-param-reassign, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any */
+import fs from 'node:fs';
+
 import consola from 'consola';
 import del from 'del';
 import { isError } from 'my-easy-fp';
-import fs from 'node:fs';
 import pathe from 'pathe';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
+
+import { betterMkdir } from '#/modules/files/betterMkdir';
+import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
+
+import type { Browser, Page } from 'puppeteer';
 import type { AsyncReturnType } from 'type-fest';
+
+import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { getRenderData } from '#/creators/getRenderData';
+import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
 
 export async function writeToImage(
   document: IErdiaDocument,
@@ -20,8 +25,8 @@ export async function writeToImage(
   >,
   renderData: AsyncReturnType<typeof getRenderData>,
 ) {
-  let localBrowser: puppeteer.Browser | undefined;
-  let localPage: puppeteer.Page | undefined;
+  let localBrowser: Browser | undefined;
+  let localPage: Page | undefined;
 
   try {
     const puppeteerConfig = await getPuppeteerConfig(option.prettierConfig);
