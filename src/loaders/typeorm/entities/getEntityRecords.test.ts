@@ -15,10 +15,7 @@ import { getEntityPropertyName } from "#/loaders/typeorm/entities/getEntityPrope
 import { getEntityRecord } from "#/loaders/typeorm/entities/getEntityRecord";
 import { getEntityRecords } from "#/loaders/typeorm/entities/getEntityRecords";
 
-const testDirectory = join(
-  process.cwd(),
-  "src/loaders/typeorm/entities/__tests__"
-);
+const testDirectory = join(process.cwd(), "src/loaders/typeorm/entities");
 
 const share: {
   dataSource: DataSource;
@@ -29,7 +26,7 @@ const share: {
 };
 beforeAll(async () => {
   const dataSourceModule =
-    await import("../../../../../examples/typeorm/async-schema-type/dataSourceConfig");
+    await import("../../../../examples/typeorm/async-schema-type/dataSourceConfig");
   share.dataSource = await dataSourceModule.default;
   await share.dataSource.initialize();
 });

@@ -5,11 +5,11 @@ import { isError } from "my-easy-fp";
 import * as readPkg from "read-pkg";
 import { describe, expect, test, vitest } from "vitest";
 
-import * as env from "#/common/__tests__/test-config";
 import { getDatabaseName } from "#/common/getDatabaseName";
 import { getMetadata } from "#/common/getMetadata";
 import { getPackageName } from "#/common/getPackageName";
 import { getProjectName } from "#/common/getProjectName";
+import * as env from "#/common/test-config";
 import { container } from "#/modules/containers/container";
 import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
 import { getFindFile } from "#/modules/files/getFindFile";

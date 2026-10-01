@@ -10,7 +10,7 @@ const share: {
 } = { dataSource: undefined as unknown as DataSource };
 beforeAll(async () => {
   const dataSourceModule =
-    await import("../../../examples/typeorm/schema-type/dataSourceConfig");
+    await import("../../examples/typeorm/schema-type/dataSourceConfig");
   share.dataSource = dataSourceModule.default;
   await share.dataSource.initialize();
 });
