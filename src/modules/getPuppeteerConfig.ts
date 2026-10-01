@@ -4,14 +4,13 @@ import { parse } from "jsonc-parser";
 import { exists } from "my-node-fp";
 import type puppeteer from "puppeteer";
 
-export async function getPuppeteerConfig(
+export const getPuppeteerConfig = async (
   confgFilePath?: string
-): Promise<Parameters<typeof puppeteer.launch>[0]> {
+): Promise<Parameters<typeof puppeteer.launch>[0]> => {
   try {
-    if (confgFilePath == null) {
+    if (confgFilePath === null || confgFilePath === undefined) {
       return {};
     }
-
     if (await exists(confgFilePath)) {
       const buf = await fs.promises.readFile(confgFilePath);
       const option = parse(buf.toString()) as Parameters<
@@ -19,9 +18,8 @@ export async function getPuppeteerConfig(
       >[0];
       return option;
     }
-
     return {};
   } catch {
     return {};
   }
-}
+};

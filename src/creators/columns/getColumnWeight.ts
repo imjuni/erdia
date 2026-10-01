@@ -5,26 +5,28 @@ import { populate } from "my-easy-fp";
 import { CE_COLUMN_ATTRIBUTE } from "#/configs/const-enum/CE_COLUMN_ATTRIBUTE";
 import type { IColumnRecord } from "#/databases/interfaces/IColumnRecord";
 
-export function getColumnWeight(
+export const getColumnWeight = (
   column: Omit<IColumnRecord, "weight">
-): BigNumber {
+): BigNumber => {
   const weight = bignumber(0);
-
   const type = bignumber(
     populate(column.columnType.length).reduce(
-      (sum, index) => sum + column.columnType.charCodeAt(index),
+      (sum, index) => sum + (column.columnType.codePointAt(index) ?? 0),
       0
     )
   ).mul(1000);
-
   return weight
     .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.PK) ? 20_000_000 : 0)
     .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.FK) ? 10_000_000 : 0)
     .add(type)
-    .add(bignumber(122).sub(bignumber(column.name.toLowerCase().charCodeAt(0))))
+    .add(
+      bignumber(122).sub(
+        bignumber(column.name.toLowerCase().codePointAt(0) ?? 0)
+      )
+    )
     .add(
       bignumber(122)
-        .sub(bignumber(column.name.toLowerCase().charCodeAt(1)))
+        .sub(bignumber(column.name.toLowerCase().codePointAt(1) ?? 0))
         .div(100)
     );
-}
+};

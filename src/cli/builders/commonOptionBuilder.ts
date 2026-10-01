@@ -2,7 +2,7 @@ import type { Argv } from "yargs";
 
 import { outputOptionBuilder } from "#/cli/builders/outputOptionBuilder";
 
-export function commonOptionBuilder<T>(args: Argv<T>) {
+export const commonOptionBuilder = <T>(args: Argv<T>) => {
   // option
   outputOptionBuilder(args)
     .option("config", {
@@ -21,6 +21,5 @@ export function commonOptionBuilder<T>(args: Argv<T>) {
       default: false,
     })
     .demandOption("data-source-path");
-
   return args;
-}
+};

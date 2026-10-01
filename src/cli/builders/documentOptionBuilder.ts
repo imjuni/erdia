@@ -6,7 +6,7 @@ import { CE_OUTPUT_COMPONENT } from "#/configs/const-enum/CE_OUTPUT_COMPONENT";
 import { CE_OUTPUT_FORMAT } from "#/configs/const-enum/CE_OUTPUT_FORMAT";
 import { CE_PROJECT_NAME_FROM } from "#/configs/const-enum/CE_PROJECT_NAME_FROM";
 
-export function documentOptionBuilder<T>(args: Argv<T>) {
+export const documentOptionBuilder = <T>(args: Argv<T>) => {
   // option
   args
     .option("components", {
@@ -83,6 +83,5 @@ export function documentOptionBuilder<T>(args: Argv<T>) {
       default: CE_MERMAID_THEME.DARK,
       type: "string",
     });
-
   return args;
-}
+};

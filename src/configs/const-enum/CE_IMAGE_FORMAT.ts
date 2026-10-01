@@ -1,7 +1,7 @@
 /**
  * ER diagram export image file format
  *
- * @format image
+ * Format: image
  *
  * - svg: svg image format
  * - png: png image format

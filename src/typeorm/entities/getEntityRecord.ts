@@ -5,10 +5,10 @@ import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
 import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 import { getEntityName } from "#/typeorm/entities/getEntityName";
 
-export function getEntityRecord(
+export const getEntityRecord = (
   entityMetadata: EntityMetadata,
   metadata: IRecordMetadata
-): IEntityRecord {
+): IEntityRecord => {
   const record: IEntityRecord = {
     $kind: "entity",
     ...metadata,
@@ -18,6 +18,5 @@ export function getEntityRecord(
     dbName: entityMetadata.tableName,
     hasRelation: entityMetadata.relations.length > 0,
   };
-
   return record;
-}
+};

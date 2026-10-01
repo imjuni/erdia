@@ -1,24 +1,23 @@
-import consola from "consola";
+import { consola } from "consola";
 import type { DataSource } from "typeorm";
 
 import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 import { getEntityName } from "#/typeorm/entities/getEntityName";
 import { getRelationRecord } from "#/typeorm/relations/getRelationRecord";
 
-export function getRelationRecords(
+export const getRelationRecords = (
   dataSource: DataSource,
   metadata: IRecordMetadata
-): ReturnType<typeof getRelationRecord>[] {
-  const relationRecords = dataSource.entityMetadatas
-    .flatMap((entityMetadata) => {
+): ReturnType<typeof getRelationRecord>[] => {
+  const relationRecords = dataSource.entityMetadatas.flatMap(
+    (entityMetadata) => {
       consola.debug(
         `Entity: ${getEntityName(entityMetadata)}, Length: ${entityMetadata.relations.length}`
       );
-
       return entityMetadata.relations.map((relation) =>
         getRelationRecord(dataSource.entityMetadatas, relation, metadata)
       );
-    });
-
+    }
+  );
   return relationRecords;
-}
+};

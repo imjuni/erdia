@@ -1,7 +1,6 @@
-export function getSlashEndRoutePath(basePath: string): string {
+export const getSlashEndRoutePath = (basePath: string): string => {
   if (basePath.endsWith("/")) {
     return basePath;
   }
-
   return `${basePath}/`;
-}
+};

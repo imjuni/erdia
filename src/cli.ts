@@ -1,4 +1,4 @@
-import consola from "consola";
+import { consola } from "consola";
 import { isError } from "my-easy-fp";
 import sourceMapSupport from "source-map-support";
 import yargs from "yargs";
@@ -117,10 +117,13 @@ const handler = async () => {
   await parser.argv;
 };
 
-handler().catch((error) => {
-  const err = isError(error, new Error("unknown error raised"));
-  consola.error(err.message);
-  consola.error(err.stack);
-
-  process.exit(1);
-});
+void (async () => {
+  try {
+    await handler();
+  } catch (error) {
+    const err = isError(error, new Error("unknown error raised"));
+    consola.error(err.message);
+    consola.error(err.stack);
+    process.exit(1);
+  }
+})();

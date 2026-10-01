@@ -7,13 +7,13 @@ import { container } from "#/modules/containers/container";
 import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 
-export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
+export const buildDocumentCommandHandler = async (
+  option: IBuildCommandOption
+) => {
   const logger = container.resolve<Logger>(SymbolLogger);
-
   logger.level = LogLevels.info;
   logger.enable = true;
-
-  if (option.showLogo == null) {
+  if (option.showLogo === null || option.showLogo === undefined) {
     logger.info("erdia build start");
   } else {
     await showLogo({
@@ -22,6 +22,5 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
       color: "cyan",
     });
   }
-
   await building(option);
-}
+};

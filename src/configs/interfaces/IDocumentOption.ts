@@ -47,7 +47,7 @@ export interface IDocumentOption extends ICommonOption {
   /**
    * define the mermaid.js plugin theme
    *
-   * @url https://mermaid-js.github.io/mermaid/#/Setup?id=theme
+   * URL: https://mermaid-js.github.io/mermaid/#/Setup?id=theme
    * */
   theme: CE_MERMAID_THEME;
 }

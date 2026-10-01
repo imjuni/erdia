@@ -2,15 +2,13 @@ import fs from "node:fs";
 
 import { isFalse } from "my-easy-fp";
 import { exists, getDirname } from "my-node-fp";
-import pathe from "pathe";
+import { extname as getExtname } from "pathe";
 
-export async function betterMkdir(filePath: string) {
+export const betterMkdir = async (filePath: string) => {
   const isFilePathExist = await exists(filePath);
-
   if (isFalse(isFilePathExist)) {
-    const extname = pathe.extname(filePath);
+    const extname = getExtname(filePath);
     const hasExtname = extname !== "" && extname.length > 0;
-
     if (hasExtname) {
       const dirPath = await getDirname(filePath);
       await fs.promises.mkdir(dirPath, { recursive: true });
@@ -18,4 +16,4 @@ export async function betterMkdir(filePath: string) {
       await fs.promises.mkdir(filePath, { recursive: true });
     }
   }
-}
+};

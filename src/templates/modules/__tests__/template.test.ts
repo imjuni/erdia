@@ -1,17 +1,17 @@
-import pathe from "pathe";
+import { join } from "pathe";
 import { describe, expect, it } from "vitest";
 
 import { getTemplate } from "#/templates/modules/getTemplate";
 import { getTemplates } from "#/templates/modules/getTemplates";
 
-const templateDirPath = pathe.join(process.cwd(), "templates");
+const templateDirPath = join(process.cwd(), "templates");
 
 describe("getTemplate", () => {
   it("successfully template loading", async () => {
-    const templateHTMLPath = pathe.join(templateDirPath, "html");
+    const templateHTMLPath = join(templateDirPath, "html");
     const template = await getTemplate(
       templateHTMLPath,
-      pathe.join(templateHTMLPath, "document.eta")
+      join(templateHTMLPath, "document.eta")
     );
 
     expect(template).toBeDefined();
@@ -19,10 +19,10 @@ describe("getTemplate", () => {
   });
 
   it("failed template loading", async () => {
-    const templateCategoryPath = pathe.join(templateDirPath, "html");
+    const templateCategoryPath = join(templateDirPath, "html");
     const template = await getTemplate(
       templateCategoryPath,
-      pathe.join(templateCategoryPath, "cannot-found-this-template.eta")
+      join(templateCategoryPath, "cannot-found-this-template.eta")
     );
 
     expect(template).toBeUndefined();
@@ -31,7 +31,7 @@ describe("getTemplate", () => {
 
 describe("getTemplates", () => {
   it("successfully loading html templates", async () => {
-    const templateHTMLPath = pathe.join(templateDirPath, "html");
+    const templateHTMLPath = join(templateDirPath, "html");
     const templates = await getTemplates(templateHTMLPath);
 
     expect(templates.map((template) => template.key)).toEqual([

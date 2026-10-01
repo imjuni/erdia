@@ -1,17 +1,17 @@
 import { exists } from "my-node-fp";
-import pathe from "pathe";
+import { resolve } from "pathe";
 
 import { getTemplateModulePath } from "#/templates/modules/getTemplateModulePath";
 
-export async function getTemplatePath(
+export const getTemplatePath = async (
   templatePathParam?: string
-): Promise<string> {
+): Promise<string> => {
   if (
-    templatePathParam != null &&
-    (await exists(pathe.resolve(templatePathParam)))
+    templatePathParam !== null &&
+    templatePathParam !== undefined &&
+    (await exists(resolve(templatePathParam)))
   ) {
-    return pathe.resolve(templatePathParam);
+    return resolve(templatePathParam);
   }
-
   return getTemplateModulePath(templatePathParam);
-}
+};
