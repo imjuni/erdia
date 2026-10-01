@@ -4,8 +4,6 @@ import { asValue } from "awilix";
 import chalk from "chalk";
 import fastSafeStringify from "fast-safe-stringify";
 import { isError, isFalse } from "my-easy-fp";
-import { isFail, isPass } from "my-only-either";
-import type { IFail, IPass } from "my-only-either";
 import type { SetOptional } from "type-fest";
 import type { DataSource } from "typeorm";
 
@@ -19,14 +17,13 @@ import { createImageHtml } from "#/creators/createImageHtml";
 import { createMarkdown } from "#/creators/createMarkdown";
 import { createPdfHtml } from "#/creators/createPdfHtml";
 import { getRenderData } from "#/creators/getRenderData";
-import type { IReason } from "#/creators/interfaces/IReason";
 import { writeToImage } from "#/creators/writeToImage";
 import { writeToPdf } from "#/creators/writeToPdf";
 import { compareDatabase } from "#/databases/compareDatabase";
 import { flushDatabase } from "#/databases/flushDatabase";
-import type { IRelationRecord } from "#/databases/interfaces/IRelationRecord";
 import { openDatabase } from "#/databases/openDatabase";
 import { processDatabase } from "#/databases/processDatabase";
+import { TypeOrmLoader } from "#/loaders/typeorm/TypeOrmLoader";
 import { container } from "#/modules/containers/container";
 import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
 import { SymbolDefaultTemplate } from "#/modules/containers/keys/SymbolDefaultTemplate";
@@ -38,12 +35,7 @@ import { createLogger } from "#/modules/loggers/createLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 import { loadTemplates } from "#/templates/modules/loadTemplates";
 import { TemplateRenderer } from "#/templates/TemplateRenderer";
-import { getColumnRecord } from "#/typeorm/columns/getColumnRecord";
-import { getEntityRecords } from "#/typeorm/entities/getEntityRecords";
 import { getDataSource } from "#/typeorm/getDataSource";
-import { getIndexRecords } from "#/typeorm/indices/getIndexRecords";
-import { dedupeManyToManyRelationRecord } from "#/typeorm/relations/dedupeManyToManyRelationRecord";
-import { getRelationRecords } from "#/typeorm/relations/getRelationRecords";
 
 export const building = async (
   option: SetOptional<IBuildCommandOption, "config">,
@@ -56,10 +48,9 @@ export const building = async (
       `connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`
     );
     const dataSource = await getDataSource(option);
-    const [templates] = await Promise.all([
-      loadTemplates(option),
-      dataSource.initialize(),
-    ]);
+    const loader = new TypeOrmLoader(dataSource, option.format);
+    await loader.initialize();
+    const templates = await loadTemplates(option);
     const renderer = new TemplateRenderer(
       templates.template,
       templates.default
@@ -77,34 +68,7 @@ export const building = async (
     logger.success("connection initialized");
     logger.info(`version: ${metadata.version}`);
     logger.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
-    const entities = getEntityRecords(dataSource, metadata);
-    const indicesRecords = getIndexRecords(dataSource, metadata);
-    const columns = dataSource.entityMetadatas.flatMap((entity) =>
-      entity.columns.map((column) =>
-        getColumnRecord(column, option, metadata, indicesRecords)
-      )
-    );
-    const relationRecords = getRelationRecords(dataSource, metadata);
-    const failRelations = relationRecords
-      .filter((relationRecord): relationRecord is IFail<IReason> =>
-        isFail(relationRecord)
-      )
-      .flatMap((relationRecord) => relationRecord.fail);
-    for (const relation of failRelations) {
-      logger.warn(relation.message);
-    }
-    const passRelations = relationRecords
-      .filter((relation): relation is IPass<IRelationRecord[]> =>
-        isPass(relation)
-      )
-      .flatMap((relationRecord) => relationRecord.pass);
-    const dedupedRelations = dedupeManyToManyRelationRecord(passRelations);
-    const records = [
-      ...entities,
-      ...columns,
-      ...dedupedRelations,
-      ...indicesRecords,
-    ];
+    const records = await loader.extract(metadata);
     logger.success("complete extraction");
     logger.info("Database open and processing");
     const db = await openDatabase(option);

@@ -3,9 +3,9 @@ import fs from "node:fs";
 import fastSafeStringify from "fast-safe-stringify";
 import { parse } from "jsonc-parser";
 import { findOrThrow } from "my-easy-fp";
-import pathe from "pathe";
+import { join } from "pathe";
 import type { DataSource } from "typeorm";
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { getInverseRelationMetadata } from "#/typeorm/relations/getInverseRelationMetadata";
 import { getJoinColumn } from "#/typeorm/relations/getJoinColumn";
@@ -13,200 +13,167 @@ import { getManyToManyEntityMetadata } from "#/typeorm/relations/getManyToManyEn
 import { getManyToManyJoinColumn } from "#/typeorm/relations/getManyToManyJoinColumn";
 import { getManyToOneJoinColumn } from "#/typeorm/relations/getManyToOneJoinColumn";
 
-const share: { dataSource: DataSource; expect: boolean } = {
-  expect: false,
-} as any;
+const testDirectory = join(process.cwd(), "src/typeorm/relations/__tests__");
 
+const share: {
+  dataSource: DataSource;
+  expect: boolean;
+} = {
+  dataSource: undefined as unknown as DataSource,
+  expect: false,
+};
 beforeAll(async () => {
-  share.dataSource = (
-    await import("../../../../examples/schema-type/dataSourceConfig")
-  ).default;
+  const dataSourceModule = await import(
+    "../../../../examples/typeorm/schema-type/dataSourceConfig"
+  );
+  share.dataSource = dataSourceModule.default;
   await share.dataSource.initialize();
 });
-
-describe("getManyToOneJoinColumn", () => {
-  test("pass", async () => {
+describe(getManyToOneJoinColumn, () => {
+  it("pass", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "user"
+      (relation) => relation.propertyName === "user",
     );
-
     const relations = getManyToOneJoinColumn(relationMetadata);
-
     expect(relations).toMatchObject({
       inverseJoinColumnNullable: true,
-      joinPropertyName: "user",
       joinColumnName: "user_id",
+      joinPropertyName: "user",
     });
   });
-
-  test("exception", async () => {
+  it("exception", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "user"
+      (relation) => relation.propertyName === "user",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     relationMetadata.joinColumns = [];
-
     expect(() => {
       try {
         getManyToOneJoinColumn(relationMetadata);
       } finally {
         relationMetadata.joinColumns = joinColumnsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
 });
-
-describe("getInverseRelationMetadata", () => {
-  test("pass + inverseEntityMetadata", () => {
+describe(getInverseRelationMetadata, () => {
+  it("pass + inverseEntityMetadata", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const relations = getInverseRelationMetadata(relationMetadata);
-
-    expect(relations.joinTableName).toEqual("tbl_mtm_license_organization");
-    expect(relations.propertyName).toEqual("licenses");
+    expect(relations.joinTableName).toBe("tbl_mtm_license_organization");
+    expect(relations.propertyName).toBe("licenses");
   });
-
-  test("pass + inverseEntityMetadata", () => {
+  it("pass + inverseEntityMetadata", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const relationsBackup = relationMetadata.inverseEntityMetadata.relations;
     relationMetadata.inverseEntityMetadata.relations = [];
     const relations = getInverseRelationMetadata(relationMetadata);
-
-    expect(relations.joinTableName).toEqual("tbl_mtm_license_organization");
-    expect(relations.propertyName).toEqual("organizations");
-
+    expect(relations.joinTableName).toBe("tbl_mtm_license_organization");
+    expect(relations.propertyName).toBe("organizations");
     relationMetadata.inverseEntityMetadata.relations = relationsBackup;
   });
-
-  test("exception", () => {
+  it("exception", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const inverseEntityMetadataRelationsBackup =
       relationMetadata.inverseEntityMetadata.relations;
     const inverseJoinColumnsBackup = relationMetadata.inverseJoinColumns;
-
     relationMetadata.inverseEntityMetadata.relations = [];
     relationMetadata.inverseJoinColumns = [];
-
     expect(() => {
       getInverseRelationMetadata(relationMetadata);
-    }).toThrowError();
-
+    }).toThrow();
     relationMetadata.inverseEntityMetadata.relations =
       inverseEntityMetadataRelationsBackup;
     relationMetadata.inverseJoinColumns = inverseJoinColumnsBackup;
   });
 });
-
-describe("getManyToManyJoinColumn", () => {
-  test("pass-joinColumns", async () => {
+describe(getManyToManyJoinColumn, () => {
+  it("pass-joinColumns", async () => {
     const expectFileName = "expect-01.json";
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const relations = getManyToManyJoinColumn(relationMetadata);
-
     if (share.expect) {
       fs.writeFileSync(
-        pathe.join(__dirname, "expects", expectFileName),
-        fastSafeStringify(relations, undefined, 2)
+        join(testDirectory, "expects", `${expectFileName}`),
+        fastSafeStringify(relations, undefined, 2),
       );
     }
-
-    const expectation = parse(
-      (
-        await fs.promises.readFile(
-          pathe.join(__dirname, "expects", expectFileName)
-        )
-      ).toString()
-    ) as object;
-
+    const expectationContent = await fs.promises.readFile(
+      join(testDirectory, "expects", `${expectFileName}`),
+    );
+    const expectation = parse(expectationContent.toString()) as object;
     expect(relations).toMatchObject(expectation);
   });
-
-  test("pass-relationMetadata", async () => {
+  it("pass-relationMetadata", async () => {
     const expectFileName = "expect-02.json";
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     relationMetadata.joinColumns = [];
-
     const relations = getManyToManyJoinColumn(relationMetadata);
-
     if (share.expect) {
       fs.writeFileSync(
-        pathe.join(__dirname, "expects", expectFileName),
-        fastSafeStringify(relations, undefined, 2)
+        join(testDirectory, "expects", `${expectFileName}`),
+        fastSafeStringify(relations, undefined, 2),
       );
     }
-
     relationMetadata.joinColumns = joinColumnsBackup;
-
-    const expectation = parse(
-      (
-        await fs.promises.readFile(
-          pathe.join(__dirname, "expects", expectFileName)
-        )
-      ).toString()
-    ) as object;
-
+    const expectationContent = await fs.promises.readFile(
+      join(testDirectory, "expects", `${expectFileName}`),
+    );
+    const expectation = parse(expectationContent.toString()) as object;
     expect(relations).toMatchObject(expectation);
   });
-
-  test("exception-manyToManyRelations not found", async () => {
+  it("exception-manyToManyRelations not found", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     relationMetadata.joinColumns = [];
     const manyToManyRelationsBackup =
       relationMetadata.inverseEntityMetadata.manyToManyRelations;
     relationMetadata.inverseEntityMetadata.manyToManyRelations = [];
-
     expect(() => {
       try {
         getManyToManyJoinColumn(relationMetadata);
@@ -215,18 +182,16 @@ describe("getManyToManyJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.manyToManyRelations =
           manyToManyRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("exception-manyToManyRelations not found", async () => {
+  it("exception-manyToManyRelations not found", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     relationMetadata.joinColumns = [];
     const joinTableNameBackup =
@@ -234,7 +199,6 @@ describe("getManyToManyJoinColumn", () => {
         .joinTableName;
     relationMetadata.inverseEntityMetadata.manyToManyRelations[0].joinTableName =
       "n/a";
-
     expect(() => {
       try {
         getManyToManyJoinColumn(relationMetadata);
@@ -243,201 +207,172 @@ describe("getManyToManyJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.manyToManyRelations[0].joinTableName =
           joinTableNameBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
 });
-
-describe("getManyToManyEntityMetadata", () => {
-  test("pass-find-from-entities", async () => {
+describe(getManyToManyEntityMetadata, () => {
+  it("pass-find-from-entities", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const relation = getManyToManyEntityMetadata(
       share.dataSource.entityMetadatas,
-      relationMetadata
+      relationMetadata,
     );
-
-    expect(relation.name).toEqual("tbl_mtm_license_organization");
+    expect(relation.name).toBe("tbl_mtm_license_organization");
   });
-
-  test("exception: not found entity table in data-source", async () => {
+  it("exception: not found entity table in data-source", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     expect(() => {
       getManyToManyEntityMetadata(
         [
           findOrThrow(
             share.dataSource.entityMetadatas,
-            (entity) => entity.name === "User"
+            (entity) => entity.name === "User",
           ),
         ],
-        relationMetadata
+        relationMetadata,
       );
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("exception: not found inverseEntityMetadata.manyToManyRelations", async () => {
+  it("exception: not found inverseEntityMetadata.manyToManyRelations", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const joinTableNameBackup = relationMetadata.joinTableName;
     const manyToManyRelationsBackup =
       relationMetadata.inverseEntityMetadata.manyToManyRelations;
     relationMetadata.joinTableName = "";
     relationMetadata.inverseEntityMetadata.manyToManyRelations = [];
-
     expect(() => {
       try {
         getManyToManyEntityMetadata(
           share.dataSource.entityMetadatas,
-          relationMetadata
+          relationMetadata,
         );
       } finally {
         relationMetadata.joinTableName = joinTableNameBackup;
         relationMetadata.inverseEntityMetadata.manyToManyRelations =
           manyToManyRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("found using inverseEntityMetadata", async () => {
+  it("found using inverseEntityMetadata", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const joinTableNameBackup = relationMetadata.joinTableName;
     relationMetadata.joinTableName = "";
-
     const entityMetadata = getManyToManyEntityMetadata(
       share.dataSource.entityMetadatas.filter(
-        (entity) => entity.name !== "User"
+        (entity) => entity.name !== "User",
       ),
-      relationMetadata
+      relationMetadata,
     );
-
     relationMetadata.joinTableName = joinTableNameBackup;
-
-    expect(entityMetadata.tableName).toEqual("tbl_mtm_license_organization");
+    expect(entityMetadata.tableName).toBe("tbl_mtm_license_organization");
   });
 });
-
-describe("getJoinColumn", () => {
-  test("pass - one-to-one - find from joinColumns", () => {
+describe(getJoinColumn, () => {
+  it("pass - one-to-one - find from joinColumns", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "User",
       ).relations,
-      (relation) => relation.propertyName === "photo"
+      (relation) => relation.propertyName === "photo",
     );
-
     const column = getJoinColumn(relationMetadata);
-
     expect(column).toEqual({
-      inverseJoinColumnOne: true,
       inverseJoinColumnNullable: true,
-      joinPropertyName: "photo",
-      joinColumnName: "photo_id",
+      inverseJoinColumnOne: true,
       isDuplicate: false,
-    });
-  });
-
-  test("pass - one-to-one - find from inverseRelationMetadata", () => {
-    const relationMetadata = findOrThrow(
-      findOrThrow(
-        share.dataSource.entityMetadatas,
-        (entity) => entity.name === "Photo"
-      ).relations,
-      (relation) => relation.propertyName === "user"
-    );
-
-    const column = getJoinColumn(relationMetadata);
-
-    expect(column).toEqual({
-      inverseJoinColumnOne: true,
-      inverseJoinColumnNullable: true,
-      joinPropertyName: "photo",
       joinColumnName: "photo_id",
-      isDuplicate: true,
+      joinPropertyName: "photo",
     });
   });
-
-  test("pass - one-to-many - find from inverseRelationMetadata", () => {
+  it("pass - one-to-one - find from inverseRelationMetadata", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "Photo",
       ).relations,
-      (relation) => relation.propertyName === "licenses"
+      (relation) => relation.propertyName === "user",
     );
-
     const column = getJoinColumn(relationMetadata);
-
     expect(column).toEqual({
       inverseJoinColumnNullable: true,
-      joinPropertyName: "user",
+      inverseJoinColumnOne: true,
+      isDuplicate: true,
+      joinColumnName: "photo_id",
+      joinPropertyName: "photo",
+    });
+  });
+  it("pass - one-to-many - find from inverseRelationMetadata", () => {
+    const relationMetadata = findOrThrow(
+      findOrThrow(
+        share.dataSource.entityMetadatas,
+        (entity) => entity.name === "User",
+      ).relations,
+      (relation) => relation.propertyName === "licenses",
+    );
+    const column = getJoinColumn(relationMetadata);
+    expect(column).toEqual({
+      inverseJoinColumnNullable: true,
+      inverseJoinColumnOne: false,
+      isDuplicate: true,
       joinColumnName: "user_id",
-      inverseJoinColumnOne: false,
-      isDuplicate: true,
+      joinPropertyName: "user",
     });
   });
-
-  test("pass - many-to-many - find from relationMetadata", () => {
+  it("pass - many-to-many - find from relationMetadata", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
+        (entity) => entity.name === "License",
       ).relations,
-      (relation) => relation.propertyName === "organizations"
+      (relation) => relation.propertyName === "organizations",
     );
-
     const column = getJoinColumn(relationMetadata);
-
     expect(column).toEqual({
-      inverseJoinColumnOne: false,
       inverseJoinColumnNullable: true,
-      joinPropertyName: "license_id",
+      inverseJoinColumnOne: false,
       isDuplicate: false,
       joinColumnName: "license_id",
+      joinPropertyName: "license_id",
     });
   });
-
-  test("exception - one-to-one - empty join columns", () => {
+  it("exception - one-to-one - empty join columns", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "User",
       ).relations,
-      (relation) => relation.propertyName === "photo"
+      (relation) => relation.propertyName === "photo",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     const oneToOneRelationsBackup =
       relationMetadata.inverseEntityMetadata.oneToOneRelations;
-
     relationMetadata.joinColumns = [];
     relationMetadata.inverseEntityMetadata.oneToOneRelations = [];
-
     expect(() => {
       try {
         getJoinColumn(relationMetadata);
@@ -446,26 +381,22 @@ describe("getJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.oneToOneRelations =
           oneToOneRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("exception - one-to-one - empty join columns in relations", () => {
+  it("exception - one-to-one - empty join columns in relations", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "User",
       ).relations,
-      (relation) => relation.propertyName === "photo"
+      (relation) => relation.propertyName === "photo",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     const oneToOneRelationsBackup =
       relationMetadata.inverseEntityMetadata.oneToOneRelations;
-
     relationMetadata.joinColumns = [];
     relationMetadata.inverseEntityMetadata.oneToOneRelations[0].joinColumns =
       [];
-
     expect(() => {
       try {
         getJoinColumn(relationMetadata);
@@ -474,26 +405,22 @@ describe("getJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.oneToOneRelations =
           oneToOneRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("exception - one-to-one - empty join columns in relations", () => {
+  it("exception - one-to-one - empty join columns in relations", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "User",
       ).relations,
-      (relation) => relation.propertyName === "photo"
+      (relation) => relation.propertyName === "photo",
     );
-
     const joinColumnsBackup = relationMetadata.joinColumns;
     const oneToOneRelationsBackup =
       relationMetadata.inverseEntityMetadata.oneToOneRelations;
-
     relationMetadata.joinColumns = [];
     relationMetadata.inverseEntityMetadata.oneToOneRelations[0].joinColumns =
       [];
-
     expect(() => {
       try {
         getJoinColumn(relationMetadata);
@@ -502,22 +429,19 @@ describe("getJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.oneToOneRelations =
           oneToOneRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
-
-  test("exception - one-to-many - not found", () => {
+  it("exception - one-to-many - not found", () => {
     const relationMetadata = findOrThrow(
       findOrThrow(
         share.dataSource.entityMetadatas,
-        (entity) => entity.name === "User"
+        (entity) => entity.name === "User",
       ).relations,
-      (relation) => relation.propertyName === "licenses"
+      (relation) => relation.propertyName === "licenses",
     );
-
     const manyToOneRelationsBackup =
       relationMetadata.inverseEntityMetadata.manyToOneRelations;
     relationMetadata.inverseEntityMetadata.manyToOneRelations = [];
-
     expect(() => {
       try {
         getJoinColumn(relationMetadata);
@@ -525,6 +449,6 @@ describe("getJoinColumn", () => {
         relationMetadata.inverseEntityMetadata.manyToOneRelations =
           manyToOneRelationsBackup;
       }
-    }).toThrowError();
+    }).toThrow();
   });
 });

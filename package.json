@@ -92,6 +92,7 @@
     "dayjs": "^1.11.9",
     "deep-object-diff": "^1.1.9",
     "del": "^6.1.1",
+    "drizzle-orm": "^0.45.3",
     "eta": "^3.1.0",
     "fast-safe-stringify": "^2.1.1",
     "filenamify": "^4.3.0",
