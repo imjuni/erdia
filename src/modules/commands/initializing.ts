@@ -14,33 +14,26 @@ import type { Logger } from "#/modules/loggers/Logger";
 import { loadTemplates } from "#/templates/modules/loadTemplates";
 import { TemplateRenderer } from "#/templates/TemplateRenderer";
 
-export async function initializing(logging?: boolean) {
+export const initializing = async (logging?: boolean) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
-
   try {
     const templates = await loadTemplates();
     const renderer = new TemplateRenderer(
       templates.template,
       templates.default
     );
-
     container.register(SymbolTemplateRenderer, asValue(renderer));
-
     const rawConfig = await getConfigContent();
     const prettiered = await applyPrettier(rawConfig, "json");
-
     await fs.promises.writeFile(CE_DEFAULT_VALUE.CONFIG_FILE_NAME, prettiered);
     logger.info(`${CE_DEFAULT_VALUE.CONFIG_FILE_NAME} file created`);
-
     return rawConfig;
   } catch (error) {
     const err = isError(
       error,
       new Error("unknown error raised from createHtmlDocCommand")
     );
-    logger.error(err);
-
-    return;
+    return logger.error(err);
   }
-}
+};

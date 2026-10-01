@@ -16,7 +16,7 @@ export interface IRecordMetadata {
    * This record created-at. if you don't use version field in package.json field, maybe it same
    * version field.
    *
-   * @format date-time
+   * Format: date-time
    */
   createdAt: string;
 
@@ -24,7 +24,7 @@ export interface IRecordMetadata {
    * This record updated-at. if you don't use version field in package.json field, maybe it same
    * version field.
    *
-   * @format date-time
+   * Format: date-time
    */
   updatedAt: string;
 }

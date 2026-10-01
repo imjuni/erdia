@@ -1,5 +1,5 @@
 import { showLogo } from "@maeum/cli-logo";
-import consola, { LogLevels } from "consola";
+import { consola, LogLevels } from "consola";
 
 import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
 import { ejecting } from "#/modules/commands/ejecting";
@@ -7,15 +7,13 @@ import { container } from "#/modules/containers/container";
 import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 
-export async function templateEjectCommandHandler(
+export const templateEjectCommandHandler = async (
   option: Pick<ICommonOption, "output" | "showLogo">
-) {
+) => {
   const logger = container.resolve<Logger>(SymbolLogger);
-
   logger.level = LogLevels.info;
   logger.enable = true;
-
-  if (option.showLogo == null) {
+  if (option.showLogo === null || option.showLogo === undefined) {
     consola.info("erdia build start");
   } else {
     await showLogo({
@@ -24,7 +22,6 @@ export async function templateEjectCommandHandler(
       color: "cyan",
     });
   }
-
   const targetTemplateDirPath = await ejecting(option);
   return targetTemplateDirPath;
-}
+};

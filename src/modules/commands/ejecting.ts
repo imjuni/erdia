@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { Glob } from "glob";
 import { isError } from "my-easy-fp";
 import { getDirname, startSepRemove } from "my-node-fp";
-import pathe from "pathe";
+import { join } from "pathe";
 
 import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
 import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
@@ -19,13 +19,12 @@ import type { Logger } from "#/modules/loggers/Logger";
 import { defaultExclude } from "#/modules/scopes/defaultExclude";
 import { getTemplateModulePath } from "#/templates/modules/getTemplateModulePath";
 
-export async function ejecting(
+export const ejecting = async (
   option: Pick<ICommonOption & IDocumentOption, "showLogo" | "templatePath">,
   logging?: boolean
-) {
+) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
-
   try {
     const templateDirPath = await getTemplateDirPath(
       option,
@@ -35,14 +34,12 @@ export async function ejecting(
       CE_DEFAULT_VALUE.TEMPLATES_PATH
     );
     const targetTemplateDirPath =
-      option.templatePath == null
-        ? pathe.join(templateDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH)
+      option.templatePath === null || option.templatePath === undefined
+        ? join(templateDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH)
         : templateDirPath;
-
     logger.info("Template directory: ", targetTemplateDirPath);
-
     const originTemplateGlobPaths = new Glob(
-      pathe.join(originTemplateDirPath, `**`, "*.eta"),
+      join(originTemplateDirPath, `**`, "*.eta"),
       {
         absolute: true,
         ignore: [...defaultExclude, "config/**"],
@@ -51,40 +48,33 @@ export async function ejecting(
       }
     );
     const originTemplateFilePaths = getGlobFiles(originTemplateGlobPaths);
-
     await Promise.all(
       originTemplateFilePaths.map(async (originTemplateFilePath) => {
         const subDirPath = await getDirname(originTemplateFilePath);
         const subFilePath = startSepRemove(
           originTemplateFilePath.replace(subDirPath, "")
         );
-        const targetTemplateSubDirPath = pathe.join(
+        const targetTemplateSubDirPath = join(
           targetTemplateDirPath,
           startSepRemove(subDirPath.replace(originTemplateDirPath, ""))
         );
-
         await betterMkdir(targetTemplateSubDirPath);
-
         const templateFileBuf = await fs.promises.readFile(
           originTemplateFilePath
         );
         await fs.promises.writeFile(
-          pathe.join(targetTemplateSubDirPath, subFilePath),
+          join(targetTemplateSubDirPath, subFilePath),
           templateFileBuf
         );
       })
     );
-
     logger.success("eject success: ", targetTemplateDirPath);
-
     return targetTemplateDirPath;
   } catch (error) {
     const err = isError(
       error,
       new Error("unknown error raised from createHtmlDocCommand")
     );
-    logger.error(err);
-
-    return;
+    return logger.error(err);
   }
-}
+};

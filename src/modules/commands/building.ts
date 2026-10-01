@@ -45,18 +45,16 @@ import { getIndexRecords } from "#/typeorm/indices/getIndexRecords";
 import { dedupeManyToManyRelationRecord } from "#/typeorm/relations/dedupeManyToManyRelationRecord";
 import { getRelationRecords } from "#/typeorm/relations/getRelationRecords";
 
-export async function building(
+export const building = async (
   option: SetOptional<IBuildCommandOption, "config">,
   logging?: boolean
-) {
+) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
-
   try {
     logger.info(
       `connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`
     );
-
     const dataSource = await getDataSource(option);
     const [templates] = await Promise.all([
       loadTemplates(option),
@@ -66,50 +64,40 @@ export async function building(
       templates.template,
       templates.default
     );
-
     if (isFalse(dataSource.isInitialized)) {
       throw new Error(
         `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`
       );
     }
-
     container.register(SymbolDefaultTemplate, asValue(templates.default));
     container.register(SymbolTemplate, asValue(templates.template));
     container.register(SymbolDataSource, asValue(dataSource));
     container.register(SymbolTemplateRenderer, asValue(renderer));
-
     const metadata = await getMetadata(option);
-
     logger.success("connection initialized");
     logger.info(`version: ${metadata.version}`);
-
     logger.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
-
     const entities = getEntityRecords(dataSource, metadata);
     const indicesRecords = getIndexRecords(dataSource, metadata);
-    const columns = dataSource.entityMetadatas
-      .flatMap((entity) =>
-        entity.columns.map((column) =>
-          getColumnRecord(column, option, metadata, indicesRecords)
-        )
-      );
-
+    const columns = dataSource.entityMetadatas.flatMap((entity) =>
+      entity.columns.map((column) =>
+        getColumnRecord(column, option, metadata, indicesRecords)
+      )
+    );
     const relationRecords = getRelationRecords(dataSource, metadata);
-
     const failRelations = relationRecords
       .filter((relationRecord): relationRecord is IFail<IReason> =>
         isFail(relationRecord)
       )
       .flatMap((relationRecord) => relationRecord.fail);
-
-    failRelations.forEach((relation) => logger.warn(relation.message));
-
+    for (const relation of failRelations) {
+      logger.warn(relation.message);
+    }
     const passRelations = relationRecords
       .filter((relation): relation is IPass<IRelationRecord[]> =>
         isPass(relation)
       )
       .flatMap((relationRecord) => relationRecord.pass);
-
     const dedupedRelations = dedupeManyToManyRelationRecord(passRelations);
     const records = [
       ...entities,
@@ -117,22 +105,16 @@ export async function building(
       ...dedupedRelations,
       ...indicesRecords,
     ];
-
     logger.success("complete extraction");
     logger.info("Database open and processing");
-
     const db = await openDatabase(option);
     const processedDb = await processDatabase(metadata, db, option);
     const compared = compareDatabase(metadata, records, processedDb.prev);
-
     const nextDb = [...compared, ...processedDb.next];
     const renderData = await getRenderData(nextDb, metadata, option);
-
     await flushDatabase(option, nextDb);
     logger.success("Database open and processing completed");
-
     logger.info(`output format: ${option.format}`);
-
     if (option.format === CE_OUTPUT_FORMAT.HTML) {
       const imageOption: SetOptional<IBuildCommandOption, "config"> = {
         ...option,
@@ -141,7 +123,6 @@ export async function building(
         width: "200%",
         theme: CE_MERMAID_THEME.DARK,
       };
-
       const documents = await createHtml(option, renderData);
       await Promise.all(
         documents.map(async (document) => {
@@ -149,35 +130,29 @@ export async function building(
           await fs.promises.writeFile(document.filename, document.content);
         })
       );
-
       if (!option.skipImageInHtml) {
         const imageDocument = await createImageHtml(imageOption, renderData);
         await writeToImage(imageDocument, imageOption, renderData);
       }
-
       return documents.map((document) => document.filename);
     }
-
     if (option.format === CE_OUTPUT_FORMAT.MARKDOWN) {
       const document = await createMarkdown(option, renderData);
       await betterMkdir(document.dirname);
       await fs.promises.writeFile(document.filename, document.content);
       return [document.filename];
     }
-
     if (option.format === CE_OUTPUT_FORMAT.PDF) {
       const document = await createPdfHtml(option, renderData);
       const filenames = await writeToPdf(document, option, renderData);
       return filenames;
     }
-
     if (option.format === CE_OUTPUT_FORMAT.IMAGE) {
       const document = await createImageHtml(option, renderData);
       await betterMkdir(document.dirname);
       const filenames = await writeToImage(document, option, renderData);
       return filenames;
     }
-
     return [];
   } catch (error) {
     const err = isError(
@@ -185,7 +160,6 @@ export async function building(
       new Error("unknown error raised from createHtmlDocCommand")
     );
     logger.error(err);
-
     return [];
   } finally {
     if (container.hasRegistration(SymbolDataSource)) {
@@ -193,4 +167,4 @@ export async function building(
       await dataSource.destroy();
     }
   }
-}
+};

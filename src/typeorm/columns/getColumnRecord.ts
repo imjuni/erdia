@@ -12,20 +12,17 @@ import { getComment } from "#/typeorm/columns/getComment";
 import { getIsNullable } from "#/typeorm/columns/getIsNullable";
 import { getEntityName } from "#/typeorm/entities/getEntityName";
 
-export function getColumnRecord(
+export const getColumnRecord = (
   columnMetadata: ColumnMetadata,
   option: Pick<IBuildCommandOption, "format">,
   metadata: IRecordMetadata,
   indices: IIndexRecord[]
-): IColumnRecord {
+): IColumnRecord => {
   /** entity name of metadata */
   const entityName = getEntityName(columnMetadata.entityMetadata);
-
   const { propertyName } = columnMetadata;
-
   /** table name of database */
   const columnName = columnMetadata.databaseName;
-
   /** column attribute key, (e.g., PK, FK) */
   const attributeKey = getColumnAttributeKey(
     columnMetadata,
@@ -33,20 +30,14 @@ export function getColumnRecord(
     entityName,
     indices
   );
-
   /** type of column */
   const columnType = getColumnType(columnMetadata);
-
   /** type of column */
   const columnTypeWithLength = getColumnType(columnMetadata, true);
-
   /** comment of entity, column */
   const comment = getComment(option, columnMetadata.comment);
-
   const isNullable = getIsNullable(columnMetadata);
-
   const charset = columnMetadata.charset ?? "";
-
   const columnData: Omit<IColumnRecord, "weight"> = {
     $kind: "column",
     ...metadata,
@@ -61,8 +52,6 @@ export function getColumnRecord(
     columnTypeWithLength,
     comment,
   };
-
   const weight = getColumnWeight(columnData);
-
   return { ...columnData, weight: weight.toNumber() };
-}
+};

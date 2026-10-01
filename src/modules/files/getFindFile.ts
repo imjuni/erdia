@@ -1,9 +1,9 @@
 import findUp from "find-up";
 
-export async function getFindFile(
+export const getFindFile = async (
   filename: string | readonly string[],
   option?: findUp.Options
-): Promise<string | undefined> {
+): Promise<string | undefined> => {
   const finded = await findUp(filename, option);
   return finded;
-}
+};

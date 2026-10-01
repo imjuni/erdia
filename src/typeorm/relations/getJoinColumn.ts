@@ -5,7 +5,7 @@ import { getEntityName } from "#/typeorm/entities/getEntityName";
 import { getManyToManyJoinColumn } from "#/typeorm/relations/getManyToManyJoinColumn";
 import { getManyToOneJoinColumn } from "#/typeorm/relations/getManyToOneJoinColumn";
 
-export function getJoinColumn(
+export const getJoinColumn = (
   relationMetadata: RelationMetadata
 ): Pick<
   IRelationRecord,
@@ -14,15 +14,14 @@ export function getJoinColumn(
   | "inverseJoinColumnOne"
   | "inverseJoinColumnNullable"
   | "isDuplicate"
-> {
+> => {
   if (relationMetadata.relationType === "one-to-one") {
     const joinColumn = relationMetadata.joinColumns.find(
       (column) =>
         getEntityName(column.entityMetadata) ===
         getEntityName(relationMetadata.entityMetadata)
     );
-
-    if (joinColumn != null) {
+    if (joinColumn !== null && joinColumn !== undefined) {
       return {
         inverseJoinColumnOne: true,
         inverseJoinColumnNullable: joinColumn.isNullable,
@@ -31,32 +30,30 @@ export function getJoinColumn(
         isDuplicate: false,
       };
     }
-
     const entityName = getEntityName(relationMetadata.entityMetadata);
     const inverseRelationMetadata =
       relationMetadata.inverseEntityMetadata.oneToOneRelations.find(
         (oneToOneRelation) =>
           getEntityName(oneToOneRelation.inverseEntityMetadata) === entityName
       );
-
-    if (inverseRelationMetadata == null) {
+    if (
+      inverseRelationMetadata === null ||
+      inverseRelationMetadata === undefined
+    ) {
       throw new Error(
         `Invalid joinColumn detected: ${relationMetadata.propertyName}`
       );
     }
-
     const inverseJoinColumn = inverseRelationMetadata.joinColumns.find(
       (column) =>
         getEntityName(column.entityMetadata) ===
         getEntityName(inverseRelationMetadata.entityMetadata)
     );
-
-    if (inverseJoinColumn == null) {
+    if (inverseJoinColumn === null || inverseJoinColumn === undefined) {
       throw new Error(
         `Invalid joinColumn detected: ${relationMetadata.propertyName}`
       );
     }
-
     return {
       inverseJoinColumnOne: true,
       inverseJoinColumnNullable: inverseRelationMetadata.isNullable,
@@ -65,7 +62,6 @@ export function getJoinColumn(
       isDuplicate: true,
     };
   }
-
   if (relationMetadata.relationType === "many-to-one") {
     return {
       ...getManyToOneJoinColumn(relationMetadata),
@@ -73,10 +69,8 @@ export function getJoinColumn(
       isDuplicate: false,
     };
   }
-
   if (relationMetadata.relationType === "one-to-many") {
     const oneEntityName = getEntityName(relationMetadata.entityMetadata);
-
     const manyToOneRelation =
       relationMetadata.inverseEntityMetadata.manyToOneRelations.find(
         (manyToOneRelationMetadata) => {
@@ -86,19 +80,16 @@ export function getJoinColumn(
           return entityName === oneEntityName;
         }
       );
-
-    if (manyToOneRelation == null) {
+    if (manyToOneRelation === null || manyToOneRelation === undefined) {
       throw new Error(
         `Cannot found relation on many-to-one side: ${relationMetadata.entityMetadata.name}`
       );
     }
-
     return {
       ...getManyToOneJoinColumn(manyToOneRelation),
       inverseJoinColumnOne: false,
       isDuplicate: true,
     };
   }
-
   return getManyToManyJoinColumn(relationMetadata);
-}
+};

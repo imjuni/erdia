@@ -1,7 +1,6 @@
 import type { EntityMetadata } from "typeorm";
 
 import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
-
 /**
  * 엔티티 메타 데이터를 받아서 다이어그램에서 사용할 이름을 반환한다.
  * 괄호나 엘리어스를 표시할 수 있는 방법이 없어서 테이블 이름을 사용한다.
@@ -10,22 +9,22 @@ import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
  * @param entityMeta 엔티티 메타 데이터
  * @returns entity name in CF-ER Diagram
  */
-export function getEntityName(
+export const getEntityName = (
   entityMeta: Pick<EntityMetadata, "tableName" | "name"> | IEntityRecord
-) {
+) => {
   if ("$kind" in entityMeta) {
-    if (entityMeta.dbName == null || entityMeta.dbName === "") {
+    if (
+      entityMeta.dbName === null ||
+      entityMeta.dbName === undefined ||
+      entityMeta.dbName === ""
+    ) {
       return entityMeta.name;
     }
-
     return entityMeta.dbName;
   }
-
   const { tableName, name } = entityMeta;
-
-  if (tableName == null || tableName === "") {
+  if (tableName === null || tableName === undefined || tableName === "") {
     return name;
   }
-
   return tableName;
-}
+};

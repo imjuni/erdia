@@ -6,7 +6,7 @@ import { Organization } from "./Organization";
 import { Photo } from "./Photo";
 import { User } from "./User";
 
-const handle = async () => {
+const handle = () => {
   const dataSourceOption: DataSourceOptions = {
     type: "better-sqlite3",
     // database: path.join(__dirname, '..', 'db', 'sqlite3.sqlite3'),
@@ -16,10 +16,7 @@ const handle = async () => {
     enableWAL: true,
     entities: [User, Photo, License, Organization],
   };
-
   const dataSource = new DataSource(dataSourceOption);
-
   return dataSource;
 };
-
 export default handle();

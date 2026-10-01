@@ -1,6 +1,6 @@
 import type { Argv } from "yargs";
 
-export function buildOptionBuilder<T>(args: Argv<T>) {
+export const buildOptionBuilder = <T>(args: Argv<T>) => {
   // option
   args
     .option("route-base-path", {
@@ -53,6 +53,5 @@ export function buildOptionBuilder<T>(args: Argv<T>) {
         "define the background color to html documents. eg. transparent, red, '#F0F0F0'",
       type: "string",
     });
-
   return args;
-}
+};

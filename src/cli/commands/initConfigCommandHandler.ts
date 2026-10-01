@@ -5,12 +5,10 @@ import { container } from "#/modules/containers/container";
 import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 
-export async function initConfigCommandHandler() {
+export const initConfigCommandHandler = async () => {
   const logger = container.resolve<Logger>(SymbolLogger);
-
   logger.level = LogLevels.info;
   logger.enable = true;
-
   const configFilePath = await initializing();
   return configFilePath;
-}
+};

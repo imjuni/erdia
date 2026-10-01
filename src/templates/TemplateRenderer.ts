@@ -1,21 +1,17 @@
-import consola from "consola";
+import { consola } from "consola";
 import { Eta } from "eta";
 import { isError, orThrow } from "my-easy-fp";
 
 export class TemplateRenderer {
   #eta: Eta;
-
   #templates: Map<string, string>;
-
   #defaultTemplates: Map<string, string>;
-
   constructor(
     templates: Map<string, string>,
     defaultTemplates: Map<string, string>
   ) {
     this.#templates = templates;
     this.#defaultTemplates = defaultTemplates;
-
     this.#eta = new Eta({ autoEscape: false, views: "erdia" });
     this.#eta.resolvePath = (templatePath: string) => templatePath;
     this.#eta.readFile = (templatePath: string) => {
@@ -28,8 +24,7 @@ export class TemplateRenderer {
       );
     };
   }
-
-  async evaluate<T extends object>(name: string, data: T) {
+  evaluate<T extends object>(name: string, data: T) {
     try {
       const rendered = this.#eta.render(name, data);
       return rendered;

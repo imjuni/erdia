@@ -6,10 +6,10 @@ import type { IIndexRecord } from "#/databases/interfaces/IIndexRecord";
 import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 import { getEntityName } from "#/typeorm/entities/getEntityName";
 
-export function getIndexRecord(
+export const getIndexRecord = (
   entityMetadata: EntityMetadata,
   metadata: IRecordMetadata
-) {
+) => {
   const indices = entityMetadata.indices.map((entityIndex) => {
     const record: IIndexRecord = {
       $kind: CE_RECORD_KIND.INDEX,
@@ -27,7 +27,6 @@ export function getIndexRecord(
     };
     return record;
   });
-
   const uniques = entityMetadata.uniques.map((entityUnique) => {
     const record: IIndexRecord = {
       $kind: CE_RECORD_KIND.INDEX,
@@ -45,6 +44,5 @@ export function getIndexRecord(
     };
     return record;
   });
-
   return [...indices, ...uniques];
-}
+};
