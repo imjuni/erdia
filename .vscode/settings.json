@@ -29,10 +29,10 @@
     ".erdiarc": "jsonc",
     "typedoc.json": "jsonc"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "files.eol": "\n",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.validate": ["typescript", "typescriptreact"],
+  "oxc.languageServer.enable": true,
   "markdown.extension.toc.levels": "2..6"
 }

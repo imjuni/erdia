@@ -24,9 +24,12 @@
     "bundle": "run-s clean bundle-cli bundle-lib",
     "build": "pnpm run clean && tsc --incremental --project tsconfig.prod.json",
     "test": "vitest --run --coverage",
-    "lint": "eslint --cache .",
-    "lint-staged": "lint-staged",
-    "prettier": "prettier --write src/**/*.ts",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt .",
+    "check": "pnpm run format:check && pnpm run lint",
+    "check:write": "pnpm run format && pnpm run lint:fix",
     "pub": "pnpm run bundle && cross-env RELEASE_MODE=true NODE_ENV=production pnpm publish --registry http://localhost:8901",
     "unpub": "pnpm unpublish $npm_package_name@$npm_package_version --registry http://localhost:8901",
     "pub:prod": "pnpm run bundle && cross-env RELEASE_MODE=true pnpm publish --access=public",
@@ -84,7 +87,6 @@
   "homepage": "https://imjuni.github.io/erdia/",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@tsconfig/node20": "^20.1.9",
     "@types/inquirer": "^9.0.3",
     "@types/inquirer-autocomplete-prompt": "^3.0.0",
     "@types/minimist": "^1.2.2",
@@ -92,24 +94,19 @@
     "@types/semver": "^7.5.0",
     "@types/source-map-support": "^0.5.4",
     "@types/yargs": "^17.0.24",
-    "@eslint/compat": "^2.0.1",
-    "@eslint/js": "^9.39.2",
     "@vitest/coverage-v8": "^1.4.0",
     "better-sqlite3": "^9.4.3",
     "cross-env": "^7.0.3",
     "ctix": "^2.4.3",
     "deps-diff": "^1.0.2",
     "esbuild": "^0.20.2",
-    "eslint": "^9.39.2",
-    "eslint-config-airbnb-extended": "^3.0.0",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
     "http-server": "^14.1.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "npm-run-all": "^4.1.5",
     "open": "^9.1.0",
-    "prettier-plugin-organize-imports": "^3.2.3",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
     "rimraf": "^5.0.1",
     "rollup": "^4.13.2",
     "rollup-plugin-dts": "^6.1.0",
@@ -118,8 +115,10 @@
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.7.1",
     "typescript": "^5.9.3",
+    "ultracite": "7.12.2",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "@tsconfig/node20": "^20.1.9"
   },
   "dependencies": {
     "@maeum/cli-logo": "^1.0.0",
@@ -160,10 +159,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "cross-env NODE_ENV=production eslint --cache"
-    ],
-    "*.{js,jsx,ts,tsx},*.json,.{eslintrc.cjs,prettierrc}": [
-      "cross-env NODE_ENV=production prettier --ignore-path .eslintignore --parser json --write"
+      "oxfmt --write",
+      "oxlint --fix"
     ]
   }
 }
