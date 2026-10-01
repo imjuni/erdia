@@ -1,1 +1,1 @@
-export const SymbolDefaultTemplate = Symbol('default-template');
+export const SymbolDefaultTemplate = Symbol("default-template");

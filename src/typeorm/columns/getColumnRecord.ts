@@ -1,23 +1,22 @@
-import { getColumnWeight } from '#/creators/columns/getColumnWeight';
-import { CE_CHANGE_KIND } from '#/databases/const-enum/CE_CHANGE_KIND';
-import { getColumnAttributeKey } from '#/typeorm/columns/getColumnAttributeKey';
-import { getColumnType } from '#/typeorm/columns/getColumnType';
-import { getComment } from '#/typeorm/columns/getComment';
-import { getIsNullable } from '#/typeorm/columns/getIsNullable';
-import { getEntityName } from '#/typeorm/entities/getEntityName';
+import type { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 
-import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
-
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { IColumnRecord } from '#/databases/interfaces/IColumnRecord';
-import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import { getColumnWeight } from "#/creators/columns/getColumnWeight";
+import { CE_CHANGE_KIND } from "#/databases/const-enum/CE_CHANGE_KIND";
+import type { IColumnRecord } from "#/databases/interfaces/IColumnRecord";
+import type { IIndexRecord } from "#/databases/interfaces/IIndexRecord";
+import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
+import { getColumnAttributeKey } from "#/typeorm/columns/getColumnAttributeKey";
+import { getColumnType } from "#/typeorm/columns/getColumnType";
+import { getComment } from "#/typeorm/columns/getComment";
+import { getIsNullable } from "#/typeorm/columns/getIsNullable";
+import { getEntityName } from "#/typeorm/entities/getEntityName";
 
 export function getColumnRecord(
   columnMetadata: ColumnMetadata,
-  option: Pick<IBuildCommandOption, 'format'>,
+  option: Pick<IBuildCommandOption, "format">,
   metadata: IRecordMetadata,
-  indices: IIndexRecord[],
+  indices: IIndexRecord[]
 ): IColumnRecord {
   /** entity name of metadata */
   const entityName = getEntityName(columnMetadata.entityMetadata);
@@ -28,7 +27,12 @@ export function getColumnRecord(
   const columnName = columnMetadata.databaseName;
 
   /** column attribute key, (e.g., PK, FK) */
-  const attributeKey = getColumnAttributeKey(columnMetadata, columnName, entityName, indices);
+  const attributeKey = getColumnAttributeKey(
+    columnMetadata,
+    columnName,
+    entityName,
+    indices
+  );
 
   /** type of column */
   const columnType = getColumnType(columnMetadata);
@@ -41,10 +45,10 @@ export function getColumnRecord(
 
   const isNullable = getIsNullable(columnMetadata);
 
-  const charset = columnMetadata.charset ?? '';
+  const charset = columnMetadata.charset ?? "";
 
-  const columnData: Omit<IColumnRecord, 'weight'> = {
-    $kind: 'column',
+  const columnData: Omit<IColumnRecord, "weight"> = {
+    $kind: "column",
     ...metadata,
     change: CE_CHANGE_KIND.ADD,
     entity: entityName,

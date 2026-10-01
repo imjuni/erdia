@@ -1,12 +1,11 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync } from "node:fs";
 
-import consola from 'consola';
-import { parse } from 'jsonc-parser';
-import minimist from 'minimist';
+import consola from "consola";
+import { parse } from "jsonc-parser";
+import minimist from "minimist";
 
-import { getConfigFilePath } from '#/configs/modules/getConfigFilePath';
-
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import { getConfigFilePath } from "#/configs/modules/getConfigFilePath";
 
 export function preLoadConfig() {
   try {
@@ -20,7 +19,7 @@ export function preLoadConfig() {
         return parsed;
       }
 
-      return { 'data-source-path': undefined };
+      return { "data-source-path": undefined };
     };
 
     const config = readConfigFile();
@@ -30,8 +29,9 @@ export function preLoadConfig() {
       c: configFilePath,
       config: configFilePath,
     };
-  } catch (caught) {
-    const err = caught instanceof Error ? caught : new Error('unknown error raised');
+  } catch (error) {
+    const err =
+      error instanceof Error ? error : new Error("unknown error raised");
 
     consola.error(err);
     consola.error(err.stack);

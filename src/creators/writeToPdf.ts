@@ -1,64 +1,71 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
-import consola from 'consola';
-import del from 'del';
-import { isError } from 'my-easy-fp';
-import pathe from 'pathe';
-import puppeteer from 'puppeteer';
+import consola from "consola";
+import del from "del";
+import { isError } from "my-easy-fp";
+import pathe from "pathe";
+import puppeteer from "puppeteer";
+import type { Browser, Page } from "puppeteer";
+import type { AsyncReturnType } from "type-fest";
 
-import { getPuppeteerConfig } from '#/modules/getPuppeteerConfig';
-
-import type { Browser, Page } from 'puppeteer';
-import type { AsyncReturnType } from 'type-fest';
-
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { getRenderData } from '#/creators/getRenderData';
-import type { IErdiaDocument } from '#/creators/interfaces/IErdiaDocument';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import type { getRenderData } from "#/creators/getRenderData";
+import type { IErdiaDocument } from "#/creators/interfaces/IErdiaDocument";
+import { getPuppeteerConfig } from "#/modules/getPuppeteerConfig";
 
 export async function writeToPdf(
   document: IErdiaDocument,
   option: Pick<
     IBuildCommandOption,
-    | 'output'
-    | 'components'
-    | 'prettierConfig'
-    | 'puppeteerConfig'
-    | 'viewportWidth'
-    | 'viewportHeight'
-    | 'backgroundColor'
+    | "output"
+    | "components"
+    | "prettierConfig"
+    | "puppeteerConfig"
+    | "viewportWidth"
+    | "viewportHeight"
+    | "backgroundColor"
   >,
-  renderData: AsyncReturnType<typeof getRenderData>,
+  renderData: AsyncReturnType<typeof getRenderData>
 ): Promise<string[]> {
   let localBrowser: Browser | undefined;
   let localPage: Page | undefined;
 
   try {
     const puppeteerConfig = await getPuppeteerConfig(option.puppeteerConfig);
-    const browser = await puppeteer.launch({ ...puppeteerConfig, headless: true });
+    const browser = await puppeteer.launch({
+      ...puppeteerConfig,
+      headless: true,
+    });
     const page = await browser.newPage();
     const puppeteerGotoOption: Parameters<typeof page.goto>[1] = {
-      waitUntil: 'domcontentloaded',
+      waitUntil: "domcontentloaded",
       timeout: 60_000,
     };
 
     localBrowser = browser;
     localPage = page;
 
-    consola.info('filename: ', document.filename);
+    consola.info("filename: ", document.filename);
 
-    await page.setViewport({ width: option.viewportWidth ?? 1280, height: option.viewportHeight ?? 720 * 2 });
+    await page.setViewport({
+      width: option.viewportWidth ?? 1280,
+      height: option.viewportHeight ?? 720 * 2,
+    });
     await fs.promises.writeFile(document.filename, document.content);
     await page.goto(`file://${document.filename}`, puppeteerGotoOption);
     await page.pdf({
       path: pathe.join(document.dirname, `${renderData.metadata.name}.pdf`),
-      printBackground: option.backgroundColor !== 'transparent',
+      printBackground: option.backgroundColor !== "transparent",
     });
 
     await del(document.filename);
 
     return [pathe.join(document.dirname, `${renderData.metadata.name}.pdf`)];
-  } catch (caught) {
-    const err = isError(caught, new Error('unknown error raised from writeToPdf'));
+  } catch (error) {
+    const err = isError(
+      error,
+      new Error("unknown error raised from writeToPdf")
+    );
 
     consola.error(err.message);
     consola.error(err.stack);
@@ -66,7 +73,7 @@ export async function writeToPdf(
     return [];
   } finally {
     if (localPage !== undefined && localPage !== null) {
-      consola.debug('Session Closed');
+      consola.debug("Session Closed");
       await localPage.close();
     }
 

@@ -1,1 +1,1 @@
-export const SymbolTemplateRenderer = Symbol('template-renderer');
+export const SymbolTemplateRenderer = Symbol("template-renderer");

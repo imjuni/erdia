@@ -1,6 +1,13 @@
-import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import type { ILicense } from './License';
-import factory from './factory';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+
+import factory from "./factory";
+import type { ILicense } from "./License";
 
 export interface IOrganization {
   id: number;
@@ -24,16 +31,16 @@ export class Organization extends BaseEntity implements IOrganization {
   @Column()
   expire: Date;
 
-  @ManyToMany('License', 'id', {
-    nullable: true,
+  @ManyToMany("License", "id", {
     createForeignKeyConstraints: false,
+    nullable: true,
   })
   license?: ILicense[];
 
   constructor() {
     super();
 
-    const factoried = factory({ entity: 'organization' });
+    const factoried = factory({ entity: "organization" });
 
     this.id = factoried.id;
     this.title = factoried.title;

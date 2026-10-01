@@ -1,28 +1,34 @@
-import alasql from 'alasql';
-import { compareVersions } from 'compare-versions';
-import { atOrThrow } from 'my-easy-fp';
+import alasql from "alasql";
+import { compareVersions } from "compare-versions";
+import { atOrThrow } from "my-easy-fp";
 
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
-import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
+import type { TDatabaseRecord } from "#/databases/interfaces/TDatabaseRecord";
 
 export async function processDatabase(
   metadata: IRecordMetadata,
   db: TDatabaseRecord[],
-  option: Pick<IBuildCommandOption, 'versionFrom'>,
-): Promise<{ next: TDatabaseRecord[]; deleted: TDatabaseRecord[]; prev: TDatabaseRecord[] }> {
+  option: Pick<IBuildCommandOption, "versionFrom">
+): Promise<{
+  next: TDatabaseRecord[];
+  deleted: TDatabaseRecord[];
+  prev: TDatabaseRecord[];
+}> {
   // case 01. empty database, first create database
   if (db.length <= 0) {
     return { next: [], deleted: [], prev: [] };
   }
 
   const currentVersion = metadata.version;
-  const versions = (await alasql.promise('SELECT DISTINCT version FROM ?', [db])) as {
+  const versions = (await alasql.promise("SELECT DISTINCT version FROM ?", [
+    db,
+  ])) as {
     version: string;
   }[];
 
   const sortedVersions =
-    option.versionFrom === 'timestamp'
+    option.versionFrom === "timestamp"
       ? versions.sort((l, r) => r.version.localeCompare(l.version))
       : versions.sort((l, r) => compareVersions(r.version, l.version));
 
@@ -30,10 +36,10 @@ export async function processDatabase(
 
   // case 02. different version between current and latest from database
   if (currentVersion !== firstVersionFromDb) {
-    const latestRecords = (await alasql.promise('SELECT * FROM ? WHERE version = ?', [
-      db,
-      firstVersionFromDb,
-    ])) as TDatabaseRecord[];
+    const latestRecords = (await alasql.promise(
+      "SELECT * FROM ? WHERE version = ?",
+      [db, firstVersionFromDb]
+    )) as TDatabaseRecord[];
 
     return { next: db, deleted: [], prev: latestRecords };
   }
@@ -47,20 +53,20 @@ export async function processDatabase(
 
   // case 04. same version between current and latest from database
   // in this case, update current version records in database
-  const partialRecords = (await alasql.promise('SELECT * FROM ? WHERE version != ?', [
-    db,
-    currentVersion,
-  ])) as TDatabaseRecord[];
+  const partialRecords = (await alasql.promise(
+    "SELECT * FROM ? WHERE version != ?",
+    [db, currentVersion]
+  )) as TDatabaseRecord[];
 
-  const oldRecords = (await alasql.promise('SELECT * FROM ? WHERE version = ?', [
-    db,
-    currentVersion,
-  ])) as TDatabaseRecord[];
+  const oldRecords = (await alasql.promise(
+    "SELECT * FROM ? WHERE version = ?",
+    [db, currentVersion]
+  )) as TDatabaseRecord[];
 
-  const latestRecords = (await alasql.promise('SELECT * FROM ? WHERE version = ?', [
-    db,
-    secondVersionFromDb,
-  ])) as TDatabaseRecord[];
+  const latestRecords = (await alasql.promise(
+    "SELECT * FROM ? WHERE version = ?",
+    [db, secondVersionFromDb]
+  )) as TDatabaseRecord[];
 
   return { next: partialRecords, deleted: oldRecords, prev: latestRecords };
 }

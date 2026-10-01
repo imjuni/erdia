@@ -1,26 +1,25 @@
-import Fuse from 'fuse.js';
-import { Glob } from 'glob';
-import inquirer from 'inquirer';
-import inquirerPrompt from 'inquirer-autocomplete-prompt';
-import pathe from 'pathe';
+import Fuse from "fuse.js";
+import { Glob } from "glob";
+import inquirer from "inquirer";
+import inquirerPrompt from "inquirer-autocomplete-prompt";
+import pathe from "pathe";
 
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import { CE_ENTITY_VERSION_FROM } from '#/configs/const-enum/CE_ENTITY_VERSION_FROM';
-import { CE_IMAGE_FORMAT } from '#/configs/const-enum/CE_IMAGE_FORMAT';
-import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
-import { CE_OUTPUT_COMPONENT } from '#/configs/const-enum/CE_OUTPUT_COMPONENT';
-import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import { getAutoCompleteSource } from '#/configs/modules/getAutoCompleteSource';
-import { getCwd } from '#/configs/modules/getCwd';
-import { ejecting } from '#/modules/commands/ejecting';
-import { container } from '#/modules/containers/container';
-import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
-import { getGlobFiles } from '#/modules/files/getGlobFiles';
-import { defaultExclude } from '#/modules/scopes/defaultExclude';
-import { CE_TEMPLATE_NAME } from '#/templates/cosnt-enum/CE_TEMPLATE_NAME';
-
-import type { IInitDocAnswer } from '#/configs/interfaces/InquirerAnswer';
-import type { TemplateRenderer } from '#/templates/TemplateRenderer';
+import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
+import { CE_ENTITY_VERSION_FROM } from "#/configs/const-enum/CE_ENTITY_VERSION_FROM";
+import { CE_IMAGE_FORMAT } from "#/configs/const-enum/CE_IMAGE_FORMAT";
+import { CE_MERMAID_THEME } from "#/configs/const-enum/CE_MERMAID_THEME";
+import { CE_OUTPUT_COMPONENT } from "#/configs/const-enum/CE_OUTPUT_COMPONENT";
+import { CE_OUTPUT_FORMAT } from "#/configs/const-enum/CE_OUTPUT_FORMAT";
+import type { IInitDocAnswer } from "#/configs/interfaces/InquirerAnswer";
+import { getAutoCompleteSource } from "#/configs/modules/getAutoCompleteSource";
+import { getCwd } from "#/configs/modules/getCwd";
+import { ejecting } from "#/modules/commands/ejecting";
+import { container } from "#/modules/containers/container";
+import { SymbolTemplateRenderer } from "#/modules/containers/keys/SymbolTemplateRenderer";
+import { getGlobFiles } from "#/modules/files/getGlobFiles";
+import { defaultExclude } from "#/modules/scopes/defaultExclude";
+import { CE_TEMPLATE_NAME } from "#/templates/cosnt-enum/CE_TEMPLATE_NAME";
+import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 
 export async function getConfigContent() {
   /**
@@ -37,15 +36,18 @@ export async function getConfigContent() {
    *          - png
    */
 
-  const sourceGlobFiles = new Glob(['**/*.js', '**/*.cjs', '**/*.mjs', '**/*.ts', '**/*.cts', '**/*.mts'], {
-    // absolute: true,
-    ignore: defaultExclude,
-    cwd: process.cwd(),
-    onlyFiles: true,
-  });
+  const sourceGlobFiles = new Glob(
+    ["**/*.js", "**/*.cjs", "**/*.mjs", "**/*.ts", "**/*.cts", "**/*.mts"],
+    {
+      // absolute: true,
+      ignore: defaultExclude,
+      cwd: process.cwd(),
+      onlyFiles: true,
+    }
+  );
   const sourceFiles = getGlobFiles(sourceGlobFiles);
 
-  const everyGlobFiles = new Glob(['**/*'], {
+  const everyGlobFiles = new Glob(["**/*"], {
     // absolute: true,
     ignore: defaultExclude,
     cwd: process.cwd(),
@@ -54,7 +56,7 @@ export async function getConfigContent() {
   });
   const everyFiles = getGlobFiles(everyGlobFiles);
 
-  const directoryGlobDirPaths = new Glob(['**/*'], {
+  const directoryGlobDirPaths = new Glob(["**/*"], {
     // absolute: true,
     ignore: defaultExclude,
     cwd: process.cwd(),
@@ -67,149 +69,193 @@ export async function getConfigContent() {
   const everyFilesFuse = new Fuse(everyFiles, { includeScore: true });
   const directoriesFuse = new Fuse(directories, { includeScore: true });
 
-  inquirer.registerPrompt('autocomplete', inquirerPrompt);
+  inquirer.registerPrompt("autocomplete", inquirerPrompt);
 
   const answer = await inquirer.prompt<IInitDocAnswer>([
     {
-      type: 'autocomplete',
-      name: 'dataSourceFile',
-      message: 'Select a dataSource file: ',
-      source: getAutoCompleteSource(sourceFilesFuse, CE_DEFAULT_VALUE.DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT),
+      type: "autocomplete",
+      name: "dataSourceFile",
+      message: "Select a dataSource file: ",
+      source: getAutoCompleteSource(
+        sourceFilesFuse,
+        CE_DEFAULT_VALUE.DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT
+      ),
     },
     {
-      type: 'autocomplete',
-      name: 'output',
-      message: 'Select directory for output files: ',
-      source: getAutoCompleteSource(directoriesFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
+      type: "autocomplete",
+      name: "output",
+      message: "Select directory for output files: ",
+      source: getAutoCompleteSource(
+        directoriesFuse,
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+      ),
     },
     {
-      type: 'list',
-      name: 'projectName',
-      message: 'Select output type: ',
+      type: "list",
+      name: "projectName",
+      message: "Select output type: ",
       choices: [
-        { name: 'database: document name came from database name', value: 'db' },
-        { name: 'application: document name came from name in package.json', value: 'app' },
+        {
+          name: "database: document name came from database name",
+          value: "db",
+        },
+        {
+          name: "application: document name came from name in package.json",
+          value: "app",
+        },
       ],
     },
     {
-      type: 'list',
-      name: 'isEjectTemplate',
-      message: 'Want to eject template? ',
+      type: "list",
+      name: "isEjectTemplate",
+      message: "Want to eject template? ",
       choices: [
-        { name: 'use custom template: eject template', value: true },
-        { name: 'use default template: not eject template', value: false },
+        { name: "use custom template: eject template", value: true },
+        { name: "use default template: not eject template", value: false },
       ],
     },
     {
-      type: 'list',
-      name: 'format',
-      message: 'Select output type: ',
+      type: "list",
+      name: "format",
+      message: "Select output type: ",
       default: CE_OUTPUT_FORMAT.HTML,
       choices: [
-        { name: 'html', value: CE_OUTPUT_FORMAT.HTML },
-        { name: 'markdown', value: CE_OUTPUT_FORMAT.MARKDOWN },
-        { name: 'pdf', value: CE_OUTPUT_FORMAT.PDF },
-        { name: 'image', value: CE_OUTPUT_FORMAT.IMAGE },
+        { name: "html", value: CE_OUTPUT_FORMAT.HTML },
+        { name: "markdown", value: CE_OUTPUT_FORMAT.MARKDOWN },
+        { name: "pdf", value: CE_OUTPUT_FORMAT.PDF },
+        { name: "image", value: CE_OUTPUT_FORMAT.IMAGE },
       ],
     },
     {
-      type: 'list',
-      name: 'isSelectDatabasePath',
-      message: 'Want to select the entity database file path?',
+      type: "list",
+      name: "isSelectDatabasePath",
+      message: "Want to select the entity database file path?",
       default: false,
       choices: [
-        { name: 'yes', value: true },
-        { name: 'no', value: false },
+        { name: "yes", value: true },
+        { name: "no", value: false },
       ],
     },
     {
-      type: 'autocomplete',
-      name: 'databasePath',
-      message: 'Select the entity database file path: ',
-      source: getAutoCompleteSource(directoriesFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.isSelectDatabasePath,
-    },
-    {
-      type: 'list',
-      name: 'isEnterRouteBasePath',
-      message: 'Want to enter route base path for html document? ',
-      default: false,
-      choices: [
-        { name: 'enter rotue base path', value: true },
-        { name: 'skip', value: false },
-      ],
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === CE_OUTPUT_FORMAT.HTML,
-    },
-    {
-      type: 'input',
-      name: 'routeBasePath',
-      message: 'Enter your route base path: ',
+      type: "autocomplete",
+      name: "databasePath",
+      message: "Select the entity database file path: ",
+      source: getAutoCompleteSource(
+        directoriesFuse,
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+      ),
       when: (answerForWhen: IInitDocAnswer) =>
-        answerForWhen.format === CE_OUTPUT_FORMAT.HTML && answerForWhen.isEnterRouteBasePath,
+        answerForWhen.isSelectDatabasePath,
     },
     {
-      type: 'list',
-      name: 'versionFrom',
-      message: 'Select version extract style: ',
+      type: "list",
+      name: "isEnterRouteBasePath",
+      message: "Want to enter route base path for html document? ",
+      default: false,
       choices: [
-        { name: 'extract from package.json', value: CE_ENTITY_VERSION_FROM.PACKAGE_JSON },
-        { name: 'extract from file(need version file selection)', value: CE_ENTITY_VERSION_FROM.FILE },
-        { name: 'use timestamp(all stored different version)', value: CE_ENTITY_VERSION_FROM.TIMESTAMP },
+        { name: "enter rotue base path", value: true },
+        { name: "skip", value: false },
       ],
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE,
+      when: (answerForWhen: IInitDocAnswer) =>
+        answerForWhen.format === CE_OUTPUT_FORMAT.HTML,
     },
     {
-      type: 'autocomplete',
-      name: 'versionPath',
-      message: 'Select the version file path: ',
-      source: getAutoCompleteSource(everyFilesFuse, CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT),
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.versionFrom === CE_ENTITY_VERSION_FROM.FILE,
+      type: "input",
+      name: "routeBasePath",
+      message: "Enter your route base path: ",
+      when: (answerForWhen: IInitDocAnswer) =>
+        answerForWhen.format === CE_OUTPUT_FORMAT.HTML &&
+        answerForWhen.isEnterRouteBasePath,
     },
     {
-      type: 'list',
-      name: 'theme',
-      message: 'Select mermaid theme: ',
+      type: "list",
+      name: "versionFrom",
+      message: "Select version extract style: ",
       choices: [
-        { name: 'default', value: CE_MERMAID_THEME.DEFAULT },
-        { name: 'forest', value: CE_MERMAID_THEME.FOREST },
-        { name: 'dark', value: CE_MERMAID_THEME.DARK },
-        { name: 'neutral', value: CE_MERMAID_THEME.NEUTRAL },
-        { name: 'null', value: CE_MERMAID_THEME.NULL },
+        {
+          name: "extract from package.json",
+          value: CE_ENTITY_VERSION_FROM.PACKAGE_JSON,
+        },
+        {
+          name: "extract from file(need version file selection)",
+          value: CE_ENTITY_VERSION_FROM.FILE,
+        },
+        {
+          name: "use timestamp(all stored different version)",
+          value: CE_ENTITY_VERSION_FROM.TIMESTAMP,
+        },
+      ],
+      when: (answerForWhen: IInitDocAnswer) =>
+        answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE,
+    },
+    {
+      type: "autocomplete",
+      name: "versionPath",
+      message: "Select the version file path: ",
+      source: getAutoCompleteSource(
+        everyFilesFuse,
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+      ),
+      when: (answerForWhen: IInitDocAnswer) =>
+        answerForWhen.versionFrom === CE_ENTITY_VERSION_FROM.FILE,
+    },
+    {
+      type: "list",
+      name: "theme",
+      message: "Select mermaid theme: ",
+      choices: [
+        { name: "default", value: CE_MERMAID_THEME.DEFAULT },
+        { name: "forest", value: CE_MERMAID_THEME.FOREST },
+        { name: "dark", value: CE_MERMAID_THEME.DARK },
+        { name: "neutral", value: CE_MERMAID_THEME.NEUTRAL },
+        { name: "null", value: CE_MERMAID_THEME.NULL },
       ],
     },
     {
-      type: 'checkbox',
-      name: 'components',
-      message: 'Check component in document: ',
-      choices: [
-        ...[CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER].map((component) =>
-          component === CE_OUTPUT_COMPONENT.ER
-            ? { name: 'ER diagram', value: 'er', checked: true }
-            : { name: 'Entity specification table', value: 'table', checked: true },
+      type: "checkbox",
+      name: "components",
+      message: "Check component in document: ",
+      choices: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER].map(
+          (component) =>
+            component === CE_OUTPUT_COMPONENT.ER
+              ? { name: "ER diagram", value: "er", checked: true }
+              : {
+                  name: "Entity specification table",
+                  value: "table",
+                  checked: true,
+                }
         ),
-      ],
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== 'image',
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== "image",
     },
     {
-      type: 'list',
-      name: 'imageFormat',
-      message: 'Select image format: ',
+      type: "list",
+      name: "imageFormat",
+      message: "Select image format: ",
       choices: [
-        { name: 'svg', checked: CE_IMAGE_FORMAT.SVG },
-        { name: 'png', checked: CE_IMAGE_FORMAT.PNG },
+        { name: "svg", checked: CE_IMAGE_FORMAT.SVG },
+        { name: "png", checked: CE_IMAGE_FORMAT.PNG },
       ],
-      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === 'image',
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === "image",
     },
   ]);
 
   const templateDir = await (answer.isEjectTemplate
-    ? ejecting({ templatePath: pathe.join(getCwd(process.env), CE_DEFAULT_VALUE.TEMPLATES_PATH), showLogo: false })
-    : Promise.resolve(undefined));
+    ? ejecting({
+        templatePath: pathe.join(
+          getCwd(process.env),
+          CE_DEFAULT_VALUE.TEMPLATES_PATH
+        ),
+        showLogo: false,
+      })
+    : Promise.resolve());
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
   const file = await renderer.evaluate(CE_TEMPLATE_NAME.CONFIG_JSON, {
     config: {
       ...answer,
-      templatePath: templateDir != null ? pathe.relative(getCwd(process.env), templateDir) : templateDir,
+      templatePath:
+        templateDir == null
+          ? templateDir
+          : pathe.relative(getCwd(process.env), templateDir),
       versionFrom: answer.versionFrom ?? CE_ENTITY_VERSION_FROM.TIMESTAMP,
       config: CE_DEFAULT_VALUE.CONFIG_FILE_NAME,
     },

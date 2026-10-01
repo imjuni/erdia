@@ -1,1 +1,1 @@
-export const SymbolDataSource = Symbol('data-source');
+export const SymbolDataSource = Symbol("data-source");

@@ -1,14 +1,14 @@
-import { isFalse } from 'my-easy-fp';
-import { exists } from 'my-node-fp';
-import pathe from 'pathe';
+import { isFalse } from "my-easy-fp";
+import { exists } from "my-node-fp";
+import pathe from "pathe";
+import type { DataSource } from "typeorm";
 
-import { loadDataSource } from '#/typeorm/loadDataSource';
+import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
+import { loadDataSource } from "#/typeorm/loadDataSource";
 
-import type { DataSource } from 'typeorm';
-
-import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
-
-export async function getDataSource(options: Pick<ICommonOption, 'dataSourcePath'>): Promise<DataSource> {
+export async function getDataSource(
+  options: Pick<ICommonOption, "dataSourcePath">
+): Promise<DataSource> {
   const dataSourcePath = pathe.resolve(options.dataSourcePath);
 
   if (isFalse(await exists(dataSourcePath))) {

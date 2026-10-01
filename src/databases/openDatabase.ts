@@ -1,18 +1,22 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
-import { parse } from 'jsonc-parser';
-import { isFalse } from 'my-easy-fp';
-import { exists } from 'my-node-fp';
-import pathe from 'pathe';
+import { parse } from "jsonc-parser";
+import { isFalse } from "my-easy-fp";
+import { exists } from "my-node-fp";
+import pathe from "pathe";
 
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
+import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import type { TDatabaseRecord } from "#/databases/interfaces/TDatabaseRecord";
+import { getOutputDirPath } from "#/modules/files/getOutputDirPath";
 
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { TDatabaseRecord } from '#/databases/interfaces/TDatabaseRecord';
-
-export async function openDatabase(option: Pick<IBuildCommandOption, 'databasePath'>): Promise<TDatabaseRecord[]> {
-  const dirname = await getOutputDirPath({ output: option.databasePath }, process.cwd());
+export async function openDatabase(
+  option: Pick<IBuildCommandOption, "databasePath">
+): Promise<TDatabaseRecord[]> {
+  const dirname = await getOutputDirPath(
+    { output: option.databasePath },
+    process.cwd()
+  );
   const filename = pathe.join(dirname, CE_DEFAULT_VALUE.DATABASE_FILENAME);
 
   if (filename == null) {
@@ -23,6 +27,8 @@ export async function openDatabase(option: Pick<IBuildCommandOption, 'databasePa
     return [];
   }
 
-  const db = parse((await fs.promises.readFile(filename)).toString()) as TDatabaseRecord[];
+  const db = parse(
+    (await fs.promises.readFile(filename)).toString()
+  ) as TDatabaseRecord[];
   return db;
 }

@@ -1,13 +1,13 @@
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig } from 'vitest/config';
+import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
     coverage: {
-      provider: 'v8', // or 'v8'
+      provider: "v8", // or 'v8'
       all: false,
     },
-    exclude: ['node_modules', 'examples', 'dist'],
+    exclude: ["node_modules", "examples", "dist"],
   },
-  plugins: [tsconfigPaths({ projects: ['tsconfig.json'] })],
+  plugins: [tsconfigPaths({ projects: ["tsconfig.json"] })],
 });

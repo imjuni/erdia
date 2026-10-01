@@ -1,6 +1,7 @@
-import { EntitySchema } from 'typeorm';
-import type { IOrganization } from './Organization';
-import type { IUser } from './User';
+import { EntitySchema } from "typeorm";
+
+import type { IOrganization } from "./Organization";
+import type { IUser } from "./User";
 
 export interface ILicense {
   id: number;
@@ -17,70 +18,70 @@ export interface ILicenseRelation {
 }
 
 export const License = new EntitySchema<ILicense & ILicenseRelation>({
-  name: 'License',
-  tableName: 'tbl_license',
   columns: {
-    id: {
-      type: 'int',
-      primary: true,
-      generated: 'increment',
-    },
-    title: {
-      type: 'varchar',
-      length: 512,
-      comment: 'organization title',
-      charset: 'utf8mb4',
-    },
-    weight: {
-      type: 'double precision',
-      comment: 'sort weight',
-    },
     code: {
-      type: 'varchar',
+      charset: "utf8mb4",
+      comment: "organization code",
       length: 200,
-      comment: 'organization code',
-      charset: 'utf8mb4',
+      type: "varchar",
     },
     description: {
-      type: 'varchar',
+      charset: "utf8mb4",
+      comment: "organization description",
       length: 2048,
-      comment: 'organization description',
-      charset: 'utf8mb4',
+      type: "varchar",
     },
     expire: {
-      type: 'datetime',
-      default: () => 'CURRENT_TIMESTAMP',
+      default: () => "CURRENT_TIMESTAMP",
+      type: "datetime",
+    },
+    id: {
+      generated: "increment",
+      primary: true,
+      type: "int",
+    },
+    title: {
+      charset: "utf8mb4",
+      comment: "organization title",
+      length: 512,
+      type: "varchar",
+    },
+    weight: {
+      comment: "sort weight",
+      type: "double precision",
     },
   },
-  uniques: [
-    {
-      name: 'uk_license_code',
-      columns: ['code', 'title'],
-    },
-  ],
+  name: "License",
   relations: {
-    user: {
-      target: 'User',
-      type: 'many-to-one',
-      createForeignKeyConstraints: false,
-      inverseSide: 'licenses',
-      joinColumn: {
-        name: 'user_id',
-      },
-    },
     organizations: {
-      target: 'Organization',
-      type: 'many-to-many',
       createForeignKeyConstraints: false,
       joinTable: {
-        name: 'tbl_mtm_license_organization',
-        joinColumn: {
-          name: 'license_id',
-        },
         inverseJoinColumn: {
-          name: 'organization_id',
+          name: "organization_id",
         },
+        joinColumn: {
+          name: "license_id",
+        },
+        name: "tbl_mtm_license_organization",
       },
+      target: "Organization",
+      type: "many-to-many",
+    },
+    user: {
+      createForeignKeyConstraints: false,
+      inverseSide: "licenses",
+      joinColumn: {
+        name: "user_id",
+      },
+      target: "User",
+      type: "many-to-one",
     },
   },
+  tableName: "tbl_license",
+  uniques: [
+    {
+      name: "uk_license_code",
+      columns: ["code", "title"],
+    },
+  ],
 });

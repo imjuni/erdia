@@ -1,10 +1,9 @@
-import { bignumber } from 'mathjs';
-
-import type Fuse from 'fuse.js';
+import type Fuse from "fuse.js";
+import { bignumber } from "mathjs";
 
 export function getAutoCompleteSource(fuse: Fuse<string>, limit: number) {
   return (_answersSoFar: unknown, input: string | undefined) => {
-    const safeInput = input ?? '';
+    const safeInput = input ?? "";
 
     return fuse
       .search(safeInput)
@@ -18,7 +17,7 @@ export function getAutoCompleteSource(fuse: Fuse<string>, limit: number) {
           .toNumber(),
         percent: bignumber(1)
           .sub(bignumber(matched.score ?? 0))
-          .mul(10000)
+          .mul(10_000)
           .floor()
           .div(100)
           .toNumber(),

@@ -1,5 +1,6 @@
-import { EntitySchema } from 'typeorm';
-import type { IUser } from './User';
+import { EntitySchema } from "typeorm";
+
+import type { IUser } from "./User";
 
 export interface IPhoto {
   id: number;
@@ -14,37 +15,37 @@ export interface IPhotoRelation {
 }
 
 export const Photo = new EntitySchema<IPhoto & IPhotoRelation>({
-  name: 'Photo',
-  tableName: 'tbl_photo',
   columns: {
-    id: {
-      type: 'int',
-      primary: true,
-      generated: 'increment',
-    },
-    title: {
-      type: 'varchar',
-      length: 512,
-      comment: 'photo title',
-      charset: 'utf8mb4',
-    },
     description: {
-      type: 'varchar',
+      charset: "utf8mb4",
+      comment: "photo description",
       length: 2048,
-      comment: 'photo description',
-      charset: 'utf8mb4',
-    },
-    width: {
-      type: 'int',
+      type: "varchar",
     },
     height: {
-      type: 'int',
+      type: "int",
+    },
+    id: {
+      generated: "increment",
+      primary: true,
+      type: "int",
+    },
+    title: {
+      charset: "utf8mb4",
+      comment: "photo title",
+      length: 512,
+      type: "varchar",
+    },
+    width: {
+      type: "int",
     },
   },
+  name: "Photo",
   relations: {
     user: {
-      target: 'User',
-      type: 'one-to-one',
+      target: "User",
+      type: "one-to-one",
     },
   },
+  tableName: "tbl_photo",
 });

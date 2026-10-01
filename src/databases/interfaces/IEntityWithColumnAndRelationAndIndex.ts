@@ -1,8 +1,8 @@
-import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type { IBaseRecord } from '#/databases/interfaces/IBaseRecord';
-import type { IColumnRecord } from '#/databases/interfaces/IColumnRecord';
-import type { IIndexRecord } from '#/databases/interfaces/IIndexRecord';
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
+import type { CE_RECORD_KIND } from "#/databases/const-enum/CE_RECORD_KIND";
+import type { IBaseRecord } from "#/databases/interfaces/IBaseRecord";
+import type { IColumnRecord } from "#/databases/interfaces/IColumnRecord";
+import type { IIndexRecord } from "#/databases/interfaces/IIndexRecord";
+import type { IRelationRecord } from "#/databases/interfaces/IRelationRecord";
 
 export interface IEntityWithColumnAndRelationAndIndex extends IBaseRecord {
   /** kind of record */

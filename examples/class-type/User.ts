@@ -1,7 +1,16 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import type { ILicense } from './License';
-import type { IPhoto } from './Photo';
-import factory from './factory';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+
+import factory from "./factory";
+import type { ILicense } from "./License";
+import type { IPhoto } from "./Photo";
 
 export interface IUser {
   id: number;
@@ -16,23 +25,23 @@ export class User extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'first_name', comment: 'user firstname', charset: 'utf8mb4' })
+  @Column({ charset: "utf8mb4", comment: "user firstname", name: "first_name" })
   firstName: string;
 
-  @Column({ type: 'varchar', length: 64, charset: 'utf8mb4' })
+  @Column({ charset: "utf8mb4", length: 64, type: "varchar" })
   lastName: string;
 
-  @Column({ comment: 'line1\nline2\nline3' })
+  @Column({ comment: "line1\nline2\nline3" })
   isActive: boolean;
 
-  @OneToOne('Photo', {
-    nullable: true,
+  @OneToOne("Photo", {
     createForeignKeyConstraints: false,
+    nullable: true,
   })
   @JoinColumn()
   photo: IPhoto;
 
-  @OneToMany('License', 'id', { createForeignKeyConstraints: false })
+  @OneToMany("License", "id", { createForeignKeyConstraints: false })
   @JoinColumn()
   license?: ILicense[];
 
@@ -40,10 +49,10 @@ export class User extends BaseEntity implements IUser {
     super();
 
     this.id = 0;
-    this.firstName = '';
-    this.lastName = '';
+    this.firstName = "";
+    this.lastName = "";
     this.isActive = false;
-    this.photo = factory({ entity: 'photo' });
+    this.photo = factory({ entity: "photo" });
     this.license = undefined;
   }
 }

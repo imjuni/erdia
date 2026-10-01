@@ -1,6 +1,6 @@
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { IEntityWithColumnAndRelationAndIndex } from '#/databases/interfaces/IEntityWithColumnAndRelationAndIndex';
-import type { IRecordMetadata } from '#/databases/interfaces/IRecordMetadata';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import type { IEntityWithColumnAndRelationAndIndex } from "#/databases/interfaces/IEntityWithColumnAndRelationAndIndex";
+import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 
 export interface IRenderData {
   versions: {
@@ -8,6 +8,6 @@ export interface IRenderData {
     latest: boolean;
     entities: IEntityWithColumnAndRelationAndIndex[];
   }[];
-  option: Omit<IBuildCommandOption, 'config'>;
+  option: Omit<IBuildCommandOption, "config">;
   metadata: IRecordMetadata;
 }

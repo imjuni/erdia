@@ -1,8 +1,12 @@
 import { defineConfig } from "oxlint";
 import core from "ultracite/oxlint/core";
-import vitest from "ultracite/oxlint/vitest";
 
 export default defineConfig({
-  extends: [core, vitest],
+  extends: [core],
   ignorePatterns: core.ignorePatterns,
+  rules: {
+    "unicorn/filename-case": "off",
+    "eslint/sort-keys": "off",
+    "eslint/no-redeclare": "off",
+  },
 });

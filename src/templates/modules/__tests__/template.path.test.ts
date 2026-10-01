@@ -1,57 +1,67 @@
-import * as mnf from 'my-node-fp';
-import pathe from 'pathe';
-import { describe, expect, it, vitest } from 'vitest';
+import * as mnf from "my-node-fp";
+import pathe from "pathe";
+import { describe, expect, it, vitest } from "vitest";
 
-import { getTemplatePath } from '#/templates/modules/getTemplatePath';
+import { getTemplatePath } from "#/templates/modules/getTemplatePath";
 
-vitest.mock('my-node-fp', async (importOriginal) => {
+vitest.mock("my-node-fp", async (importOriginal) => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-  const mod = await importOriginal<typeof import('my-node-fp')>();
+  const mod = await importOriginal<typeof import("my-node-fp")>();
   return {
     ...mod,
   };
 });
 
-describe('getTemplatePath', () => {
-  it('cannot template path', async () => {
+describe("getTemplatePath", () => {
+  it("cannot template path", async () => {
     const handle = vitest
-      .spyOn(mnf, 'exists')
-      .mockImplementationOnce(async () => Promise.resolve(false))
-      .mockImplementationOnce(async () => Promise.resolve(false));
+      .spyOn(mnf, "exists")
+      .mockImplementationOnce(async () => false)
+      .mockImplementationOnce(async () => false);
 
     await expect(async () => getTemplatePath()).rejects.toThrowError();
 
     handle.mockRestore();
   });
 
-  it('template path based on cwd', async () => {
-    const cwdTemplatePath = pathe.join(process.cwd(), 'templates');
+  it("template path based on cwd", async () => {
+    const cwdTemplatePath = pathe.join(process.cwd(), "templates");
     const templatePath = await getTemplatePath(cwdTemplatePath);
     expect(templatePath).toEqual(cwdTemplatePath);
   });
 
-  it('template path based on __dirname', async () => {
-    const dirnameTemplatePath = pathe.join(process.cwd(), 'src', 'templates', 'modules', '__tests__');
-    const templatePath = await getTemplatePath('__tests__');
+  it("template path based on __dirname", async () => {
+    const dirnameTemplatePath = pathe.join(
+      process.cwd(),
+      "src",
+      "templates",
+      "modules",
+      "__tests__"
+    );
+    const templatePath = await getTemplatePath("__tests__");
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
 
-  it('template path based on 3 step parent directory', async () => {
-    const dirnameTemplatePath = pathe.join(process.cwd(), 'templates');
-    const templatePath = await getTemplatePath('1110a038cb804e8fac8161070a601f66');
+  it("template path based on 3 step parent directory", async () => {
+    const dirnameTemplatePath = pathe.join(process.cwd(), "templates");
+    const templatePath = await getTemplatePath(
+      "1110a038cb804e8fac8161070a601f66"
+    );
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
 
-  it('template path based on 1 step parent directory, in distribution directory', async () => {
+  it("template path based on 1 step parent directory, in distribution directory", async () => {
     vitest
-      .spyOn(mnf, 'exists')
-      .mockImplementationOnce(async () => Promise.resolve(false))
-      .mockImplementationOnce(async () => Promise.resolve(false))
-      .mockImplementationOnce(async () => Promise.resolve(false))
-      .mockImplementationOnce(async () => Promise.resolve(true));
+      .spyOn(mnf, "exists")
+      .mockImplementationOnce(async () => false)
+      .mockImplementationOnce(async () => false)
+      .mockImplementationOnce(async () => false)
+      .mockImplementationOnce(async () => true);
 
-    const dirnameTemplatePath = pathe.join(process.cwd(), 'src', 'templates');
-    const templatePath = await getTemplatePath('1110a038cb804e8fac8161070a601f66');
+    const dirnameTemplatePath = pathe.join(process.cwd(), "src", "templates");
+    const templatePath = await getTemplatePath(
+      "1110a038cb804e8fac8161070a601f66"
+    );
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
 });

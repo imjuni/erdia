@@ -7,10 +7,11 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import type { IOrganization } from './Organization';
-import type { IUser } from './User';
-import factory from './factory';
+} from "typeorm";
+
+import factory from "./factory";
+import type { IOrganization } from "./Organization";
+import type { IUser } from "./User";
 
 export interface ILicense {
   id: number;
@@ -28,21 +29,24 @@ export class License extends BaseEntity implements ILicense {
   @Column()
   title: string;
 
-  @Column({ charset: 'utf8mb4' })
+  @Column({ charset: "utf8mb4" })
   description: string;
 
   @Column()
   expire: Date;
 
-  @ManyToOne('User', 'id', { createForeignKeyConstraints: false, nullable: false })
+  @ManyToOne("User", "id", {
+    createForeignKeyConstraints: false,
+    nullable: false,
+  })
   @JoinColumn()
   user: IUser;
 
   // 아, Column이 없으니 DB에 테이블을 만들지 않고
   // 그리고 엔티티에 columns에 정보도 없다!
-  @ManyToMany('Organization', 'id', {
-    nullable: false,
+  @ManyToMany("Organization", "id", {
     createForeignKeyConstraints: false,
+    nullable: false,
   })
   @JoinTable()
   organization?: IOrganization[];
@@ -50,14 +54,14 @@ export class License extends BaseEntity implements ILicense {
   constructor() {
     super();
 
-    const factoried = factory({ entity: 'license' });
+    const factoried = factory({ entity: "license" });
 
     this.id = factoried.id;
     this.title = factoried.title;
     this.description = factoried.description;
     this.expire = factoried.expire;
 
-    this.user = factory({ entity: 'user' });
+    this.user = factory({ entity: "user" });
     this.organization = undefined;
   }
 }

@@ -25,9 +25,7 @@
     "change": "add",
     "entity": "tbl_user",
     "dbName": "id",
-    "attributeKey": [
-      "PK"
-    ],
+    "attributeKey": ["PK"],
     "isNullable": "",
     "columnType": "*int",
     "charset": "",
@@ -78,9 +76,7 @@
     "change": "add",
     "entity": "tbl_user",
     "dbName": "photo_id",
-    "attributeKey": [
-      "FK"
-    ],
+    "attributeKey": ["FK"],
     "isNullable": "nullable",
     "columnType": "int",
     "charset": "",

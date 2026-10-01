@@ -1,6 +1,6 @@
-import type { EntityMetadata } from 'typeorm';
+import type { EntityMetadata } from "typeorm";
 
-import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
+import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
 
 /**
  * 엔티티 메타 데이터를 받아서 다이어그램에서 사용할 이름을 반환한다.
@@ -10,9 +10,11 @@ import type { IEntityRecord } from '#/databases/interfaces/IEntityRecord';
  * @param entityMeta 엔티티 메타 데이터
  * @returns entity name in CF-ER Diagram
  */
-export function getEntityName(entityMeta: Pick<EntityMetadata, 'tableName' | 'name'> | IEntityRecord) {
-  if ('$kind' in entityMeta) {
-    if (entityMeta.dbName == null || entityMeta.dbName === '') {
+export function getEntityName(
+  entityMeta: Pick<EntityMetadata, "tableName" | "name"> | IEntityRecord
+) {
+  if ("$kind" in entityMeta) {
+    if (entityMeta.dbName == null || entityMeta.dbName === "") {
       return entityMeta.name;
     }
 
@@ -21,7 +23,7 @@ export function getEntityName(entityMeta: Pick<EntityMetadata, 'tableName' | 'na
 
   const { tableName, name } = entityMeta;
 
-  if (tableName == null || tableName === '') {
+  if (tableName == null || tableName === "") {
     return name;
   }
 

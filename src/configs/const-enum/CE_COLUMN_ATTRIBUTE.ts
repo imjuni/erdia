@@ -6,9 +6,10 @@
  * - UK: unique key
  */
 export const CE_COLUMN_ATTRIBUTE = {
-  PK: 'PK',
-  FK: 'FK',
-  UK: 'UK',
+  FK: "FK",
+  PK: "PK",
+  UK: "UK",
 } as const;
 
-export type CE_COLUMN_ATTRIBUTE = (typeof CE_COLUMN_ATTRIBUTE)[keyof typeof CE_COLUMN_ATTRIBUTE];
+export type CE_COLUMN_ATTRIBUTE =
+  (typeof CE_COLUMN_ATTRIBUTE)[keyof typeof CE_COLUMN_ATTRIBUTE];

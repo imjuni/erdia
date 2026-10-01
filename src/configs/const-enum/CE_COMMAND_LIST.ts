@@ -1,13 +1,13 @@
 export const CE_COMMAND_LIST = {
-  BUILD: 'build',
-  INIT: 'init',
-  CLEAN: 'clean',
-  EJECT: 'eject',
-
-  BUILD_ALIAS: 'b',
-  INIT_ALIAS: 'i',
-  CLEAN_ALIAS: 'c',
-  EJECT_ALIAS: 'e',
+  BUILD: "build",
+  BUILD_ALIAS: "b",
+  CLEAN: "clean",
+  CLEAN_ALIAS: "c",
+  EJECT: "eject",
+  EJECT_ALIAS: "e",
+  INIT: "init",
+  INIT_ALIAS: "i",
 } as const;
 
-export type CE_COMMAND_LIST = (typeof CE_COMMAND_LIST)[keyof typeof CE_COMMAND_LIST];
+export type CE_COMMAND_LIST =
+  (typeof CE_COMMAND_LIST)[keyof typeof CE_COMMAND_LIST];

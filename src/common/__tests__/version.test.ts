@@ -1,112 +1,140 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
-import dayjs from 'dayjs';
-import { describe, expect, test, vitest } from 'vitest';
+import dayjs from "dayjs";
+import { describe, expect, test, vitest } from "vitest";
 
-import { getFileVersion } from '#/common/getFileVersion';
-import { getVersion } from '#/common/getVersion';
-import * as getFindFile from '#/modules/files/getFindFile';
-import * as getOutputDirPath from '#/modules/files/getOutputDirPath';
+import { getFileVersion } from "#/common/getFileVersion";
+import { getVersion } from "#/common/getVersion";
+import * as getFindFile from "#/modules/files/getFindFile";
+import * as getOutputDirPath from "#/modules/files/getOutputDirPath";
 
-describe('getFileVersion', () => {
-  test('pass - plain', async () => {
-    const expectation = '1.1.1';
-    const version = getFileVersion(Buffer.from('1.1.1'));
+describe("getFileVersion", () => {
+  test("pass - plain", async () => {
+    const expectation = "1.1.1";
+    const version = getFileVersion(Buffer.from("1.1.1"));
     expect(version).toEqual(expectation);
   });
 
-  test('pass - json', async () => {
-    const expectation = '1.1.1';
+  test("pass - json", async () => {
+    const expectation = "1.1.1";
     const version = getFileVersion(Buffer.from('{ "version": "1.1.1" }'));
     expect(version).toEqual(expectation);
   });
 
-  test('exception - json', async () => {
+  test("exception - json", async () => {
     expect(() => {
       getFileVersion(Buffer.from('{ "version": "" }'));
     }).toThrowError();
   });
 });
 
-describe('getVersion', () => {
-  test('pass with package.json version', async () => {
-    const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'package.json' });
-    expect(version).toEqual({ version: '1.1.1' });
+describe("getVersion", () => {
+  test("pass with package.json version", async () => {
+    const version = await getVersion(
+      { version: "1.1.1" },
+      { versionFrom: "package.json" }
+    );
+    expect(version).toEqual({ version: "1.1.1" });
   });
 
-  test('pass using timestamp', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
-    const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'timestamp' });
+  test("pass using timestamp", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
+    const version = await getVersion(
+      { version: "1.1.1" },
+      { versionFrom: "timestamp" }
+    );
 
     tspSpyOn.mockRestore();
 
     expect(version).toEqual({ version: expectation });
   });
 
-  test('pass using timestamp by configuration', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+  test("pass using timestamp by configuration", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
 
-    const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'timestamp' });
+    const version = await getVersion(
+      { version: "1.1.1" },
+      { versionFrom: "timestamp" }
+    );
 
     tspSpyOn.mockRestore();
 
     expect(version).toEqual({ version: expectation });
   });
 
-  test('pass using file', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+  test("pass using file", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn01 = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
     const tspSpyOn02 = vitest
-      .spyOn(getFindFile, 'getFindFile')
-      .mockImplementation(async () => Promise.resolve('/a/b/c'));
+      .spyOn(getFindFile, "getFindFile")
+      .mockImplementation(async () => "/a/b/c");
     const tspSpyOn03 = vitest
-      .spyOn(fs.promises, 'readFile')
-      .mockImplementation(async () => Promise.resolve(Buffer.from('1.1.1')));
+      .spyOn(fs.promises, "readFile")
+      .mockImplementation(async () => Buffer.from("1.1.1"));
 
-    const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'file' });
+    const version = await getVersion(
+      { version: "1.1.1" },
+      { versionFrom: "file" }
+    );
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
     tspSpyOn03.mockRestore();
 
-    expect(version).toMatchObject({ version: '1.1.1' });
+    expect(version).toMatchObject({ version: "1.1.1" });
   });
 
-  test('pass using file with versionPath', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+  test("pass using file with versionPath", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn01 = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
     const tspSpyOn02 = vitest
-      .spyOn(getFindFile, 'getFindFile')
-      .mockImplementation(async () => Promise.resolve('/a/b/c'));
+      .spyOn(getFindFile, "getFindFile")
+      .mockImplementation(async () => "/a/b/c");
     const tspSpyOn03 = vitest
-      .spyOn(fs.promises, 'readFile')
-      .mockImplementation(async () => Promise.resolve(Buffer.from('1.1.1')));
+      .spyOn(fs.promises, "readFile")
+      .mockImplementation(async () => Buffer.from("1.1.1"));
     const tspSpyOn04 = vitest
-      .spyOn(getOutputDirPath, 'getOutputDirPath')
-      .mockImplementation(async () => Promise.resolve('/a/b/c'));
+      .spyOn(getOutputDirPath, "getOutputDirPath")
+      .mockImplementation(async () => "/a/b/c");
 
-    const version = await getVersion({ version: '1.1.1' }, { versionFrom: 'file', versionPath: '/a/b/c' });
+    const version = await getVersion(
+      { version: "1.1.1" },
+      { versionFrom: "file", versionPath: "/a/b/c" }
+    );
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
     tspSpyOn03.mockRestore();
     tspSpyOn04.mockRestore();
 
-    expect(version).toMatchObject({ version: '1.1.1' });
+    expect(version).toMatchObject({ version: "1.1.1" });
   });
 
-  test('exception using package.json', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+  test("exception using package.json", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn01 = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
     const tspSpyOn02 = vitest
-      .spyOn(getFindFile, 'getFindFile')
-      .mockImplementation(async () => Promise.resolve(undefined));
+      .spyOn(getFindFile, "getFindFile")
+      .mockImplementation(async () => undefined);
 
     await expect(async () => {
       try {
-        await getVersion({ version: undefined }, { versionFrom: 'package.json' });
+        await getVersion(
+          { version: undefined },
+          { versionFrom: "package.json" }
+        );
       } finally {
         tspSpyOn01.mockRestore();
         tspSpyOn02.mockRestore();
@@ -114,16 +142,18 @@ describe('getVersion', () => {
     }).rejects.toThrowError();
   });
 
-  test('exception using file', async () => {
-    const expectation = '1692373636445';
-    const tspSpyOn01 = vitest.spyOn(dayjs.prototype, 'valueOf').mockImplementation(() => expectation);
+  test("exception using file", async () => {
+    const expectation = "1692373636445";
+    const tspSpyOn01 = vitest
+      .spyOn(dayjs.prototype, "valueOf")
+      .mockImplementation(() => expectation);
     const tspSpyOn02 = vitest
-      .spyOn(getFindFile, 'getFindFile')
-      .mockImplementation(async () => Promise.resolve(undefined));
+      .spyOn(getFindFile, "getFindFile")
+      .mockImplementation(async () => undefined);
 
     await expect(async () => {
       try {
-        await getVersion({ version: '1.1.1' }, { versionFrom: 'file' });
+        await getVersion({ version: "1.1.1" }, { versionFrom: "file" });
       } finally {
         tspSpyOn01.mockRestore();
         tspSpyOn02.mockRestore();

@@ -1,6 +1,6 @@
-import type { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
-import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type { IBaseRecord } from '#/databases/interfaces/IBaseRecord';
+import type { CE_COLUMN_ATTRIBUTE } from "#/configs/const-enum/CE_COLUMN_ATTRIBUTE";
+import type { CE_RECORD_KIND } from "#/databases/const-enum/CE_RECORD_KIND";
+import type { IBaseRecord } from "#/databases/interfaces/IBaseRecord";
 
 export interface IColumnRecord extends IBaseRecord {
   $kind: typeof CE_RECORD_KIND.COLUMN;

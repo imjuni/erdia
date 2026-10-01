@@ -1,33 +1,41 @@
-import { isTrue } from 'my-easy-fp';
+import { isTrue } from "my-easy-fp";
+import type { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 
-import { getIsNullable } from '#/typeorm/columns/getIsNullable';
-
-import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
+import { getIsNullable } from "#/typeorm/columns/getIsNullable";
 
 export function getColumnType(
-  columnMetadata: Pick<ColumnMetadata, 'type' | 'length' | 'isNullable' | 'isPrimary'>,
-  includeLength?: boolean,
+  columnMetadata: Pick<
+    ColumnMetadata,
+    "type" | "length" | "isNullable" | "isPrimary"
+  >,
+  includeLength?: boolean
 ) {
   const nullable = getIsNullable(columnMetadata);
-  if (typeof columnMetadata.type === 'function') {
-    if (isTrue(includeLength ?? false) && columnMetadata.length !== '') {
-      const name = columnMetadata.type.name.toString().toLowerCase().replace(/\s/g, '-');
-      const withNullable = nullable === 'nullable' ? name : `*${name}`;
+  if (typeof columnMetadata.type === "function") {
+    if (isTrue(includeLength ?? false) && columnMetadata.length !== "") {
+      const name = columnMetadata.type.name
+        .toString()
+        .toLowerCase()
+        .replaceAll(/\s/g, "-");
+      const withNullable = nullable === "nullable" ? name : `*${name}`;
       return `${withNullable}(${columnMetadata.length})`;
     }
 
-    const name = columnMetadata.type.name.toString().toLowerCase().replace(/\s/g, '-');
-    const withNullable = nullable === 'nullable' ? name : `*${name}`;
+    const name = columnMetadata.type.name
+      .toString()
+      .toLowerCase()
+      .replaceAll(/\s/g, "-");
+    const withNullable = nullable === "nullable" ? name : `*${name}`;
     return withNullable;
   }
 
-  if (isTrue(includeLength ?? false) && columnMetadata.length !== '') {
-    const name = columnMetadata.type.toString().replace(/\s/g, '-');
-    const withNullable = nullable === 'nullable' ? name : `*${name}`;
+  if (isTrue(includeLength ?? false) && columnMetadata.length !== "") {
+    const name = columnMetadata.type.toString().replaceAll(/\s/g, "-");
+    const withNullable = nullable === "nullable" ? name : `*${name}`;
     return `${withNullable}(${columnMetadata.length})`;
   }
 
-  const name = columnMetadata.type.toString().replace(/\s/g, '-');
-  const withNullable = nullable === 'nullable' ? name : `*${name}`;
+  const name = columnMetadata.type.toString().replaceAll(/\s/g, "-");
+  const withNullable = nullable === "nullable" ? name : `*${name}`;
   return withNullable;
 }

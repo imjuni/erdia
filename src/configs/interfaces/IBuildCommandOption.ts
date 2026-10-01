@@ -1,4 +1,4 @@
-import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
+import type { IDocumentOption } from "#/configs/interfaces/IDocumentOption";
 
 export interface IBuildCommandOption extends IDocumentOption {
   /**
@@ -50,5 +50,5 @@ export interface IBuildCommandOption extends IDocumentOption {
    * define the format to image file
    * @format image
    * */
-  imageFormat?: 'png' | 'svg';
+  imageFormat?: "png" | "svg";
 }

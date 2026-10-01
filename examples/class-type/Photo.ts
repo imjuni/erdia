@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export interface IPhoto {
   id: number;
@@ -26,8 +26,8 @@ export class Photo extends BaseEntity implements IPhoto {
     super();
 
     this.id = 0;
-    this.title = '';
-    this.description = '';
-    this.size = '';
+    this.title = "";
+    this.description = "";
+    this.size = "";
   }
 }

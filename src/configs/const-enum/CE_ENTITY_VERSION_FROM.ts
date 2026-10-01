@@ -6,9 +6,10 @@
  * - package.json: use package.json
  */
 export const CE_ENTITY_VERSION_FROM = {
-  TIMESTAMP: 'timestamp',
-  PACKAGE_JSON: 'package.json',
-  FILE: 'file',
+  FILE: "file",
+  PACKAGE_JSON: "package.json",
+  TIMESTAMP: "timestamp",
 } as const;
 
-export type CE_ENTITY_VERSION_FROM = (typeof CE_ENTITY_VERSION_FROM)[keyof typeof CE_ENTITY_VERSION_FROM];
+export type CE_ENTITY_VERSION_FROM =
+  (typeof CE_ENTITY_VERSION_FROM)[keyof typeof CE_ENTITY_VERSION_FROM];
