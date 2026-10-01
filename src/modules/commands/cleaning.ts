@@ -11,10 +11,10 @@ import { getMetadata } from "#/common/getMetadata";
 import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
 import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
 import { getCwd } from "#/configs/modules/getCwd";
+import { getDataSource } from "#/loaders/typeorm/connections/getDataSource";
 import { container } from "#/modules/containers/container";
 import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
 import { getOutputDirPath } from "#/modules/files/getOutputDirPath";
-import { getDataSource } from "#/typeorm/getDataSource";
 
 export const cleaning = async (option: ICommonOption) => {
   try {

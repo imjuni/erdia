@@ -23,6 +23,7 @@ import { compareDatabase } from "#/databases/compareDatabase";
 import { flushDatabase } from "#/databases/flushDatabase";
 import { openDatabase } from "#/databases/openDatabase";
 import { processDatabase } from "#/databases/processDatabase";
+import { getDataSource } from "#/loaders/typeorm/connections/getDataSource";
 import { TypeOrmLoader } from "#/loaders/typeorm/TypeOrmLoader";
 import { container } from "#/modules/containers/container";
 import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
@@ -35,7 +36,6 @@ import { createLogger } from "#/modules/loggers/createLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 import { loadTemplates } from "#/templates/modules/loadTemplates";
 import { TemplateRenderer } from "#/templates/TemplateRenderer";
-import { getDataSource } from "#/typeorm/getDataSource";
 
 export const building = async (
   option: SetOptional<IBuildCommandOption, "config">,
