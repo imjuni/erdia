@@ -2,10 +2,11 @@ import fs from "node:fs";
 
 import fastSafeStringify from "fast-safe-stringify";
 import { parse } from "jsonc-parser";
-import pathe from "pathe";
+import { join } from "pathe";
 import type { DataSource } from "typeorm";
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
+import { toSorted } from "#/common/toSorted";
 import { CE_CHANGE_KIND } from "#/databases/const-enum/CE_CHANGE_KIND";
 import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
 import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
@@ -14,186 +15,160 @@ import { getEntityPropertyName } from "#/typeorm/entities/getEntityPropertyName"
 import { getEntityRecord } from "#/typeorm/entities/getEntityRecord";
 import { getEntityRecords } from "#/typeorm/entities/getEntityRecords";
 
-const share: { dataSource: DataSource; expect: boolean } = {
-  expect: false,
-} as any;
+const testDirectory = join(process.cwd(), "src/typeorm/entities/__tests__");
 
+const share: {
+  dataSource: DataSource;
+  expect: boolean;
+} = {
+  dataSource: undefined as unknown as DataSource,
+  expect: false,
+};
 beforeAll(async () => {
-  share.dataSource = await (
-    await import("../../../../examples/async-schema-type/dataSourceConfig")
-  ).default;
+  const dataSourceModule = await import(
+    "../../../../examples/typeorm/async-schema-type/dataSourceConfig"
+  );
+  share.dataSource = await dataSourceModule.default;
   await share.dataSource.initialize();
 });
-
-describe("getEntityName", () => {
-  test("record > db-name", async () => {
+describe(getEntityName, () => {
+  it("record > db-name", () => {
     const name = getEntityName({
       $kind: "entity",
-      version: "i-am-entity-version",
+      change: CE_CHANGE_KIND.NONE,
       createdAt: "2023-01-01T11:22:33.000+09:00",
-      updatedAt: "2023-01-02T11:22:33.000+09:00",
-      entity: "i-am-table-name",
       dbName: "i-am-db-name",
-      change: CE_CHANGE_KIND.NONE,
-      name: "i-am-property-name",
+      entity: "i-am-table-name",
       hasRelation: false,
+      name: "i-am-property-name",
+      updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "i-am-entity-version",
     } satisfies IEntityRecord);
-
-    expect(name).toEqual("i-am-db-name");
+    expect(name).toBe("i-am-db-name");
   });
-
-  test("record > property-name", async () => {
+  it("record > property-name", () => {
     const name = getEntityName({
       $kind: "entity",
-      version: "i-am-entity-version",
+      change: CE_CHANGE_KIND.NONE,
       createdAt: "2023-01-01T11:22:33.000+09:00",
-      updatedAt: "2023-01-02T11:22:33.000+09:00",
-      entity: "i-am-table-name",
       dbName: "",
-      change: CE_CHANGE_KIND.NONE,
-      name: "i-am-property-name",
+      entity: "i-am-table-name",
       hasRelation: false,
-    } satisfies IEntityRecord);
-
-    expect(name).toEqual("i-am-property-name");
-  });
-
-  test("entity > table-name", async () => {
-    const name = getEntityName({
-      tableName: "i-am-table-name",
       name: "i-am-property-name",
-    });
-
-    expect(name).toEqual("i-am-table-name");
+      updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "i-am-entity-version",
+    } satisfies IEntityRecord);
+    expect(name).toBe("i-am-property-name");
   });
-
-  test("table > property-name", async () => {
+  it("entity > table-name", () => {
     const name = getEntityName({
+      name: "i-am-property-name",
+      tableName: "i-am-table-name",
+    });
+    expect(name).toBe("i-am-table-name");
+  });
+  it("table > property-name", () => {
+    const name = getEntityName({
+      name: "i-am-property-name",
       tableName: "",
-      name: "i-am-property-name",
     });
-
-    expect(name).toEqual("i-am-property-name");
+    expect(name).toBe("i-am-property-name");
   });
 });
-
-describe("getEntityPropertyName", () => {
-  test("record > property-name", async () => {
+describe(getEntityPropertyName, () => {
+  it("record > property-name", () => {
     const name = getEntityPropertyName({
       $kind: "entity",
-      version: "i-am-entity-version",
-      createdAt: "2023-01-01T11:22:33.000+09:00",
-      updatedAt: "2023-01-02T11:22:33.000+09:00",
-      entity: "i-am-table-name",
-      dbName: "i-am-table-name",
       change: CE_CHANGE_KIND.NONE,
+      createdAt: "2023-01-01T11:22:33.000+09:00",
+      dbName: "i-am-table-name",
+      entity: "i-am-table-name",
+      hasRelation: false,
       name: "i-am-property-name",
-      hasRelation: false,
+      updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "i-am-entity-version",
     } satisfies IEntityRecord);
-
-    expect(name).toEqual("i-am-property-name");
+    expect(name).toBe("i-am-property-name");
   });
-
-  test("record > table-name", async () => {
+  it("record > table-name", () => {
     const name = getEntityPropertyName({
       $kind: "entity",
-      version: "i-am-entity-version",
-      createdAt: "2023-01-01T11:22:33.000+09:00",
-      updatedAt: "2023-01-02T11:22:33.000+09:00",
-      entity: "i-am-table-name",
-      dbName: "i-am-table-name",
       change: CE_CHANGE_KIND.NONE,
-      name: "",
+      createdAt: "2023-01-01T11:22:33.000+09:00",
+      dbName: "i-am-table-name",
+      entity: "i-am-table-name",
       hasRelation: false,
+      name: "",
+      updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "i-am-entity-version",
     } satisfies IEntityRecord);
-
-    expect(name).toEqual("i-am-table-name");
+    expect(name).toBe("i-am-table-name");
   });
-
-  test("entity > table-name", async () => {
+  it("entity > table-name", () => {
     const name = getEntityPropertyName({
+      name: "i-am-property-name",
       tableName: "i-am-table-name",
-      name: "i-am-property-name",
     });
-
-    expect(name).toEqual("i-am-property-name");
+    expect(name).toBe("i-am-property-name");
   });
-
-  test("table > property-name", async () => {
+  it("table > property-name", () => {
     const name = getEntityPropertyName({
-      tableName: "i-am-property-name",
       name: "",
+      tableName: "i-am-property-name",
     });
-
-    expect(name).toEqual("i-am-property-name");
+    expect(name).toBe("i-am-property-name");
   });
 });
-
-describe("getEntityRecord", () => {
-  test("pass", async () => {
+describe(getEntityRecord, () => {
+  it("pass", async () => {
     const expectFileName = "expect-01.json";
     const metadata: IRecordMetadata = {
-      name: "i-am-application-name",
-      version: "1.0.0",
       createdAt: "2023-01-01T11:22:33.000+09:00",
+      name: "i-am-application-name",
       updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "1.0.0",
     };
     const entities = share.dataSource.entityMetadatas;
-
     if (entities.length <= 0) {
       throw new Error("Cannot found User, Photo entity");
     }
-
-    const tableDatas = entities
-      .map((entity) => getEntityRecord(entity, metadata))
-      .sort((l, r) => l.name.localeCompare(r.name));
-
+    const tableDatas = toSorted(
+      entities.map((entity) => getEntityRecord(entity, metadata)),
+      (left, right) => left.name.localeCompare(right.name),
+    );
     if (share.expect) {
       fs.writeFileSync(
-        pathe.join(__dirname, "expects", expectFileName),
-        fastSafeStringify(tableDatas, undefined, 2)
+        join(testDirectory, "expects", `${expectFileName}`),
+        fastSafeStringify(tableDatas, undefined, 2),
       );
     }
-
-    const expectation = parse(
-      (
-        await fs.promises.readFile(
-          pathe.join(__dirname, "expects", expectFileName)
-        )
-      ).toString()
-    ) as object;
-
+    const expectationContent = await fs.promises.readFile(
+      join(testDirectory, "expects", `${expectFileName}`),
+    );
+    const expectation = parse(expectationContent.toString()) as object;
     expect(tableDatas).toMatchObject(expectation);
   });
 });
-
-describe("getEntityRecords", () => {
-  test("pass", async () => {
+describe(getEntityRecords, () => {
+  it("pass", async () => {
     const expectFileName = "expect-02.json";
     const metadata: IRecordMetadata = {
-      name: "i-am-application-name",
-      version: "1.0.0",
       createdAt: "2023-01-01T11:22:33.000+09:00",
+      name: "i-am-application-name",
       updatedAt: "2023-01-02T11:22:33.000+09:00",
+      version: "1.0.0",
     };
-
     const records = getEntityRecords(share.dataSource, metadata);
-
     if (share.expect) {
       fs.writeFileSync(
-        pathe.join(__dirname, "expects", expectFileName),
-        fastSafeStringify(records, undefined, 2)
+        join(testDirectory, "expects", `${expectFileName}`),
+        fastSafeStringify(records, undefined, 2),
       );
     }
-
-    const expectation = parse(
-      (
-        await fs.promises.readFile(
-          pathe.join(__dirname, "expects", expectFileName)
-        )
-      ).toString()
-    ) as object;
-
+    const expectationContent = await fs.promises.readFile(
+      join(testDirectory, "expects", `${expectFileName}`),
+    );
+    const expectation = parse(expectationContent.toString()) as object;
     expect(records).toMatchObject(expectation);
   });
 });
