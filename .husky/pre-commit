@@ -9,9 +9,9 @@ green='\033[0;32m'
 yellow='\033[0;33m'
 no_color='\033[0m'
 
-echo -e "\n ${yellow}* code prettier start.${no_color}"
-npm run prettier
-echo -e "\n ${yellow}* code prettier end.${no_color}"
+echo -e "\n ${yellow}* staged code check start.${no_color}"
+pnpm exec lint-staged
+echo -e "\n ${yellow}* staged code check end.${no_color}"
 
 echo -e "\n ${yellow}* code lint start.${no_color}"
 npm run lint
