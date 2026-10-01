@@ -9,10 +9,7 @@ import { CE_CHANGE_KIND } from "#/databases/const-enum/CE_CHANGE_KIND";
 import type { IRelationRecord } from "#/databases/interfaces/IRelationRecord";
 import { dedupeManyToManyRelationRecord } from "#/loaders/typeorm/relations/dedupeManyToManyRelationRecord";
 
-const testDirectory = join(
-  process.cwd(),
-  "src/loaders/typeorm/relations/__tests__"
-);
+const testDirectory = join(process.cwd(), "src/loaders/typeorm/relations");
 
 const share: {
   expect: boolean;

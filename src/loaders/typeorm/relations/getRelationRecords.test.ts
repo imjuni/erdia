@@ -13,10 +13,7 @@ import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 import { getRelationRecord } from "#/loaders/typeorm/relations/getRelationRecord";
 import { getRelationRecords } from "#/loaders/typeorm/relations/getRelationRecords";
 
-const testDirectory = join(
-  process.cwd(),
-  "src/loaders/typeorm/relations/__tests__"
-);
+const testDirectory = join(process.cwd(), "src/loaders/typeorm/relations");
 
 type TRelationResult = ReturnType<typeof getRelationRecords>[number];
 
@@ -37,7 +34,7 @@ const share: {
 };
 beforeAll(async () => {
   const dataSourceModule =
-    await import("../../../../../examples/typeorm/schema-type/dataSourceConfig");
+    await import("../../../../examples/typeorm/schema-type/dataSourceConfig");
   share.dataSource = dataSourceModule.default;
   await share.dataSource.initialize();
 });

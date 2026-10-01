@@ -13,10 +13,7 @@ import { getManyToManyEntityMetadata } from "#/loaders/typeorm/relations/getMany
 import { getManyToManyJoinColumn } from "#/loaders/typeorm/relations/getManyToManyJoinColumn";
 import { getManyToOneJoinColumn } from "#/loaders/typeorm/relations/getManyToOneJoinColumn";
 
-const testDirectory = join(
-  process.cwd(),
-  "src/loaders/typeorm/relations/__tests__"
-);
+const testDirectory = join(process.cwd(), "src/loaders/typeorm/relations");
 
 const share: {
   dataSource: DataSource;
@@ -27,7 +24,7 @@ const share: {
 };
 beforeAll(async () => {
   const dataSourceModule =
-    await import("../../../../../examples/typeorm/schema-type/dataSourceConfig");
+    await import("../../../../examples/typeorm/schema-type/dataSourceConfig");
   share.dataSource = dataSourceModule.default;
   await share.dataSource.initialize();
 });
