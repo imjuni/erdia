@@ -1,14 +1,14 @@
-import { Glob } from 'glob';
-import pathe from 'pathe';
-import { describe, expect, it } from 'vitest';
+import { Glob } from "glob";
+import pathe from "pathe";
+import { describe, expect, it } from "vitest";
 
-import { getGlobFiles } from '#/modules/files/getGlobFiles';
-import { defaultExclude } from '#/modules/scopes/defaultExclude';
+import { getGlobFiles } from "#/modules/files/getGlobFiles";
+import { defaultExclude } from "#/modules/scopes/defaultExclude";
 
-describe('getGlobFiles', () => {
-  it('string type search result', () => {
-    const resolvedTemplatePath = pathe.join(process.cwd(), 'templates', 'html');
-    const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, '*.eta'), {
+describe("getGlobFiles", () => {
+  it("string type search result", () => {
+    const resolvedTemplatePath = pathe.join(process.cwd(), "templates", "html");
+    const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, "*.eta"), {
       absolute: true,
       ignore: defaultExclude,
       cwd: resolvedTemplatePath,
@@ -18,19 +18,19 @@ describe('getGlobFiles', () => {
     const files = getGlobFiles(globs);
 
     expect(files).toEqual([
-      pathe.join(process.cwd(), 'templates/html/table.eta'),
-      pathe.join(process.cwd(), 'templates/html/style.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid-toc.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid-diagram.eta'),
-      pathe.join(process.cwd(), 'templates/html/document.eta'),
-      pathe.join(process.cwd(), 'templates/html/document-toc.eta'),
+      pathe.join(process.cwd(), "templates/html/table.eta"),
+      pathe.join(process.cwd(), "templates/html/style.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid-toc.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid-diagram.eta"),
+      pathe.join(process.cwd(), "templates/html/document.eta"),
+      pathe.join(process.cwd(), "templates/html/document-toc.eta"),
     ]);
   });
 
-  it('stat type search result', () => {
-    const resolvedTemplatePath = pathe.join(process.cwd(), 'templates', 'html');
-    const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, '*.eta'), {
+  it("stat type search result", () => {
+    const resolvedTemplatePath = pathe.join(process.cwd(), "templates", "html");
+    const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, "*.eta"), {
       ignore: defaultExclude,
       cwd: resolvedTemplatePath,
       windowsPathsNoEscape: true,
@@ -42,13 +42,13 @@ describe('getGlobFiles', () => {
     const files = getGlobFiles(globs);
 
     expect(files).toEqual([
-      pathe.join(process.cwd(), 'templates/html/table.eta'),
-      pathe.join(process.cwd(), 'templates/html/style.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid-toc.eta'),
-      pathe.join(process.cwd(), 'templates/html/mermaid-diagram.eta'),
-      pathe.join(process.cwd(), 'templates/html/document.eta'),
-      pathe.join(process.cwd(), 'templates/html/document-toc.eta'),
+      pathe.join(process.cwd(), "templates/html/table.eta"),
+      pathe.join(process.cwd(), "templates/html/style.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid-toc.eta"),
+      pathe.join(process.cwd(), "templates/html/mermaid-diagram.eta"),
+      pathe.join(process.cwd(), "templates/html/document.eta"),
+      pathe.join(process.cwd(), "templates/html/document-toc.eta"),
     ]);
   });
 });

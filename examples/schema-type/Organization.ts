@@ -1,5 +1,6 @@
-import { EntitySchema } from 'typeorm';
-import type { ILicense } from './License';
+import { EntitySchema } from "typeorm";
+
+import type { ILicense } from "./License";
 
 export interface IOrganization {
   id: number;
@@ -13,56 +14,58 @@ export interface IOrganizationRelation {
   licenses: ILicense[];
 }
 
-export const Organization = new EntitySchema<IOrganization & IOrganizationRelation>({
-  name: 'Organization',
-  tableName: 'tbl_organization',
+export const Organization = new EntitySchema<
+  IOrganization & IOrganizationRelation
+>({
   columns: {
-    id: {
-      type: 'int',
-      primary: true,
-      generated: 'increment',
-    },
-    title: {
-      type: 'varchar',
-      length: 512,
-      comment: 'organization title',
-      charset: 'utf8mb4',
-    },
     description: {
-      type: 'varchar',
+      charset: "utf8mb4",
+      comment: "organization description",
       length: 2048,
-      comment: 'organization description',
-      charset: 'utf8mb4',
-    },
-    supports: {
-      type: 'simple-json',
-      comment: 'organization supports other organization',
+      type: "varchar",
     },
     expire: {
-      type: 'datetime',
-      default: () => 'CURRENT_TIMESTAMP',
+      default: () => "CURRENT_TIMESTAMP",
+      type: "datetime",
+    },
+    id: {
+      generated: "increment",
+      primary: true,
+      type: "int",
+    },
+    supports: {
+      comment: "organization supports other organization",
+      type: "simple-json",
+    },
+    title: {
+      charset: "utf8mb4",
+      comment: "organization title",
+      length: 512,
+      type: "varchar",
     },
   },
   indices: [
     {
-      name: 'idx_organization_title',
-      columns: ['title', 'description'],
+      name: "idx_organization_title",
+      columns: ["title", "description"],
     },
   ],
+  name: "Organization",
   relations: {
     licenses: {
-      target: 'License',
-      type: 'many-to-many',
       createForeignKeyConstraints: false,
       joinTable: {
-        name: 'tbl_mtm_license_organization',
-        joinColumn: {
-          name: 'organization_id',
-        },
         inverseJoinColumn: {
-          name: 'license_id',
+          name: "license_id",
         },
+        joinColumn: {
+          name: "organization_id",
+        },
+        name: "tbl_mtm_license_organization",
       },
+      target: "License",
+      type: "many-to-many",
     },
   },
+  tableName: "tbl_organization",
 });

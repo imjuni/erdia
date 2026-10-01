@@ -52,28 +52,34 @@ You can use ts-node or tsx, but you could use a simple script to extract the erd
 
 ```ts
 // generate-erdia.ts
-import { building, CE_ENTITY_VERSION_FROM, CE_OUTPUT_COMPONENT, CE_PROJECT_NAME_FROM } from 'erdia';
+import {
+  building,
+  CE_ENTITY_VERSION_FROM,
+  CE_OUTPUT_COMPONENT,
+  CE_PROJECT_NAME_FROM,
+} from "erdia";
 
 export async function handle() {
-  console.log('Start erdia');
+  console.log("Start erdia");
 
   await building(
     {
-      config: '',
-      dataSourcePath: 'src/databases/data-sources/PetStoreMysqlDataSource.ts',
-      format: 'html',
-      output: 'dist/html',
+      config: "",
+      dataSourcePath: "src/databases/data-sources/PetStoreMysqlDataSource.ts",
+      format: "html",
+      output: "dist/html",
       components: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER],
       projectName: CE_PROJECT_NAME_FROM.APPLICATION,
       versionFrom: CE_ENTITY_VERSION_FROM.PACKAGE_JSON,
-      theme: 'dark',
+      theme: "dark",
     },
-    true,
+    true
   );
 }
 
 handle().catch((caught) => {
-  const err = caught instanceof Error ? caught : new Error('unknown error raised');
+  const err =
+    caught instanceof Error ? caught : new Error("unknown error raised");
   console.log(err.message);
   console.log(err.stack);
 });

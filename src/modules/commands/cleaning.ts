@@ -1,45 +1,49 @@
-import { showLogo } from '@maeum/cli-logo';
-import { asValue } from 'awilix';
-import consola from 'consola';
-import del from 'del';
-import fastSafeStringify from 'fast-safe-stringify';
-import { isError, isFalse } from 'my-easy-fp';
-import pathe from 'pathe';
+import { showLogo } from "@maeum/cli-logo";
+import { asValue } from "awilix";
+import consola from "consola";
+import del from "del";
+import fastSafeStringify from "fast-safe-stringify";
+import { isError, isFalse } from "my-easy-fp";
+import pathe from "pathe";
+import type { DataSource } from "typeorm";
 
-import { getMetadata } from '#/common/getMetadata';
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import { getCwd } from '#/configs/modules/getCwd';
-import { container } from '#/modules/containers/container';
-import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
-import { getOutputDirPath } from '#/modules/files/getOutputDirPath';
-import { getDataSource } from '#/typeorm/getDataSource';
-
-import type { DataSource } from 'typeorm';
-
-import type { ICommonOption } from '#/configs/interfaces/ICommonOption';
+import { getMetadata } from "#/common/getMetadata";
+import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
+import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
+import { getCwd } from "#/configs/modules/getCwd";
+import { container } from "#/modules/containers/container";
+import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
+import { getOutputDirPath } from "#/modules/files/getOutputDirPath";
+import { getDataSource } from "#/typeorm/getDataSource";
 
 export async function cleaning(option: ICommonOption) {
   try {
-    if (option.showLogo != null) {
-      await showLogo({
-        message: 'erdia',
-        figlet: { font: 'ANSI Shadow', width: 80 },
-        color: 'cyan',
-      });
+    if (option.showLogo == null) {
+      consola.info("erdia build start");
     } else {
-      consola.info('erdia build start');
+      await showLogo({
+        message: "erdia",
+        figlet: { font: "ANSI Shadow", width: 80 },
+        color: "cyan",
+      });
     }
 
     const dataSource = await getDataSource(option);
     await dataSource.initialize();
 
     if (isFalse(dataSource.isInitialized)) {
-      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+      throw new Error(
+        `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`
+      );
     }
 
     container.register(SymbolDataSource, asValue(dataSource));
 
-    const metadata = await getMetadata({ ...option, versionFrom: 'package.json', projectName: 'app' });
+    const metadata = await getMetadata({
+      ...option,
+      versionFrom: "package.json",
+      projectName: "app",
+    });
     const outputDirPath = await getOutputDirPath(option, getCwd(process.env));
 
     const filenames = [
@@ -53,8 +57,11 @@ export async function cleaning(option: ICommonOption) {
     await del(filenames);
 
     return filenames;
-  } catch (caught) {
-    const err = isError(caught, new Error('unknown error raised from createHtmlDocCommand'));
+  } catch (error) {
+    const err = isError(
+      error,
+      new Error("unknown error raised from createHtmlDocCommand")
+    );
     consola.error(err);
 
     return [];

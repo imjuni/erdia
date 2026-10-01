@@ -10,11 +10,12 @@
  * - null
  */
 export const CE_MERMAID_THEME = {
-  DEFAULT: 'default',
-  FOREST: 'forest',
-  DARK: 'dark',
-  NEUTRAL: 'neutral',
-  NULL: 'null',
+  DARK: "dark",
+  DEFAULT: "default",
+  FOREST: "forest",
+  NEUTRAL: "neutral",
+  NULL: "null",
 } as const;
 
-export type CE_MERMAID_THEME = (typeof CE_MERMAID_THEME)[keyof typeof CE_MERMAID_THEME];
+export type CE_MERMAID_THEME =
+  (typeof CE_MERMAID_THEME)[keyof typeof CE_MERMAID_THEME];

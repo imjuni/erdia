@@ -1,12 +1,14 @@
-import { isFalse } from 'my-easy-fp';
-import { exists, getDirname, isDirectory } from 'my-node-fp';
-import pathe from 'pathe';
+import { isFalse } from "my-easy-fp";
+import { exists, getDirname, isDirectory } from "my-node-fp";
+import pathe from "pathe";
 
-import { betterMkdir } from '#/modules/files/betterMkdir';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import { betterMkdir } from "#/modules/files/betterMkdir";
 
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-
-export async function getOutputDirPath(option: Pick<IBuildCommandOption, 'output'>, cwd: string) {
+export async function getOutputDirPath(
+  option: Pick<IBuildCommandOption, "output">,
+  cwd: string
+) {
   const outputDirPath = option.output ?? cwd;
   const resolvedOutputDirPath = pathe.resolve(outputDirPath);
 

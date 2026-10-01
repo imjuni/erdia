@@ -7,8 +7,9 @@
  * - png: png image format
  * */
 export const CE_IMAGE_FORMAT = {
-  SVG: 'svg',
-  PNG: 'png',
+  PNG: "png",
+  SVG: "svg",
 } as const;
 
-export type CE_IMAGE_FORMAT = (typeof CE_IMAGE_FORMAT)[keyof typeof CE_IMAGE_FORMAT];
+export type CE_IMAGE_FORMAT =
+  (typeof CE_IMAGE_FORMAT)[keyof typeof CE_IMAGE_FORMAT];

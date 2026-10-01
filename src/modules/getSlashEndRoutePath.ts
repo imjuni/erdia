@@ -1,5 +1,5 @@
 export function getSlashEndRoutePath(basePath: string): string {
-  if (basePath.endsWith('/')) {
+  if (basePath.endsWith("/")) {
     return basePath;
   }
 

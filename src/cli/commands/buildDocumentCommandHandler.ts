@@ -1,12 +1,11 @@
-import { showLogo } from '@maeum/cli-logo';
-import { LogLevels } from 'consola';
+import { showLogo } from "@maeum/cli-logo";
+import { LogLevels } from "consola";
 
-import { building } from '#/modules/commands/building';
-import { container } from '#/modules/containers/container';
-import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
-
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { Logger } from '#/modules/loggers/Logger';
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import { building } from "#/modules/commands/building";
+import { container } from "#/modules/containers/container";
+import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
+import type { Logger } from "#/modules/loggers/Logger";
 
 export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
   const logger = container.resolve<Logger>(SymbolLogger);
@@ -14,14 +13,14 @@ export async function buildDocumentCommandHandler(option: IBuildCommandOption) {
   logger.level = LogLevels.info;
   logger.enable = true;
 
-  if (option.showLogo != null) {
-    await showLogo({
-      message: 'erdia',
-      figlet: { font: 'ANSI Shadow', width: 80 },
-      color: 'cyan',
-    });
+  if (option.showLogo == null) {
+    logger.info("erdia build start");
   } else {
-    logger.info('erdia build start');
+    await showLogo({
+      message: "erdia",
+      figlet: { font: "ANSI Shadow", width: 80 },
+      color: "cyan",
+    });
   }
 
   await building(option);

@@ -1,65 +1,76 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
-import { asValue } from 'awilix';
-import chalk from 'chalk';
-import fastSafeStringify from 'fast-safe-stringify';
-import { isError, isFalse } from 'my-easy-fp';
-import { isFail, isPass } from 'my-only-either';
+import { asValue } from "awilix";
+import chalk from "chalk";
+import fastSafeStringify from "fast-safe-stringify";
+import { isError, isFalse } from "my-easy-fp";
+import { isFail, isPass } from "my-only-either";
+import type { IFail, IPass } from "my-only-either";
+import type { SetOptional } from "type-fest";
+import type { DataSource } from "typeorm";
 
-import { getDatabaseName } from '#/common/getDatabaseName';
-import { getMetadata } from '#/common/getMetadata';
-import { CE_MERMAID_THEME } from '#/configs/const-enum/CE_MERMAID_THEME';
-import { CE_OUTPUT_FORMAT } from '#/configs/const-enum/CE_OUTPUT_FORMAT';
-import { createHtml } from '#/creators/createHtml';
-import { createImageHtml } from '#/creators/createImageHtml';
-import { createMarkdown } from '#/creators/createMarkdown';
-import { createPdfHtml } from '#/creators/createPdfHtml';
-import { getRenderData } from '#/creators/getRenderData';
-import { writeToImage } from '#/creators/writeToImage';
-import { writeToPdf } from '#/creators/writeToPdf';
-import { compareDatabase } from '#/databases/compareDatabase';
-import { flushDatabase } from '#/databases/flushDatabase';
-import { openDatabase } from '#/databases/openDatabase';
-import { processDatabase } from '#/databases/processDatabase';
-import { container } from '#/modules/containers/container';
-import { SymbolDataSource } from '#/modules/containers/keys/SymbolDataSource';
-import { SymbolDefaultTemplate } from '#/modules/containers/keys/SymbolDefaultTemplate';
-import { SymbolLogger } from '#/modules/containers/keys/SymbolLogger';
-import { SymbolTemplate } from '#/modules/containers/keys/SymbolTemplate';
-import { SymbolTemplateRenderer } from '#/modules/containers/keys/SymbolTemplateRenderer';
-import { betterMkdir } from '#/modules/files/betterMkdir';
-import { createLogger } from '#/modules/loggers/createLogger';
-import { loadTemplates } from '#/templates/modules/loadTemplates';
-import { TemplateRenderer } from '#/templates/TemplateRenderer';
-import { getColumnRecord } from '#/typeorm/columns/getColumnRecord';
-import { getEntityRecords } from '#/typeorm/entities/getEntityRecords';
-import { getDataSource } from '#/typeorm/getDataSource';
-import { getIndexRecords } from '#/typeorm/indices/getIndexRecords';
-import { dedupeManyToManyRelationRecord } from '#/typeorm/relations/dedupeManyToManyRelationRecord';
-import { getRelationRecords } from '#/typeorm/relations/getRelationRecords';
+import { getDatabaseName } from "#/common/getDatabaseName";
+import { getMetadata } from "#/common/getMetadata";
+import { CE_MERMAID_THEME } from "#/configs/const-enum/CE_MERMAID_THEME";
+import { CE_OUTPUT_FORMAT } from "#/configs/const-enum/CE_OUTPUT_FORMAT";
+import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
+import { createHtml } from "#/creators/createHtml";
+import { createImageHtml } from "#/creators/createImageHtml";
+import { createMarkdown } from "#/creators/createMarkdown";
+import { createPdfHtml } from "#/creators/createPdfHtml";
+import { getRenderData } from "#/creators/getRenderData";
+import type { IReason } from "#/creators/interfaces/IReason";
+import { writeToImage } from "#/creators/writeToImage";
+import { writeToPdf } from "#/creators/writeToPdf";
+import { compareDatabase } from "#/databases/compareDatabase";
+import { flushDatabase } from "#/databases/flushDatabase";
+import type { IRelationRecord } from "#/databases/interfaces/IRelationRecord";
+import { openDatabase } from "#/databases/openDatabase";
+import { processDatabase } from "#/databases/processDatabase";
+import { container } from "#/modules/containers/container";
+import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
+import { SymbolDefaultTemplate } from "#/modules/containers/keys/SymbolDefaultTemplate";
+import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
+import { SymbolTemplate } from "#/modules/containers/keys/SymbolTemplate";
+import { SymbolTemplateRenderer } from "#/modules/containers/keys/SymbolTemplateRenderer";
+import { betterMkdir } from "#/modules/files/betterMkdir";
+import { createLogger } from "#/modules/loggers/createLogger";
+import type { Logger } from "#/modules/loggers/Logger";
+import { loadTemplates } from "#/templates/modules/loadTemplates";
+import { TemplateRenderer } from "#/templates/TemplateRenderer";
+import { getColumnRecord } from "#/typeorm/columns/getColumnRecord";
+import { getEntityRecords } from "#/typeorm/entities/getEntityRecords";
+import { getDataSource } from "#/typeorm/getDataSource";
+import { getIndexRecords } from "#/typeorm/indices/getIndexRecords";
+import { dedupeManyToManyRelationRecord } from "#/typeorm/relations/dedupeManyToManyRelationRecord";
+import { getRelationRecords } from "#/typeorm/relations/getRelationRecords";
 
-import type { IFail, IPass } from 'my-only-either';
-import type { SetOptional } from 'type-fest';
-import type { DataSource } from 'typeorm';
-
-import type { IBuildCommandOption } from '#/configs/interfaces/IBuildCommandOption';
-import type { IReason } from '#/creators/interfaces/IReason';
-import type { IRelationRecord } from '#/databases/interfaces/IRelationRecord';
-import type { Logger } from '#/modules/loggers/Logger';
-
-export async function building(option: SetOptional<IBuildCommandOption, 'config'>, logging?: boolean) {
+export async function building(
+  option: SetOptional<IBuildCommandOption, "config">,
+  logging?: boolean
+) {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
 
   try {
-    logger.info(`connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`);
+    logger.info(
+      `connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`
+    );
 
     const dataSource = await getDataSource(option);
-    const [templates] = await Promise.all([loadTemplates(option), dataSource.initialize()]);
-    const renderer = new TemplateRenderer(templates.template, templates.default);
+    const [templates] = await Promise.all([
+      loadTemplates(option),
+      dataSource.initialize(),
+    ]);
+    const renderer = new TemplateRenderer(
+      templates.template,
+      templates.default
+    );
 
     if (isFalse(dataSource.isInitialized)) {
-      throw new Error(`Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`);
+      throw new Error(
+        `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`
+      );
     }
 
     container.register(SymbolDefaultTemplate, asValue(templates.default));
@@ -69,7 +80,7 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
 
     const metadata = await getMetadata(option);
 
-    logger.success('connection initialized');
+    logger.success("connection initialized");
     logger.info(`version: ${metadata.version}`);
 
     logger.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
@@ -77,28 +88,38 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
     const entities = getEntityRecords(dataSource, metadata);
     const indicesRecords = getIndexRecords(dataSource, metadata);
     const columns = dataSource.entityMetadatas
-      .map((entity) => entity.columns.map((column) => getColumnRecord(column, option, metadata, indicesRecords)))
-      .flat();
+      .flatMap((entity) =>
+        entity.columns.map((column) =>
+          getColumnRecord(column, option, metadata, indicesRecords)
+        )
+      );
 
     const relationRecords = getRelationRecords(dataSource, metadata);
 
     const failRelations = relationRecords
-      .filter((relationRecord): relationRecord is IFail<IReason> => isFail(relationRecord))
-      .map((relationRecord) => relationRecord.fail)
-      .flat();
+      .filter((relationRecord): relationRecord is IFail<IReason> =>
+        isFail(relationRecord)
+      )
+      .flatMap((relationRecord) => relationRecord.fail);
 
     failRelations.forEach((relation) => logger.warn(relation.message));
 
     const passRelations = relationRecords
-      .filter((relation): relation is IPass<IRelationRecord[]> => isPass(relation))
-      .map((relationRecord) => relationRecord.pass)
-      .flat();
+      .filter((relation): relation is IPass<IRelationRecord[]> =>
+        isPass(relation)
+      )
+      .flatMap((relationRecord) => relationRecord.pass);
 
     const dedupedRelations = dedupeManyToManyRelationRecord(passRelations);
-    const records = [...entities, ...columns, ...dedupedRelations, ...indicesRecords];
+    const records = [
+      ...entities,
+      ...columns,
+      ...dedupedRelations,
+      ...indicesRecords,
+    ];
 
-    logger.success('complete extraction');
-    logger.info('Database open and processing');
+    logger.success("complete extraction");
+    logger.info("Database open and processing");
 
     const db = await openDatabase(option);
     const processedDb = await processDatabase(metadata, db, option);
@@ -108,16 +129,16 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
     const renderData = await getRenderData(nextDb, metadata, option);
 
     await flushDatabase(option, nextDb);
-    logger.success('Database open and processing completed');
+    logger.success("Database open and processing completed");
 
     logger.info(`output format: ${option.format}`);
 
     if (option.format === CE_OUTPUT_FORMAT.HTML) {
-      const imageOption: SetOptional<IBuildCommandOption, 'config'> = {
+      const imageOption: SetOptional<IBuildCommandOption, "config"> = {
         ...option,
         format: CE_OUTPUT_FORMAT.IMAGE,
-        imageFormat: 'svg',
-        width: '200%',
+        imageFormat: "svg",
+        width: "200%",
         theme: CE_MERMAID_THEME.DARK,
       };
 
@@ -126,7 +147,7 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
         documents.map(async (document) => {
           await betterMkdir(document.dirname);
           await fs.promises.writeFile(document.filename, document.content);
-        }),
+        })
       );
 
       if (!option.skipImageInHtml) {
@@ -158,8 +179,11 @@ export async function building(option: SetOptional<IBuildCommandOption, 'config'
     }
 
     return [];
-  } catch (caught) {
-    const err = isError(caught, new Error('unknown error raised from createHtmlDocCommand'));
+  } catch (error) {
+    const err = isError(
+      error,
+      new Error("unknown error raised from createHtmlDocCommand")
+    );
     logger.error(err);
 
     return [];

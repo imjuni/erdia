@@ -5,8 +5,9 @@
  * - app: application name from package.json
  */
 export const CE_PROJECT_NAME_FROM = {
-  DATABASE: 'db',
-  APPLICATION: 'app',
+  APPLICATION: "app",
+  DATABASE: "db",
 } as const;
 
-export type CE_PROJECT_NAME_FROM = (typeof CE_PROJECT_NAME_FROM)[keyof typeof CE_PROJECT_NAME_FROM];
+export type CE_PROJECT_NAME_FROM =
+  (typeof CE_PROJECT_NAME_FROM)[keyof typeof CE_PROJECT_NAME_FROM];

@@ -1,7 +1,7 @@
-import type { RelationType } from 'typeorm/metadata/types/RelationTypes';
+import type { RelationType } from "typeorm/metadata/types/RelationTypes";
 
-import type { CE_RECORD_KIND } from '#/databases/const-enum/CE_RECORD_KIND';
-import type { IBaseRecord } from '#/databases/interfaces/IBaseRecord';
+import type { CE_RECORD_KIND } from "#/databases/const-enum/CE_RECORD_KIND";
+import type { IBaseRecord } from "#/databases/interfaces/IBaseRecord";
 
 export interface IRelationRecord extends IBaseRecord {
   $kind: typeof CE_RECORD_KIND.RELATION;

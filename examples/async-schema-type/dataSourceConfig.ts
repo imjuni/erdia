@@ -1,14 +1,16 @@
-import { DataSource, type DataSourceOptions } from 'typeorm';
-import { License } from './License';
-import { Organization } from './Organization';
-import { Photo } from './Photo';
-import { User } from './User';
+import { DataSource } from "typeorm";
+import type { DataSourceOptions } from "typeorm";
+
+import { License } from "./License";
+import { Organization } from "./Organization";
+import { Photo } from "./Photo";
+import { User } from "./User";
 
 const handle = async () => {
   const dataSourceOption: DataSourceOptions = {
-    type: 'better-sqlite3',
+    type: "better-sqlite3",
     // database: path.join(__dirname, '..', 'db', 'sqlite3.sqlite3'),
-    database: ':memory:',
+    database: ":memory:",
     synchronize: true,
     dropSchema: true,
     enableWAL: true,

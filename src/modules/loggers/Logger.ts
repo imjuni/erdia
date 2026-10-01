@@ -1,6 +1,5 @@
-import consola, { LogLevel } from 'consola';
-
-import type { InputLogObject, LogType } from 'consola';
+import consola from "consola";
+import type { InputLogObject, LogType , LogLevel } from "consola";
 
 export class Logger {
   #enable: boolean;
@@ -31,29 +30,29 @@ export class Logger {
     }
   }
 
-  info = this.logging.bind(this, 'info');
+  info = this.logging.bind(this, "info");
 
-  warn = this.logging.bind(this, 'warn');
+  warn = this.logging.bind(this, "warn");
 
-  silent = this.logging.bind(this, 'silent');
+  silent = this.logging.bind(this, "silent");
 
-  error = this.logging.bind(this, 'error');
+  error = this.logging.bind(this, "error");
 
-  success = this.logging.bind(this, 'success');
+  success = this.logging.bind(this, "success");
 
-  fail = this.logging.bind(this, 'fail');
+  fail = this.logging.bind(this, "fail");
 
-  fatal = this.logging.bind(this, 'fatal');
+  fatal = this.logging.bind(this, "fatal");
 
-  debug = this.logging.bind(this, 'debug');
+  debug = this.logging.bind(this, "debug");
 
-  trace = this.logging.bind(this, 'trace');
+  trace = this.logging.bind(this, "trace");
 
-  verbose = this.logging.bind(this, 'verbose');
+  verbose = this.logging.bind(this, "verbose");
 
-  ready = this.logging.bind(this, 'ready');
+  ready = this.logging.bind(this, "ready");
 
-  box = this.logging.bind(this, 'box');
+  box = this.logging.bind(this, "box");
 
-  log = this.logging.bind(this, 'log');
+  log = this.logging.bind(this, "log");
 }

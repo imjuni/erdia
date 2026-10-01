@@ -1,27 +1,30 @@
-import { bignumber } from 'mathjs';
-import { populate } from 'my-easy-fp';
+import { bignumber } from "mathjs";
+import type { BigNumber } from "mathjs";
+import { populate } from "my-easy-fp";
 
-import { CE_COLUMN_ATTRIBUTE } from '#/configs/const-enum/CE_COLUMN_ATTRIBUTE';
+import { CE_COLUMN_ATTRIBUTE } from "#/configs/const-enum/CE_COLUMN_ATTRIBUTE";
+import type { IColumnRecord } from "#/databases/interfaces/IColumnRecord";
 
-import type { BigNumber } from 'mathjs';
-
-import type { IColumnRecord } from '#/databases/interfaces/IColumnRecord';
-
-export function getColumnWeight(column: Omit<IColumnRecord, 'weight'>): BigNumber {
+export function getColumnWeight(
+  column: Omit<IColumnRecord, "weight">
+): BigNumber {
   const weight = bignumber(0);
 
   const type = bignumber(
-    populate(column.columnType.length).reduce((sum, index) => sum + column.columnType.charCodeAt(index), 0),
+    populate(column.columnType.length).reduce(
+      (sum, index) => sum + column.columnType.charCodeAt(index),
+      0
+    )
   ).mul(1000);
 
   return weight
-    .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.PK) ? 20000000 : 0)
-    .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.FK) ? 10000000 : 0)
+    .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.PK) ? 20_000_000 : 0)
+    .add(column.attributeKey.includes(CE_COLUMN_ATTRIBUTE.FK) ? 10_000_000 : 0)
     .add(type)
     .add(bignumber(122).sub(bignumber(column.name.toLowerCase().charCodeAt(0))))
     .add(
       bignumber(122)
         .sub(bignumber(column.name.toLowerCase().charCodeAt(1)))
-        .div(100),
+        .div(100)
     );
 }

@@ -1,8 +1,7 @@
-import { isError } from 'my-easy-fp';
-import { InstanceChecker } from 'typeorm';
-import { importOrRequireFile } from 'typeorm/util/ImportUtils';
-
-import type { DataSource } from 'typeorm';
+import { isError } from "my-easy-fp";
+import { InstanceChecker } from "typeorm";
+import type { DataSource } from "typeorm";
+import { importOrRequireFile } from "typeorm/util/ImportUtils";
 
 /**
  * load dataSource, from [CommandUtils.ts](https://github.com/typeorm/typeorm/blob/master/src/commands/CommandUtils.ts#L13)
@@ -10,18 +9,27 @@ import type { DataSource } from 'typeorm';
  * @param dataSourceFilePath dataSource file path
  * @returns
  */
-export async function loadDataSource(dataSourceFilePath: string): Promise<DataSource> {
+export async function loadDataSource(
+  dataSourceFilePath: string
+): Promise<DataSource> {
   let dataSourceFileExports;
 
   try {
     [dataSourceFileExports] = await importOrRequireFile(dataSourceFilePath);
-  } catch (caught) {
-    const err = isError(caught, new Error(`Unable to open file: "${dataSourceFilePath}".`));
-    throw new Error(`Unable to open file: "${dataSourceFilePath}". ${err.message}`);
+  } catch (error) {
+    const err = isError(
+      error,
+      new Error(`Unable to open file: "${dataSourceFilePath}".`)
+    );
+    throw new Error(
+      `Unable to open file: "${dataSourceFilePath}". ${err.message}`
+    );
   }
 
-  if (!dataSourceFileExports || typeof dataSourceFileExports !== 'object') {
-    throw new Error(`Given data source file must contain export of a DataSource instance`);
+  if (!dataSourceFileExports || typeof dataSourceFileExports !== "object") {
+    throw new Error(
+      `Given data source file must contain export of a DataSource instance`
+    );
   }
 
   if (InstanceChecker.isDataSource(dataSourceFileExports)) {
@@ -43,11 +51,15 @@ export async function loadDataSource(dataSourceFilePath: string): Promise<DataSo
   }
 
   if (dataSourceExports.length === 0) {
-    throw new Error(`Given data source file must contain export of a DataSource instance`);
+    throw new Error(
+      `Given data source file must contain export of a DataSource instance`
+    );
   }
 
   if (dataSourceExports.length > 1) {
-    throw new Error(`Given data source file must contain only one export of DataSource instance`);
+    throw new Error(
+      `Given data source file must contain only one export of DataSource instance`
+    );
   }
 
   return dataSourceExports[0];

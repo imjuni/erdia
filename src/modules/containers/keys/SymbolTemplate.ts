@@ -1,1 +1,1 @@
-export const SymbolTemplate = Symbol('template');
+export const SymbolTemplate = Symbol("template");

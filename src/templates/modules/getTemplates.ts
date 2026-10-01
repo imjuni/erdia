@@ -1,18 +1,19 @@
-import { Glob } from 'glob';
-import pathe from 'pathe';
+import { Glob } from "glob";
+import type { GlobOptions } from "glob";
+import pathe from "pathe";
 
-import { getGlobFiles } from '#/modules/files/getGlobFiles';
-import { defaultExclude } from '#/modules/scopes/defaultExclude';
-import { getTemplate } from '#/templates/modules/getTemplate';
+import { getGlobFiles } from "#/modules/files/getGlobFiles";
+import { defaultExclude } from "#/modules/scopes/defaultExclude";
+import type { ITemplate } from "#/templates/interfaces/ITemplate";
+import { getTemplate } from "#/templates/modules/getTemplate";
 
-import type { GlobOptions } from 'glob';
-
-import type { ITemplate } from '#/templates/interfaces/ITemplate';
-
-export async function getTemplates(templatePath: string, globOptions?: GlobOptions) {
+export async function getTemplates(
+  templatePath: string,
+  globOptions?: GlobOptions
+) {
   const resolvedTemplatePath = pathe.resolve(templatePath);
 
-  const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, '*.eta'), {
+  const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, "*.eta"), {
     ...globOptions,
     absolute: true,
     ignore: defaultExclude,
@@ -26,7 +27,9 @@ export async function getTemplates(templatePath: string, globOptions?: GlobOptio
 
   const loadedTemplateFiles = (
     await Promise.all(
-      templateFilePaths.map(async (templateFilePath) => getTemplate(resolvedTemplatePath, templateFilePath)),
+      templateFilePaths.map(async (templateFilePath) =>
+        getTemplate(resolvedTemplatePath, templateFilePath)
+      )
     )
   ).filter((template): template is ITemplate => template != null);
 

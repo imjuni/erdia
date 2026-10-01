@@ -1,14 +1,18 @@
-import { isFalse } from 'my-easy-fp';
-import { exists, getDirname, isDirectory } from 'my-node-fp';
-import pathe from 'pathe';
+import { isFalse } from "my-easy-fp";
+import { exists, getDirname, isDirectory } from "my-node-fp";
+import pathe from "pathe";
 
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
-import { betterMkdir } from '#/modules/files/betterMkdir';
+import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
+import type { IDocumentOption } from "#/configs/interfaces/IDocumentOption";
+import { betterMkdir } from "#/modules/files/betterMkdir";
 
-import type { IDocumentOption } from '#/configs/interfaces/IDocumentOption';
-
-export async function getTemplateDirPath(option: Pick<IDocumentOption, 'templatePath'>, cwd: string) {
-  const templateDirPath = pathe.join(option.templatePath ?? pathe.join(cwd, CE_DEFAULT_VALUE.TEMPLATES_PATH));
+export async function getTemplateDirPath(
+  option: Pick<IDocumentOption, "templatePath">,
+  cwd: string
+) {
+  const templateDirPath = pathe.join(
+    option.templatePath ?? pathe.join(cwd, CE_DEFAULT_VALUE.TEMPLATES_PATH)
+  );
   const resolvedTemplateDirPath = pathe.resolve(templateDirPath);
 
   if (isFalse(await exists(resolvedTemplateDirPath))) {

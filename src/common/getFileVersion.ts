@@ -1,5 +1,5 @@
-import { parse } from 'jsonc-parser';
-import semver from 'semver';
+import { parse } from "jsonc-parser";
+import semver from "semver";
 
 export function getFileVersion(buf: Buffer): string {
   const rawJson = buf.toString();
@@ -11,7 +11,7 @@ export function getFileVersion(buf: Buffer): string {
   const parsed = parse(rawJson) as Record<string, string>;
   const { version } = parsed;
 
-  if (version == null || version === '') {
+  if (version == null || version === "") {
     throw new Error(`invalid version file: ${rawJson}`);
   }
 

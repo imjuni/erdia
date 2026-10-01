@@ -1,30 +1,42 @@
-import { exists } from 'my-node-fp';
-import pathe from 'pathe';
+import { exists } from "my-node-fp";
+import pathe from "pathe";
 
-import { CE_DEFAULT_VALUE } from '#/configs/const-enum/CE_DEFAULT_VALUE';
+import { CE_DEFAULT_VALUE } from "#/configs/const-enum/CE_DEFAULT_VALUE";
 
-export async function getTemplateModulePath(templatePathParam?: string): Promise<string> {
+export async function getTemplateModulePath(
+  templatePathParam?: string
+): Promise<string> {
   const currentFilePath = pathe.resolve(__dirname);
 
   if (templatePathParam != null) {
-    const currentWithTemplatePath = pathe.resolve(pathe.join(currentFilePath, templatePathParam));
+    const currentWithTemplatePath = pathe.resolve(
+      pathe.join(currentFilePath, templatePathParam)
+    );
     if (await exists(currentWithTemplatePath)) {
       return currentWithTemplatePath;
     }
   }
 
   const packageRootTemplatePath = pathe.resolve(
-    pathe.join(currentFilePath, '..', '..', '..', CE_DEFAULT_VALUE.TEMPLATES_PATH),
+    pathe.join(
+      currentFilePath,
+      "..",
+      "..",
+      "..",
+      CE_DEFAULT_VALUE.TEMPLATES_PATH
+    )
   );
 
   if (await exists(packageRootTemplatePath)) {
     return packageRootTemplatePath;
   }
 
-  const distTemplatePath = pathe.resolve(pathe.join(currentFilePath, '..', '..', CE_DEFAULT_VALUE.TEMPLATES_PATH));
+  const distTemplatePath = pathe.resolve(
+    pathe.join(currentFilePath, "..", "..", CE_DEFAULT_VALUE.TEMPLATES_PATH)
+  );
   if (await exists(distTemplatePath)) {
     return distTemplatePath;
   }
 
-  throw new Error('cannot found template directory!');
+  throw new Error("cannot found template directory!");
 }

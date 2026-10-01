@@ -2,8 +2,49 @@
   "name": "erdia",
   "version": "3.7.1",
   "description": "CLI to generate mermaid.js ER diagram using TypeORM entity",
-  "engines": {
-    "node": ">=20"
+  "keywords": [
+    "cli",
+    "diagram",
+    "entity",
+    "er",
+    "er-diagram",
+    "erdiagram",
+    "mermaid",
+    "mermaid.js",
+    "mermaidjs",
+    "typeorm"
+  ],
+  "homepage": "https://imjuni.github.io/erdia/",
+  "bugs": {
+    "url": "https://github.com/imjuni/erdia/issues"
+  },
+  "license": "MIT",
+  "author": "ByungJoon Lee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imjuni/erdia.git"
+  },
+  "bin": {
+    "erdia": "dist/cjs/cli.cjs"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "default": "./dist/cjs/index.cjs",
+        "types": "./dist/types/index.d.ts"
+      },
+      "import": {
+        "default": "./dist/esm/index.mjs",
+        "types": "./dist/types/index.d.ts"
+      }
+    }
   },
   "scripts": {
     "clean": "rimraf dist",
@@ -40,85 +81,6 @@
     "dd": "deps-diff md -d dev -d prod -d peer --title-list-type \"*\" --deps-list-type \"*\" --content-list-type \"*\"",
     "prepublishOnly": "node prepublish.cjs",
     "prepare": "husky install"
-  },
-  "keywords": [
-    "typeorm",
-    "entity",
-    "mermaid",
-    "mermaid.js",
-    "mermaidjs",
-    "er",
-    "erdiagram",
-    "er-diagram",
-    "diagram",
-    "cli"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/imjuni/erdia.git"
-  },
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "require": {
-        "default": "./dist/cjs/index.cjs",
-        "types": "./dist/types/index.d.ts"
-      },
-      "import": {
-        "default": "./dist/esm/index.mjs",
-        "types": "./dist/types/index.d.ts"
-      }
-    }
-  },
-  "files": [
-    "dist",
-    "templates"
-  ],
-  "bin": {
-    "erdia": "dist/cjs/cli.cjs"
-  },
-  "author": "ByungJoon Lee",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/imjuni/erdia/issues"
-  },
-  "homepage": "https://imjuni.github.io/erdia/",
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@types/inquirer": "^9.0.3",
-    "@types/inquirer-autocomplete-prompt": "^3.0.0",
-    "@types/minimist": "^1.2.2",
-    "@types/node": "^20.19.0",
-    "@types/semver": "^7.5.0",
-    "@types/source-map-support": "^0.5.4",
-    "@types/yargs": "^17.0.24",
-    "@vitest/coverage-v8": "^1.4.0",
-    "better-sqlite3": "^9.4.3",
-    "cross-env": "^7.0.3",
-    "ctix": "^2.4.3",
-    "deps-diff": "^1.0.2",
-    "esbuild": "^0.20.2",
-    "http-server": "^14.1.1",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "npm-run-all": "^4.1.5",
-    "open": "^9.1.0",
-    "oxfmt": "^0.71.0",
-    "oxlint": "^1.86.0",
-    "rimraf": "^5.0.1",
-    "rollup": "^4.13.2",
-    "rollup-plugin-dts": "^6.1.0",
-    "ts-node": "^10.8.2",
-    "tsc-alias": "^1.8.8",
-    "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.7.1",
-    "typescript": "^5.9.3",
-    "ultracite": "7.12.2",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.4.0",
-    "@tsconfig/node20": "^20.1.9"
   },
   "dependencies": {
     "@maeum/cli-logo": "^1.0.0",
@@ -157,10 +119,48 @@
     "typeorm": "^0.3.17",
     "yargs": "^17.7.2"
   },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@tsconfig/node20": "^20.1.9",
+    "@types/inquirer": "^9.0.3",
+    "@types/inquirer-autocomplete-prompt": "^3.0.0",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^20.19.0",
+    "@types/semver": "^7.5.0",
+    "@types/source-map-support": "^0.5.4",
+    "@types/yargs": "^17.0.24",
+    "@vitest/coverage-v8": "^1.4.0",
+    "better-sqlite3": "^9.4.3",
+    "cross-env": "^7.0.3",
+    "ctix": "^2.4.3",
+    "deps-diff": "^1.0.2",
+    "esbuild": "^0.20.2",
+    "http-server": "^14.1.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "npm-run-all": "^4.1.5",
+    "open": "^9.1.0",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
+    "rimraf": "^5.0.1",
+    "rollup": "^4.13.2",
+    "rollup-plugin-dts": "^6.1.0",
+    "ts-node": "^10.8.2",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.9.3",
+    "ultracite": "7.12.2",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.4.0"
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "oxfmt --write",
       "oxlint --fix"
     ]
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
