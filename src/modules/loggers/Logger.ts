@@ -1,5 +1,5 @@
 import consola from "consola";
-import type { InputLogObject, LogType , LogLevel } from "consola";
+import type { InputLogObject, LogLevel, LogType } from "consola";
 
 export class Logger {
   #enable: boolean;
