@@ -2,10 +2,8 @@ import fs from "node:fs";
 
 import { asValue } from "awilix";
 import chalk from "chalk";
-import fastSafeStringify from "fast-safe-stringify";
-import { isError, isFalse } from "my-easy-fp";
+import { isError } from "my-easy-fp";
 import type { SetOptional } from "type-fest";
-import type { DataSource } from "typeorm";
 
 import { getDatabaseName } from "#/common/getDatabaseName";
 import { getMetadata } from "#/common/getMetadata";
@@ -23,6 +21,9 @@ import { compareDatabase } from "#/databases/compareDatabase";
 import { flushDatabase } from "#/databases/flushDatabase";
 import { openDatabase } from "#/databases/openDatabase";
 import { processDatabase } from "#/databases/processDatabase";
+import { loadDrizzleSchema } from "#/loaders/drizzle/connections/loadDrizzleSchema";
+import { DrizzleLoader } from "#/loaders/drizzle/DrizzleLoader";
+import type { ISchemaLoader } from "#/loaders/interfaces/ISchemaLoader";
 import { getDataSource } from "#/loaders/typeorm/connections/getDataSource";
 import { TypeOrmLoader } from "#/loaders/typeorm/TypeOrmLoader";
 import { container } from "#/modules/containers/container";
@@ -43,31 +44,39 @@ export const building = async (
 ) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
+  let loader: ISchemaLoader | undefined;
   try {
     logger.info(
       `connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`
     );
-    const dataSource = await getDataSource(option);
-    const loader = new TypeOrmLoader(dataSource, option.format);
+    if (option.orm === "drizzle") {
+      const schema = await loadDrizzleSchema(option.dataSourcePath);
+      loader = new DrizzleLoader({ schema });
+      container.register(
+        SymbolDataSource,
+        asValue({ options: { database: undefined } })
+      );
+    } else {
+      const dataSource = await getDataSource(option);
+      loader = new TypeOrmLoader(dataSource, option.format);
+      container.register(SymbolDataSource, asValue(dataSource));
+    }
     await loader.initialize();
     const templates = await loadTemplates(option);
     const renderer = new TemplateRenderer(
       templates.template,
       templates.default
     );
-    if (isFalse(dataSource.isInitialized)) {
-      throw new Error(
-        `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`
-      );
-    }
     container.register(SymbolDefaultTemplate, asValue(templates.default));
     container.register(SymbolTemplate, asValue(templates.template));
-    container.register(SymbolDataSource, asValue(dataSource));
     container.register(SymbolTemplateRenderer, asValue(renderer));
     const metadata = await getMetadata(option);
     logger.success("connection initialized");
     logger.info(`version: ${metadata.version}`);
-    logger.info(`extract entities in ${getDatabaseName(dataSource.options)}`);
+    const source = container.resolve<{
+      options: { database?: string | Uint8Array };
+    }>(SymbolDataSource);
+    logger.info(`extract entities in ${getDatabaseName(source.options)}`);
     const records = await loader.extract(metadata);
     logger.success("complete extraction");
     logger.info("Database open and processing");
@@ -126,9 +135,6 @@ export const building = async (
     logger.error(err);
     return [];
   } finally {
-    if (container.hasRegistration(SymbolDataSource)) {
-      const dataSource = container.resolve<DataSource>(SymbolDataSource);
-      await dataSource.destroy();
-    }
+    await loader?.dispose();
   }
 };

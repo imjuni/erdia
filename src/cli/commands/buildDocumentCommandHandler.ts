@@ -22,5 +22,12 @@ export const buildDocumentCommandHandler = async (
       color: "cyan",
     });
   }
-  await building(option);
+  const filenames = await building(option);
+  if (!Array.isArray(filenames) || filenames.length === 0) {
+    logger.warn("No document was generated");
+    return;
+  }
+  for (const filename of filenames) {
+    logger.success(`generated: "${filename}"`);
+  }
 };
