@@ -143,7 +143,7 @@ describe(getDrizzleSchema, () => {
 describe(DrizzleLoader, () => {
   it("delegates extraction and disposes the source", async () => {
     const dispose = vi.fn();
-    const loader = new DrizzleLoader({ db: {}, dispose, schema: { pgUsers } });
+    const loader = new DrizzleLoader({ dispose, schema: { pgUsers } });
     await loader.initialize();
     expect(await loader.extract(metadata)).not.toHaveLength(0);
     await loader.dispose();

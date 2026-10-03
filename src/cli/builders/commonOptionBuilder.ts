@@ -5,6 +5,12 @@ import { outputOptionBuilder } from "#/cli/builders/outputOptionBuilder";
 export const commonOptionBuilder = <T>(args: Argv<T>) => {
   // option
   outputOptionBuilder(args)
+    .option("orm", {
+      choices: ["typeorm", "drizzle"],
+      default: "typeorm",
+      describe: "define the ORM used to load the schema",
+      type: "string",
+    })
     .option("config", {
       alias: "c",
       describe: "define the path to to configuration file: .erdiarc",
@@ -12,7 +18,8 @@ export const commonOptionBuilder = <T>(args: Argv<T>) => {
     })
     .option("data-source-path", {
       alias: "d",
-      describe: "define the path to TypeORM data source file",
+      describe:
+        "define the path to a TypeORM data source or Drizzle schema file",
       type: "string",
     })
     .option("show-logo", {
