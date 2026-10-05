@@ -9,7 +9,7 @@ import type { TDatabaseRecord } from "#/databases/interfaces/TDatabaseRecord";
 export async function processDatabase(
   metadata: IRecordMetadata,
   db: TDatabaseRecord[],
-  option: Pick<IBuildCommandOption, "versionFrom">
+  option: Pick<IBuildCommandOption, "versionFrom">,
 ): Promise<{
   next: TDatabaseRecord[];
   deleted: TDatabaseRecord[];
@@ -21,9 +21,7 @@ export async function processDatabase(
   }
 
   const currentVersion = metadata.version;
-  const versions = (await alasql.promise("SELECT DISTINCT version FROM ?", [
-    db,
-  ])) as {
+  const versions = (await alasql.promise("SELECT DISTINCT version FROM ?", [db])) as {
     version: string;
   }[];
 
@@ -36,10 +34,10 @@ export async function processDatabase(
 
   // case 02. different version between current and latest from database
   if (currentVersion !== firstVersionFromDb) {
-    const latestRecords = (await alasql.promise(
-      "SELECT * FROM ? WHERE version = ?",
-      [db, firstVersionFromDb]
-    )) as TDatabaseRecord[];
+    const latestRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
+      db,
+      firstVersionFromDb,
+    ])) as TDatabaseRecord[];
 
     return { next: db, deleted: [], prev: latestRecords };
   }
@@ -53,20 +51,20 @@ export async function processDatabase(
 
   // case 04. same version between current and latest from database
   // in this case, update current version records in database
-  const partialRecords = (await alasql.promise(
-    "SELECT * FROM ? WHERE version != ?",
-    [db, currentVersion]
-  )) as TDatabaseRecord[];
+  const partialRecords = (await alasql.promise("SELECT * FROM ? WHERE version != ?", [
+    db,
+    currentVersion,
+  ])) as TDatabaseRecord[];
 
-  const oldRecords = (await alasql.promise(
-    "SELECT * FROM ? WHERE version = ?",
-    [db, currentVersion]
-  )) as TDatabaseRecord[];
+  const oldRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
+    db,
+    currentVersion,
+  ])) as TDatabaseRecord[];
 
-  const latestRecords = (await alasql.promise(
-    "SELECT * FROM ? WHERE version = ?",
-    [db, secondVersionFromDb]
-  )) as TDatabaseRecord[];
+  const latestRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
+    db,
+    secondVersionFromDb,
+  ])) as TDatabaseRecord[];
 
   return { next: partialRecords, deleted: oldRecords, prev: latestRecords };
 }

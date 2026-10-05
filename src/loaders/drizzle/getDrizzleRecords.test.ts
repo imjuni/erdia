@@ -41,7 +41,7 @@ const pgUsers = pgTable(
     email: pgVarchar("email", { length: 128 }).notNull(),
     id: pgSerial("id").primaryKey(),
   },
-  (table) => [pgUniqueIndex("pg_users_email").on(table.email)]
+  (table) => [pgUniqueIndex("pg_users_email").on(table.email)],
 );
 const pgPosts = pgTable("pg_posts", {
   id: pgSerial("id").primaryKey(),
@@ -53,12 +53,12 @@ const mysqlUsers = mysqlTable(
     id: mysqlSerial("id").primaryKey(),
     name: mysqlVarchar("name", { length: 64 }),
   },
-  (table) => [mysqlUniqueIndex("mysql_users_name").on(table.name)]
+  (table) => [mysqlUniqueIndex("mysql_users_name").on(table.name)],
 );
 const sqliteUsers = sqliteTable(
   "sqlite_users",
   { id: sqliteInteger("id").primaryKey(), name: sqliteText("name").notNull() },
-  (table) => [sqliteUniqueIndex("sqlite_users_name").on(table.name)]
+  (table) => [sqliteUniqueIndex("sqlite_users_name").on(table.name)],
 );
 
 describe(getDrizzleTableConfig, () => {
@@ -73,9 +73,7 @@ describe(getDrizzleTableConfig, () => {
     expect(config.indexes).toHaveLength(1);
   });
   it("rejects unsupported values", () => {
-    expect(() => getDrizzleTableConfig({})).toThrow(
-      "Unsupported Drizzle table"
-    );
+    expect(() => getDrizzleTableConfig({})).toThrow("Unsupported Drizzle table");
   });
 });
 
@@ -100,25 +98,16 @@ describe(getDrizzleColumnAttributeKey, () => {
 
 describe(getDrizzleRecords, () => {
   it("creates entity, column, index, and relation records", () => {
-    const records = getDrizzleRecords(
-      { db: {}, schema: { pgPosts, pgUsers } },
-      metadata
-    );
-    expect(records.filter((record) => record.$kind === "entity")).toHaveLength(
-      2
-    );
+    const records = getDrizzleRecords({ db: {}, schema: { pgPosts, pgUsers } }, metadata);
+    expect(records.filter((record) => record.$kind === "entity")).toHaveLength(2);
     expect(
-      records.find(
-        (record) => record.$kind === "column" && record.dbName === "email"
-      )
+      records.find((record) => record.$kind === "column" && record.dbName === "email"),
     ).toMatchObject({ columnType: "*varchar(128)" });
-    expect(records.find((record) => record.$kind === "relation")).toMatchObject(
-      {
-        inverseEntityName: "pg_users",
-        joinColumnName: "user_id",
-        joinColumnNullable: true,
-      }
-    );
+    expect(records.find((record) => record.$kind === "relation")).toMatchObject({
+      inverseEntityName: "pg_users",
+      joinColumnName: "user_id",
+      joinColumnNullable: true,
+    });
   });
 });
 
@@ -130,9 +119,7 @@ describe(getDrizzleSchema, () => {
 
   it("reads the schema from a database instance", () => {
     const schema = { pgUsers };
-    expect(getDrizzleSchema({ db: { _: { fullSchema: schema } } })).toBe(
-      schema
-    );
+    expect(getDrizzleSchema({ db: { _: { fullSchema: schema } } })).toBe(schema);
   });
 
   it("returns an empty schema when metadata is unavailable", () => {

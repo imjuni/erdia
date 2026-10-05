@@ -5,5 +5,4 @@ export const CE_CHANGE_KIND = {
   NONE: "none",
 } as const;
 
-export type CE_CHANGE_KIND =
-  (typeof CE_CHANGE_KIND)[keyof typeof CE_CHANGE_KIND];
+export type CE_CHANGE_KIND = (typeof CE_CHANGE_KIND)[keyof typeof CE_CHANGE_KIND];

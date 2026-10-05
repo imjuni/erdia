@@ -8,11 +8,9 @@ import { betterMkdir } from "#/modules/files/betterMkdir";
 
 export const getTemplateDirPath = async (
   option: Pick<IDocumentOption, "templatePath">,
-  cwd: string
+  cwd: string,
 ) => {
-  const templateDirPath = join(
-    option.templatePath ?? join(cwd, CE_DEFAULT_VALUE.TEMPLATES_PATH)
-  );
+  const templateDirPath = join(option.templatePath ?? join(cwd, CE_DEFAULT_VALUE.TEMPLATES_PATH));
   const resolvedTemplateDirPath = resolve(templateDirPath);
   if (isFalse(await exists(resolvedTemplateDirPath))) {
     await betterMkdir(join(resolvedTemplateDirPath));

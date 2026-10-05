@@ -10,9 +10,7 @@ const isSource = (value: unknown): value is IDrizzleSource =>
   (value as { db?: unknown }).db !== null &&
   (value as { db?: unknown }).db !== undefined;
 
-export const loadDrizzleSource = async (
-  path: string
-): Promise<IDrizzleSource> => {
+export const loadDrizzleSource = async (path: string): Promise<IDrizzleSource> => {
   const [exports] = await importOrRequireFile(path);
   const candidates = Object.values(exports as Record<string, unknown>);
   if (isSource(exports)) {
@@ -22,7 +20,7 @@ export const loadDrizzleSource = async (
   const resolved = values.filter(isSource);
   if (resolved.length !== 1) {
     throw new Error(
-      `Drizzle source must export exactly one defineDrizzleSource({ db, schema }) value`
+      `Drizzle source must export exactly one defineDrizzleSource({ db, schema }) value`,
     );
   }
   return resolved[0];

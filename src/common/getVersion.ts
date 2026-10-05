@@ -12,18 +12,15 @@ import { getOutputDirPath } from "#/modules/files/getOutputDirPath";
 
 const getVersionFilename = async (
   option: Pick<IBuildCommandOption, "versionFrom" | "versionPath">,
-  versionFilename: string
+  versionFilename: string,
 ) => {
   if (option.versionPath !== null && option.versionPath !== undefined) {
     const filename = await getFindFile(
       join(
-        await getOutputDirPath(
-          { output: option.versionPath },
-          getCwd(process.env)
-        ),
-        versionFilename
+        await getOutputDirPath({ output: option.versionPath }, getCwd(process.env)),
+        versionFilename,
       ),
-      { cwd: getCwd(process.env) }
+      { cwd: getCwd(process.env) },
     );
     return filename;
   }
@@ -34,41 +31,29 @@ const getVersionFilename = async (
 };
 export const getVersion = async (
   json: Record<string, unknown>,
-  option: Pick<IBuildCommandOption, "versionFrom" | "versionPath">
+  option: Pick<IBuildCommandOption, "versionFrom" | "versionPath">,
 ): Promise<{
   version: string;
 }> => {
   if (option.versionFrom === "package.json") {
     const { version } = json;
-    if (
-      !(typeof version === "string") ||
-      version === null ||
-      version === undefined
-    ) {
+    if (!(typeof version === "string") || version === null || version === undefined) {
       throw new Error(`Cannot found version field in package.json`);
     }
     return { version };
   }
   if (option.versionFrom === "file") {
     const getVersionFile = async () => {
-      const filename = await getVersionFilename(
-        option,
-        CE_DEFAULT_VALUE.VERSION_FILENAME
-      );
+      const filename = await getVersionFilename(option, CE_DEFAULT_VALUE.VERSION_FILENAME);
       if (filename !== null && filename !== undefined) {
         return filename;
       }
-      const fromConfig = await getVersionFilename(
-        option,
-        CE_DEFAULT_VALUE.CONFIG_FILE_NAME
-      );
+      const fromConfig = await getVersionFilename(option, CE_DEFAULT_VALUE.CONFIG_FILE_NAME);
       return fromConfig;
     };
     const versionFilename = await getVersionFile();
     if (versionFilename === null || versionFilename === undefined) {
-      throw new Error(
-        `Cannot found version file: ${CE_DEFAULT_VALUE.VERSION_FILENAME}`
-      );
+      throw new Error(`Cannot found version file: ${CE_DEFAULT_VALUE.VERSION_FILENAME}`);
     }
     const versionBuf = await fs.promises.readFile(versionFilename);
     const version = getFileVersion(versionBuf);

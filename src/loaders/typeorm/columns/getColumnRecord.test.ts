@@ -30,7 +30,7 @@ describe(getColumnRecord, () => {
   it("column list", async () => {
     const expectFileName = "expect-01.json";
     const userEntity = share.dataSource.entityMetadatas.find(
-      (entityMetadata) => entityMetadata.name === "User"
+      (entityMetadata) => entityMetadata.name === "User",
     );
     const metadata: IRecordMetadata = {
       createdAt: "2023-01-01T11:22:33.000+09:00",
@@ -42,19 +42,14 @@ describe(getColumnRecord, () => {
       throw new Error("Cannot found user entity");
     }
     const columns = toSorted(
-      userEntity.columns.map((column) =>
-        getColumnRecord(column, env.buildOption, metadata, [])
-      ),
-      (left, right) => left.name.localeCompare(right.name)
+      userEntity.columns.map((column) => getColumnRecord(column, env.buildOption, metadata, [])),
+      (left, right) => left.name.localeCompare(right.name),
     );
     if (share.expect) {
-      fs.writeFileSync(
-        expectFileName,
-        fastSafeStringify(columns, undefined, 2)
-      );
+      fs.writeFileSync(expectFileName, fastSafeStringify(columns, undefined, 2));
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", expectFileName)
+      join(testDirectory, "expects", expectFileName),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(columns).toMatchObject(expectation);

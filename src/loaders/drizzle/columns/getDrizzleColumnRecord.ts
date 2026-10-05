@@ -10,11 +10,8 @@ import type { IDrizzleTableConfig } from "#/loaders/drizzle/interfaces/IDrizzleT
 
 export const getDrizzleColumnRecord = (
   column: Column,
-  table: Pick<
-    IDrizzleTableConfig,
-    "foreignKeys" | "indexes" | "name" | "primaryKeys"
-  >,
-  metadata: IRecordMetadata
+  table: Pick<IDrizzleTableConfig, "foreignKeys" | "indexes" | "name" | "primaryKeys">,
+  metadata: IRecordMetadata,
 ): IColumnRecord => {
   const type = getDrizzleColumnType(column);
   const record: Omit<IColumnRecord, "weight"> = {

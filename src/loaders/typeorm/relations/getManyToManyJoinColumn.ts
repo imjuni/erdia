@@ -13,7 +13,7 @@ export const getManyToManyJoinColumn = (
     | "entityMetadata"
     | "inverseEntityMetadata"
     | "inverseJoinColumns"
-  >
+  >,
 ): Pick<
   IRelationRecord,
   | "joinColumnName"
@@ -24,13 +24,11 @@ export const getManyToManyJoinColumn = (
 > => {
   const joinTable = relationMetadata.joinTableName;
   const joinColumn = relationMetadata.joinColumns.find(
-    (column) => getEntityName(column.entityMetadata) === joinTable
+    (column) => getEntityName(column.entityMetadata) === joinTable,
   );
   const inverseRelationMetadata = getInverseRelationMetadata(relationMetadata);
   if (joinColumn !== null && joinColumn !== undefined) {
-    consola.debug(
-      `M:N entity: ${joinColumn.propertyName}-${relationMetadata.joinTableName}`
-    );
+    consola.debug(`M:N entity: ${joinColumn.propertyName}-${relationMetadata.joinTableName}`);
     return {
       inverseJoinColumnOne: false,
       inverseJoinColumnNullable: inverseRelationMetadata.isNullable,
@@ -40,27 +38,24 @@ export const getManyToManyJoinColumn = (
     };
   }
   const entityName = getEntityName(relationMetadata.entityMetadata);
-  const manyToManyRelation =
-    relationMetadata.inverseEntityMetadata.manyToManyRelations.find(
-      (manyToOneRelationMetadata) => {
-        const inverseEntityName = getEntityName(
-          manyToOneRelationMetadata.inverseEntityMetadata
-        );
-        return inverseEntityName === entityName;
-      }
-    );
+  const manyToManyRelation = relationMetadata.inverseEntityMetadata.manyToManyRelations.find(
+    (manyToOneRelationMetadata) => {
+      const inverseEntityName = getEntityName(manyToOneRelationMetadata.inverseEntityMetadata);
+      return inverseEntityName === entityName;
+    },
+  );
   if (manyToManyRelation === null || manyToManyRelation === undefined) {
     throw new Error(
-      `Cannot found relation on many-to-many side: ${relationMetadata.entityMetadata.name}`
+      `Cannot found relation on many-to-many side: ${relationMetadata.entityMetadata.name}`,
     );
   }
   const inverseJoinTable = manyToManyRelation.joinTableName;
   const inverseJoinColumn = manyToManyRelation.joinColumns.find(
-    (column) => getEntityName(column.entityMetadata) === inverseJoinTable
+    (column) => getEntityName(column.entityMetadata) === inverseJoinTable,
   );
   if (inverseJoinColumn === null || inverseJoinColumn === undefined) {
     throw new Error(
-      `Cannot found join-column on many-to-many side: ${manyToManyRelation.entityMetadata.name}`
+      `Cannot found join-column on many-to-many side: ${manyToManyRelation.entityMetadata.name}`,
     );
   }
   return {

@@ -30,12 +30,8 @@ describe("getSlashEndRoutePath", () => {
 
 describe("getOutputDirectory", () => {
   test("pass - cwd", async () => {
-    const existsSpyOn = vitest
-      .spyOn(mnf, "exists")
-      .mockImplementation(async () => false);
-    const mkdirSpyOn = vitest
-      .spyOn(fs.promises, "mkdir")
-      .mockImplementation(async () => "");
+    const existsSpyOn = vitest.spyOn(mnf, "exists").mockImplementation(async () => false);
+    const mkdirSpyOn = vitest.spyOn(fs.promises, "mkdir").mockImplementation(async () => "");
 
     const p = await getOutputDirPath({ output: undefined }, "i-am-cwd");
 
@@ -46,15 +42,9 @@ describe("getOutputDirectory", () => {
   });
 
   test("pass - current directory", async () => {
-    const existsSpyOn = vitest
-      .spyOn(mnf, "exists")
-      .mockImplementation(async () => true);
-    const isDirectorySpyOn = vitest
-      .spyOn(mnf, "isDirectory")
-      .mockImplementation(async () => false);
-    const mkdirSpyOn = vitest
-      .spyOn(fs.promises, "mkdir")
-      .mockImplementation(async () => "");
+    const existsSpyOn = vitest.spyOn(mnf, "exists").mockImplementation(async () => true);
+    const isDirectorySpyOn = vitest.spyOn(mnf, "isDirectory").mockImplementation(async () => false);
+    const mkdirSpyOn = vitest.spyOn(fs.promises, "mkdir").mockImplementation(async () => "");
 
     const p = await getOutputDirPath({ output: undefined }, "examples");
 
@@ -66,15 +56,9 @@ describe("getOutputDirectory", () => {
   });
 
   test("pass - cwd directory", async () => {
-    const existsSpyOn = vitest
-      .spyOn(mnf, "exists")
-      .mockImplementation(async () => true);
-    const isDirectorySpyOn = vitest
-      .spyOn(mnf, "isDirectory")
-      .mockImplementation(async () => true);
-    const mkdirSpyOn = vitest
-      .spyOn(fs.promises, "mkdir")
-      .mockImplementation(async () => "");
+    const existsSpyOn = vitest.spyOn(mnf, "exists").mockImplementation(async () => true);
+    const isDirectorySpyOn = vitest.spyOn(mnf, "isDirectory").mockImplementation(async () => true);
+    const mkdirSpyOn = vitest.spyOn(fs.promises, "mkdir").mockImplementation(async () => "");
 
     const p = await getOutputDirPath({ output: undefined }, "examples");
 
@@ -93,9 +77,7 @@ describe("getPuppeteerConfig", () => {
   });
 
   test("pass - not found", async () => {
-    const existsSpyOn = vitest
-      .spyOn(mnf, "exists")
-      .mockImplementation(async () => false);
+    const existsSpyOn = vitest.spyOn(mnf, "exists").mockImplementation(async () => false);
     const config = await getPuppeteerConfig("config-path");
 
     existsSpyOn.mockRestore();
@@ -104,14 +86,10 @@ describe("getPuppeteerConfig", () => {
   });
 
   test("pass - read-config", async () => {
-    const existsSpyOn = vitest
-      .spyOn(mnf, "exists")
-      .mockImplementation(async () => true);
+    const existsSpyOn = vitest.spyOn(mnf, "exists").mockImplementation(async () => true);
     const readFileSpyOn = vitest
       .spyOn(fs.promises, "readFile")
-      .mockImplementation(async () =>
-        Buffer.from('{ "name": "hello" }')
-      );
+      .mockImplementation(async () => Buffer.from('{ "name": "hello" }'));
 
     const config = await getPuppeteerConfig("config-path");
 
@@ -127,9 +105,7 @@ describe("getPuppeteerConfig", () => {
     });
     const readFileSpyOn = vitest
       .spyOn(fs.promises, "readFile")
-      .mockImplementation(async () =>
-        Buffer.from('{ "name": "hello" }')
-      );
+      .mockImplementation(async () => Buffer.from('{ "name": "hello" }'));
 
     const config = await getPuppeteerConfig("config-path");
 

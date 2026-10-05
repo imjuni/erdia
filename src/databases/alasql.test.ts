@@ -20,10 +20,7 @@ const db: TDatabaseRecord[] = [
 
 describe("alasql", () => {
   test("html.column.test", async () => {
-    const row = await alasql.promise("SELECT * FROM ? WHERE name = ?", [
-      db,
-      "tbl_license",
-    ]);
+    const row = await alasql.promise("SELECT * FROM ? WHERE name = ?", [db, "tbl_license"]);
     expect(row).toEqual([
       {
         $kind: "entity",

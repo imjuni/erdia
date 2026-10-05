@@ -6,25 +6,17 @@ import { configTemplate } from "#/templates/modules/configTemplate";
 import { getTemplatePath } from "#/templates/modules/getTemplatePath";
 import { getTemplates } from "#/templates/modules/getTemplates";
 
-export const loadTemplates = async (
-  option?: Pick<IDocumentOption, "templatePath">
-) => {
-  const defaultTemplatePath = await getTemplatePath(
-    CE_DEFAULT_VALUE.TEMPLATES_PATH
-  );
-  const [defaultHtml, defaultMarkdown, defaultImage, defaultPdf] =
-    await Promise.all([
-      getTemplates(join(defaultTemplatePath, "html"), {}),
-      getTemplates(join(defaultTemplatePath, "markdown"), {}),
-      getTemplates(join(defaultTemplatePath, "image"), {}),
-      getTemplates(join(defaultTemplatePath, "pdf"), {}),
-    ]);
+export const loadTemplates = async (option?: Pick<IDocumentOption, "templatePath">) => {
+  const defaultTemplatePath = await getTemplatePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
+  const [defaultHtml, defaultMarkdown, defaultImage, defaultPdf] = await Promise.all([
+    getTemplates(join(defaultTemplatePath, "html"), {}),
+    getTemplates(join(defaultTemplatePath, "markdown"), {}),
+    getTemplates(join(defaultTemplatePath, "image"), {}),
+    getTemplates(join(defaultTemplatePath, "pdf"), {}),
+  ]);
   const defaultTemplateMap = new Map<string, string>([
     ["config-json", configTemplate.trim()],
-    ...defaultHtml.map((template): [string, string] => [
-      `html-${template.key}`,
-      template.content,
-    ]),
+    ...defaultHtml.map((template): [string, string] => [`html-${template.key}`, template.content]),
     ...defaultMarkdown.map((template): [string, string] => [
       `markdown-${template.key}`,
       template.content,
@@ -33,10 +25,7 @@ export const loadTemplates = async (
       `image-${template.key}`,
       template.content,
     ]),
-    ...defaultPdf.map((template): [string, string] => [
-      `pdf-${template.key}`,
-      template.content,
-    ]),
+    ...defaultPdf.map((template): [string, string] => [`pdf-${template.key}`, template.content]),
   ]);
   if (option?.templatePath === null || option?.templatePath === undefined) {
     return {
@@ -45,19 +34,15 @@ export const loadTemplates = async (
     };
   }
   const templatePath = await getTemplatePath(option.templatePath);
-  const [templateHtml, templateMarkdown, templateImage, templatePdf] =
-    await Promise.all([
-      getTemplates(join(templatePath, "html"), {}),
-      getTemplates(join(templatePath, "markdown"), {}),
-      getTemplates(join(templatePath, "image"), {}),
-      getTemplates(join(templatePath, "pdf"), {}),
-    ]);
+  const [templateHtml, templateMarkdown, templateImage, templatePdf] = await Promise.all([
+    getTemplates(join(templatePath, "html"), {}),
+    getTemplates(join(templatePath, "markdown"), {}),
+    getTemplates(join(templatePath, "image"), {}),
+    getTemplates(join(templatePath, "pdf"), {}),
+  ]);
   const templateMap = new Map<string, string>([
     ["config-json", configTemplate.trim()],
-    ...templateHtml.map((template): [string, string] => [
-      `html-${template.key}`,
-      template.content,
-    ]),
+    ...templateHtml.map((template): [string, string] => [`html-${template.key}`, template.content]),
     ...templateMarkdown.map((template): [string, string] => [
       `markdown-${template.key}`,
       template.content,
@@ -66,10 +51,7 @@ export const loadTemplates = async (
       `image-${template.key}`,
       template.content,
     ]),
-    ...templatePdf.map((template): [string, string] => [
-      `pdf-${template.key}`,
-      template.content,
-    ]),
+    ...templatePdf.map((template): [string, string] => [`pdf-${template.key}`, template.content]),
   ]);
   return {
     default: defaultTemplateMap,

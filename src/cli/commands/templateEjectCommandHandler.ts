@@ -8,7 +8,7 @@ import { SymbolLogger } from "#/modules/containers/keys/SymbolLogger";
 import type { Logger } from "#/modules/loggers/Logger";
 
 export const templateEjectCommandHandler = async (
-  option: Pick<ICommonOption, "output" | "showLogo">
+  option: Pick<ICommonOption, "output" | "showLogo">,
 ) => {
   const logger = container.resolve<Logger>(SymbolLogger);
   logger.level = LogLevels.info;

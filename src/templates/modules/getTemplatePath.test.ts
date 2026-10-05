@@ -36,7 +36,7 @@ describe(getTemplatePath, () => {
       "src",
       "templates",
       "modules",
-      "getTemplatePath.ts"
+      "getTemplatePath.ts",
     );
     const templatePath = await getTemplatePath("getTemplatePath.ts");
     expect(templatePath).toEqual(dirnameTemplatePath);
@@ -44,9 +44,7 @@ describe(getTemplatePath, () => {
 
   it("template path based on 3 step parent directory", async () => {
     const dirnameTemplatePath = join(process.cwd(), "templates");
-    const templatePath = await getTemplatePath(
-      "1110a038cb804e8fac8161070a601f66"
-    );
+    const templatePath = await getTemplatePath("1110a038cb804e8fac8161070a601f66");
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
 
@@ -59,9 +57,7 @@ describe(getTemplatePath, () => {
       .mockImplementationOnce(() => Promise.resolve(true));
 
     const dirnameTemplatePath = join(process.cwd(), "src", "templates");
-    const templatePath = await getTemplatePath(
-      "1110a038cb804e8fac8161070a601f66"
-    );
+    const templatePath = await getTemplatePath("1110a038cb804e8fac8161070a601f66");
     expect(templatePath).toEqual(dirnameTemplatePath);
   });
 });

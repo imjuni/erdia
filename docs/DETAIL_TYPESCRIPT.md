@@ -52,12 +52,7 @@ You can use ts-node or tsx, but you could use a simple script to extract the erd
 
 ```ts
 // generate-erdia.ts
-import {
-  building,
-  CE_ENTITY_VERSION_FROM,
-  CE_OUTPUT_COMPONENT,
-  CE_PROJECT_NAME_FROM,
-} from "erdia";
+import { building, CE_ENTITY_VERSION_FROM, CE_OUTPUT_COMPONENT, CE_PROJECT_NAME_FROM } from "erdia";
 
 export async function handle() {
   console.log("Start erdia");
@@ -73,13 +68,12 @@ export async function handle() {
       versionFrom: CE_ENTITY_VERSION_FROM.PACKAGE_JSON,
       theme: "dark",
     },
-    true
+    true,
   );
 }
 
 handle().catch((caught) => {
-  const err =
-    caught instanceof Error ? caught : new Error("unknown error raised");
+  const err = caught instanceof Error ? caught : new Error("unknown error raised");
   console.log(err.message);
   console.log(err.stack);
 });

@@ -7,7 +7,7 @@ import type { ICommonOption } from "#/configs/interfaces/ICommonOption";
 import { loadDataSource } from "#/loaders/typeorm/connections/loadDataSource";
 
 export const getDataSource = async (
-  options: Pick<ICommonOption, "dataSourcePath">
+  options: Pick<ICommonOption, "dataSourcePath">,
 ): Promise<DataSource> => {
   const dataSourcePath = resolve(options.dataSourcePath);
   if (isFalse(await exists(dataSourcePath))) {

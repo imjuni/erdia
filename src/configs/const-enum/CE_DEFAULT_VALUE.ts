@@ -11,5 +11,4 @@ export const CE_DEFAULT_VALUE = {
   VERSION_FILENAME: ".erdiaverrc",
 } as const;
 
-export type CE_DEFAULT_VALUE =
-  (typeof CE_DEFAULT_VALUE)[keyof typeof CE_DEFAULT_VALUE];
+export type CE_DEFAULT_VALUE = (typeof CE_DEFAULT_VALUE)[keyof typeof CE_DEFAULT_VALUE];

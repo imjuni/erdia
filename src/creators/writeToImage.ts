@@ -27,7 +27,7 @@ export async function writeToImage(
     | "backgroundColor"
     | "imageFormat"
   >,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ) {
   let localBrowser: Browser | undefined;
   let localPage: Page | undefined;
@@ -62,14 +62,14 @@ export async function writeToImage(
       (body, backgroundColor) => {
         body.style.background = backgroundColor;
       },
-      option.backgroundColor ?? "white"
+      option.backgroundColor ?? "white",
     );
 
     if (option.imageFormat === "svg") {
       // this source code from [mermaid-cli](https://github.com/mermaidjs/mermaid.cli/blob/46185413d75384cd7bceed802d187db6852f5190/index.js#L110)
       const svg = await page.$eval(
         "#mermaid-diagram-container",
-        (container) => container.innerHTML
+        (container) => container.innerHTML,
       );
 
       if (svg == null) {
@@ -79,14 +79,12 @@ export async function writeToImage(
 
       await fs.promises.writeFile(
         pathe.join(document.dirname, `${renderData.metadata.name}.svg`),
-        svg
+        svg,
       );
       consola.debug("file write end");
 
       await del(document.filename);
-      consola.info(
-        `Component ER diagram successfully write on ${renderData.metadata.name}.svg`
-      );
+      consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.svg`);
 
       return [pathe.join(document.dirname, `${renderData.metadata.name}.svg`)];
     }
@@ -111,16 +109,11 @@ export async function writeToImage(
     consola.debug("file write end");
 
     await del(document.filename);
-    consola.info(
-      `Component ER diagram successfully write on ${renderData.metadata.name}.png`
-    );
+    consola.info(`Component ER diagram successfully write on ${renderData.metadata.name}.png`);
 
     return [pathe.join(document.dirname, `${renderData.metadata.name}.png`)];
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from writeToImage")
-    );
+    const err = isError(error, new Error("unknown error raised from writeToImage"));
 
     consola.error(err.message);
     consola.error(err.stack);

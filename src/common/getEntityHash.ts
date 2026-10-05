@@ -1,8 +1,6 @@
 import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
 
-export const getEntityHash = (
-  entity: Pick<IEntityRecord, "entity" | "dbName">
-): string => {
+export const getEntityHash = (entity: Pick<IEntityRecord, "entity" | "dbName">): string => {
   const baseHash = [entity.entity, entity.dbName].join(":");
   const base64 = Buffer.from(baseHash).toString("base64");
   return base64;

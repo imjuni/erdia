@@ -18,19 +18,13 @@ import { getManyToManyEntityMetadata } from "#/loaders/typeorm/relations/getMany
 export function getRelationRecord(
   entityMetadatas: EntityMetadata[],
   relationMetadata: RelationMetadata,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): PassFailEither<IReason, IRelationRecord[]> {
   try {
     const entityDBName = getEntityName(relationMetadata.entityMetadata);
-    const entityPropertyName = getEntityPropertyName(
-      relationMetadata.entityMetadata
-    );
-    const inverseEntityDBName = getEntityName(
-      relationMetadata.inverseEntityMetadata
-    );
-    const inverseEntityPropertyName = getEntityPropertyName(
-      relationMetadata.inverseEntityMetadata
-    );
+    const entityPropertyName = getEntityPropertyName(relationMetadata.entityMetadata);
+    const inverseEntityDBName = getEntityName(relationMetadata.inverseEntityMetadata);
+    const inverseEntityPropertyName = getEntityPropertyName(relationMetadata.inverseEntityMetadata);
     const { relationType } = relationMetadata;
     const {
       joinColumnName,
@@ -39,8 +33,7 @@ export function getRelationRecord(
       inverseJoinColumnNullable,
       isDuplicate,
     } = getJoinColumn(relationMetadata);
-    const joinColumnOne =
-      relationType === "one-to-many" || relationType === "one-to-one";
+    const joinColumnOne = relationType === "one-to-many" || relationType === "one-to-one";
     const relationHash = getRelationHash({
       entity: entityDBName,
       inverseEntityName: inverseEntityDBName,
@@ -56,19 +49,15 @@ export function getRelationRecord(
     const joinColumnNullable = relationMetadata.isNullable;
 
     consola.debug(
-      `relation: [${relationMetadata.relationType}] ${entityDBName} -> ${inverseEntityDBName}`
+      `relation: [${relationMetadata.relationType}] ${entityDBName} -> ${inverseEntityDBName}`,
     );
 
     if (relationType === "many-to-many") {
       // 이거 foreign-key로 연결된다, 이걸 끄는 방법을 찾아봐야겠다
-      const joinEntityMetadata = getManyToManyEntityMetadata(
-        entityMetadatas,
-        relationMetadata
-      );
+      const joinEntityMetadata = getManyToManyEntityMetadata(entityMetadatas, relationMetadata);
       const joinEntityName = getEntityName(joinEntityMetadata);
       const joinEntityPropertyName = getEntityPropertyName(joinEntityMetadata);
-      const order =
-        [entityDBName, inverseEntityDBName].sort().indexOf(entityDBName) + 1;
+      const order = [entityDBName, inverseEntityDBName].sort().indexOf(entityDBName) + 1;
 
       const relationRecord: IRelationRecord = {
         ...metadata,
@@ -113,8 +102,7 @@ export function getRelationRecord(
           relationType: "many-to-one",
         }),
         isDuplicate: false,
-        order:
-          [joinEntityName, entityDBName].sort().indexOf(joinEntityName) + 1,
+        order: [joinEntityName, entityDBName].sort().indexOf(joinEntityName) + 1,
       };
 
       return pass([relationRecord, manyToManyRelationEntityRecord]);
@@ -139,15 +127,11 @@ export function getRelationRecord(
         inverseJoinColumnOne,
         relationType,
         isDuplicate,
-        order:
-          [entityDBName, inverseEntityDBName].sort().indexOf(entityDBName) + 1,
+        order: [entityDBName, inverseEntityDBName].sort().indexOf(entityDBName) + 1,
       } satisfies IRelationRecord,
     ]);
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from getRelationData")
-    );
+    const err = isError(error, new Error("unknown error raised from getRelationData"));
 
     const reason: IReason = {
       columnName: "N/A",

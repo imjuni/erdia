@@ -9,5 +9,4 @@ export const CE_PROJECT_NAME_FROM = {
   DATABASE: "db",
 } as const;
 
-export type CE_PROJECT_NAME_FROM =
-  (typeof CE_PROJECT_NAME_FROM)[keyof typeof CE_PROJECT_NAME_FROM];
+export type CE_PROJECT_NAME_FROM = (typeof CE_PROJECT_NAME_FROM)[keyof typeof CE_PROJECT_NAME_FROM];

@@ -3,7 +3,7 @@ import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOpti
 
 export const getComment = (
   option: Pick<IBuildCommandOption, "format">,
-  comment: undefined | null | string
+  comment: undefined | null | string,
 ) => {
   if (comment === null || comment === undefined) {
     return "";

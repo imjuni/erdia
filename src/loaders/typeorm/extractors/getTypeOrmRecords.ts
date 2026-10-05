@@ -12,13 +12,11 @@ import { getRelationRecords } from "#/loaders/typeorm/relations/getRelationRecor
 export const getTypeOrmRecords = (
   dataSource: DataSource,
   format: CE_OUTPUT_FORMAT,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): TDatabaseRecord[] => {
   const indices = getIndexRecords(dataSource, metadata);
   const columns = dataSource.entityMetadatas.flatMap((entity) =>
-    entity.columns.map((column) =>
-      getColumnRecord(column, { format }, metadata, indices)
-    )
+    entity.columns.map((column) => getColumnRecord(column, { format }, metadata, indices)),
   );
   const relations = getRelationRecords(dataSource, metadata)
     .flatMap((result) => ("pass" in result ? result.pass : []))

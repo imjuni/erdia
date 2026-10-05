@@ -1,10 +1,4 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { BaseEntity, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import factory from "./factory";
 import type { ILicense } from "./License";

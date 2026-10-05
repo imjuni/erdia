@@ -9,22 +9,21 @@ export const getColumnAttributeKey = (
   columnMetadata: Pick<ColumnMetadata, "relationMetadata" | "isPrimary">,
   dbName: string,
   tableDBName: string,
-  indexRecords: IIndexRecord[]
+  indexRecords: IIndexRecord[],
 ) => {
-  const indices = alasql(
-    "SELECT * FROM ? WHERE ? = ANY (columnNames) and tableDBName = ?",
-    [indexRecords, dbName, tableDBName]
-  ) as IIndexRecord[];
+  const indices = alasql("SELECT * FROM ? WHERE ? = ANY (columnNames) and tableDBName = ?", [
+    indexRecords,
+    dbName,
+    tableDBName,
+  ]) as IIndexRecord[];
   const index = atOrUndefined(indices, 0);
   return [
-    columnMetadata.relationMetadata === null ||
-    columnMetadata.relationMetadata === undefined
+    columnMetadata.relationMetadata === null || columnMetadata.relationMetadata === undefined
       ? undefined
       : CE_COLUMN_ATTRIBUTE.FK,
     columnMetadata.isPrimary ? CE_COLUMN_ATTRIBUTE.PK : undefined,
     index?.isUnique ? CE_COLUMN_ATTRIBUTE.UK : undefined,
   ].filter(
-    (attribute): attribute is CE_COLUMN_ATTRIBUTE =>
-      attribute !== null && attribute !== undefined
+    (attribute): attribute is CE_COLUMN_ATTRIBUTE => attribute !== null && attribute !== undefined,
   );
 };

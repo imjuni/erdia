@@ -10,14 +10,10 @@ import type { IEntityRecord } from "#/databases/interfaces/IEntityRecord";
  * @returns entity name in CF-ER Diagram
  */
 export const getEntityPropertyName = (
-  entityMeta: Pick<EntityMetadata, "tableName" | "name"> | IEntityRecord
+  entityMeta: Pick<EntityMetadata, "tableName" | "name"> | IEntityRecord,
 ) => {
   if ("$kind" in entityMeta) {
-    if (
-      entityMeta.name === null ||
-      entityMeta.name === undefined ||
-      entityMeta.name === ""
-    ) {
+    if (entityMeta.name === null || entityMeta.name === undefined || entityMeta.name === "") {
       return entityMeta.dbName;
     }
     return entityMeta.name;

@@ -7,7 +7,7 @@ import { betterMkdir } from "#/modules/files/betterMkdir";
 
 export const getOutputDirPath = async (
   option: Pick<IBuildCommandOption, "output">,
-  cwd: string
+  cwd: string,
 ) => {
   const outputDirPath = option.output ?? cwd;
   const resolvedOutputDirPath = resolve(outputDirPath);

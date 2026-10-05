@@ -4,22 +4,15 @@ import type { IRelationRecord } from "#/databases/interfaces/IRelationRecord";
 import { getEntityName } from "#/loaders/typeorm/entities/getEntityName";
 
 export const getManyToOneJoinColumn = (
-  relationMetadata: Pick<
-    RelationMetadata,
-    "joinColumns" | "entityMetadata" | "propertyName"
-  >
-): Pick<
-  IRelationRecord,
-  "joinColumnName" | "joinPropertyName" | "inverseJoinColumnNullable"
-> => {
+  relationMetadata: Pick<RelationMetadata, "joinColumns" | "entityMetadata" | "propertyName">,
+): Pick<IRelationRecord, "joinColumnName" | "joinPropertyName" | "inverseJoinColumnNullable"> => {
   const joinColumn = relationMetadata.joinColumns.find(
     (column) =>
-      getEntityName(column.entityMetadata) ===
-      getEntityName(relationMetadata.entityMetadata)
+      getEntityName(column.entityMetadata) === getEntityName(relationMetadata.entityMetadata),
   );
   if (joinColumn === null || joinColumn === undefined) {
     throw new Error(
-      `Invalid joinColumn detected: [${relationMetadata.joinColumns.length}] ${relationMetadata.propertyName}`
+      `Invalid joinColumn detected: [${relationMetadata.joinColumns.length}] ${relationMetadata.propertyName}`,
     );
   }
   return {

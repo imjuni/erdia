@@ -6,7 +6,7 @@ import { getManyToManyJoinColumn } from "#/loaders/typeorm/relations/getManyToMa
 import { getManyToOneJoinColumn } from "#/loaders/typeorm/relations/getManyToOneJoinColumn";
 
 export const getJoinColumn = (
-  relationMetadata: RelationMetadata
+  relationMetadata: RelationMetadata,
 ): Pick<
   IRelationRecord,
   | "joinColumnName"
@@ -18,8 +18,7 @@ export const getJoinColumn = (
   if (relationMetadata.relationType === "one-to-one") {
     const joinColumn = relationMetadata.joinColumns.find(
       (column) =>
-        getEntityName(column.entityMetadata) ===
-        getEntityName(relationMetadata.entityMetadata)
+        getEntityName(column.entityMetadata) === getEntityName(relationMetadata.entityMetadata),
     );
     if (joinColumn !== null && joinColumn !== undefined) {
       return {
@@ -31,28 +30,19 @@ export const getJoinColumn = (
       };
     }
     const entityName = getEntityName(relationMetadata.entityMetadata);
-    const inverseRelationMetadata =
-      relationMetadata.inverseEntityMetadata.oneToOneRelations.find(
-        (oneToOneRelation) =>
-          getEntityName(oneToOneRelation.inverseEntityMetadata) === entityName
-      );
-    if (
-      inverseRelationMetadata === null ||
-      inverseRelationMetadata === undefined
-    ) {
-      throw new Error(
-        `Invalid joinColumn detected: ${relationMetadata.propertyName}`
-      );
+    const inverseRelationMetadata = relationMetadata.inverseEntityMetadata.oneToOneRelations.find(
+      (oneToOneRelation) => getEntityName(oneToOneRelation.inverseEntityMetadata) === entityName,
+    );
+    if (inverseRelationMetadata === null || inverseRelationMetadata === undefined) {
+      throw new Error(`Invalid joinColumn detected: ${relationMetadata.propertyName}`);
     }
     const inverseJoinColumn = inverseRelationMetadata.joinColumns.find(
       (column) =>
         getEntityName(column.entityMetadata) ===
-        getEntityName(inverseRelationMetadata.entityMetadata)
+        getEntityName(inverseRelationMetadata.entityMetadata),
     );
     if (inverseJoinColumn === null || inverseJoinColumn === undefined) {
-      throw new Error(
-        `Invalid joinColumn detected: ${relationMetadata.propertyName}`
-      );
+      throw new Error(`Invalid joinColumn detected: ${relationMetadata.propertyName}`);
     }
     return {
       inverseJoinColumnOne: true,
@@ -71,18 +61,15 @@ export const getJoinColumn = (
   }
   if (relationMetadata.relationType === "one-to-many") {
     const oneEntityName = getEntityName(relationMetadata.entityMetadata);
-    const manyToOneRelation =
-      relationMetadata.inverseEntityMetadata.manyToOneRelations.find(
-        (manyToOneRelationMetadata) => {
-          const entityName = getEntityName(
-            manyToOneRelationMetadata.inverseEntityMetadata
-          );
-          return entityName === oneEntityName;
-        }
-      );
+    const manyToOneRelation = relationMetadata.inverseEntityMetadata.manyToOneRelations.find(
+      (manyToOneRelationMetadata) => {
+        const entityName = getEntityName(manyToOneRelationMetadata.inverseEntityMetadata);
+        return entityName === oneEntityName;
+      },
+    );
     if (manyToOneRelation === null || manyToOneRelation === undefined) {
       throw new Error(
-        `Cannot found relation on many-to-one side: ${relationMetadata.entityMetadata.name}`
+        `Cannot found relation on many-to-one side: ${relationMetadata.entityMetadata.name}`,
       );
     }
     return {

@@ -11,10 +11,7 @@ import { container } from "#/modules/containers/container";
 import { SymbolDataSource } from "#/modules/containers/keys/SymbolDataSource";
 
 export const getMetadata = async (
-  option: Pick<
-    IBuildCommandOption,
-    "projectName" | "versionFrom" | "versionPath" | "title"
-  >
+  option: Pick<IBuildCommandOption, "projectName" | "versionFrom" | "versionPath" | "title">,
 ): Promise<IRecordMetadata> => {
   const dataSource = container.resolve<DataSource>(SymbolDataSource);
   const json = await readPkg({ normalize: false });

@@ -9,10 +9,7 @@ const templateDirPath = join(process.cwd(), "templates");
 describe("getTemplate", () => {
   it("successfully template loading", async () => {
     const templateHTMLPath = join(templateDirPath, "html");
-    const template = await getTemplate(
-      templateHTMLPath,
-      join(templateHTMLPath, "document.eta")
-    );
+    const template = await getTemplate(templateHTMLPath, join(templateHTMLPath, "document.eta"));
 
     expect(template).toBeDefined();
     expect(template?.key).toBe("document");
@@ -22,7 +19,7 @@ describe("getTemplate", () => {
     const templateCategoryPath = join(templateDirPath, "html");
     const template = await getTemplate(
       templateCategoryPath,
-      join(templateCategoryPath, "cannot-found-this-template.eta")
+      join(templateCategoryPath, "cannot-found-this-template.eta"),
     );
 
     expect(template).toBeUndefined();

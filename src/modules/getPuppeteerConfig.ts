@@ -5,7 +5,7 @@ import { exists } from "my-node-fp";
 import type puppeteer from "puppeteer";
 
 export const getPuppeteerConfig = async (
-  confgFilePath?: string
+  confgFilePath?: string,
 ): Promise<Parameters<typeof puppeteer.launch>[0]> => {
   try {
     if (confgFilePath === null || confgFilePath === undefined) {
@@ -13,9 +13,7 @@ export const getPuppeteerConfig = async (
     }
     if (await exists(confgFilePath)) {
       const buf = await fs.promises.readFile(confgFilePath);
-      const option = parse(buf.toString()) as Parameters<
-        typeof puppeteer.launch
-      >[0];
+      const option = parse(buf.toString()) as Parameters<typeof puppeteer.launch>[0];
       return option;
     }
     return {};

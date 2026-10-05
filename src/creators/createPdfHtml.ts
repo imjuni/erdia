@@ -16,20 +16,12 @@ import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 
 export async function createPdfHtml(
   option: Pick<IBuildCommandOption, "output" | "components" | "prettierConfig">,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ) {
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
-  const rawHtml = await renderer.evaluate(
-    CE_TEMPLATE_NAME.PDF_DOCUMENT,
-    renderData
-  );
-  const prettiedHtml = await applyPrettier(
-    rawHtml,
-    "html",
-    option.prettierConfig
-  );
-  const outputDirPath =
-    option.output == null ? process.cwd() : pathe.resolve(option.output);
+  const rawHtml = await renderer.evaluate(CE_TEMPLATE_NAME.PDF_DOCUMENT, renderData);
+  const prettiedHtml = await applyPrettier(rawHtml, "html", option.prettierConfig);
+  const outputDirPath = option.output == null ? process.cwd() : pathe.resolve(option.output);
   await betterMkdir(outputDirPath);
 
   const tempFileName = pathe.join(outputDirPath, `${randomUUID()}.html`);

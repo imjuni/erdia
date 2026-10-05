@@ -31,7 +31,7 @@ export const cleaning = async (option: ICommonOption) => {
     await dataSource.initialize();
     if (isFalse(dataSource.isInitialized)) {
       throw new Error(
-        `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`
+        `Cannot initialize in ${fastSafeStringify(dataSource.options, undefined, 2)}`,
       );
     }
     container.register(SymbolDataSource, asValue(dataSource));
@@ -51,10 +51,7 @@ export const cleaning = async (option: ICommonOption) => {
     await del(filenames);
     return filenames;
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from createHtmlDocCommand")
-    );
+    const err = isError(error, new Error("unknown error raised from createHtmlDocCommand"));
     consola.error(err);
     return [];
   } finally {

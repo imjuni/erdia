@@ -51,14 +51,9 @@ describe("getMetadata", () => {
       .mockImplementationOnce(() => datetime);
     const tspSpyOn03 = vitest
       .spyOn(readPkg, "default")
-      .mockImplementationOnce(async () =>
-        ({ name: "erdia", version: "1.1.1" })
-      );
+      .mockImplementationOnce(async () => ({ name: "erdia", version: "1.1.1" }));
 
-    container.register(
-      SymbolDataSource,
-      asValue({ options: { database: "i-am-database" } })
-    );
+    container.register(SymbolDataSource, asValue({ options: { database: "i-am-database" } }));
     const metadata = await getMetadata({
       ...env.buildOption,
       versionFrom: "timestamp",
@@ -89,14 +84,9 @@ describe("getMetadata", () => {
       .mockImplementationOnce(() => datetime);
     const tspSpyOn03 = vitest
       .spyOn(readPkg, "default")
-      .mockImplementationOnce(async () =>
-        ({ name: "@maeum_pet-store", version: "1.1.1" })
-      );
+      .mockImplementationOnce(async () => ({ name: "@maeum_pet-store", version: "1.1.1" }));
 
-    container.register(
-      SymbolDataSource,
-      asValue({ options: { database: "i-am-database" } })
-    );
+    container.register(SymbolDataSource, asValue({ options: { database: "i-am-database" } }));
     const metadata = await getMetadata({
       ...env.buildOption,
       versionFrom: "timestamp",
@@ -122,7 +112,7 @@ describe("getProjectName", () => {
     const name = await getProjectName(
       { options: { database: undefined } },
       { name: expectation },
-      env.buildOption
+      env.buildOption,
     );
     expect(name).toEqual(expectation);
   });
@@ -132,7 +122,7 @@ describe("getProjectName", () => {
     const name = await getProjectName(
       { options: { database: expectation } },
       { name: expectation },
-      { ...env.buildOption, projectName: "db" }
+      { ...env.buildOption, projectName: "db" },
     );
     expect(name).toEqual(expectation);
   });
@@ -142,7 +132,7 @@ describe("getProjectName", () => {
     const name = await getProjectName(
       { options: { database: undefined } },
       { name: expectation },
-      { ...env.buildOption, projectName: "db" }
+      { ...env.buildOption, projectName: "db" },
     );
     expect(name).toEqual(expectation);
   });
@@ -184,9 +174,7 @@ describe("getDatabaseName", () => {
 describe("getFindFile", () => {
   test("pass", async () => {
     const expectation = "/a/b";
-    const tspSpyOn01 = vitest
-      .spyOn(findUp, "default")
-      .mockImplementation(async () => expectation);
+    const tspSpyOn01 = vitest.spyOn(findUp, "default").mockImplementation(async () => expectation);
 
     try {
       const finded = await getFindFile("", {});

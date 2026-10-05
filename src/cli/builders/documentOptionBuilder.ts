@@ -20,10 +20,7 @@ export const documentOptionBuilder = <T>(args: Argv<T>) => {
       describe:
         "define whether project name will come from the `package.json` name field or database name",
       type: "string",
-      choices: [
-        CE_PROJECT_NAME_FROM.APPLICATION,
-        CE_PROJECT_NAME_FROM.DATABASE,
-      ],
+      choices: [CE_PROJECT_NAME_FROM.APPLICATION, CE_PROJECT_NAME_FROM.DATABASE],
       default: CE_PROJECT_NAME_FROM.APPLICATION,
     })
     .option("database-path", {
@@ -64,8 +61,7 @@ export const documentOptionBuilder = <T>(args: Argv<T>) => {
       default: CE_ENTITY_VERSION_FROM.PACKAGE_JSON,
     })
     .option("version-path", {
-      describe:
-        "If the versionFrom option set `file`, read the file from this path",
+      describe: "If the versionFrom option set `file`, read the file from this path",
       type: "string",
       default: undefined,
     })

@@ -1,16 +1,7 @@
 import { is } from "drizzle-orm";
-import {
-  getTableConfig as getMysqlTableConfig,
-  MySqlTable,
-} from "drizzle-orm/mysql-core";
-import {
-  getTableConfig as getPgTableConfig,
-  PgTable,
-} from "drizzle-orm/pg-core";
-import {
-  getTableConfig as getSqliteTableConfig,
-  SQLiteTable,
-} from "drizzle-orm/sqlite-core";
+import { getTableConfig as getMysqlTableConfig, MySqlTable } from "drizzle-orm/mysql-core";
+import { getTableConfig as getPgTableConfig, PgTable } from "drizzle-orm/pg-core";
+import { getTableConfig as getSqliteTableConfig, SQLiteTable } from "drizzle-orm/sqlite-core";
 
 import type {
   IDrizzleIndex,
@@ -22,7 +13,7 @@ const normalizeIndex = (index: {
 }): IDrizzleIndex => ({
   columns: index.config.columns.filter(
     (column): column is IDrizzleIndex["columns"][number] =>
-      typeof column === "object" && column !== null && "name" in column
+      typeof column === "object" && column !== null && "name" in column,
   ),
   isUnique: index.config.unique ?? false,
   name: index.config.name ?? "",

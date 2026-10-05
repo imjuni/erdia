@@ -8,13 +8,11 @@ import type { ITemplate } from "#/templates/interfaces/ITemplate";
 
 export async function getTemplate(
   dirPath: string,
-  filePath: string
+  filePath: string,
 ): Promise<ITemplate | undefined> {
   if (isTrue(await exists(filePath))) {
     const buf = await fs.promises.readFile(filePath);
-    const relative = pathe
-      .relative(dirPath, filePath)
-      .replace(`.${pathe.sep}`, "");
+    const relative = pathe.relative(dirPath, filePath).replace(`.${pathe.sep}`, "");
     const dirname = await getDirname(relative);
     const basename = basenames(relative, [".eta", ".ejs"]);
 

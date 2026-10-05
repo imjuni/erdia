@@ -6,7 +6,7 @@ import type { IDrizzleIndex } from "#/loaders/drizzle/interfaces/IDrizzleTableCo
 export const getDrizzleIndexRecord = (
   index: IDrizzleIndex,
   tableName: string,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): IIndexRecord => ({
   $kind: "index",
   ...metadata,

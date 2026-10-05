@@ -30,8 +30,7 @@ export function preLoadConfig() {
       config: configFilePath,
     };
   } catch (error) {
-    const err =
-      error instanceof Error ? error : new Error("unknown error raised");
+    const err = error instanceof Error ? error : new Error("unknown error raised");
 
     consola.error(err);
     consola.error(err.stack);

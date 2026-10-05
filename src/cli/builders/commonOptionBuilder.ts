@@ -18,8 +18,7 @@ export const commonOptionBuilder = <T>(args: Argv<T>) => {
     })
     .option("data-source-path", {
       alias: "d",
-      describe:
-        "define the path to a TypeORM data source or Drizzle schema file",
+      describe: "define the path to a TypeORM data source or Drizzle schema file",
       type: "string",
     })
     .option("show-logo", {
