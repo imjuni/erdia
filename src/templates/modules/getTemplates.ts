@@ -7,10 +7,7 @@ import { defaultExclude } from "#/modules/scopes/defaultExclude";
 import type { ITemplate } from "#/templates/interfaces/ITemplate";
 import { getTemplate } from "#/templates/modules/getTemplate";
 
-export async function getTemplates(
-  templatePath: string,
-  globOptions?: GlobOptions
-) {
+export async function getTemplates(templatePath: string, globOptions?: GlobOptions) {
   const resolvedTemplatePath = pathe.resolve(templatePath);
 
   const globs = new Glob(pathe.join(resolvedTemplatePath, `**`, "*.eta"), {
@@ -28,8 +25,8 @@ export async function getTemplates(
   const loadedTemplateFiles = (
     await Promise.all(
       templateFilePaths.map(async (templateFilePath) =>
-        getTemplate(resolvedTemplatePath, templateFilePath)
-      )
+        getTemplate(resolvedTemplatePath, templateFilePath),
+      ),
     )
   ).filter((template): template is ITemplate => template != null);
 

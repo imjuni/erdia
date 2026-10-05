@@ -106,24 +106,24 @@ SVG는 `--image-format svg`로 변경합니다. PDF·이미지 출력과 HTML �
 
 ### 자주 사용하는 옵션
 
-| 옵션 | 설명 |
-| --- | --- |
-| `--orm typeorm\|drizzle` | 입력 ORM. 기본값은 `typeorm` |
-| `-d`, `--data-source-path` | TypeORM 데이터 소스 또는 Drizzle 스키마 파일 경로 |
-| `-o`, `--output` | 문서 출력 폴더 |
-| `-c`, `--config` | 별도 설정 파일 경로 |
-| `--database-path` | 변경 이력 파일 `erdiadb.json` 저장 폴더 |
-| `--format html\|md\|pdf\|image` | 출력 형식 |
-| `--components table er` | 테이블 명세와 ER 다이어그램 출력. 하나만 지정 가능 |
-| `--skip-image-in-html` | HTML의 ER 이미지 첨부 생성 생략 |
-| `--theme default\|dark\|forest\|neutral\|null` | Mermaid 테마 |
-| `--title "Example ERD"` | HTML 문서 제목 |
-| `--image-format svg\|png` | 이미지 형식, 기본값 `svg` |
-| `--width "100%"` | ER 다이어그램 CSS 너비 |
-| `--viewport-width 1280` | Puppeteer 뷰포트 너비 |
-| `--viewport-height 1440` | Puppeteer 뷰포트 높이 |
-| `--background-color white` | 배경색 |
-| `--puppeteer-config <path>` | Puppeteer 설정 파일 경로 |
+| 옵션                                           | 설명                                               |
+| ---------------------------------------------- | -------------------------------------------------- |
+| `--orm typeorm\|drizzle`                       | 입력 ORM. 기본값은 `typeorm`                       |
+| `-d`, `--data-source-path`                     | TypeORM 데이터 소스 또는 Drizzle 스키마 파일 경로  |
+| `-o`, `--output`                               | 문서 출력 폴더                                     |
+| `-c`, `--config`                               | 별도 설정 파일 경로                                |
+| `--database-path`                              | 변경 이력 파일 `erdiadb.json` 저장 폴더            |
+| `--format html\|md\|pdf\|image`                | 출력 형식                                          |
+| `--components table er`                        | 테이블 명세와 ER 다이어그램 출력. 하나만 지정 가능 |
+| `--skip-image-in-html`                         | HTML의 ER 이미지 첨부 생성 생략                    |
+| `--theme default\|dark\|forest\|neutral\|null` | Mermaid 테마                                       |
+| `--title "Example ERD"`                        | HTML 문서 제목                                     |
+| `--image-format svg\|png`                      | 이미지 형식, 기본값 `svg`                          |
+| `--width "100%"`                               | ER 다이어그램 CSS 너비                             |
+| `--viewport-width 1280`                        | Puppeteer 뷰포트 너비                              |
+| `--viewport-height 1440`                       | Puppeteer 뷰포트 높이                              |
+| `--background-color white`                     | 배경색                                             |
+| `--puppeteer-config <path>`                    | Puppeteer 설정 파일 경로                           |
 
 ## Drizzle 예제 테스트
 
@@ -152,11 +152,11 @@ npx ts-node node_modules/erdia/dist/cjs/cli.cjs build \
 
 ### 예제 구성
 
-| 파일 | 역할 |
-| --- | --- |
-| `examples/drizzle/drizzle.config.ts` | Drizzle Kit용 SQLite dialect, 스키마 경로, DB 접속 경로, 마이그레이션 출력 경로 |
-| `examples/drizzle/schema.ts` | SQLite 테이블, 컬럼, 외래 키, 고유 인덱스 정의 |
-| `examples/drizzle/dataSourceConfig.ts` | 애플리케이션에서 DB 연결과 Drizzle 인스턴스를 만드는 방법을 보여주는 예제 |
+| 파일                                   | 역할                                                                            |
+| -------------------------------------- | ------------------------------------------------------------------------------- |
+| `examples/drizzle/drizzle.config.ts`   | Drizzle Kit용 SQLite dialect, 스키마 경로, DB 접속 경로, 마이그레이션 출력 경로 |
+| `examples/drizzle/schema.ts`           | SQLite 테이블, 컬럼, 외래 키, 고유 인덱스 정의                                  |
+| `examples/drizzle/dataSourceConfig.ts` | 애플리케이션에서 DB 연결과 Drizzle 인스턴스를 만드는 방법을 보여주는 예제       |
 
 예제 테이블은 `user`, `photo`, `license`, `organization`, `organization_license`입니다. `dataSourceConfig.ts`는 `examples/db/sqlite3.sqlite3`를 열며, `dispose()`로 연결을 닫습니다.
 

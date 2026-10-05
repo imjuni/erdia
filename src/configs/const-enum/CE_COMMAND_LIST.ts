@@ -9,5 +9,4 @@ export const CE_COMMAND_LIST = {
   INIT_ALIAS: "i",
 } as const;
 
-export type CE_COMMAND_LIST =
-  (typeof CE_COMMAND_LIST)[keyof typeof CE_COMMAND_LIST];
+export type CE_COMMAND_LIST = (typeof CE_COMMAND_LIST)[keyof typeof CE_COMMAND_LIST];

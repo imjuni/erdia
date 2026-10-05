@@ -21,5 +21,4 @@ export const CE_TEMPLATE_NAME = {
   PDF_TABLE: "pdf-table",
 } as const;
 
-export type CE_TEMPLATE_NAME =
-  (typeof CE_TEMPLATE_NAME)[keyof typeof CE_TEMPLATE_NAME];
+export type CE_TEMPLATE_NAME = (typeof CE_TEMPLATE_NAME)[keyof typeof CE_TEMPLATE_NAME];

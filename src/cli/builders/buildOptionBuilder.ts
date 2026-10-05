@@ -49,8 +49,7 @@ export const buildOptionBuilder = <T>(args: Argv<T>) => {
     })
     .option("background-color", {
       default: "white",
-      describe:
-        "define the background color to html documents. eg. transparent, red, '#F0F0F0'",
+      describe: "define the background color to html documents. eg. transparent, red, '#F0F0F0'",
       type: "string",
     });
   return args;

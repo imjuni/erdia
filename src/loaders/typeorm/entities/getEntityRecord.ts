@@ -7,7 +7,7 @@ import { getEntityName } from "#/loaders/typeorm/entities/getEntityName";
 
 export const getEntityRecord = (
   entityMetadata: EntityMetadata,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): IEntityRecord => {
   const record: IEntityRecord = {
     $kind: "entity",

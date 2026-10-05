@@ -11,12 +11,9 @@ import type { TDatabaseRecord } from "#/databases/interfaces/TDatabaseRecord";
 import { getOutputDirPath } from "#/modules/files/getOutputDirPath";
 
 export const openDatabase = async (
-  option: Pick<IBuildCommandOption, "databasePath">
+  option: Pick<IBuildCommandOption, "databasePath">,
 ): Promise<TDatabaseRecord[]> => {
-  const dirname = await getOutputDirPath(
-    { output: option.databasePath },
-    process.cwd()
-  );
+  const dirname = await getOutputDirPath({ output: option.databasePath }, process.cwd());
   const filename = join(dirname, CE_DEFAULT_VALUE.DATABASE_FILENAME);
   if (filename === null || filename === undefined) {
     return [];

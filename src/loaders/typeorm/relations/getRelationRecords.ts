@@ -7,17 +7,15 @@ import { getRelationRecord } from "#/loaders/typeorm/relations/getRelationRecord
 
 export const getRelationRecords = (
   dataSource: DataSource,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): ReturnType<typeof getRelationRecord>[] => {
-  const relationRecords = dataSource.entityMetadatas.flatMap(
-    (entityMetadata) => {
-      consola.debug(
-        `Entity: ${getEntityName(entityMetadata)}, Length: ${entityMetadata.relations.length}`
-      );
-      return entityMetadata.relations.map((relation) =>
-        getRelationRecord(dataSource.entityMetadatas, relation, metadata)
-      );
-    }
-  );
+  const relationRecords = dataSource.entityMetadatas.flatMap((entityMetadata) => {
+    consola.debug(
+      `Entity: ${getEntityName(entityMetadata)}, Length: ${entityMetadata.relations.length}`,
+    );
+    return entityMetadata.relations.map((relation) =>
+      getRelationRecord(dataSource.entityMetadatas, relation, metadata),
+    );
+  });
   return relationRecords;
 };

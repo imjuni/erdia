@@ -10,13 +10,10 @@ export const getProjectName = (
     };
   },
   json: Record<string, unknown>,
-  option: Pick<IBuildCommandOption, "projectName">
+  option: Pick<IBuildCommandOption, "projectName">,
 ) => {
   if (option.projectName === CE_PROJECT_NAME_FROM.DATABASE) {
-    if (
-      dataSource.options.database !== null &&
-      dataSource.options.database !== undefined
-    ) {
+    if (dataSource.options.database !== null && dataSource.options.database !== undefined) {
       const databaseName = getDatabaseName(dataSource.options);
       return databaseName;
     }

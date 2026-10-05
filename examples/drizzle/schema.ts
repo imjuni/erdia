@@ -1,9 +1,4 @@
-import {
-  integer,
-  sqliteTable,
-  text,
-  uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 export const users = sqliteTable("user", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -34,7 +29,7 @@ export const licenses = sqliteTable(
   },
   (table) => ({
     titleIndex: uniqueIndex("license_title_index").on(table.title),
-  })
+  }),
 );
 
 export const organizations = sqliteTable("organization", {

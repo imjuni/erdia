@@ -4,7 +4,7 @@ import { isError } from "my-easy-fp";
 export const applyPrettier = async (
   document: string,
   format: "html" | "md" | "json",
-  configPath?: string
+  configPath?: string,
 ): Promise<string> => {
   try {
     const prettierModule = await import("prettier");
@@ -16,10 +16,7 @@ export const applyPrettier = async (
     });
     return formatted;
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from prettier appling function")
-    );
+    const err = isError(error, new Error("unknown error raised from prettier appling function"));
     consola.error(err.message);
     consola.error(err.stack);
     return document;

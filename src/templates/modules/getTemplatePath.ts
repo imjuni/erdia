@@ -3,9 +3,7 @@ import { resolve } from "pathe";
 
 import { getTemplateModulePath } from "#/templates/modules/getTemplateModulePath";
 
-export const getTemplatePath = async (
-  templatePathParam?: string
-): Promise<string> => {
+export const getTemplatePath = async (templatePathParam?: string): Promise<string> => {
   if (
     templatePathParam !== null &&
     templatePathParam !== undefined &&

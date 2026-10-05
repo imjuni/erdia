@@ -5,7 +5,7 @@ import type { IDrizzleTableConfig } from "#/loaders/drizzle/interfaces/IDrizzleT
 
 export const getDrizzleEntityRecord = (
   table: Pick<IDrizzleTableConfig, "foreignKeys" | "name">,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): IEntityRecord => ({
   $kind: "entity",
   ...metadata,

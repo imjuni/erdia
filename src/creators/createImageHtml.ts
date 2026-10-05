@@ -16,7 +16,7 @@ import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 
 export async function createImageHtml(
   option: Pick<IBuildCommandOption, "output" | "components" | "prettierConfig">,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<IErdiaDocument> {
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
   const rawHtml = await renderer.evaluate(CE_TEMPLATE_NAME.IMAGE_DOCUMENT, {
@@ -24,13 +24,8 @@ export async function createImageHtml(
     option: { ...renderData.option, width: "200vw" },
   });
 
-  const prettiedHtml = await applyPrettier(
-    rawHtml,
-    "html",
-    option.prettierConfig
-  );
-  const outputDirPath =
-    option.output == null ? process.cwd() : pathe.resolve(option.output);
+  const prettiedHtml = await applyPrettier(rawHtml, "html", option.prettierConfig);
+  const outputDirPath = option.output == null ? process.cwd() : pathe.resolve(option.output);
   await betterMkdir(outputDirPath);
   const tempFileName = pathe.join(outputDirPath, `${randomUUID()}.html`);
 

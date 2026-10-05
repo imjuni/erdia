@@ -14,18 +14,11 @@ import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 
 export async function createMarkdown(
   option: Pick<IBuildCommandOption, "output" | "prettierConfig">,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<IErdiaDocument> {
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
-  const rawMarkdown = await renderer.evaluate(
-    CE_TEMPLATE_NAME.MARKDOWN_DOCUMENT,
-    renderData
-  );
-  const prettiedMarkdown = await applyPrettier(
-    rawMarkdown,
-    "md",
-    option.prettierConfig
-  );
+  const rawMarkdown = await renderer.evaluate(CE_TEMPLATE_NAME.MARKDOWN_DOCUMENT, renderData);
+  const prettiedMarkdown = await applyPrettier(rawMarkdown, "md", option.prettierConfig);
   const markdownFileName = `${renderData.metadata.name}.md`;
   const outputDir = await getOutputDirPath(option, getCwd(process.env));
 

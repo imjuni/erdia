@@ -6,10 +6,7 @@ import type { IIndexRecord } from "#/databases/interfaces/IIndexRecord";
 import type { IRecordMetadata } from "#/databases/interfaces/IRecordMetadata";
 import { getEntityName } from "#/loaders/typeorm/entities/getEntityName";
 
-export const getIndexRecord = (
-  entityMetadata: EntityMetadata,
-  metadata: IRecordMetadata
-) => {
+export const getIndexRecord = (entityMetadata: EntityMetadata, metadata: IRecordMetadata) => {
   const indices = entityMetadata.indices.map((entityIndex) => {
     const record: IIndexRecord = {
       $kind: CE_RECORD_KIND.INDEX,

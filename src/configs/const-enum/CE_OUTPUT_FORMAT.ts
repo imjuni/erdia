@@ -5,5 +5,4 @@ export const CE_OUTPUT_FORMAT = {
   PDF: "pdf",
 } as const;
 
-export type CE_OUTPUT_FORMAT =
-  (typeof CE_OUTPUT_FORMAT)[keyof typeof CE_OUTPUT_FORMAT];
+export type CE_OUTPUT_FORMAT = (typeof CE_OUTPUT_FORMAT)[keyof typeof CE_OUTPUT_FORMAT];

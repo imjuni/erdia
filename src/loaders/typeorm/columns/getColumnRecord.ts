@@ -16,7 +16,7 @@ export const getColumnRecord = (
   columnMetadata: ColumnMetadata,
   option: Pick<IBuildCommandOption, "format">,
   metadata: IRecordMetadata,
-  indices: IIndexRecord[]
+  indices: IIndexRecord[],
 ): IColumnRecord => {
   /** entity name of metadata */
   const entityName = getEntityName(columnMetadata.entityMetadata);
@@ -24,12 +24,7 @@ export const getColumnRecord = (
   /** table name of database */
   const columnName = columnMetadata.databaseName;
   /** column attribute key, (e.g., PK, FK) */
-  const attributeKey = getColumnAttributeKey(
-    columnMetadata,
-    columnName,
-    entityName,
-    indices
-  );
+  const attributeKey = getColumnAttributeKey(columnMetadata, columnName, entityName, indices);
   /** type of column */
   const columnType = getColumnType(columnMetadata);
   /** type of column */

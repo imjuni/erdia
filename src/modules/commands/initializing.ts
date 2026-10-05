@@ -19,10 +19,7 @@ export const initializing = async (logging?: boolean) => {
   const logger = container.resolve<Logger>(SymbolLogger);
   try {
     const templates = await loadTemplates();
-    const renderer = new TemplateRenderer(
-      templates.template,
-      templates.default
-    );
+    const renderer = new TemplateRenderer(templates.template, templates.default);
     container.register(SymbolTemplateRenderer, asValue(renderer));
     const rawConfig = await getConfigContent();
     const prettiered = await applyPrettier(rawConfig, "json");
@@ -30,10 +27,7 @@ export const initializing = async (logging?: boolean) => {
     logger.info(`${CE_DEFAULT_VALUE.CONFIG_FILE_NAME} file created`);
     return rawConfig;
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from createHtmlDocCommand")
-    );
+    const err = isError(error, new Error("unknown error raised from createHtmlDocCommand"));
     return logger.error(err);
   }
 };

@@ -40,22 +40,17 @@ import { TemplateRenderer } from "#/templates/TemplateRenderer";
 
 export const building = async (
   option: SetOptional<IBuildCommandOption, "config">,
-  logging?: boolean
+  logging?: boolean,
 ) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
   let loader: ISchemaLoader | undefined;
   try {
-    logger.info(
-      `connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`
-    );
+    logger.info(`connection initialize: "${chalk.yellowBright(option.dataSourcePath)}"`);
     if (option.orm === "drizzle") {
       const schema = await loadDrizzleSchema(option.dataSourcePath);
       loader = new DrizzleLoader({ schema });
-      container.register(
-        SymbolDataSource,
-        asValue({ options: { database: undefined } })
-      );
+      container.register(SymbolDataSource, asValue({ options: { database: undefined } }));
     } else {
       const dataSource = await getDataSource(option);
       loader = new TypeOrmLoader(dataSource, option.format);
@@ -63,10 +58,7 @@ export const building = async (
     }
     await loader.initialize();
     const templates = await loadTemplates(option);
-    const renderer = new TemplateRenderer(
-      templates.template,
-      templates.default
-    );
+    const renderer = new TemplateRenderer(templates.template, templates.default);
     container.register(SymbolDefaultTemplate, asValue(templates.default));
     container.register(SymbolTemplate, asValue(templates.template));
     container.register(SymbolTemplateRenderer, asValue(renderer));
@@ -101,7 +93,7 @@ export const building = async (
         documents.map(async (document) => {
           await betterMkdir(document.dirname);
           await fs.promises.writeFile(document.filename, document.content);
-        })
+        }),
       );
       if (!option.skipImageInHtml) {
         const imageDocument = await createImageHtml(imageOption, renderData);
@@ -128,10 +120,7 @@ export const building = async (
     }
     return [];
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from createHtmlDocCommand")
-    );
+    const err = isError(error, new Error("unknown error raised from createHtmlDocCommand"));
     logger.error(err);
     return [];
   } finally {

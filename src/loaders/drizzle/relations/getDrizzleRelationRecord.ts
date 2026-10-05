@@ -9,7 +9,7 @@ import type { IDrizzleForeignKey } from "#/loaders/drizzle/interfaces/IDrizzleTa
 export const getDrizzleRelationRecord = (
   foreignKey: IDrizzleForeignKey,
   tableName: string,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): IRelationRecord => {
   const reference = foreignKey.reference();
   const [column] = reference.columns;

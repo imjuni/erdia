@@ -29,8 +29,7 @@ await esbuild.build({
   external,
   format: process.env.FORMAT,
   minify: process.env.MINIFY === "true",
-  outfile:
-    process.env.FORMAT === "cjs" ? "dist/cjs/cli.cjs" : "dist/esm/cli.mjs",
+  outfile: process.env.FORMAT === "cjs" ? "dist/cjs/cli.cjs" : "dist/esm/cli.mjs",
   platform: "node",
   sourcemap: true,
   target: "es2021",

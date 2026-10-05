@@ -203,11 +203,11 @@ describe("dedupeManaToManyRelationRecord", () => {
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(deduped, undefined, 2)
+        fastSafeStringify(deduped, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(deduped).toMatchObject(expectation);

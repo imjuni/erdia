@@ -25,7 +25,7 @@ export async function writeToPdf(
     | "viewportHeight"
     | "backgroundColor"
   >,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ): Promise<string[]> {
   let localBrowser: Browser | undefined;
   let localPage: Page | undefined;
@@ -62,10 +62,7 @@ export async function writeToPdf(
 
     return [pathe.join(document.dirname, `${renderData.metadata.name}.pdf`)];
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from writeToPdf")
-    );
+    const err = isError(error, new Error("unknown error raised from writeToPdf"));
 
     consola.error(err.message);
     consola.error(err.stack);

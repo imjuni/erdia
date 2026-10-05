@@ -68,7 +68,7 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt --write .",
-    "format:check": "oxfmt .",
+    "format:check": "oxfmt --check .",
     "check": "pnpm run format:check && pnpm run lint",
     "check:write": "pnpm run format && pnpm run lint:fix",
     "pub": "pnpm run bundle && cross-env RELEASE_MODE=true NODE_ENV=production pnpm publish --registry http://localhost:8901",

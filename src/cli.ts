@@ -23,29 +23,25 @@ import { createLogger } from "#/modules/loggers/createLogger";
 sourceMapSupport.install();
 createLogger();
 
-const buildCmdModule: CommandModule<IBuildCommandOption, IBuildCommandOption> =
-  {
-    command: CE_COMMAND_LIST.BUILD,
-    aliases: CE_COMMAND_LIST.BUILD_ALIAS,
-    describe:
-      "generate an entity specification document and ER diagram document",
-    builder: (argv) => {
-      const withCommonArgv = commonOptionBuilder<IBuildCommandOption>(argv);
-      const withDocumentArgv =
-        documentOptionBuilder<IBuildCommandOption>(withCommonArgv);
-      const withBuildArgv =
-        buildOptionBuilder<IBuildCommandOption>(withDocumentArgv);
-      return withBuildArgv;
-    },
-    handler: async (argv) => {
-      try {
-        await buildDocumentCommandHandler(argv);
-      } catch (error) {
-        const err = isError(error, new Error("unknown error raised"));
-        consola.error(err);
-      }
-    },
-  };
+const buildCmdModule: CommandModule<IBuildCommandOption, IBuildCommandOption> = {
+  command: CE_COMMAND_LIST.BUILD,
+  aliases: CE_COMMAND_LIST.BUILD_ALIAS,
+  describe: "generate an entity specification document and ER diagram document",
+  builder: (argv) => {
+    const withCommonArgv = commonOptionBuilder<IBuildCommandOption>(argv);
+    const withDocumentArgv = documentOptionBuilder<IBuildCommandOption>(withCommonArgv);
+    const withBuildArgv = buildOptionBuilder<IBuildCommandOption>(withDocumentArgv);
+    return withBuildArgv;
+  },
+  handler: async (argv) => {
+    try {
+      await buildDocumentCommandHandler(argv);
+    } catch (error) {
+      const err = isError(error, new Error("unknown error raised"));
+      consola.error(err);
+    }
+  },
+};
 
 const cleanCmdModule: CommandModule<ICommonOption, ICommonOption> = {
   command: CE_COMMAND_LIST.CLEAN,
@@ -87,8 +83,7 @@ const ejectCmdModule: CommandModule<
   aliases: CE_COMMAND_LIST.EJECT_ALIAS,
   describe: "eject document template files",
   builder: (argv) => {
-    const withCommonArgv =
-      outputOptionBuilder<Pick<ICommonOption, "output">>(argv);
+    const withCommonArgv = outputOptionBuilder<Pick<ICommonOption, "output">>(argv);
     return withCommonArgv;
   },
   handler: async (argv) => {

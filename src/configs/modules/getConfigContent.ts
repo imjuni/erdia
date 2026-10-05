@@ -43,7 +43,7 @@ export async function getConfigContent() {
       ignore: defaultExclude,
       cwd: process.cwd(),
       onlyFiles: true,
-    }
+    },
   );
   const sourceFiles = getGlobFiles(sourceGlobFiles);
 
@@ -78,7 +78,7 @@ export async function getConfigContent() {
       message: "Select a dataSource file: ",
       source: getAutoCompleteSource(
         sourceFilesFuse,
-        CE_DEFAULT_VALUE.DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT
+        CE_DEFAULT_VALUE.DATA_SOURCE_FILE_FUZZY_SCORE_LIMIT,
       ),
     },
     {
@@ -87,7 +87,7 @@ export async function getConfigContent() {
       message: "Select directory for output files: ",
       source: getAutoCompleteSource(
         directoriesFuse,
-        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT,
       ),
     },
     {
@@ -142,10 +142,9 @@ export async function getConfigContent() {
       message: "Select the entity database file path: ",
       source: getAutoCompleteSource(
         directoriesFuse,
-        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT,
       ),
-      when: (answerForWhen: IInitDocAnswer) =>
-        answerForWhen.isSelectDatabasePath,
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.isSelectDatabasePath,
     },
     {
       type: "list",
@@ -156,16 +155,14 @@ export async function getConfigContent() {
         { name: "enter rotue base path", value: true },
         { name: "skip", value: false },
       ],
-      when: (answerForWhen: IInitDocAnswer) =>
-        answerForWhen.format === CE_OUTPUT_FORMAT.HTML,
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format === CE_OUTPUT_FORMAT.HTML,
     },
     {
       type: "input",
       name: "routeBasePath",
       message: "Enter your route base path: ",
       when: (answerForWhen: IInitDocAnswer) =>
-        answerForWhen.format === CE_OUTPUT_FORMAT.HTML &&
-        answerForWhen.isEnterRouteBasePath,
+        answerForWhen.format === CE_OUTPUT_FORMAT.HTML && answerForWhen.isEnterRouteBasePath,
     },
     {
       type: "list",
@@ -185,8 +182,7 @@ export async function getConfigContent() {
           value: CE_ENTITY_VERSION_FROM.TIMESTAMP,
         },
       ],
-      when: (answerForWhen: IInitDocAnswer) =>
-        answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE,
+      when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== CE_OUTPUT_FORMAT.IMAGE,
     },
     {
       type: "autocomplete",
@@ -194,7 +190,7 @@ export async function getConfigContent() {
       message: "Select the version file path: ",
       source: getAutoCompleteSource(
         everyFilesFuse,
-        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT
+        CE_DEFAULT_VALUE.OUTPUT_DIRECTORY_FUZZY_SCORE_LIMIT,
       ),
       when: (answerForWhen: IInitDocAnswer) =>
         answerForWhen.versionFrom === CE_ENTITY_VERSION_FROM.FILE,
@@ -215,16 +211,15 @@ export async function getConfigContent() {
       type: "checkbox",
       name: "components",
       message: "Check component in document: ",
-      choices: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER].map(
-          (component) =>
-            component === CE_OUTPUT_COMPONENT.ER
-              ? { name: "ER diagram", value: "er", checked: true }
-              : {
-                  name: "Entity specification table",
-                  value: "table",
-                  checked: true,
-                }
-        ),
+      choices: [CE_OUTPUT_COMPONENT.TABLE, CE_OUTPUT_COMPONENT.ER].map((component) =>
+        component === CE_OUTPUT_COMPONENT.ER
+          ? { name: "ER diagram", value: "er", checked: true }
+          : {
+              name: "Entity specification table",
+              value: "table",
+              checked: true,
+            },
+      ),
       when: (answerForWhen: IInitDocAnswer) => answerForWhen.format !== "image",
     },
     {
@@ -241,10 +236,7 @@ export async function getConfigContent() {
 
   const templateDir = await (answer.isEjectTemplate
     ? ejecting({
-        templatePath: pathe.join(
-          getCwd(process.env),
-          CE_DEFAULT_VALUE.TEMPLATES_PATH
-        ),
+        templatePath: pathe.join(getCwd(process.env), CE_DEFAULT_VALUE.TEMPLATES_PATH),
         showLogo: false,
       })
     : Promise.resolve());
@@ -253,9 +245,7 @@ export async function getConfigContent() {
     config: {
       ...answer,
       templatePath:
-        templateDir == null
-          ? templateDir
-          : pathe.relative(getCwd(process.env), templateDir),
+        templateDir == null ? templateDir : pathe.relative(getCwd(process.env), templateDir),
       versionFrom: answer.versionFrom ?? CE_ENTITY_VERSION_FROM.TIMESTAMP,
       config: CE_DEFAULT_VALUE.CONFIG_FILE_NAME,
     },

@@ -11,7 +11,7 @@ import { isDrizzleTable } from "#/loaders/drizzle/tables/isDrizzleTable";
 
 export const getDrizzleRecords = (
   source: Pick<IDrizzleSource, "db" | "schema">,
-  metadata: IRecordMetadata
+  metadata: IRecordMetadata,
 ): TDatabaseRecord[] =>
   Object.values(getDrizzleSchema(source))
     .filter(isDrizzleTable)
@@ -19,14 +19,10 @@ export const getDrizzleRecords = (
       const config = getDrizzleTableConfig(table);
       return [
         getDrizzleEntityRecord(config, metadata),
-        ...config.columns.map((column) =>
-          getDrizzleColumnRecord(column, config, metadata)
-        ),
-        ...config.indexes.map((index) =>
-          getDrizzleIndexRecord(index, config.name, metadata)
-        ),
+        ...config.columns.map((column) => getDrizzleColumnRecord(column, config, metadata)),
+        ...config.indexes.map((index) => getDrizzleIndexRecord(index, config.name, metadata)),
         ...config.foreignKeys.map((foreignKey) =>
-          getDrizzleRelationRecord(foreignKey, config.name, metadata)
+          getDrizzleRelationRecord(foreignKey, config.name, metadata),
         ),
       ];
     });

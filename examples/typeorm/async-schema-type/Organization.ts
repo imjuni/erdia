@@ -13,9 +13,7 @@ export interface IOrganizationRelation {
   licenses: ILicense[];
 }
 
-export const Organization = new EntitySchema<
-  IOrganization & IOrganizationRelation
->({
+export const Organization = new EntitySchema<IOrganization & IOrganizationRelation>({
   columns: {
     description: {
       charset: "utf8mb4",

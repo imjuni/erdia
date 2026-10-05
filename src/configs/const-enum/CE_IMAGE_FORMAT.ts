@@ -11,5 +11,4 @@ export const CE_IMAGE_FORMAT = {
   SVG: "svg",
 } as const;
 
-export type CE_IMAGE_FORMAT =
-  (typeof CE_IMAGE_FORMAT)[keyof typeof CE_IMAGE_FORMAT];
+export type CE_IMAGE_FORMAT = (typeof CE_IMAGE_FORMAT)[keyof typeof CE_IMAGE_FORMAT];

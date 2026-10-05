@@ -9,27 +9,18 @@ import { importOrRequireFile } from "typeorm/util/ImportUtils";
  * @param dataSourceFilePath dataSource file path
  * @returns
  */
-export async function loadDataSource(
-  dataSourceFilePath: string
-): Promise<DataSource> {
+export async function loadDataSource(dataSourceFilePath: string): Promise<DataSource> {
   let dataSourceFileExports;
 
   try {
     [dataSourceFileExports] = await importOrRequireFile(dataSourceFilePath);
   } catch (error) {
-    const err = isError(
-      error,
-      new Error(`Unable to open file: "${dataSourceFilePath}".`)
-    );
-    throw new Error(
-      `Unable to open file: "${dataSourceFilePath}". ${err.message}`
-    );
+    const err = isError(error, new Error(`Unable to open file: "${dataSourceFilePath}".`));
+    throw new Error(`Unable to open file: "${dataSourceFilePath}". ${err.message}`);
   }
 
   if (!dataSourceFileExports || typeof dataSourceFileExports !== "object") {
-    throw new Error(
-      `Given data source file must contain export of a DataSource instance`
-    );
+    throw new Error(`Given data source file must contain export of a DataSource instance`);
   }
 
   if (InstanceChecker.isDataSource(dataSourceFileExports)) {
@@ -51,15 +42,11 @@ export async function loadDataSource(
   }
 
   if (dataSourceExports.length === 0) {
-    throw new Error(
-      `Given data source file must contain export of a DataSource instance`
-    );
+    throw new Error(`Given data source file must contain export of a DataSource instance`);
   }
 
   if (dataSourceExports.length > 1) {
-    throw new Error(
-      `Given data source file must contain only one export of DataSource instance`
-    );
+    throw new Error(`Given data source file must contain only one export of DataSource instance`);
   }
 
   return dataSourceExports[0];

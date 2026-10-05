@@ -31,26 +31,20 @@ describe("getComment", () => {
   });
 
   test("markdown comment", () => {
-    const comment = getComment(
-      { format: CE_OUTPUT_FORMAT.MARKDOWN },
-      "i-am-comment"
-    );
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.MARKDOWN }, "i-am-comment");
     expect(comment).toEqual("i-am-comment");
   });
 
   test("html comment", () => {
     const comment = getComment(
       { format: CE_OUTPUT_FORMAT.HTML },
-      "i-am-comment\n111\r\n222\n\r333"
+      "i-am-comment\n111\r\n222\n\r333",
     );
     expect(comment).toEqual("i-am-comment<br />111<br />222<br />333");
   });
 
   test("pdf comment", () => {
-    const comment = getComment(
-      { format: CE_OUTPUT_FORMAT.PDF },
-      "i-am-comment\ni-am-comment"
-    );
+    const comment = getComment({ format: CE_OUTPUT_FORMAT.PDF }, "i-am-comment\ni-am-comment");
     expect(comment).toEqual("i-am-comment<br />i-am-comment");
   });
 });
@@ -61,18 +55,13 @@ describe("getColumnAttributeKey", () => {
       { relationMetadata: {} as any, isPrimary: false },
       "",
       "",
-      []
+      [],
     );
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.FK]);
   });
 
   test("primary-key", () => {
-    const key = getColumnAttributeKey(
-      { relationMetadata: undefined, isPrimary: true },
-      "",
-      "",
-      []
-    );
+    const key = getColumnAttributeKey({ relationMetadata: undefined, isPrimary: true }, "", "", []);
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.PK]);
   });
 
@@ -99,7 +88,7 @@ describe("getColumnAttributeKey", () => {
           isSpatial: false,
           columnNames: ["code", "title"],
         },
-      ]
+      ],
     );
     expect(key).toEqual([CE_COLUMN_ATTRIBUTE.UK]);
   });
@@ -109,7 +98,7 @@ describe("getColumnAttributeKey", () => {
       { relationMetadata: undefined, isPrimary: false },
       "",
       "",
-      []
+      [],
     );
     expect(key).toEqual([]);
   });
@@ -149,7 +138,7 @@ describe("getColumnType", () => {
   test("function-type with length + nullable", () => {
     const columnType = getColumnType(
       { type: Boolean, length: "200", isPrimary: false, isNullable: true },
-      true
+      true,
     );
     expect(columnType).toEqual("boolean(200)");
   });
@@ -157,7 +146,7 @@ describe("getColumnType", () => {
   test("function-type with length + non-nullable", () => {
     const columnType = getColumnType(
       { type: Boolean, length: "200", isPrimary: false, isNullable: false },
-      true
+      true,
     );
     expect(columnType).toEqual("*boolean(200)");
   });
@@ -165,7 +154,7 @@ describe("getColumnType", () => {
   test("function-type without length", () => {
     const columnType = getColumnType(
       { type: Boolean, length: "200", isPrimary: false, isNullable: true },
-      false
+      false,
     );
     expect(columnType).toEqual("boolean");
   });
@@ -173,7 +162,7 @@ describe("getColumnType", () => {
   test("string-type with length", () => {
     const columnType = getColumnType(
       { type: "varchar", length: "200", isPrimary: false, isNullable: true },
-      true
+      true,
     );
     expect(columnType).toEqual("varchar(200)");
   });
@@ -181,7 +170,7 @@ describe("getColumnType", () => {
   test("string-type without length", () => {
     const columnType = getColumnType(
       { type: "varchar", length: "200", isPrimary: false, isNullable: true },
-      false
+      false,
     );
     expect(columnType).toEqual("varchar");
   });

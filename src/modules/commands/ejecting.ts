@@ -21,60 +21,42 @@ import { getTemplateModulePath } from "#/templates/modules/getTemplateModulePath
 
 export const ejecting = async (
   option: Pick<ICommonOption & IDocumentOption, "showLogo" | "templatePath">,
-  logging?: boolean
+  logging?: boolean,
 ) => {
   createLogger(logging);
   const logger = container.resolve<Logger>(SymbolLogger);
   try {
-    const templateDirPath = await getTemplateDirPath(
-      option,
-      getCwd(process.env)
-    );
-    const originTemplateDirPath = await getTemplateModulePath(
-      CE_DEFAULT_VALUE.TEMPLATES_PATH
-    );
+    const templateDirPath = await getTemplateDirPath(option, getCwd(process.env));
+    const originTemplateDirPath = await getTemplateModulePath(CE_DEFAULT_VALUE.TEMPLATES_PATH);
     const targetTemplateDirPath =
       option.templatePath === null || option.templatePath === undefined
         ? join(templateDirPath, CE_DEFAULT_VALUE.TEMPLATES_PATH)
         : templateDirPath;
     logger.info("Template directory: ", targetTemplateDirPath);
-    const originTemplateGlobPaths = new Glob(
-      join(originTemplateDirPath, `**`, "*.eta"),
-      {
-        absolute: true,
-        ignore: [...defaultExclude, "config/**"],
-        cwd: originTemplateDirPath,
-        windowsPathsNoEscape: true,
-      }
-    );
+    const originTemplateGlobPaths = new Glob(join(originTemplateDirPath, `**`, "*.eta"), {
+      absolute: true,
+      ignore: [...defaultExclude, "config/**"],
+      cwd: originTemplateDirPath,
+      windowsPathsNoEscape: true,
+    });
     const originTemplateFilePaths = getGlobFiles(originTemplateGlobPaths);
     await Promise.all(
       originTemplateFilePaths.map(async (originTemplateFilePath) => {
         const subDirPath = await getDirname(originTemplateFilePath);
-        const subFilePath = startSepRemove(
-          originTemplateFilePath.replace(subDirPath, "")
-        );
+        const subFilePath = startSepRemove(originTemplateFilePath.replace(subDirPath, ""));
         const targetTemplateSubDirPath = join(
           targetTemplateDirPath,
-          startSepRemove(subDirPath.replace(originTemplateDirPath, ""))
+          startSepRemove(subDirPath.replace(originTemplateDirPath, "")),
         );
         await betterMkdir(targetTemplateSubDirPath);
-        const templateFileBuf = await fs.promises.readFile(
-          originTemplateFilePath
-        );
-        await fs.promises.writeFile(
-          join(targetTemplateSubDirPath, subFilePath),
-          templateFileBuf
-        );
-      })
+        const templateFileBuf = await fs.promises.readFile(originTemplateFilePath);
+        await fs.promises.writeFile(join(targetTemplateSubDirPath, subFilePath), templateFileBuf);
+      }),
     );
     logger.success("eject success: ", targetTemplateDirPath);
     return targetTemplateDirPath;
   } catch (error) {
-    const err = isError(
-      error,
-      new Error("unknown error raised from createHtmlDocCommand")
-    );
+    const err = isError(error, new Error("unknown error raised from createHtmlDocCommand"));
     return logger.error(err);
   }
 };

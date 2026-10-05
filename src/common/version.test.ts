@@ -30,22 +30,14 @@ describe("getFileVersion", () => {
 
 describe("getVersion", () => {
   test("pass with package.json version", async () => {
-    const version = await getVersion(
-      { version: "1.1.1" },
-      { versionFrom: "package.json" }
-    );
+    const version = await getVersion({ version: "1.1.1" }, { versionFrom: "package.json" });
     expect(version).toEqual({ version: "1.1.1" });
   });
 
   test("pass using timestamp", async () => {
     const expectation = "1692373636445";
-    const tspSpyOn = vitest
-      .spyOn(dayjs.prototype, "valueOf")
-      .mockImplementation(() => expectation);
-    const version = await getVersion(
-      { version: "1.1.1" },
-      { versionFrom: "timestamp" }
-    );
+    const tspSpyOn = vitest.spyOn(dayjs.prototype, "valueOf").mockImplementation(() => expectation);
+    const version = await getVersion({ version: "1.1.1" }, { versionFrom: "timestamp" });
 
     tspSpyOn.mockRestore();
 
@@ -54,14 +46,9 @@ describe("getVersion", () => {
 
   test("pass using timestamp by configuration", async () => {
     const expectation = "1692373636445";
-    const tspSpyOn = vitest
-      .spyOn(dayjs.prototype, "valueOf")
-      .mockImplementation(() => expectation);
+    const tspSpyOn = vitest.spyOn(dayjs.prototype, "valueOf").mockImplementation(() => expectation);
 
-    const version = await getVersion(
-      { version: "1.1.1" },
-      { versionFrom: "timestamp" }
-    );
+    const version = await getVersion({ version: "1.1.1" }, { versionFrom: "timestamp" });
 
     tspSpyOn.mockRestore();
 
@@ -80,10 +67,7 @@ describe("getVersion", () => {
       .spyOn(fs.promises, "readFile")
       .mockImplementation(async () => Buffer.from("1.1.1"));
 
-    const version = await getVersion(
-      { version: "1.1.1" },
-      { versionFrom: "file" }
-    );
+    const version = await getVersion({ version: "1.1.1" }, { versionFrom: "file" });
 
     tspSpyOn01.mockRestore();
     tspSpyOn02.mockRestore();
@@ -109,7 +93,7 @@ describe("getVersion", () => {
 
     const version = await getVersion(
       { version: "1.1.1" },
-      { versionFrom: "file", versionPath: "/a/b/c" }
+      { versionFrom: "file", versionPath: "/a/b/c" },
     );
 
     tspSpyOn01.mockRestore();
@@ -131,10 +115,7 @@ describe("getVersion", () => {
 
     await expect(async () => {
       try {
-        await getVersion(
-          { version: undefined },
-          { versionFrom: "package.json" }
-        );
+        await getVersion({ version: undefined }, { versionFrom: "package.json" });
       } finally {
         tspSpyOn01.mockRestore();
         tspSpyOn02.mockRestore();

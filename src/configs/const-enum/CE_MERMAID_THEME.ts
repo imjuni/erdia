@@ -17,5 +17,4 @@ export const CE_MERMAID_THEME = {
   NULL: "null",
 } as const;
 
-export type CE_MERMAID_THEME =
-  (typeof CE_MERMAID_THEME)[keyof typeof CE_MERMAID_THEME];
+export type CE_MERMAID_THEME = (typeof CE_MERMAID_THEME)[keyof typeof CE_MERMAID_THEME];

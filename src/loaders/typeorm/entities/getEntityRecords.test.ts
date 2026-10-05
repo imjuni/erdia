@@ -133,16 +133,16 @@ describe(getEntityRecord, () => {
     }
     const tableDatas = toSorted(
       entities.map((entity) => getEntityRecord(entity, metadata)),
-      (left, right) => left.name.localeCompare(right.name)
+      (left, right) => left.name.localeCompare(right.name),
     );
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(tableDatas, undefined, 2)
+        fastSafeStringify(tableDatas, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(tableDatas).toMatchObject(expectation);
@@ -161,11 +161,11 @@ describe(getEntityRecords, () => {
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(records, undefined, 2)
+        fastSafeStringify(records, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(records).toMatchObject(expectation);

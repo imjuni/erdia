@@ -89,8 +89,6 @@ const factory = ((action: TFactoryAction) => {
   if (action.entity === "photo") {
     return photoFactory(action);
   }
-  throw new Error(
-    `unknown error raised from factory entity: ${JSON.stringify(action)}`
-  );
+  throw new Error(`unknown error raised from factory entity: ${JSON.stringify(action)}`);
 }) as IFactory;
 export default factory;

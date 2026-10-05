@@ -17,11 +17,9 @@ import { getSlashEndRoutePath } from "#/modules/getSlashEndRoutePath";
 export async function getRenderData(
   records: TDatabaseRecord[],
   metadata: IRecordMetadata,
-  option: Omit<IBuildCommandOption, "config">
+  option: Omit<IBuildCommandOption, "config">,
 ): Promise<IRenderData> {
-  const versionRows = (await alasql.promise("SELECT DISTINCT version FROM ?", [
-    records,
-  ])) as {
+  const versionRows = (await alasql.promise("SELECT DISTINCT version FROM ?", [records])) as {
     version: string;
   }[];
 
@@ -33,44 +31,44 @@ export async function getRenderData(
 
   const renderDatas = await Promise.all(
     versions.map(async (version) => {
-      const entities = (await alasql.promise(
-        `SELECT * FROM ? WHERE [$kind] = ? AND version = ?`,
-        [records, "entity", version]
-      )) as IEntityRecord[];
+      const entities = (await alasql.promise(`SELECT * FROM ? WHERE [$kind] = ? AND version = ?`, [
+        records,
+        "entity",
+        version,
+      ])) as IEntityRecord[];
 
-      const renderData: IEntityWithColumnAndRelationAndIndex[] =
-        await Promise.all(
-          entities.map(async (entity) => {
-            const columns = (await alasql.promise(
-              "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-              [records, CE_RECORD_KIND.COLUMN, entity.entity, version]
-            )) as IColumnRecord[];
+      const renderData: IEntityWithColumnAndRelationAndIndex[] = await Promise.all(
+        entities.map(async (entity) => {
+          const columns = (await alasql.promise(
+            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
+            [records, CE_RECORD_KIND.COLUMN, entity.entity, version],
+          )) as IColumnRecord[];
 
-            const relations = (await alasql.promise(
-              "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-              [records, CE_RECORD_KIND.RELATION, entity.entity, version]
-            )) as IRelationRecord[];
+          const relations = (await alasql.promise(
+            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
+            [records, CE_RECORD_KIND.RELATION, entity.entity, version],
+          )) as IRelationRecord[];
 
-            const indices = (await alasql.promise(
-              "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-              [records, CE_RECORD_KIND.INDEX, entity.entity, version]
-            )) as IIndexRecord[];
+          const indices = (await alasql.promise(
+            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
+            [records, CE_RECORD_KIND.INDEX, entity.entity, version],
+          )) as IIndexRecord[];
 
-            return {
-              ...entity,
-              columns,
-              relations,
-              indices,
-            } satisfies IEntityWithColumnAndRelationAndIndex;
-          })
-        );
+          return {
+            ...entity,
+            columns,
+            relations,
+            indices,
+          } satisfies IEntityWithColumnAndRelationAndIndex;
+        }),
+      );
 
       return {
         version,
         entities: renderData,
         latest: version === metadata.version,
       };
-    })
+    }),
   );
 
   if (option.format === CE_OUTPUT_FORMAT.HTML) {
@@ -79,9 +77,7 @@ export async function getRenderData(
       option: {
         ...option,
         routeBasePath:
-          option.routeBasePath == null
-            ? undefined
-            : getSlashEndRoutePath(option.routeBasePath),
+          option.routeBasePath == null ? undefined : getSlashEndRoutePath(option.routeBasePath),
       },
       metadata,
     };

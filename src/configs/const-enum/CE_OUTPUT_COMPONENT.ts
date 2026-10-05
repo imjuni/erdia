@@ -9,5 +9,4 @@ export const CE_OUTPUT_COMPONENT = {
   TABLE: "table",
 } as const;
 
-export type CE_OUTPUT_COMPONENT =
-  (typeof CE_OUTPUT_COMPONENT)[keyof typeof CE_OUTPUT_COMPONENT];
+export type CE_OUTPUT_COMPONENT = (typeof CE_OUTPUT_COMPONENT)[keyof typeof CE_OUTPUT_COMPONENT];

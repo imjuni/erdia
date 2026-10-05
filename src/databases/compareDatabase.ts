@@ -41,76 +41,75 @@ const toRecordMap = (records: TDatabaseRecord[]) => {
 export const compareDatabase = (
   metadata: IRecordMetadata,
   next: TDatabaseRecord[],
-  prev: TDatabaseRecord[]
+  prev: TDatabaseRecord[],
 ): TDatabaseRecord[] => {
   if (prev.length <= 0) {
     return next.map((record) => ({ ...record, change: CE_CHANGE_KIND.NONE }));
   }
   const nextMap = toRecordMap(next);
   const prevMap = toRecordMap(prev);
-  const compared = settify([
-    ...Object.keys(nextMap),
-    ...Object.keys(prevMap),
-  ]).map((key): TDatabaseRecord => {
-    const fromNext = nextMap[key];
-    const fromPrev = prevMap[key];
-    // add
-    if (
-      fromNext !== null &&
-      fromNext !== undefined &&
-      (fromPrev === null || fromPrev === undefined)
-    ) {
-      return {
+  const compared = settify([...Object.keys(nextMap), ...Object.keys(prevMap)]).map(
+    (key): TDatabaseRecord => {
+      const fromNext = nextMap[key];
+      const fromPrev = prevMap[key];
+      // add
+      if (
+        fromNext !== null &&
+        fromNext !== undefined &&
+        (fromPrev === null || fromPrev === undefined)
+      ) {
+        return {
+          ...fromNext,
+          change: CE_CHANGE_KIND.ADD,
+        } satisfies TDatabaseRecord;
+      }
+      // delete
+      if (
+        (fromNext === null || fromNext === undefined) &&
+        fromPrev !== null &&
+        fromPrev !== undefined
+      ) {
+        return {
+          ...fromPrev,
+          change: CE_CHANGE_KIND.DELETE,
+          version: metadata.version,
+        } satisfies TDatabaseRecord;
+      }
+      const forCompareNext: TDatabaseRecord = {
         ...fromNext,
-        change: CE_CHANGE_KIND.ADD,
-      } satisfies TDatabaseRecord;
-    }
-    // delete
-    if (
-      (fromNext === null || fromNext === undefined) &&
-      fromPrev !== null &&
-      fromPrev !== undefined
-    ) {
-      return {
-        ...fromPrev,
-        change: CE_CHANGE_KIND.DELETE,
-        version: metadata.version,
-      } satisfies TDatabaseRecord;
-    }
-    const forCompareNext: TDatabaseRecord = {
-      ...fromNext,
-      title: fromNext.title ?? "",
-      change: CE_CHANGE_KIND.NONE,
-      createdAt: "",
-      updatedAt: "",
-      version: "",
-    };
-    const forComparePrev: TDatabaseRecord = {
-      ...fromPrev,
-      title: fromPrev.title ?? "",
-      change: CE_CHANGE_KIND.NONE,
-      createdAt: "",
-      updatedAt: "",
-      version: "",
-    };
-    const diffed = detailedDiff(forCompareNext, forComparePrev);
-    // none
-    if (
-      Object.keys(diffed.added).length <= 0 &&
-      Object.keys(diffed.updated).length <= 0 &&
-      Object.keys(diffed.deleted).length <= 0
-    ) {
-      return {
-        ...fromNext,
+        title: fromNext.title ?? "",
         change: CE_CHANGE_KIND.NONE,
+        createdAt: "",
+        updatedAt: "",
+        version: "",
+      };
+      const forComparePrev: TDatabaseRecord = {
+        ...fromPrev,
+        title: fromPrev.title ?? "",
+        change: CE_CHANGE_KIND.NONE,
+        createdAt: "",
+        updatedAt: "",
+        version: "",
+      };
+      const diffed = detailedDiff(forCompareNext, forComparePrev);
+      // none
+      if (
+        Object.keys(diffed.added).length <= 0 &&
+        Object.keys(diffed.updated).length <= 0 &&
+        Object.keys(diffed.deleted).length <= 0
+      ) {
+        return {
+          ...fromNext,
+          change: CE_CHANGE_KIND.NONE,
+        } satisfies TDatabaseRecord;
+      }
+      // change
+      return {
+        ...fromNext,
+        change: CE_CHANGE_KIND.CHANGE,
+        prev: fromPrev,
       } satisfies TDatabaseRecord;
-    }
-    // change
-    return {
-      ...fromNext,
-      change: CE_CHANGE_KIND.CHANGE,
-      prev: fromPrev,
-    } satisfies TDatabaseRecord;
-  });
+    },
+  );
   return compared;
 };

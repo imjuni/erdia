@@ -18,26 +18,16 @@ import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 async function getTables(
   option: Pick<IBuildCommandOption, "output" | "components" | "prettierConfig">,
   renderData: AsyncReturnType<typeof getRenderData>,
-  outputDir: string
+  outputDir: string,
 ): Promise<IErdiaDocument[]> {
   if (!option.components.includes(CE_OUTPUT_COMPONENT.TABLE)) {
     return [];
   }
 
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
-  const rawTables = await renderer.evaluate(
-    CE_TEMPLATE_NAME.HTML_DOCUMENT,
-    renderData
-  );
-  const prettiedTables = await applyPrettier(
-    rawTables,
-    "html",
-    option.prettierConfig
-  );
-  const tablesFileName = pathe.join(
-    outputDir,
-    CE_DEFAULT_VALUE.HTML_INDEX_FILENAME
-  );
+  const rawTables = await renderer.evaluate(CE_TEMPLATE_NAME.HTML_DOCUMENT, renderData);
+  const prettiedTables = await applyPrettier(rawTables, "html", option.prettierConfig);
+  const tablesFileName = pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
   return [
     {
       dirname: pathe.resolve(outputDir),
@@ -50,22 +40,15 @@ async function getTables(
 async function getDiagram(
   option: Pick<IBuildCommandOption, "output" | "components" | "prettierConfig">,
   renderData: AsyncReturnType<typeof getRenderData>,
-  outputDir: string
+  outputDir: string,
 ): Promise<IErdiaDocument[]> {
   if (!option.components.includes(CE_OUTPUT_COMPONENT.ER)) {
     return [];
   }
 
   const renderer = container.resolve<TemplateRenderer>(SymbolTemplateRenderer);
-  const rawDiagram = await renderer.evaluate(
-    CE_TEMPLATE_NAME.HTML_MERMAID,
-    renderData
-  );
-  const prettiedDiagram = await applyPrettier(
-    rawDiagram,
-    "html",
-    option.prettierConfig
-  );
+  const rawDiagram = await renderer.evaluate(CE_TEMPLATE_NAME.HTML_MERMAID, renderData);
+  const prettiedDiagram = await applyPrettier(rawDiagram, "html", option.prettierConfig);
   const diagramFileName = option.components.includes(CE_OUTPUT_COMPONENT.TABLE)
     ? pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_MERMAID_FILENAME)
     : pathe.join(outputDir, CE_DEFAULT_VALUE.HTML_INDEX_FILENAME);
@@ -81,7 +64,7 @@ async function getDiagram(
 
 export async function createHtml(
   option: Pick<IBuildCommandOption, "output" | "components" | "prettierConfig">,
-  renderData: AsyncReturnType<typeof getRenderData>
+  renderData: AsyncReturnType<typeof getRenderData>,
 ) {
   const outputDir = await getOutputDirPath(option, getCwd(process.env));
 
@@ -99,7 +82,7 @@ export async function createHtml(
         }
 
         return [];
-      })
+      }),
     )
   ).flat();
 

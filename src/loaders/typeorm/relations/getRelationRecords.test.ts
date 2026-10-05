@@ -18,9 +18,7 @@ const testDirectory = join(process.cwd(), "src/loaders/typeorm/relations");
 type TRelationResult = ReturnType<typeof getRelationRecords>[number];
 
 const relationKey = (entry: TRelationResult) =>
-  entry.type === "pass"
-    ? (entry.pass.at(0)?.relationHash ?? "")
-    : entry.fail.message;
+  entry.type === "pass" ? (entry.pass.at(0)?.relationHash ?? "") : entry.fail.message;
 
 const compareRelations = (left: TRelationResult, right: TRelationResult) =>
   relationKey(left).localeCompare(relationKey(right));
@@ -51,25 +49,23 @@ describe(getRelationRecord, () => {
       version: "1.0.0",
     };
     const relationMetadata = findOrThrow(
-      findOrThrow(
-        share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
-      ).relations,
-      (relation) => relation.propertyName === "user"
+      findOrThrow(share.dataSource.entityMetadatas, (entity) => entity.name === "License")
+        .relations,
+      (relation) => relation.propertyName === "user",
     );
     const relation = getRelationRecord(
       share.dataSource.entityMetadatas,
       relationMetadata,
-      metadata
+      metadata,
     );
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(relation, undefined, 2)
+        fastSafeStringify(relation, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(relation).toMatchObject(expectation);
@@ -83,25 +79,23 @@ describe(getRelationRecord, () => {
       version: "1.0.0",
     };
     const relationMetadata = findOrThrow(
-      findOrThrow(
-        share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
-      ).relations,
-      (relation) => relation.propertyName === "organizations"
+      findOrThrow(share.dataSource.entityMetadatas, (entity) => entity.name === "License")
+        .relations,
+      (relation) => relation.propertyName === "organizations",
     );
     const relation = getRelationRecord(
       share.dataSource.entityMetadatas,
       relationMetadata,
-      metadata
+      metadata,
     );
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(relation, undefined, 2)
+        fastSafeStringify(relation, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(relation).toMatchObject(expectation);
@@ -115,31 +109,27 @@ describe(getRelationRecord, () => {
       version: "1.0.0",
     };
     const relationMetadata = findOrThrow(
-      findOrThrow(
-        share.dataSource.entityMetadatas,
-        (entity) => entity.name === "License"
-      ).relations,
-      (relation) => relation.propertyName === "organizations"
+      findOrThrow(share.dataSource.entityMetadatas, (entity) => entity.name === "License")
+        .relations,
+      (relation) => relation.propertyName === "organizations",
     );
-    const spyOnHandle = vi
-      .spyOn(relationHash, "getRelationHash")
-      .mockImplementation(() => {
-        throw new Error("raise error for test");
-      });
+    const spyOnHandle = vi.spyOn(relationHash, "getRelationHash").mockImplementation(() => {
+      throw new Error("raise error for test");
+    });
     const relation = getRelationRecord(
       share.dataSource.entityMetadatas,
       relationMetadata,
-      metadata
+      metadata,
     );
     spyOnHandle.mockRestore();
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(relation, undefined, 2)
+        fastSafeStringify(relation, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as object;
     expect(relation).toMatchObject(expectation);
@@ -158,17 +148,17 @@ describe(getRelationRecords, () => {
     if (share.expect) {
       fs.writeFileSync(
         join(testDirectory, "expects", `${expectFileName}`),
-        fastSafeStringify(relation, undefined, 2)
+        fastSafeStringify(relation, undefined, 2),
       );
     }
     const expectationContent = await fs.promises.readFile(
-      join(testDirectory, "expects", `${expectFileName}`)
+      join(testDirectory, "expects", `${expectFileName}`),
     );
     const expectation = parse(expectationContent.toString()) as ReturnType<
       typeof getRelationRecords
     >;
     expect(toSorted(relation, compareRelations)).toMatchObject(
-      toSorted(expectation, compareRelations)
+      toSorted(expectation, compareRelations),
     );
   });
 });
