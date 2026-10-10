@@ -7,14 +7,15 @@
     "emitDeclarationOnly": true,
     "rootDir": "src"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts"
+  ],
   "exclude": [
     "node_modules",
-    "**/__tests__/**/*",
-    "**/__test__/**/*",
     "dist/**",
     "examples/**/*",
-    "erdia-docs/**"
+    "erdia-docs/**",
+    "**/*.test.ts"
   ],
   "tsc-alias": {
     "replacers": {
