@@ -1,18 +1,18 @@
 # ERDIA
 
-erdia is create ER Diagram and Entity schema specification using by TypeORM and mermiad.js
+erdia generates ER diagrams and entity specifications from TypeORM or Drizzle schemas using Mermaid.js.
 
 ![ts](https://flat.badgen.net/badge/Built%20With/TypeScript/blue) [![Download Status](https://img.shields.io/npm/dw/erdia.svg)](https://npmcharts.com/compare/erdia?minimal=true) [![Github Star](https://img.shields.io/github/stars/imjuni/erdia.svg?style=popout)](https://github.com/imjuni/erdia) [![Github Issues](https://img.shields.io/github/issues-raw/imjuni/erdia.svg)](https://github.com/imjuni/erdia/issues) [![NPM version](https://img.shields.io/npm/v/erdia.svg)](https://www.npmjs.com/package/erdia) [![License](https://img.shields.io/npm/l/erdia.svg)](https://github.com/imjuni/erdia/blob/master/LICENSE) [![ci](https://github.com/imjuni/fast-maker/actions/workflows/ci.yml/badge.svg?branch=master&style=flat-square)](https://github.com/imjuni/fast-maker/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/imjuni/fast-maker/branch/master/graph/badge.svg?token=YrUlnfDbso&style=flat-square)](https://codecov.io/gh/imjuni/fast-maker) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-Why `erdia` ?
+Why `erdia`?
 
-`erdia` is a cli tool that allows you to automatically generate DB specifications and ER diagram documents using TypeORM. It is very hard to be diligent about updating DB specifications and ER diagrams whenever code and DB changes. `erdia` automatically generates DB statement and ER diagram documents using information provided by TypeORM whenever the code changes. By automatically generating documents using TypeORM code, you can maintain the freshness of your documents with minimal effort.
+`erdia` is a CLI tool that generates database specifications and ER diagrams from TypeORM data sources or Drizzle schema modules. Regenerate the documents when your schema changes to keep them current.
 
-Summary,
+In brief:
 
-1. ER diagram generate using [mermaid.js](http://mermaid.js.org/) syntax.
-2. Every document generate using [ETA](https://eta.js.org/) template engine
-3. Use [TypeORM](https://typeorm.io/)
+1. Generate ER diagrams using [Mermaid.js](https://mermaid.js.org/) syntax.
+2. Generate documents using the [ETA](https://eta.js.org/) template engine.
+3. Load schemas from [TypeORM](https://typeorm.io/) or [Drizzle ORM](https://orm.drizzle.team/).
 
 Automate your database ER diagram drawing!
 
@@ -21,7 +21,7 @@ Automate your database ER diagram drawing!
 - [How it works?](#how-it-works)
 - [Getting started](#getting-started)
   - [Installation](#installation)
-  - [Confuguration](#confuguration)
+  - [Configuration](#configuration)
   - [Generation](#generation)
 - [Usage](#usage)
   - [Commands](#commands)
@@ -39,23 +39,20 @@ Automate your database ER diagram drawing!
 - [License](#license)
 - [References](#references)
 
-`erdia` support initialization command. And you execute `build` command.
+Use `init` to create a configuration file, then run `build` to generate documents.
 
 ## How it works?
 
 ```mermaid
 graph LR
 
-A[TypeORM Entity] --> erdia
-subgraph erdia
-direction TB
-C[TypeORM Entity]-->|extract <br/>entity specification|B[erdia]
-end
-erdia-->|extract <br />specification|D
-D[ETA<br />template<br />engine]-->E[html]
-D-->F[markdown]
-D-->G[pdf]
-D-->H[image]
+A[TypeORM data source] --> C[erdia]
+B[Drizzle schema module] --> C
+C --> D[ETA templates]
+D --> E[HTML]
+D --> F[Markdown]
+D --> G[PDF]
+D --> H[image]
 ```
 
 ## Getting started
@@ -66,7 +63,7 @@ D-->H[image]
 npm install erdia --save-dev
 ```
 
-### Confuguration
+### Configuration
 
 ```bash
 npx erdia init
@@ -74,9 +71,19 @@ npx erdia init
 
 ### Generation
 
-```bash
-erdia build -d [your dataSource path] -o dist/entity --format html
+For TypeORM, pass a data source path. `--orm typeorm` is accepted but optional because TypeORM is the default:
+
+```sh
+erdia build -d src/dataSource.ts -o dist/entity --format html
 ```
+
+For Drizzle, pass a schema module and select `--orm drizzle`:
+
+```sh
+erdia build --orm drizzle -d src/schema.ts -o dist/entity --format html
+```
+
+The Drizzle module must export its tables. Export any `relations(...)` definitions from the same module to include application-level relationships in the diagram.
 
 ## Usage
 
@@ -93,7 +100,9 @@ erdia build -d [your dataSource path] -o dist/entity --format html
 
 ### CLI Options
 
-- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#build-command-cli-options)
+`--orm` accepts `typeorm` and `drizzle`. If omitted, it defaults to `typeorm`. The `-d` (`--data-source-path`) option points to a TypeORM data source or a Drizzle schema module according to the selected ORM.
+
+- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#cli-options)
 - init options
 - [eject options](./docs/DETAIL_EJECT_COMMAND_OPTION.md#eject-command-cli-options)
 - [clean options](./docs/DETAIL_CLEAN_COMMAND_OPTION.md#clean-command-cli-options)
@@ -111,14 +120,15 @@ erdia build -d [your dataSource path] -o dist/entity --format html
 
 ### Function Options
 
-- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#building-function-options)
+- [build options](./docs/DETAIL_BUILD_COMMAND_OPTION.md#building-options)
 - init options
 - [eject options](./docs/DETAIL_EJECT_COMMAND_OPTION.md#eject-function-options)
 - [clean options](./docs/DETAIL_CLEAN_COMMAND_OPTION.md#clean-function-options)
 
 ## Requirement
 
-- TypeORM 0.3.x
+- Node.js 20 or later
+- TypeORM 0.3.x for TypeORM schemas, or Drizzle ORM for Drizzle schemas
 
 ## Example
 
@@ -131,6 +141,7 @@ erdia build -d [your dataSource path] -o dist/entity --format html
 - [ER diagram html format](./assets/html/index.html)
 - [ER diagram png image format](./assets/erdiagram.png)
 - [ER diagram & table pdf format](./assets/erdiagram.pdf)
+- [Runnable examples (English)](./examples/examples.md)
 
 ## Output Format
 
@@ -153,7 +164,7 @@ Detached template can change and every document customizable. The template can b
 
 ## TypeScript
 
-If you are using TypeScript, you must use `ts-node` or `tsx` to run `erdia`. This is because the TypeORM Entity file is written in TypeScript.
+If your TypeORM data source or Drizzle schema is written in TypeScript, use `ts-node` or `tsx` to run `erdia`.
 
 - [ts-node](./docs/DETAIL_TYPESCRIPT.md#ts-node)
 - [tsx](./docs/DETAIL_TYPESCRIPT.md#tsx)
@@ -166,4 +177,5 @@ This software is licensed under the [MIT](LICENSE).
 ## References
 
 - [TypeORM](https://typeorm.io/)
+- [Drizzle ORM](https://orm.drizzle.team/)
 - [ER Diagram](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model)
