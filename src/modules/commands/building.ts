@@ -15,6 +15,7 @@ import { createImageHtml } from "#/creators/createImageHtml";
 import { createMarkdown } from "#/creators/createMarkdown";
 import { createPdfHtml } from "#/creators/createPdfHtml";
 import { getRenderData } from "#/creators/getRenderData";
+import { warnMermaidTextSize } from "#/creators/warnMermaidTextSize";
 import { writeToImage } from "#/creators/writeToImage";
 import { writeToPdf } from "#/creators/writeToPdf";
 import { compareDatabase } from "#/databases/compareDatabase";
@@ -77,6 +78,7 @@ export const building = async (
     const compared = compareDatabase(metadata, records, processedDb.prev);
     const nextDb = [...compared, ...processedDb.next];
     const renderData = await getRenderData(nextDb, metadata, option);
+    warnMermaidTextSize(renderData, renderer, (message) => logger.warn(message));
     await flushDatabase(option, nextDb);
     logger.success("Database open and processing completed");
     logger.info(`output format: ${option.format}`);
