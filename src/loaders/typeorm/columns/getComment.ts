@@ -1,6 +1,7 @@
 import { CE_OUTPUT_FORMAT } from "#/configs/const-enum/CE_OUTPUT_FORMAT";
 import type { IBuildCommandOption } from "#/configs/interfaces/IBuildCommandOption";
 
+// Normalize line breaks only; quotes, pipes, and HTML markup remain unchanged.
 export const getComment = (
   option: Pick<IBuildCommandOption, "format">,
   comment: undefined | null | string,
