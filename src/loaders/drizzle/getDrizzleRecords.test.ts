@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { Eta } from "eta";
+import { relations } from "drizzle-orm";
 import {
   bigint as mysqlBigint,
   mysqlTable,
@@ -160,6 +161,76 @@ describe(getDrizzleRecords, () => {
       attributeKey: ["FK"],
       comment: "references pg_users.id",
     });
+  });
+
+  it("extracts relations declared without database foreign keys", () => {
+    const categories = mysqlTable("categories", {
+      id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+    });
+    const pets = mysqlTable("pets", {
+      id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+      categoryId: mysqlBigint("category_id", { mode: "number", unsigned: true }).notNull(),
+    });
+    const petsRelations = relations(pets, ({ one }) => ({
+      category: one(categories, { fields: [pets.categoryId], references: [categories.id] }),
+    }));
+    const records = getDrizzleRecords({ schema: { categories, pets, petsRelations } }, metadata);
+    expect(
+      records.find((record) => record.$kind === "column" && record.dbName === "category_id"),
+    ).toMatchObject({
+      attributeKey: ["FK"],
+      comment: "required, unsigned, references categories.id",
+    });
+    expect(records.filter((record) => record.$kind === "relation")).toEqual([
+      expect.objectContaining({
+        entity: "pets",
+        inverseEntityName: "categories",
+        joinColumnName: "category_id",
+      }),
+    ]);
+  });
+
+  it.each(["html", "markdown", "pdf", "image"])(
+    "connects declared entity identifiers in %s diagrams",
+    (format) => {
+      const categories = mysqlTable("categories", {
+        id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+      });
+      const pets = mysqlTable("pets", {
+        id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+        categoryId: mysqlBigint("category_id", { mode: "number", unsigned: true }).notNull(),
+      });
+      const petsRelations = relations(pets, ({ one }) => ({
+        category: one(categories, { fields: [pets.categoryId], references: [categories.id] }),
+      }));
+      const records = getDrizzleRecords({ schema: { categories, pets, petsRelations } }, metadata);
+      const entities = records
+        .filter((record) => record.$kind === "entity")
+        .map((entity) => ({
+          ...entity,
+          columns: records.filter(
+            (record) => record.$kind === "column" && record.entity === entity.entity,
+          ),
+          relations: records.filter(
+            (record) => record.$kind === "relation" && record.entity === entity.entity,
+          ),
+        }));
+      const template = readFileSync(`templates/${format}/mermaid-diagram.eta`, "utf8");
+      const rendered = new Eta().renderString(template, { option: { theme: "default" }, entities });
+      expect(rendered).toContain('"pets(pets)" {');
+      expect(rendered).toContain('"categories(categories)" {');
+      expect(rendered).toMatch(/"pets\(pets\)"\s+\}\|\s+--\s+\|\|\s+"categories\(categories\)"/);
+      expect(rendered).toContain('"pets.category_id references categories.id"');
+      expect(rendered).not.toContain('"pets(category_id)"');
+    },
+  );
+
+  it("does not duplicate relations when database foreign keys also exist", () => {
+    const pgPostsRelations = relations(pgPosts, ({ one }) => ({
+      user: one(pgUsers, { fields: [pgPosts.userId], references: [pgUsers.id] }),
+    }));
+    const records = getDrizzleRecords({ schema: { pgPosts, pgUsers, pgPostsRelations } }, metadata);
+    expect(records.filter((record) => record.$kind === "relation")).toHaveLength(1);
   });
 
   it("creates entity, column, index, and relation records", () => {

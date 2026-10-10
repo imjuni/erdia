@@ -21,7 +21,7 @@ erDiagram
 
 <% entity.relations.forEach((relation) => { %>
 <% if (relation.isDuplicate) { return; } %>
-"<%= relation.dbName %>(<%= relation.name %>)"<% -%>
+"<%= entity.dbName %>(<%= entity.name %>)"<% -%>
 <% if (relation.joinColumnOne && relation.joinColumnNullable) { %>
   |o<% -%>
 <% } else if (relation.joinColumnOne && !relation.joinColumnNullable) { %>
@@ -41,8 +41,9 @@ o{  <% -%>
 <% } else { %>
 |{  <% -%>
 <% } %>
-"<%= relation.inverseEntityDBName %>(<%= relation.inverseEntityName %>)":  <% -%>
-"<%= [relation.joinColumnName,relation.inverseJoinColumnName].filter((name) => name != null).sort().join(',') %>"<% -%>
+<% const inverseEntity = it.entities.find((item) => item.dbName === relation.inverseEntityDBName); %>
+"<%= relation.inverseEntityDBName %>(<%= inverseEntity?.name ?? relation.inverseEntityName %>)":  <% -%>
+"<%= relation.joinColumnName && relation.inverseJoinColumnName ? `${relation.dbName}.${relation.joinColumnName} references ${relation.inverseEntityDBName}.${relation.inverseJoinColumnName}` : [relation.joinColumnName, relation.inverseJoinColumnName].filter((name) => name != null).sort().join(',') %>"<% -%>
 
 <% }) %>
 
