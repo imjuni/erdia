@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { IRenderData } from "#/databases/interfaces/IRenderData";
+import { CE_TEMPLATE_NAME } from "#/templates/cosnt-enum/CE_TEMPLATE_NAME";
 import { warnMermaidTextSize } from "#/creators/warnMermaidTextSize";
 import type { TemplateRenderer } from "#/templates/TemplateRenderer";
 
@@ -36,5 +37,24 @@ describe("Mermaid text size warning", () => {
     warnMermaidTextSize(makeRenderData(["table"]), renderer, warn);
     expect(evaluate).not.toHaveBeenCalled();
     expect(warn).not.toHaveBeenCalled();
+  });
+
+  it("checks every version for non-HTML output", () => {
+    const warn = vi.fn();
+    const evaluate = vi.fn().mockReturnValue("x".repeat(50_001));
+    const renderer = { evaluate } as unknown as TemplateRenderer;
+    const renderData = makeRenderData(["er"]);
+    renderData.option.format = "md";
+    renderData.versions.push({ version: "0.9.0", latest: false, entities: [] });
+
+    warnMermaidTextSize(renderData, renderer, warn);
+
+    expect(evaluate).toHaveBeenCalledTimes(2);
+    expect(evaluate).toHaveBeenCalledWith(
+      CE_TEMPLATE_NAME.MARKDOWN_MERMAID_DIAGRAM,
+      expect.any(Object),
+    );
+    expect(warn).toHaveBeenCalledTimes(2);
+    expect(warn.mock.calls[1][0]).toContain("version 0.9.0");
   });
 });
