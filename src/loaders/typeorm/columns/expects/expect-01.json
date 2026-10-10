@@ -10,11 +10,11 @@
     "dbName": "first_name",
     "attributeKey": [],
     "isNullable": "",
-    "columnType": "*varchar",
+    "columnType": "varchar",
     "charset": "utf8mb4",
-    "columnTypeWithLength": "*varchar(256)",
-    "comment": "user firstname",
-    "weight": 785020.17
+    "columnTypeWithLength": "varchar(256)",
+    "comment": "required, user firstname",
+    "weight": 743020.17
   },
   {
     "$kind": "column",
@@ -27,11 +27,11 @@
     "dbName": "id",
     "attributeKey": ["PK"],
     "isNullable": "",
-    "columnType": "*int",
+    "columnType": "int",
     "charset": "",
-    "columnTypeWithLength": "*int",
-    "comment": "",
-    "weight": 20373017.22
+    "columnTypeWithLength": "int",
+    "comment": "required",
+    "weight": 20331017.22
   },
   {
     "$kind": "column",
@@ -44,11 +44,11 @@
     "dbName": "is_active",
     "attributeKey": [],
     "isNullable": "",
-    "columnType": "*boolean",
+    "columnType": "boolean",
     "charset": "",
-    "columnTypeWithLength": "*boolean",
-    "comment": "line1<br />line2<br />line3",
-    "weight": 778017.07
+    "columnTypeWithLength": "boolean",
+    "comment": "required, line1<br />line2<br />line3",
+    "weight": 736017.07
   },
   {
     "$kind": "column",
@@ -61,11 +61,11 @@
     "dbName": "last_name",
     "attributeKey": [],
     "isNullable": "",
-    "columnType": "*varchar",
+    "columnType": "varchar",
     "charset": "utf8mb4",
-    "columnTypeWithLength": "*varchar(256)",
-    "comment": "",
-    "weight": 785014.25
+    "columnTypeWithLength": "varchar(256)",
+    "comment": "required",
+    "weight": 743014.25
   },
   {
     "$kind": "column",
@@ -81,7 +81,7 @@
     "columnType": "int",
     "charset": "",
     "columnTypeWithLength": "int",
-    "comment": "",
+    "comment": "references tbl_photo.id",
     "weight": 10331010.18
   }
 ]

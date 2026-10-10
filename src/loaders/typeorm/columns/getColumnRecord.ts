@@ -30,7 +30,22 @@ export const getColumnRecord = (
   /** type of column */
   const columnTypeWithLength = getColumnType(columnMetadata, true);
   /** comment of entity, column */
-  const comment = getComment(option, columnMetadata.comment);
+  const originalComment = getComment(option, columnMetadata.comment);
+  const reference = columnMetadata.referencedColumn;
+  const referenceComment =
+    reference == null
+      ? undefined
+      : `references ${reference.entityMetadata.tableName}.${reference.databaseName}`;
+  const comment = [
+    !columnMetadata.isNullable || columnMetadata.isPrimary ? "required" : undefined,
+    columnMetadata.unsigned || /\bunsigned\b/i.test(String(columnMetadata.type))
+      ? "unsigned"
+      : undefined,
+    referenceComment,
+    originalComment || undefined,
+  ]
+    .filter(Boolean)
+    .join(", ");
   const isNullable = getIsNullable(columnMetadata);
   const charset = columnMetadata.charset ?? "";
   const columnData: Omit<IColumnRecord, "weight"> = {

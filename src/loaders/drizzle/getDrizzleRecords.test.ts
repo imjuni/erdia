@@ -1,4 +1,7 @@
+import { readFileSync } from "node:fs";
+import { Eta } from "eta";
 import {
+  bigint as mysqlBigint,
   mysqlTable,
   serial as mysqlSerial,
   uniqueIndex as mysqlUniqueIndex,
@@ -78,10 +81,10 @@ describe(getDrizzleTableConfig, () => {
 });
 
 describe(getDrizzleColumnType, () => {
-  it("preserves the SQL type and required marker", () => {
+  it("keeps required markers out of the SQL type", () => {
     expect(getDrizzleColumnType(pgUsers.email)).toEqual({
-      columnType: "*varchar(128)",
-      columnTypeWithLength: "*varchar(128)",
+      columnType: "varchar(128)",
+      columnTypeWithLength: "varchar(128)",
     });
   });
 });
@@ -97,12 +100,74 @@ describe(getDrizzleColumnAttributeKey, () => {
 });
 
 describe(getDrizzleRecords, () => {
+  it("moves required and unsigned metadata into comments", () => {
+    const categories = mysqlTable("categories", {
+      id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+      optionalId: mysqlBigint("optional_id", { mode: "number", unsigned: true }),
+      name: mysqlVarchar("name", { length: 100 }),
+    });
+    const columns = getDrizzleRecords({ schema: { categories } }, metadata).filter(
+      (record) => record.$kind === "column",
+    );
+    expect(columns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: "id",
+          columnTypeWithLength: "bigint",
+          attributeKey: ["PK"],
+          comment: "required, unsigned",
+        }),
+        expect.objectContaining({
+          name: "optional_id",
+          columnTypeWithLength: "bigint",
+          comment: "unsigned",
+        }),
+        expect.objectContaining({
+          name: "name",
+          columnTypeWithLength: "varchar(100)",
+          comment: "",
+        }),
+      ]),
+    );
+  });
+
+  it.each(["html", "markdown", "pdf", "image"])(
+    "renders four attribute fields for %s diagrams",
+    (format) => {
+      const categories = mysqlTable("categories", {
+        id: mysqlBigint("id", { mode: "number", unsigned: true }).primaryKey(),
+      });
+      const columns = getDrizzleRecords({ schema: { categories } }, metadata).filter(
+        (record) => record.$kind === "column",
+      );
+      const template = readFileSync(`templates/${format}/mermaid-diagram.eta`, "utf8");
+      const rendered = new Eta().renderString(template, {
+        option: { theme: "default" },
+        entities: [{ dbName: "categories", name: "categories", columns, relations: [] }],
+      });
+      expect(rendered).toMatch(/bigint\s+id\s+PK\s+"required, unsigned"/);
+      expect(rendered).not.toContain("*bigint");
+      expect(rendered).not.toContain("bigint unsigned");
+    },
+  );
+
+  it("puts foreign key targets in comments and only FK in attributes", () => {
+    const records = getDrizzleRecords({ schema: { pgPosts, pgUsers } }, metadata);
+    expect(
+      records.find((record) => record.$kind === "column" && record.name === "user_id"),
+    ).toMatchObject({
+      columnTypeWithLength: "integer",
+      attributeKey: ["FK"],
+      comment: "references pg_users.id",
+    });
+  });
+
   it("creates entity, column, index, and relation records", () => {
     const records = getDrizzleRecords({ db: {}, schema: { pgPosts, pgUsers } }, metadata);
     expect(records.filter((record) => record.$kind === "entity")).toHaveLength(2);
     expect(
       records.find((record) => record.$kind === "column" && record.dbName === "email"),
-    ).toMatchObject({ columnType: "*varchar(128)" });
+    ).toMatchObject({ columnType: "varchar(128)" });
     expect(records.find((record) => record.$kind === "relation")).toMatchObject({
       inverseEntityName: "pg_users",
       joinColumnName: "user_id",

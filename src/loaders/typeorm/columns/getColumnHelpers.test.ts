@@ -132,7 +132,7 @@ describe("getColumnType", () => {
       isPrimary: false,
       isNullable: false,
     });
-    expect(columnType).toEqual("*boolean");
+    expect(columnType).toEqual("boolean");
   });
 
   test("function-type with length + nullable", () => {
@@ -148,7 +148,7 @@ describe("getColumnType", () => {
       { type: Boolean, length: "200", isPrimary: false, isNullable: false },
       true,
     );
-    expect(columnType).toEqual("*boolean(200)");
+    expect(columnType).toEqual("boolean(200)");
   });
 
   test("function-type without length", () => {
