@@ -1,12 +1,14 @@
 import type { Column } from "drizzle-orm";
 
 export const getDrizzleColumnType = (
-  column: Pick<Column, "getSQLType" | "notNull" | "primary">,
+  column: Pick<Column, "getSQLType">,
 ): { columnType: string; columnTypeWithLength: string } => {
-  const sqlType = column.getSQLType();
-  const prefix = column.notNull || column.primary ? "*" : "";
+  const sqlType = column
+    .getSQLType()
+    .replace(/\s+unsigned\b/gi, "")
+    .trim();
   return {
-    columnType: `${prefix}${sqlType}`,
-    columnTypeWithLength: `${prefix}${sqlType}`,
+    columnType: sqlType,
+    columnTypeWithLength: sqlType,
   };
 };
