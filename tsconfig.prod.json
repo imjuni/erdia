@@ -1,4 +1,11 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["dataSourceconfig.ts"]
+  "exclude": [
+    "dataSourceconfig.ts",
+    "node_modules",
+    "dist/**",
+    "examples/**",
+    "erdia-docs/**",
+    "**/*.test.ts"
+  ]
 }
