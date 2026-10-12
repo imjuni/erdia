@@ -118,3 +118,4 @@ erdiadb.json
 **/.DS_Store
 .npmrc
 git-short.sh
+.pnpm-store
