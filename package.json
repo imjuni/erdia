@@ -85,7 +85,6 @@
   },
   "dependencies": {
     "@maeum/cli-logo": "^1.0.0",
-    "alasql": "^4.20.0",
     "awilix": "^10.0.2",
     "chalk": "^4.1.2",
     "compare-versions": "^6.1.0",

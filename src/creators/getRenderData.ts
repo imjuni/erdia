@@ -1,4 +1,3 @@
-import alasql from "alasql";
 import { compareVersions } from "compare-versions";
 
 import { CE_OUTPUT_FORMAT } from "#/configs/const-enum/CE_OUTPUT_FORMAT";
@@ -19,57 +18,62 @@ export async function getRenderData(
   metadata: IRecordMetadata,
   option: Omit<IBuildCommandOption, "config">,
 ): Promise<IRenderData> {
-  const versionRows = (await alasql.promise("SELECT DISTINCT version FROM ?", [records])) as {
-    version: string;
-  }[];
+  const recordsByVersion = new Map<
+    string,
+    {
+      entities: IEntityRecord[];
+      children: Map<
+        string,
+        {
+          columns: IColumnRecord[];
+          relations: IRelationRecord[];
+          indices: IIndexRecord[];
+        }
+      >;
+    }
+  >();
 
-  const unSortedVersions = versionRows.map((version) => version.version);
-  const versions =
+  for (const record of records) {
+    let group = recordsByVersion.get(record.version);
+    if (group === undefined) {
+      group = { entities: [], children: new Map() };
+      recordsByVersion.set(record.version, group);
+    }
+    if (record.$kind === CE_RECORD_KIND.ENTITY) {
+      group.entities.push(record);
+      continue;
+    }
+    let children = group.children.get(record.entity);
+    if (children === undefined) {
+      children = { columns: [], relations: [], indices: [] };
+      group.children.set(record.entity, children);
+    }
+    switch (record.$kind) {
+      case CE_RECORD_KIND.COLUMN:
+        children.columns.push(record);
+        break;
+      case CE_RECORD_KIND.RELATION:
+        children.relations.push(record);
+        break;
+      case CE_RECORD_KIND.INDEX:
+        children.indices.push(record);
+        break;
+    }
+  }
+
+  const versions = [...recordsByVersion.keys()].sort(
     option.versionFrom === "timestamp"
-      ? unSortedVersions.sort((l, r) => r.localeCompare(l))
-      : unSortedVersions.sort((l, r) => compareVersions(r, l));
-
-  const renderDatas = await Promise.all(
-    versions.map(async (version) => {
-      const entities = (await alasql.promise(`SELECT * FROM ? WHERE [$kind] = ? AND version = ?`, [
-        records,
-        "entity",
-        version,
-      ])) as IEntityRecord[];
-
-      const renderData: IEntityWithColumnAndRelationAndIndex[] = await Promise.all(
-        entities.map(async (entity) => {
-          const columns = (await alasql.promise(
-            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-            [records, CE_RECORD_KIND.COLUMN, entity.entity, version],
-          )) as IColumnRecord[];
-
-          const relations = (await alasql.promise(
-            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-            [records, CE_RECORD_KIND.RELATION, entity.entity, version],
-          )) as IRelationRecord[];
-
-          const indices = (await alasql.promise(
-            "SELECT * FROM ? WHERE [$kind] = ? AND entity = ? AND version = ?",
-            [records, CE_RECORD_KIND.INDEX, entity.entity, version],
-          )) as IIndexRecord[];
-
-          return {
-            ...entity,
-            columns,
-            relations,
-            indices,
-          } satisfies IEntityWithColumnAndRelationAndIndex;
-        }),
-      );
-
-      return {
-        version,
-        entities: renderData,
-        latest: version === metadata.version,
-      };
-    }),
+      ? (l, r) => r.localeCompare(l)
+      : (l, r) => compareVersions(r, l),
   );
+  const renderDatas = versions.map((version) => {
+    const group = recordsByVersion.get(version)!;
+    const entities: IEntityWithColumnAndRelationAndIndex[] = group.entities.map((entity) => ({
+      ...entity,
+      ...(group.children.get(entity.entity) ?? { columns: [], relations: [], indices: [] }),
+    }));
+    return { version, entities, latest: version === metadata.version };
+  });
 
   if (option.format === CE_OUTPUT_FORMAT.HTML) {
     return {

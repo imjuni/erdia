@@ -1,4 +1,3 @@
-import alasql from "alasql";
 import { compareVersions } from "compare-versions";
 import { atOrThrow } from "my-easy-fp";
 
@@ -21,23 +20,17 @@ export async function processDatabase(
   }
 
   const currentVersion = metadata.version;
-  const versions = (await alasql.promise("SELECT DISTINCT version FROM ?", [db])) as {
-    version: string;
-  }[];
-
+  const versions = [...new Set(db.map((record) => record.version))];
   const sortedVersions =
     option.versionFrom === "timestamp"
-      ? versions.sort((l, r) => r.version.localeCompare(l.version))
-      : versions.sort((l, r) => compareVersions(r.version, l.version));
+      ? versions.sort((l, r) => r.localeCompare(l))
+      : versions.sort((l, r) => compareVersions(r, l));
 
-  const firstVersionFromDb = atOrThrow(sortedVersions, 0).version;
+  const firstVersionFromDb = atOrThrow(sortedVersions, 0);
 
   // case 02. different version between current and latest from database
   if (currentVersion !== firstVersionFromDb) {
-    const latestRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
-      db,
-      firstVersionFromDb,
-    ])) as TDatabaseRecord[];
+    const latestRecords = db.filter((record) => record.version === firstVersionFromDb);
 
     return { next: db, deleted: [], prev: latestRecords };
   }
@@ -47,24 +40,13 @@ export async function processDatabase(
     return { next: [], deleted: [], prev: [] };
   }
 
-  const secondVersionFromDb = atOrThrow(sortedVersions, 1).version;
+  const secondVersionFromDb = atOrThrow(sortedVersions, 1);
 
   // case 04. same version between current and latest from database
   // in this case, update current version records in database
-  const partialRecords = (await alasql.promise("SELECT * FROM ? WHERE version != ?", [
-    db,
-    currentVersion,
-  ])) as TDatabaseRecord[];
-
-  const oldRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
-    db,
-    currentVersion,
-  ])) as TDatabaseRecord[];
-
-  const latestRecords = (await alasql.promise("SELECT * FROM ? WHERE version = ?", [
-    db,
-    secondVersionFromDb,
-  ])) as TDatabaseRecord[];
+  const partialRecords = db.filter((record) => record.version !== currentVersion);
+  const oldRecords = db.filter((record) => record.version === currentVersion);
+  const latestRecords = db.filter((record) => record.version === secondVersionFromDb);
 
   return { next: partialRecords, deleted: oldRecords, prev: latestRecords };
 }

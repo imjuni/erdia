@@ -3,9 +3,7 @@
   "ts-node": {
     "transpileOnly": true,
     "files": true,
-    "require": [
-      "tsconfig-paths/register"
-    ]
+    "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
     /* Basic Options */
@@ -34,9 +32,7 @@
     /* Module Resolution Options */
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
     "paths": {
-      "#/*": [
-        "src/*"
-      ]
+      "#/*": ["src/*"]
     },
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "resolveJsonModule": true,
@@ -47,13 +43,6 @@
     "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist/**",
-    "examples/**",
-    "erdia-docs/**"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist/**", "examples/**", "erdia-docs/**"]
 }

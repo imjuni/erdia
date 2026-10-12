@@ -1,5 +1,3 @@
-import alasql from "alasql";
-import { atOrUndefined } from "my-easy-fp";
 import type { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 
 import { CE_COLUMN_ATTRIBUTE } from "#/configs/const-enum/CE_COLUMN_ATTRIBUTE";
@@ -11,12 +9,9 @@ export const getColumnAttributeKey = (
   tableDBName: string,
   indexRecords: IIndexRecord[],
 ) => {
-  const indices = alasql("SELECT * FROM ? WHERE ? = ANY (columnNames) and tableDBName = ?", [
-    indexRecords,
-    dbName,
-    tableDBName,
-  ]) as IIndexRecord[];
-  const index = atOrUndefined(indices, 0);
+  const index = indexRecords.find(
+    (record) => record.tableDBName === tableDBName && record.columnNames.includes(dbName),
+  );
   return [
     columnMetadata.relationMetadata === null || columnMetadata.relationMetadata === undefined
       ? undefined
